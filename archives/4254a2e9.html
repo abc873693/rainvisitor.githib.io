@@ -5,15 +5,61 @@
   
 
   
-  <title>RainVisitor Blog</title>
+  <title>Android app 上架流程 | RainVisitor Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="RainVisitor Blog">
-<meta property="og:url" content="https://blog.rainvisitor.me/index.html">
+  <meta name="description" content="本篇文章主要介紹在2020年 Goolge 改版後的 Play Store Console 如何上架 Android App 首先到 Play Store Console 右邊點擊新增應用程式  填寫以下應用程式詳細資訊  應用程式名稱：會顯示在商店的App名稱 預設語言：預設App使用的語言，作為商店一開始提供的預設語言 應用程式類型：分類只有遊戲與應用程式，目的是要把遊戲區分出來，日後可更改">
+<meta name="keywords" content="Flutter,Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android app 上架流程">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/4254a2e9.html">
 <meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="本篇文章主要介紹在2020年 Goolge 改版後的 Play Store Console 如何上架 Android App 首先到 Play Store Console 右邊點擊新增應用程式  填寫以下應用程式詳細資訊  應用程式名稱：會顯示在商店的App名稱 預設語言：預設App使用的語言，作為商店一開始提供的預設語言 應用程式類型：分類只有遊戲與應用程式，目的是要把遊戲區分出來，日後可更改">
 <meta property="og:locale" content="zh-tw">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img1.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img2.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img3.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img4.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img5.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img6.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img7.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img8.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img10.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img11.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img13.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img12.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img14.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img15.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img16.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img18.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img19.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img20.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img21.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img22.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img23.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img24.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img25.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img26.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img26-1.jpg">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img26-2.jpg">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img27.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img29.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img30.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img31.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img32.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img33.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img35.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img36.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img37.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img38.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img39.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img40.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img41.png">
+<meta property="og:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img42.png">
+<meta property="og:updated_time" content="2020-10-25T16:09:13.597Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RainVisitor Blog">
+<meta name="twitter:title" content="Android app 上架流程">
+<meta name="twitter:description" content="本篇文章主要介紹在2020年 Goolge 改版後的 Play Store Console 如何上架 Android App 首先到 Play Store Console 右邊點擊新增應用程式  填寫以下應用程式詳細資訊  應用程式名稱：會顯示在商店的App名稱 預設語言：預設App使用的語言，作為商店一開始提供的預設語言 應用程式類型：分類只有遊戲與應用程式，目的是要把遊戲區分出來，日後可更改">
+<meta name="twitter:image" content="https://blog.rainvisitor.me/images/android-app-deploy/img1.png">
   
     <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
   
@@ -64,9 +110,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-android-app-store-tutorial" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-android-app-store-tutorial" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/archives/4254a2e9.html" class="article-date">
   <time datetime="2020-10-25T11:51:40.000Z" itemprop="datePublished">2020-10-25</time>
@@ -83,8 +127,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/archives/4254a2e9.html">Android app 上架流程</a>
+    <h1 class="article-title" itemprop="name">
+      Android app 上架流程
     </h1>
   
 
@@ -230,251 +274,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-ios-app-store-tutorial" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/archives/dc2c1f00.html" class="article-date">
-  <time datetime="2020-10-24T12:27:58.000Z" itemprop="datePublished">2020-10-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/archives/dc2c1f00.html">iOS app 上架流程</a>
-    </h1>
+    <a href="/archives/dc2c1f00.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">iOS app 上架流程</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本篇文章主要介紹在2020年 Apple 改版後的 App Store Connect 如何上架 iOS App</p>
-<h1 id="新增-App"><a href="#新增-App" class="headerlink" title="新增 App"></a>新增 App</h1><p>到 <a href="https://appstoreconnect.apple.com/" target="_blank" rel="noopener">App Store Connect</a> 點擊 <code>我的App</code></p>
-<p><img src="../images/ios-app-deploy/img1.png" alt=""></p>
-<p>點擊 App 旁邊邊的 + 選擇 <code>新的 App</code></p>
-<p><img src="../images/ios-app-deploy/img2.png" alt=""></p>
-<h1 id="註冊Identifier"><a href="#註冊Identifier" class="headerlink" title="註冊Identifier"></a>註冊Identifier</h1><p>到 <a href="https://developer.apple.com/account/resources/identifiers/list" target="_blank" rel="noopener">憑證、識別碼及描述檔</a> 註冊App的 <code>Identifier</code></p>
-<p><img src="../images/ios-app-deploy/img4-0.png" alt=""></p>
-<p>選擇 <code>App IDs</code></p>
-<p><img src="../images/ios-app-deploy/img4-1.png" alt=""></p>
-<p>選擇 <code>App</code></p>
-<p><img src="../images/ios-app-deploy/img4-2.png" alt=""></p>
-<p><strong>Discription</strong> 填寫可以識別的名稱</p>
-<p><strong>App ID Prefix</strong> 選擇 <code>Explicit</code> 並填上與 Xcode 中的 <code>Bundle Indentifier</code> 相同的 ID</p>
-<p><strong>App ID Prefix 的 Bundle ID 上架後就不可修改</strong></p>
-<p>最後點擊 <code>Continue</code> 然後 <code>Register</code> 完成註冊</p>
-<p><img src="../images/ios-app-deploy/img4-3.png" alt=""></p>
-<p>或是</p>
-<p>懶人方法</p>
-<p>使用 <code>Xcode</code> 在 <code>Target</code> 中的 <code>Runner</code> 選擇 <code>Signing &amp; Capabilities</code></p>
-<p>選擇想要上架的Apple開發者帳號</p>
-<p><img src="../images/ios-app-deploy/img3.png" alt=""></p>
-<p>並點擊 <code>+ Capability</code> 隨意新增一個 Capability</p>
-<p>此動作 <code>Xcode</code> 會自動註冊 <code>Indentifier</code> 至 App Store Connect</p>
-<p>完成後再將其取消 </p>
-<p>沒取消的話審查時會納入審查範圍 要特別注意</p>
-<p><img src="../images/ios-app-deploy/img4-4.png" alt=""></p>
-<p>接著填寫App基本資訊</p>
-<ul>
-<li>平台：選擇你的App會在哪些平台提供，若沒勾選可事後新增</li>
-<li>名稱：在Apple Store的名稱，無法跟已上架App相同，命名上需要先搶先贏，除非對方把App刪除或修改名稱，也是使用者搜尋時能找到你的App的首要途徑</li>
-<li>主要語言：首先可在商店提供的語言，若有發佈不同國家語系，可事後新增</li>
-<li>套件識別碼：選擇剛才新增的 <code>Indentifier</code>，選擇後就不能修改，對應到原生的 <code>Bundle Indentifier</code></li>
-<li>SKU：App ID 為獨一無二，可任意命名，填寫後不能修改，但不會公開顯示</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img4-5.png" alt=""></p>
-<h1 id="App-資訊"><a href="#App-資訊" class="headerlink" title="App 資訊"></a>App 資訊</h1><p>新增 App 後，可先來 一般資訊 -&gt; App 資訊，填寫 App 基本資訊，這邊會分兩個區塊，一個是可本地化資訊及一般資訊</p>
-<h3 id="可本地化資訊"><a href="#可本地化資訊" class="headerlink" title="可本地化資訊"></a>可本地化資訊</h3><ul>
-<li>名稱：必填，為一開始輸入的 App 名稱</li>
-<li>副標題：必填，商店中會位於 App 名稱下方，建議使用簡短語句說明 App</li>
-<li>隱私權政策：必填，聲明你的 App 隱私權政策的網址，不限制格式</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img16.png" alt=""></p>
-<h3 id="一般資訊"><a href="#一般資訊" class="headerlink" title="一般資訊"></a>一般資訊</h3><ul>
-<li>Apple ID：由 Apple 產生，作為網頁上的編號，可至 <a href="https://apps.apple.com/tw/app/id`${你的" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id`${你的</a> Apple ID}`，找到你的App</li>
-<li>內容版權：聲明你的 App 是否有第三方內容，像是以校務通來說，資料來源於學校，就可以視為第三方內容 </li>
-<li>年齡分級：必填，根據填寫 <a href="#/年齡分級問卷">年齡分級問卷</a> 的結果</li>
-<li>許可協議：必填，預設使用 <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">《Apple 標準終端使用者許可協議》(EULA)</a>，可點擊自訂許可協議</li>
-<li>類別：必填，在商店的分類，可選擇兩個，也作為與同類型App排名的分類</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img17.png" alt=""></p>
-<h1 id="定價與供應狀況"><a href="#定價與供應狀況" class="headerlink" title="定價與供應狀況"></a>定價與供應狀況</h1><ul>
-<li>價格排程：選擇你的App定價方式，最低免費到最高 32900元，使用者付費購買後90天內都可以反悔</li>
-<li>預定：第一次上架前會顯示，自訂日期在App成功發布後，會通知預定的使用者</li>
-<li>供應狀況：需先填寫<code>供應國家與地區</code>，若選擇停止供應，會從商店下架，直到重新供應為止</li>
-<li>Mac 上的 iOS App：如果你的iOS App有使用到 <a href="https://developer.apple.com/mac-catalyst/" target="_blank" rel="noopener">Mac Catalyst
-</a>(Flutter 目前不支援)，會將你的iOS App發佈至 Mac App Store，若有發佈macOS App，則優先發布 macOS App</li>
-<li>App發布方式：根據你的開發者帳號，若個人開發者帳號只能選擇公開在Apple Store，若是企業開發者帳號，則可以發布到私人的商店發布</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img18.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img18-1.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img26.png" alt=""></p>
-<h1 id="App版本資訊"><a href="#App版本資訊" class="headerlink" title="App版本資訊"></a>App版本資訊</h1><p>進入 App <code>版本資訊</code> 後</p>
-<p>首先設定 <code>App預覽與截圖</code> 可參考以下規格 <strong><code>每個至少三張</code></strong></p>
-<p>12.9 吋 iPad Pro 第三代 及 第二代 尺寸是可以相容的 故截圖第三代 可直接上傳到第二代</p>
-<p>建議使用模擬器截圖 上傳完可用滑鼠拖曳改變顯示順序</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">螢幕尺寸說明</th>
-<th style="text-align:center">平台</th>
-<th style="text-align:center">截圖尺寸</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">iPhone 6.5 吋</td>
-<td style="text-align:center">iPhone 11 Pro Max、iPhone 11、iPhone X S Max、iPhone XR</td>
-<td style="text-align:center">1242 x 2688 像素（直向） 2688 x 1242 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">iPhone 5.5 吋</td>
-<td style="text-align:center">iPhone 8 Plus、iPhone 7 Plus、iPhone 6s Plus</td>
-<td style="text-align:center">1242 x 2208 像素（直向） 2208 x 1242 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">12.9 吋 iPad Pro（第三代）</td>
-<td style="text-align:center">iPad Pro 2018、iPad Pro 2020</td>
-<td style="text-align:center">2048 x 2732 像素（直向） 2732 x 2048 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">12.9 吋 iPad Pro（第二代）</td>
-<td style="text-align:center">iPad Pro 2017</td>
-<td style="text-align:center">2048 x 2732 像素（直向） 2732 x 2048 像素（橫向）</td>
-</tr>
-</tbody>
-</table>
-<p>更多詳細資訊 <a href="https://help.apple.com/app-store-connect/#/devd274dd925" target="_blank" rel="noopener">可參考</a></p>
-<p><img src="../images/ios-app-deploy/img5.png" alt=""></p>
-<p>接著填寫</p>
-<ul>
-<li>行銷宣傳文字：作為 App 行銷宣傳標語，建議簡短的文字，也要符合App的性質</li>
-<li>關鍵字：在商店搜尋時，透過關鍵字加強找到App，並使用逗點隔開</li>
-<li>描述：詳細介紹App的功能與特色</li>
-<li>支援URL：對應商店開發者網頁</li>
-<li>行銷URL：待補充</li>
-<li>版本：可參考 <a href="https://semver.org/lang/zh-TW/" target="_blank" rel="noopener">語意化版本</a>，不限定兩碼或三碼，不能與先前定義的相同</li>
-<li>版權：宣告App版權的註解</li>
-<li>年齡分級：根據填寫 <a href="#/年齡分級問卷">年齡分級問卷</a> 的結果（需點擊編輯填寫）</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img6.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img7.png" alt=""></p>
-<p>對應在商店的位置可參考</p>
-<p><img src="../images/ios-app-deploy/img6-1.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img6-2.png" alt=""></p>
-<h2 id="年齡分級問卷"><a href="#年齡分級問卷" class="headerlink" title="年齡分級問卷"></a>年齡分級問卷</h2><p>針對App的內容填寫是否有兒童不宜的</p>
-<p><img src="../images/ios-app-deploy/img9.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img10.png" alt=""></p>
-<h2 id="App審查資訊"><a href="#App審查資訊" class="headerlink" title="App審查資訊"></a>App審查資訊</h2><p>蘋果在審查時都是採用 <code>人工審查</code>，審查過程都須填寫完整的資料</p>
-<ul>
-<li>登入資訊：若你的App有設計登入功能，需提供測試帳號給審查人員</li>
-<li>聯絡人資訊：當審查有問題時的聯絡人資訊，電話號碼需要加入國際冠碼</li>
-<li>備註：資訊則提供其他資訊供審查人員了解你的App，像是之前就被問過這幾個問題，爾後我都在新的App加入這些回答<ul>
-<li>Who is the target audience?</li>
-<li>How do users obtain an account?</li>
-<li>Is this app meant for internal distribution in your own company, in the company of one target client, or in multiple target clients’ companies?</li>
-<li>In which countries will this app primarily be distributed?</li>
-<li>If this app is meant for internal distribution, will the app be accessible by both internal and external partners? Or will it be exclusive to in-house employees?<ul>
-<li>附件：可附上App操作影片，若你的App無法提供帳號測試，或是有些功能需要提供範例影片操作(ex.何時會使用到讀取wifi連線資訊的功能)，都需要附上影片</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img8.png" alt=""></p>
-<h3 id="建制版本"><a href="#建制版本" class="headerlink" title="建制版本"></a>建制版本</h3><p>接著選擇要送至審查的App版本，需先透過Xcode <code>Archive</code> 後上傳至App Store Connect，點擊藍色按鈕</p>
-<p><img src="../images/ios-app-deploy/img11.png" alt=""></p>
-<p>選擇對應想提交的版本，通常上傳完會需要一段時間處理，當完成處理都會email通知</p>
-<p><img src="../images/ios-app-deploy/img11-1.png" alt=""></p>
-<p>屆時才會出現在這邊</p>
-<p><img src="../images/ios-app-deploy/img12.png" alt=""></p>
-<p>接著選擇這次提交的出口合規資訊，點擊是否有使用加密功能，若點擊是的話，需要另外填寫出口法律資訊</p>
-<p><img src="../images/ios-app-deploy/img13.png" alt=""></p>
-<h3 id="廣告識別碼"><a href="#廣告識別碼" class="headerlink" title="廣告識別碼"></a>廣告識別碼</h3><p>最後是填寫是否有使用到 <code>廣告識別碼</code>，像是 Firebase Analytics 或是 Ad Mod 等第三方的廣告或分析工具，就需要聲明有使用到，若審查後發現錯誤，則需要重新上傳新的App版本</p>
-<p><img src="../images/ios-app-deploy/img14.png" alt=""></p>
-<p><strong>最後回到最上方點擊完成，並點擊審查，結著就會進入正在等待審查</strong></p>
-<p><img src="../images/ios-app-deploy/img20.png" alt=""></p>
-<p>通常審查時間已台灣都是晚上開始到半夜，對應到美國的白天時間，第一次審查都會比較久，大約2~3天，要耐心等待</p>
-<p>但有時候會審查失敗，也會寄送 email 通知，可至連結查詢問題，並回覆審查人員</p>
-<p>iOS Resolve Center : <a href="">https://appstoreconnect.apple.com/apps/<code>{apple id}</code>/appstore/platform/ios/resolutioncenter?m=</a></p>
-<p>macOS Resolve Center : <a href="">https://appstoreconnect.apple.com/apps/<code>{apple id}</code>/appstore/platform/osx/resolutioncenter?m=</a></p>
-<p><img src="../images/ios-app-deploy/img21.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img21-1.png" alt=""></p>
-<p>若審查成功，則會通知 <code>Ready for Sale</code>，完成這次版本審查</p>
-<p><img src="../images/ios-app-deploy/img22.png" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.rainvisitor.me/archives/dc2c1f00.html" data-id="ckgpb48f80004r6b3xy8v84pn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/">Flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-window-10-安裝-docker-無法開啟-問題" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/archives/b0c060c4.html" class="article-date">
-  <time datetime="2018-08-27T08:21:28.000Z" itemprop="datePublished">2018-08-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Docker/">Docker</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/archives/b0c060c4.html">window 10 安裝 docker 無法開啟 問題</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>若開啟docker後，vmware無法執行須關閉docker使用的hyper-v兩者會相衝，只能同時開其一<br><a href="https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries" target="_blank" rel="noopener">https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries</a></p>
-<p>關閉系統hyper-v<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype off</span><br></pre></td></tr></table></figure></p>
-<p>重新打開<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype auto</span><br></pre></td></tr></table></figure></p>
-<p>上述兩指令 執行完都須重新開機</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.rainvisitor.me/archives/b0c060c4.html" data-id="ckgpb48f40001r6b3c4btzmh9" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
 
 </section>
         
