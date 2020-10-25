@@ -10,6 +10,8 @@ categories:
   - Flutter
 ---
 
+本篇文章主要介紹在2020年 Apple 改版後的 App Store Connect 如何上架 iOS App
+
 # 新增 App
 
 到 [App Store Connect](https://appstoreconnect.apple.com/) 點擊 `我的App`
