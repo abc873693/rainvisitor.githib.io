@@ -3,10 +3,11 @@ title: iOS app 上架流程
 abbrlink: dc2c1f00
 date: 2020-10-24 20:27:58
 tags:
+  - Flutter
+  - iOS
 comments: true
 categories:
   - Flutter
-  - iOS
 ---
 
 # 新增 App
