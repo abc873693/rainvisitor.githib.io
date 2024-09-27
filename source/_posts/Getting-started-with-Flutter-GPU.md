@@ -1,5 +1,5 @@
 ---
-title: [文章翻譯] Getting started with Flutter GPU
+title: 【文章翻譯】Getting started with Flutter GPU
 tags:
   - Flutter
   - GPU
@@ -7,8 +7,9 @@ comments: true
 categories:
   - Flutter
 abbrlink: 8ddf18fb
-date: 2024-09-27 19:51:40
+date: 2024-08-07 19:51:40
 ---
+【文章內容使用 Gemini 1.5 Pro 自動產生】
 
 在 Flutter 中建立自訂渲染器並渲染 3D 場景。
 
@@ -781,3 +782,5 @@ Flutter Scene 最初是 Impeller 中的一個 C++ 組件，與 2D Canvas 渲染�
 同時，我要回到工作崗位了。
 
 很快就會見到你。:)
+
+
