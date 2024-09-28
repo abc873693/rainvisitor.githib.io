@@ -15,30 +15,30 @@ tags:
 <figcaption>Flutter 3.24 on a blue background</figcaption>
 </figure>
 
-歡迎來到最新的 Flutter 更新！Flutter 3.24 充滿了令人興奮的新功能和增強功能，可以提升您的應用程式開發體驗。此版本重點介紹了 Flutter GPU 的預覽，它可以在 Flutter 中直接啟用進階圖形和 3D 場景。Web 應用程式現在可以嵌入多個 Flutter 視圖，增強應用程式的多功能性。最後，我們添加了影片廣告變現支援，以幫助您最大限度地提高收入。
+歡迎來到最新的 Flutter 更新！Flutter 3.24 充滿了令人興奮的新功能和增強功能，可以提升您的應用程式開發體驗。此版本重點介紹了 Flutter GPU 的預覽版本，它可以在 Flutter 中直接啟用進階圖形和 3D 場景。Web 應用程式現在可以嵌入多個 Flutter 視圖，增強應用程式的多功能性。最後，我們加入了影片廣告支援，以幫助您最大限度地提高收入。
 
-在過去的幾個月裡，Flutter 社區一直非常活躍，擁有 852 個框架提交和 615 個引擎提交。我們很興奮地歡迎 49 位新貢獻者，他們幫助實現了此版本。您的奉獻和熱情推動著 Flutter 的前進。
+在過去的幾個月裡，Flutter 社群一直非常活躍，擁有 852 個框架提交和 615 個引擎提交。我們很興奮地歡迎 49 位新貢獻者，他們幫助實現了此版本。您的奉獻和熱情推動著 Flutter 的前進。
 
-因此，深入了解 Flutter 社區帶給這個最新版本的最新功能和增強功能吧！
+因此，深入了解 Flutter 社群帶給這個最新版本的最新功能和增強功能吧！
 
 ### Flutter 架構
 
 #### 新的 Sliver
 
-此版本添加了新的 Sliver，可以將它們組合在一起以實現動態應用程式列行為：
+此版本加入了新的 Sliver，可以將它們組合在一起以實現動態 app bar 行為：
 
 * [PinnedHeaderSliver](http://api.flutter.dev/flutter/widgets/PinnedHeaderSliver-class.html)
 * [SliverResizingHeader](http://api.flutter.dev/flutter/widgets/SliverResizingHeader-class.html)
 
-您可以使用這些新的 Sliver 來製作浮動、保持固定或在使用者捲動時調整大小的標題。這些新的 Sliver 類似於現有的 [SliverPersistentHeader](https://api.flutter.dev/flutter/widgets/SliverPersistentHeader-class.html) 和 [SliverAppBar](http://sliverappbar) Sliver，但具有更簡單的 API，可以組合在一起以實現更大的效果。
+您可以使用這些新的 Sliver 來製作浮動、保持固定或在使用者捲軸時調整大小的標題。這些新的 Sliver 類似於現有的 [SliverPersistentHeader](https://api.flutter.dev/flutter/widgets/SliverPersistentHeader-class.html) 和 [SliverAppBar](http://sliverappbar) Sliver，但具有更簡單的 API，可以組合在一起以實現更大的效果。
 
-這些新的 Sliver 附帶了新的樣本程式碼。例如，PinnedHeaderSliver 的 API 文件有一個範例，可以重新建立 iOS 設定應用程式應用程式列的效果：
+這些新的 Sliver 附帶了新的範例程式碼。例如，PinnedHeaderSliver 的 API 文件有一個範例，可以重新建立 iOS 設定應用程式 app bar 的效果：
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/600/0*bdcb6KGonosfPZ6m" />
 </figure>
 
-#### Cupertino 庫中的更新
+#### Cupertino 函式庫中的更新
 
 在此版本中，我們改進了 [CupertinoActionSheet](https://api.flutter.dev/flutter/cupertino/CupertinoActionSheet-class.html) 的保真度。在動作表單的按鈕上滑動手指現在可以提供觸覺回饋。按鈕的字體大小和粗細現在與原生對應物相符。
 
@@ -46,49 +46,49 @@ tags:
 <img alt="" src="https://cdn-images-1.medium.com/max/655/0*_o_9V0RlITOZdU4v" />
 </figure>
 
-我們還為 [CupertinoButton](https://api.flutter.dev/flutter/cupertino/CupertinoButton-class.html) 添加了新的焦點屬性，現在您可以自訂已停用的 [CupertinoTextField](https://api.flutter.dev/flutter/cupertino/CupertinoTextField-class.html) 的顏色。
+我們還為 [CupertinoButton](https://api.flutter.dev/flutter/cupertino/CupertinoButton-class.html) 加入了新的焦點屬性，現在您可以自訂已停用的 [CupertinoTextField](https://api.flutter.dev/flutter/cupertino/CupertinoTextField-class.html) 的顏色。
 
-Cupertino 庫的更新正在進行中，請期待未來版本中的更多更新！
+Cupertino 函式庫的更新正在進行中，請期待未來版本中的更多更新！
 
 #### TreeView
 
-[two_dimensional_scrollables](https://pub.dev/packages/two_dimensional_scrollables) 套件發佈了 [TreeView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TreeView-class.html) 小部件，以及幾個用於建立高性能捲動樹的配套類別，這些樹可以在樹增長時向所有方向捲動。套件中包含的樣本應用程式也已更新，其中包含幾個使用 [TableView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TableView-class.html) 和 [TreeView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TreeView-class.html) 小部件的全新範例。
+[two_dimensional_scrollables](https://pub.dev/packages/two_dimensional_scrollables) 套件發佈了 [TreeView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TreeView-class.html) Widget，以及幾個用於建立高效能捲軸樹的配套類別，這些樹可以在樹增長時向所有方向捲軸。套件中包含的樣本應用程式也已更新，其中包含幾個使用 [TableView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TableView-class.html) 和 [TreeView](https://pub.dev/documentation/two_dimensional_scrollables/latest/two_dimensional_scrollables/TreeView-class.html) Widget 的全新範例。
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/600/0*wcmJCv-6owwsolRl" />
 </figure>
 
-[TreeSliver](https://api.flutter.dev/flutter/widgets/TreeSliver-class.html) 也被添加到框架中，用於在一維捲動中建立樹。TreeView 和 TreeSliver API 相符，使您能夠輕鬆地在適合您的用例的那個之間切換。
+[TreeSliver](https://api.flutter.dev/flutter/widgets/TreeSliver-class.html) 也被加入到框架中，用於在一維捲軸中建立樹。`TreeView` 和 `TreeSliver` API 符合，使您能夠輕鬆地在適合您的使用案例之間切換。
 
 #### CarouselView
 
-此版本包含了 [Material Design 輪播](https://m3.material.io/components/carousel/overview) 小部件：CarouselView。CarouselView 呈現「[未包含](https://m3.material.io/components/carousel/specs#477de3a1-c9df-4742-baf3-bcd5eeb3764c)」佈局：一個可捲動的項目列表，這些項目會捲動到容器的邊緣，並且當領先和尾隨項目捲出視圖和捲入視圖時，它們可以動態調整大小。
+此版本包含了 [Material Design carousel](https://m3.material.io/components/carousel/overview) Widget：`CarouselView`。CarouselView 呈現「[Uncontained](https://m3.material.io/components/carousel/specs#477de3a1-c9df-4742-baf3-bcd5eeb3764c)」佈局：一個可捲軸的項目列表，這些項目會捲軸到 container 的邊緣，並且當開頭和末尾項目捲出視圖和捲入視圖時，它們可以動態調整大小。
 
 <figure>
 <img alt="Flutter CarouselView example" src="https://cdn-images-1.medium.com/max/512/1*6ytqSvtR2TJzAE6LntHTGw.gif" />
 </figure>
 
-#### 小部件提供更多功能
+#### Widget提供更多功能
 
-此版本包含將核心小部件邏輯從 Material 庫重新定位到 Widgets 庫中以便更廣泛使用的部分工作，這些邏輯不是設計專用的。這包括：
+此版本包含將核心 Widget 邏輯從 Material 函式庫移動到 Widgets 函式庫中以便更廣泛使用，這些邏輯不是設計專用的。這包括：
 
-* [Feedback](https://github.com/flutter/flutter/pull/148523) 小部件，它提供輕鬆訪問設備上的觸覺和音訊回饋，以響應點擊、長按等手勢。
-* [ToggleableStateMixin](https://github.com/flutter/flutter/pull/148272) 和 [ToggleablePainter](https://github.com/flutter/flutter/pull/148272)，用於建立複選框、開關和單選按鈕等切換小部件的基類。
+* [Feedback](https://github.com/flutter/flutter/pull/148523) Widget，它提供輕鬆存取設備上的觸覺和音訊回饋，以點擊回應、長按等手勢。
+* [ToggleableStateMixin](https://github.com/flutter/flutter/pull/148272) 和 [ToggleablePainter](https://github.com/flutter/flutter/pull/148272)，用於建立複選框、開關和單選按鈕等切換 Widget 的基本類別。
 
-#### 為 AnimationStatus 增強枚舉功能
+#### 為 AnimationStatus 增強列舉功能
 
-在社群成員 [nate-thegrate](https://github.com/nate-thegrate) 的出色 [貢獻](https://github.com/flutter/flutter/pull/147801) 中，增強的枚舉功能被添加到 [AnimationStatus](https://api.flutter.dev/flutter/animation/AnimationStatus.html) 中，包括 getter：
+在社群成員 [nate-thegrate](https://github.com/nate-thegrate) 的出色 [貢獻](https://github.com/flutter/flutter/pull/147801) 中，增強的列舉功能被加入到 [AnimationStatus](https://api.flutter.dev/flutter/animation/AnimationStatus.html) 中，包括 getter：
 
 * isDismissed
 * isCompleted
 * isRunning
 * isForwardOrCompleted
 
-其中一些 getter 已經存在於 [Animation](https://api.flutter.dev/flutter/animation/Animation-class.html) 子類別中，例如 [AnimationController](https://api.flutter.dev/flutter/animation/AnimationController-class.html) 和 [CurvedAnimation](https://api.flutter.dev/flutter/animation/CurvedAnimation-class.html)。現在，所有這些狀態 getter 都可以在 Animation 子類別中使用，除了 AnimationStatus 之外。最後，一個 [toggle](https://api.flutter.dev/flutter/animation/AnimationController/toggle.html) 方法被添加到 AnimationController 中，用於切換動畫的方向。
+其中一些 getter 已經存在於 [Animation](https://api.flutter.dev/flutter/animation/Animation-class.html) 子類別中，例如 [AnimationController](https://api.flutter.dev/flutter/animation/AnimationController-class.html) 和 [CurvedAnimation](https://api.flutter.dev/flutter/animation/CurvedAnimation-class.html)。現在，所有這些狀態 getter 都可以在 Animation 子類別中使用，除了 AnimationStatus 之外。最後，一個 [`toggle`](https://api.flutter.dev/flutter/animation/AnimationController/toggle.html) 方法被加入到 AnimationController 中，用於切換動畫的方向。
 
 #### SelectionArea 中的更新
 
-Flutter 的 [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) 現在支援使用滑鼠進行三擊和在觸控設備上雙擊的更多原生手勢。預設情況下，[SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) 和 [SelectableRegion](https://api.flutter.dev/flutter/widgets/SelectableRegion-class.html) 小部件使用這些新的手勢。
+Flutter 的 [SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) 現在支援使用滑鼠進行三擊和在觸控設備上雙擊的更多原生手勢。預設情況下，[SelectionArea](https://api.flutter.dev/flutter/material/SelectionArea-class.html) 和 [SelectableRegion](https://api.flutter.dev/flutter/widgets/SelectableRegion-class.html) Widget 使用這些新的手勢。
 
 三擊
 
@@ -101,8 +101,8 @@ Flutter 的 [SelectionArea](https://api.flutter.dev/flutter/material/SelectionAr
 
 雙擊
 
-* 雙擊 + 拖動：擴展字詞塊中的選取範圍（支援原生 Android/Fuchsia/iOS 和 iOS 網頁）。
-* 雙擊：選取點擊位置的字詞（支援原生 Android/Fuchsia/iOS 和 Android/Fuchsia 網頁）。
+* 雙擊 + 拖動：擴展文字區塊中的選取範圍（支援原生 Android/Fuchsia/iOS 和 iOS 網頁）。
+* 雙擊：選取點擊位置的文字（支援原生 Android/Fuchsia/iOS 和 Android/Fuchsia 網頁）。
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/770/0*DwZgIybQr3FDFxXd" />
@@ -112,9 +112,9 @@ Flutter 的 [SelectionArea](https://api.flutter.dev/flutter/material/SelectionAr
 
 #### Impeller
 
-**改善性能和保真度**
+**改善效能和保真度**
 
-為了在即將到來的穩定版本中移除 iOS 上的 Impeller 選擇退出，團隊一直在努力改進 Impeller 的性能和保真度。例如，針對文字渲染的一系列改進 [大幅提高了 emoji 捲動的性能](https://github.com/flutter/flutter/issues/138798)，消除了捲動大量 emoji 時的卡頓，這對 Impeller 的文字渲染能力來說是一項極好的壓力測試。
+為了在即將到來的穩定版本中移除 iOS 上的 Impeller 選擇不使用設定，團隊一直在努力改進 Impeller 的效能和保真度。例如，針對文字渲染的一系列改進 [大幅提高了 emoji 捲軸的效能](https://github.com/flutter/flutter/issues/138798)，消除了捲軸大量 emoji 時的卡頓，這對 Impeller 的文字渲染能力來說是一項極好的壓力測試。
 
 此外，透過 [解決許多問題](https://github.com/flutter/engine/pull/53042)，我們也在此版本中大幅改進了 Impeller 文字渲染的保真度。特別是，文字粗細、間距和字距調整現在都與傳統渲染器的文字保真度相符。
 
@@ -140,23 +140,23 @@ Flutter 的 [SelectionArea](https://api.flutter.dev/flutter/material/SelectionAr
 
 **Android 預覽**
 
-在此版本中，我們將繼續在 Android 上預覽 Impeller。我們延長了預覽期，因為 Impeller 用於平台視圖的 API 在 [Android 14 中的一個錯誤](https://github.com/flutter/flutter/issues/146499#issuecomment-2082873125) 導致出現困難。這個錯誤後來被 Android 團隊修補了，但是許多已部署的設備在可預見的將來將運行未修補的 Android 版本。解決這些問題意味著需要額外的 API 遷移，因此需要額外的穩定版本週期。出於謹慎和為了確保 Flutter 應用程式可以在盡可能廣泛的設備上運行，我們將推遲將 Impeller 作為預設渲染器，直到今年晚些時候的穩定版本發佈。
+在此版本中，我們將繼續在 Android 上預覽 Impeller。我們延長了預覽期，因為 Impeller 用於 Platform Views 的 API 在 [Android 14 中的一個錯誤](https://github.com/flutter/flutter/issues/146499#issuecomment-2082873125) 導致出現困難。這個錯誤後來被 Android 團隊修補了，但是許多已部署的設備在可預見的將來將運行未修補的 Android 版本。解決這些問題意味著需要額外的 API 遷移，因此需要額外的穩定版本週期。出於謹慎和為了確保 Flutter 應用程式可以在盡可能廣泛的設備上運行，我們將推遲將 Impeller 作為預設渲染器，直到今年晚些時候的穩定版本發佈。
 
 隨著 Android 上的 Impeller 預覽繼續在 3.24 穩定版本週期中進行，我們請求 Flutter 開發人員升級到最新的穩定版本，並在啟用 Impeller 時提交有關任何發現的不足的錯誤。在此階段的回饋對確保 Impeller 在 Android 上取得成功以及我們能夠在今年晚些時候的版本中自信地將其設為預設渲染器至關重要。Android 硬體生態系統比 iOS 生態系統更加多元。因此，關於 Impeller 最有用的回饋應包括有關發生問題的特定設備和 Android 版本的詳細資訊。
 
 #### 改進縮放圖片的預設值
 
-在此版本中，圖片的預設 FilterQuality 已從 FilterQuality.low 變更為 FilterQuality.medium。當一個大型圖片比其目標矩形大很多時（這是一個常見的情況），FilterQuality.low 會導致圖片看起來更加「像素化」，並且渲染速度比 FilterQuality.medium 慢。未來，團隊還將探索更適合各種 FilterQuality 級別的新名稱。
+在此版本中，圖片的預設 `FilterQuality` 已從 `FilterQuality.low` 變更為 `FilterQuality.medium`。當一個大型圖片比其目標矩形大很多時（這是一個常見的情況），`FilterQuality.low` 會導致圖片看起來更加「像素化」，並且渲染速度比 `FilterQuality.medium` 慢。未來，團隊還將探索更適合各種 FilterQuality 級別的新名稱。
 
 #### Flutter GPU 預覽
 
 Flutter 推出了對渲染功能的重大更新，即 Flutter GPU，可在主頻道上使用。此低階圖形 API 允許開發人員使用 Dart 程式碼和 GLSL 著色器建立自訂渲染器，而無需任何原生平台程式碼。
 
-Flutter GPU 擴展了您可以在 Flutter 中直接渲染的內容，啟用進階圖形和 3D 場景。它需要 Impeller 渲染後端，目前在 iOS、macOS 和 Android 上受支持。儘管處於早期預覽階段，但 Flutter GPU 的目標是最終支援所有 Flutter 平台。
+Flutter GPU 擴展了您可以在 Flutter 中直接渲染的內容，啟用進階圖形和 3D 場景。它需要 Impeller 渲染後端，目前在 iOS、macOS 和 Android 上支援。儘管處於早期預覽階段，但 Flutter GPU 的目標是最終支援所有 Flutter 平台。
 
-API 允許完全控制渲染傳遞附件、頂點階段和數據上傳到 GPU。這種靈活性對於建立複雜的渲染解決方案至關重要，從 2D 角色動畫到複雜的 3D 場景。
+API 允許完全控制渲染傳遞附件、頂點階段和資料上傳到 GPU。這種靈活性對於建立複雜的渲染解決方案至關重要，從 2D 角色動畫到複雜的 3D 場景。
 
-開發人員可以透過切換到主頻道並將 flutter_gpu 套件添加到他們的專案中來開始使用 Flutter GPU。接下來的幾個月將看到更多功能和穩定性方面的改進，更高階的渲染庫（如 flutter_scene）將簡化這些進階功能的使用。
+開發人員可以透過切換到 main channel 並將 flutter_gpu 套件加入到他們的專案中來開始使用 Flutter GPU。接下來的幾個月將看到更多功能和穩定性方面的改進，更高階的渲染函式庫（如 flutter_scene）將簡化這些進階功能的使用。
 
 若要深入了解 Flutter GPU，並了解如何在您的專案中利用它，請查看詳細的 [Flutter GPU 部落格文章](https://medium.com/flutter/getting-started-with-flutter-gpu-f33d497b7c11)。無論您是建立遊戲還是複雜的圖形，Flutter 的全新 GPU 功能都讓它成為產品的強大選擇。
 
@@ -164,13 +164,13 @@ API 允許完全控制渲染傳遞附件、頂點階段和數據上傳到 GPU。
 
 ### 多視圖嵌入
 
-Flutter 網頁應用程式現在可以利用多視圖嵌入，讓開發人員可以將內容同時渲染到多個 HTML 元素中。此功能稱為「嵌入模式」或「多視圖」，為將 Flutter 視圖整合到現有的 Web 應用程式中提供了靈活性。
+Flutter Web 應用程式現在可以利用多視圖嵌入，讓開發人員可以將內容同時渲染到多個 HTML 元素中。此功能稱為「嵌入模式」或「多視圖」，為將 Flutter 視圖整合到現有的 Web 應用程式中提供了靈活性。
 
-在多視圖模式下，Flutter 網頁應用程式不會在啟動時立即渲染。相反，它會等到主機應用程式使用 addView 方法添加第一個「視圖」。主機應用程式可以動態添加或移除這些視圖，Flutter 會根據需要調整其小部件。
+在多視圖模式下，Flutter Web 應用程式不會在啟動時立即渲染。相反，它會等到主機應用程式使用 addView 方法加入第一個「視圖」。主機應用程式可以動態加入或移除這些視圖，Flutter 會根據需要調整其 Widget。
 
-若要啟用多視圖模式，請在 flutter_bootstrap.js 檔案中的 initializeEngine 方法中設定 multiViewEnabled: true。然後，可以從 JavaScript 管理視圖，將它們添加到指定的 HTML 元素中，並根據需要移除它們。每次添加和移除視圖都會觸發 Flutter 中的更新，允許動態內容渲染。
+若要啟用多視圖模式，請在 `flutter_bootstrap.js` 檔案中的 `initializeEngine` 方法中設定 `multiViewEnabled: true`。然後，可以從 JavaScript 管理視圖，將它們加入到指定的 HTML 元素中，並根據需要移除它們。每次加入和移除視圖都會觸發 Flutter 中的更新，允許動態內容渲染。
 
-此功能對於將 Flutter 整合到需要多個獨立 Flutter 視圖的複雜 Web 應用程式中特別有用。它還支援每個視圖的自訂初始化數據，啟用個人化的設定和互動式體驗。
+此功能對於將 Flutter 整合到需要多個獨立 Flutter 視圖的複雜 Web 應用程式中特別有用。它還支援每個視圖的自訂初始化資料，啟用個人化的設定和互動式體驗。
 
 若要深入了解如何在 Flutter 網頁應用程式中實作多視圖嵌入，請查看 [詳細的文件](https://docs.flutter.dev/platform-integration/web/embedding-flutter-web)。
 
@@ -178,7 +178,7 @@ Flutter 網頁應用程式現在可以利用多視圖嵌入，讓開發人員可
 
 ### 影片廣告變現支援
 
-我們推出了一個新的 [互動式媒體廣告 (IMA) 外掛](https://pub.dev/packages/interactive_media_ads)，以支援 Flutter 行動應用程式中的串流影片廣告變現。新的 IMA 外掛為 Flutter 應用程式提供了新的廣告變現機會，這些機會建立在現有的 [Google 行動廣告 (GMA) 外掛](https://pub.dev/packages/google_mobile_ads) 之上，該外掛主要支援展示廣告格式。
+我們推出了一個新的 [互動式媒體廣告 (IMA) Plugin](https://pub.dev/packages/interactive_media_ads)，以支援 Flutter 行動應用程式中的串流影片廣告變現。新的 IMA Plugin 為 Flutter 應用程式提供了新的廣告變現機會，這些機會建立在現有的 [Google 行動廣告 (GMA) Plugin](https://pub.dev/packages/google_mobile_ads) 之上，該 Plugin 主要支援展示廣告格式。
 
 串流影片廣告通常在影片內容播放之前（開頭廣告）、期間（中間廣告）或之後（結尾廣告）顯示給使用者。一些串流影片廣告也可以跳過。
 
@@ -188,38 +188,38 @@ Flutter 網頁應用程式現在可以利用多視圖嵌入，讓開發人員可
 
 **Flutter IMA 的優點：**
 
-* 在 Flutter 應用程式中無縫變現影片播放器內容。例如，當應用程式使用者點擊影片內容上的播放時，您現在可以實作 Flutter IMA 外掛以首先向使用者顯示一個 15 秒的廣告，然後再開始播放影片內容。
-* 利用原生 IMA SDK 的相同優點，包括訪問 Google 優質廣告需求和行業標準合規性（例如 [IAB VAST](https://iabtechlab.com/standards/vast/)）。
+* 在 Flutter 應用程式中無縫變現影片播放器內容。例如，當應用程式使用者點擊影片內容上的播放時，您現在可以實作 Flutter IMA Plugin 以首先向使用者顯示一個 15 秒的廣告，然後再開始播放影片內容。
+* 利用原生 IMA SDK 的相同優點，包括存取 Google 優質廣告需求和行業標準合規性（例如 [IAB VAST](https://iabtechlab.com/standards/vast/)）。
 
-初始發佈版本目前支援 Android 和 iOS 平台上的開頭影片廣告。中間廣告支援將很快提供。我們鼓勵您開始在 Flutter 應用程式影片內容中探索新的 IMA 外掛。如果您在 [GitHub](https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+interactive_media_ads%22) 上遇到任何問題或疑慮，請告知我們。
+初始發佈版本目前支援 Android 和 iOS 平台上的開頭影片廣告。中間廣告支援將很快提供。我們鼓勵您開始在 Flutter 應用程式影片內容中探索新的 IMA Plugin。如果您在 [GitHub](https://github.com/flutter/flutter/issues?q=is%3Aissue+is%3Aopen+label%3A%22p%3A+interactive_media_ads%22) 上遇到任何問題或疑慮，請告知我們。
 
-資源：[外掛指南](https://pub.dev/packages/interactive_media_ads)，[樣本應用程式](https://pub.dev/packages/interactive_media_ads/example)，[Git 儲存庫](https://github.com/flutter/packages/tree/main/packages/interactive_media_ads)
+資源：[Plugin 指南](https://pub.dev/packages/interactive_media_ads)，[範例應用程式](https://pub.dev/packages/interactive_media_ads/example)，[Git 儲存庫](https://github.com/flutter/packages/tree/main/packages/interactive_media_ads)
 
 ### iOS
 
-### Swift 套件管理器初始支援
+### Swift Package Manager 初始支援
 
-今天，Flutter 使用 CocoaPods 來管理原生 iOS 或 macOS 依賴項。
+今天，Flutter 使用 CocoaPods 來管理原生 iOS 或 macOS 相依。
 
-Flutter 3.24 添加了對 Swift 套件管理器的早期支援。這帶來了許多優點，包括：
+Flutter 3.24 加入了對 Swift Package Manager 的早期支援。這帶來了許多優點，包括：
 
-1. **訪問 Swift 套件生態系統**。Flutter 外掛將能夠利用不斷發展的 [Swift 套件](https://swiftpackageindex.com/) 生態系統！<br>2. **簡化 Flutter 安裝**。Swift 套件管理器與 Xcode 捆綁在一起。未來，您將不再需要安裝 Ruby 和 CocoaPods 來為 Apple 平台使用 Flutter。
+1. **存取 Swift 套件生態系統**。Flutter Plugin 將能夠利用不斷發展的 [Swift 套件](https://swiftpackageindex.com/) 生態系統！<br>2. **簡化 Flutter 安裝**。Swift Package Manager 與 Xcode 捆綁在一起。未來，您將不再需要安裝 Ruby 和 CocoaPods 來為 Apple 平台使用 Flutter。
 
-我們鼓勵外掛作者 [嘗試將 Swift 套件管理器支援添加到您的外掛中](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-plugin-authors#how-to-add-swift-package-manager-support-to-an-existing-flutter-plugin)，並提供您體驗的回饋。
+我們鼓勵 Plugin 作者 [嘗試將 Swift Package Manager 支援加入到您的 Plugin 中](https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-plugin-authors#how-to-add-swift-package-manager-support-to-an-existing-flutter-plugin)，並提供您體驗的回饋。
 
-如果您對 Flutter 對 Swift 套件管理器的支援有任何回饋，請 [提交錯誤](https://github.com/flutter/flutter/issues/new/choose)。
+如果您對 Flutter 對 Swift Package Manager 的支援有任何回饋，請 [提交議題](https://github.com/flutter/flutter/issues/new/choose)。
 
 ### 生態系統
 
-### 共享偏好設定外掛更新
+### Shared Preferences 設定 Plugin 更新
 
-我們已在 [shared_preferences](https://pub.dev/packages/shared_preferences) 外掛中添加了兩個新的 API，SharedPreferencesAsync 和 SharedPreferencesWithCache。最重大的變化是 Android 實作使用 Preferences DataStore 而不是 Shared Preferences。
+我們已在 [shared_preferences](https://pub.dev/packages/shared_preferences) Plugin 中加入了兩個新的 API，SharedPreferencesAsync 和 SharedPreferencesWithCache。最重大的變化是 Android 實作使用 Preferences DataStore 而不是 Shared Preferences。
 
-SharedPreferencesAsync 允許使用者直接調用平台以獲取設備上保存的最新偏好設定，代價是異步和比使用快取版本稍微慢一些。這對於可以由其他系統或隔離區更新的偏好設定很有用，這些偏好設定會使快取過時。
+SharedPreferencesAsync 允許使用者直接調用平台以獲取設備上儲存的最新偏好設定，代價是異步和比使用快取版本稍微慢一些。這對於可以由其他系統或隔離區更新的偏好設定很有用，這些偏好設定會使快取過時。
 
-SharedPreferencesWithCache 建立在 SharedPreferencesAsync 之上，允許使用者同步訪問偏好設定的本地快取副本。這與舊的 API 相似，但現在可以透過不同的參數多次實例化。
+SharedPreferencesWithCache 建立在 SharedPreferencesAsync 之上，允許使用者同步存取偏好設定的本地快取副本。這與舊的 API 相似，但現在可以透過不同的參數多次實例化。
 
-這些新的 API 旨在將來替換目前的 SharedPreferences API。但是，這是生態系統中最常用的外掛之一，我們知道生態系統需要時間才能轉換到新的 API。
+這些新的 API 旨在將來替換目前的 SharedPreferences API。但是，這是生態系統中最常用的 Plugin 之一，我們知道生態系統需要時間才能轉換到新的 API。
 
 ### Flutter 和 Dart 套件生態系統峰會歐洲 2024
 
@@ -227,15 +227,15 @@ SharedPreferencesWithCache 建立在 SharedPreferencesAsync 之上，允許使�
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/0*fWo9ieYzQcJjwQBi" />
 </figure>
 
-作為 Fluttercon 歐洲 2024 的一部分，我們舉辦了首屆面對面 Flutter 和 Dart 套件生態系統峰會。這是繼我們於 2023 年 8 月舉辦的第一屆虛擬峰會之後。[在此](https://docs.google.com/document/d/e/2PACX-1vRFLdpIJYO5YPARcyUT1FYPzwkFb1hxh_agqnCXxsyirXocLZS5jobs3xFV5ZGpSQHLHZiBzqbJlXNV/pub)查看討論會的重點摘要。
+作為 Fluttercon Europe 2024 的一部分，我們舉辦了首屆面對面 Flutter 和 Dart 套件生態系統峰會。這是繼我們於 2023 年 8 月舉辦的第一屆虛擬峰會之後。[在此](https://docs.google.com/document/d/e/2PACX-1vRFLdpIJYO5YPARcyUT1FYPzwkFb1hxh_agqnCXxsyirXocLZS5jobs3xFV5ZGpSQHLHZiBzqbJlXNV/pub)查看討論會的重點摘要。
 
 我們很高興地宣布，下一屆峰會將於 2024 年 9 月 20 日在紐約市舉行的 [Fluttercon USA](https://flutterconusa.dev/) 舉行！如果您是套件作者或貢獻者，並且將參加 Fluttercon USA 2024，請 [註冊](https://rsvp.withgoogle.com/events/flutter-package-ecosystem-summit-usa-2024) 以保留您的峰會席位。
 
-峰會匯集了套件作者和維護者，進行了以下主題的非正式會議：
+峰會匯集了套件作者和維護者，進行了以下主題的 unconference-style 議程：
 
-* 會議 1 - 原生互操作的過去、現在和未來
-* 會議 2 - 可持續的套件維護模型
-* 會議 3 - 解決套件生態系統碎片化問題
+* 議程 1 - 原生互操作的過去、現在和未來
+* 議程 2 - 可持續的套件維護模型
+* 議程 3 - 解決套件生態系統碎片化問題
 
 我們相信峰會，特別是在更通用的 Flutter 和 Dart 活動的一部分時，是社群之間公開討論的有價值的平台，用於找出關鍵挑戰和集思廣益解決方案。我們期待與社群合作，在未來舉辦更多此類峰會。
 
@@ -243,15 +243,15 @@ SharedPreferencesWithCache 建立在 SharedPreferencesAsync 之上，允許使�
 
 此版本包含一些對 Flutter DevTools 工具套件的令人興奮的改進。
 
-如果您曾經想知道您的 Flutter 應用程式是否建立了比預期更多的 Widget，那麼 **DevTools 性能** 工具中的一個新功能可以幫助您。使用新的 **重新建立統計數據** 功能，您可以捕獲有關應用程式中或甚至特定 Flutter 畫面中 Widget 建立次數的資訊。
+如果您曾經想知道您的 Flutter 應用程式是否建立了比預期更多的 Widget，那麼 **DevTools 效能** 工具中的一個新功能可以幫助您。使用新的 **重新建立統計資料** 功能，您可以捕獲有關應用程式中或甚至特定 Flutter 畫面中 Widget 建立次數的資訊。
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/749/0*7LXjXlFR9w-VR6xk" />
 </figure>
 
-_DevTools 性能工具的螢幕截圖，跟踪重新建立統計數據。_
+_DevTools 效能工具的螢幕截圖，追蹤重新建立統計資料。_
 
-我們已為 **網路效能分析器** 和 **Flutter 深層連結工具** 等工具添加了潤色和關鍵錯誤修復，並且進行了一些一般性改進，以在您從 IDE 中使用 DevTools 時為您提供更好的體驗。說到 IDE，您知道您可以在 IDE 中直接使用每個 DevTools 工具嗎？
+我們已為 **網路分析工具** 和 **Flutter Deep Links 工具** 等工具加入了潤色和關鍵錯誤修復，並且進行了一些一般性改進，以在您從 IDE 中使用 DevTools 時為您提供更好的體驗。說到 IDE，您知道您可以在 IDE 中直接使用每個 DevTools 工具嗎？
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/0*tdpToIuTd-mBq-_R" />
@@ -265,7 +265,7 @@ _DevTools 螢幕在 VS Code 視窗中打開。_
 
 _DevTools 螢幕在 Android Studio 工具視窗中打開。_
 
-此版本包含對 VS Code 中的 Flutter 側邊欄的改進，讓您更容易訪問您正在尋找的工具。升級到最新版本的 VS Code 和 Flutter 和 Dart 擴展，以訪問改進的側邊欄。
+此版本包含對 VS Code 中的 Flutter 側邊欄的改進，讓您更容易存取您正在尋找的工具。升級到最新版本的 VS Code 和 Flutter 和 Dart 擴展，以存取改進的側邊欄。
 
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/318/0*BzEybhMlV-SnSZZl" />
@@ -273,9 +273,9 @@ _DevTools 螢幕在 Android Studio 工具視窗中打開。_
 
 _Flutter 側邊欄是自適應的，可以調整大小以適合您的工作區_
 
-此版本還包含對 [DevTools 擴展](https://docs.flutter.dev/tools/devtools/extensions) 框架的一些重大改進。您現在可以在調試 Dart 或 Flutter 測試時使用 DevTools 擴展（由您的套件依賴項之一提供的工具），或者甚至在您沒有調試任何內容時，但只是在 IDE 中撰寫程式碼時使用。因此，如果您想在這些使用者旅程中使用工具（或建立工具！），現在已經可以了。
+此版本還包含對 [DevTools Extensions](https://docs.flutter.dev/tools/devtools/extensions) 框架的一些重大改進。您現在可以在除錯 Dart 或 Flutter 測試時使用 DevTools 擴展（由您的套件相依之一提供的工具），或者甚至在您沒有除錯任何內容時，但只是在 IDE 中撰寫程式碼時使用。因此，如果您想在這些使用者旅程中使用工具（或建立工具！），現在已經可以了。
 
-若要進一步了解 Flutter 3.24 中包含的所有更新，請查看 DevTools 的發佈說明 [2.35.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.35.0)，[2.36.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.36.0) 和 [2.37.2](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.37.2)。
+若要進一步了解 Flutter 3.24 中包含的所有更新，請查看 DevTools 的發行備註 [2.35.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.35.0)，[2.36.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.36.0) 和 [2.37.2](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.37.2)。
 
 ### 重大變更和棄用
 
@@ -287,8 +287,8 @@ _Flutter 側邊欄是自適應的，可以調整大小以適合您的工作區_
 
 Flutter 成功背後的核心是您 - 我們非凡的社群。沒有您無數的貢獻和堅定的熱情，這個版本是不可能實現的。我們衷心感謝您。
 
-若要深入了解此版本中所取得的成果，我們邀請您查看 [發佈說明](https://docs.flutter.dev/release/release-notes/release-notes-3.24.0) 和 [變更日誌](https://github.com/flutter/flutter/blob/main/CHANGELOG.md)，以獲取 Flutter 3.24 中添加的內容的完整列表。
+若要深入了解此版本中所取得的成果，我們邀請您查看 [發行備註](https://docs.flutter.dev/release/release-notes/release-notes-3.24.0) 和 [變更日誌](https://github.com/flutter/flutter/blob/main/CHANGELOG.md)，以獲取 Flutter 3.24 中加入的內容的完整列表。
 
-Flutter 3.24 與 Dart 3.5 現在已在穩定版本通道上提供。開始使用 Flutter 的最新旅程就像運行 flutter upgrade 一樣簡單。我們迫不及待想看看您會建立什麼！
+Flutter 3.24 與 Dart 3.5 現在已在 stable channel 上提供。開始使用 Flutter 的最新旅程就像運行 flutter upgrade 一樣簡單。我們迫不及待想看看您會建立什麼！
 
 <img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6c040f87d1e4" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-24-6c040f87d1e4">Flutter 3.24 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> 
