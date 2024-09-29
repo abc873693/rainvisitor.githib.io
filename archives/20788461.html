@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Landing Flutter 3.22 and Dart 3.4 at Google I/O 2024 | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4Flutter 網頁應用程式的重要里程碑、圖形效能升級、生產力實驗等等  在過去的幾個月裡，Dart 和 Flutter 的空中交通管制一直格外繁忙，但我們很樂意宣布 Flutter 3.22 和 Dart 3.4 已經推出並於今天正式上線，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Landing Flutter 3.22 and Dart 3.4 at Google I&#x2F;O 2024">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/20788461.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4Flutter 網頁應用程式的重要里程碑、圖形效能升級、生產力實驗等等  在過去的幾個月裡，Dart 和 Flutter 的空中交通管制一直格外繁忙，但我們很樂意宣布 Flutter 3.22 和 Dart 3.4 已經推出並於今天正式上線，">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*Mq-Uj8c8l7rrpPxYQ6Gemw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*cF6UE3y05YTyMBQn">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/719/0*ebpdPSPlak3EwoAU">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/896/0*rWeEWxzBvcmOFNM4">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*F19xflZ4BfoCekFQ">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5e211f708a37">
+<meta property="article:published_time" content="2024-05-14T12:33:38.000Z">
+<meta property="article:modified_time" content="2024-09-29T14:59:55.142Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*Mq-Uj8c8l7rrpPxYQ6Gemw.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2024-05-14T20:33:38.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/20788461.html" class="article-date">
+  <time datetime="2024-05-14T12:33:38.000Z" itemprop="datePublished">2024-05-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Landing Flutter 3.22 and Dart 3.4 at Google I/O 2024
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="在-Google-I-O-2024-上推出-Flutter-3-22-和-Dart-3-4"><a href="#在-Google-I-O-2024-上推出-Flutter-3-22-和-Dart-3-4" class="headerlink" title="在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4"></a>在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4</h2><h4><em>Flutter 網頁應用程式的重要里程碑、圖形效能升級、生產力實驗等等</em></h4>
+
+<p>在過去的幾個月裡，Dart 和 Flutter 的空中交通管制一直格外繁忙，但我們很樂意宣布 Flutter 3.22 和 Dart 3.4 已經推出並於今天正式上線，恰逢今年的 <a href="https://io.google/2024/">Google I&#x2F;O</a>！</p>
+<p>我們始終致力於提供強大的語言和框架配對，讓您能夠從單一、共享的程式碼庫中建立美觀、豐富且快速的應用程式，因此您可以將應用程式交付給行動、網頁和桌面上的使用者，而無需分散產品路線圖。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Mq-Uj8c8l7rrpPxYQ6Gemw.gif" />
+</figure>
+
+<p>Flutter 3.22 和 Dart 3.4 提供了效能改進和平台特定的細化，讓我們更接近這個願景。我們特別興奮地分享更多有關我們在 Wasm 上的旅程，但您還會發現更多內容，包括改進的 Impeller 渲染引擎、iOS 上更流暢的視覺效果和更低的 CPU 使用量、使用 Android 的預測式返回手勢增強平台導航、使用 Google 行動廣告 SDK 擴展變現選項，以及 DevTools 中一個新的強大的深層連結驗證器。Dart 開發人員將享受 IDE 中直接的 dart fix 帶來的簡化的 API 遷移，以及用於進階分析的新 DevTools 功能。此外，您現在可以預覽 Vertex AI for Firebase Dart SDK，將 AI 驅動的功能與強大的安全措施整合在一起。</p>
+<p>今天，我們還將重點介紹使用 Flutter 來提高生產力並建立高性能體驗的頂尖公司。我們將重點介紹一些特別令人興奮的功能，這些功能讓我們更接近我們在跨平台提供類原生效能的目標，並包括我們在生產力、開發者體驗和遊戲方面的投資的選定更新。</p>
+<p>如果您想詳細了解版本中包含的所有內容，請查看專門的 <a href="https://medium.com/flutter/fbde6c164fe3">Flutter</a> 和 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart</a> 文章。是時候 Dash 了！</p>
+<h3 id="Flutter-實際應用"><a href="#Flutter-實際應用" class="headerlink" title="Flutter 實際應用"></a>Flutter 實際應用</h3><p>Flutter 開發人員正忙於將大型的新應用程式發佈到應用程式商店。讓我們看幾個。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*cF6UE3y05YTyMBQn" />
+</figure>
+
+<h4 id="幫助大型企業級應用程式交付行動和網頁"><a href="#幫助大型企業級應用程式交付行動和網頁" class="headerlink" title="幫助大型企業級應用程式交付行動和網頁"></a>幫助大型企業級應用程式交付行動和網頁</h4><ul>
+<li>在英國，金融機構 <a href="https://uk.virginmoney.com/">Virgin Money</a> 在他們的行動銀行和信用卡應用程式套件中 <a href="http://flutter.dev/showcase/virgin-money">使用 Flutter</a>，以統一應用程式開發流程，加快變更速度，並提供業界領先的使用者體驗。</li>
+<li>美國保險公司 <a href="https://www.geico.com/about/corporate/at-a-glance/">GEICO</a> 最近 <a href="https://www.geico.com/techblog/flutter-as-the-multi-channel-ux-framework/">分享</a>，Flutter 幫助他們改進了 iOS、Android 和網頁上的品牌使用者體驗，減少了程式碼庫的大小，並提高了開發效率，所有這些都在規模上實現。</li>
+<li><a href="https://corporate.universaldestinationsandexperiences.com/">環球影城目的地與體驗</a> 發佈了他們在好萊塢、大阪和奧蘭多的公園的新 Flutter 行動應用程式。觀看下面的影片，了解他們為什麼選擇 Flutter，以及 Flutter 的表現如何。</li>
+</ul>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FJTk2Exr7FO4%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DJTk2Exr7FO4&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJTk2Exr7FO4%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/721111dda3bc3595ada438b543af64a4/href">https://medium.com/media/721111dda3bc3595ada438b543af64a4/href</a></iframe>
+
+<h4 id="超越行動和網頁"><a href="#超越行動和網頁" class="headerlink" title="超越行動和網頁"></a>超越行動和網頁</h4><ul>
+<li><a href="https://canonical.com/">Canonical</a> 團隊一直在與 Flutter <a href="https://ubuntu.com/blog/flutter-and-ubuntu-so-far">合作</a> <a href="https://pub.dev/publishers/canonical.com/packages">自 2021 年以來</a> 啟用對 Ubuntu 中的 Flutter 生態系統的支援。在過去的一年中，Canonical 團隊使用 Flutter 從頭開始重建了 Ubuntu 安裝程式。</li>
+<li><a href="https://www.lg.com/us">LG</a> 選擇 Flutter 來增強其智能電視作業系統 webOS。Flutter 的效能、生產力和強大的生態系統使 LG 能夠快速開發和部署 webOS 系統應用程式，這些應用程式運行流暢。到 2025 年，Flutter 將為全球數千萬台 LG 電視提供系統應用程式。</li>
+</ul>
+<p>這些成功的案例讓我們備受鼓舞，我們致力於使 Flutter 變得更好。讓我們深入了解最新的產品更新，以展示我們正在做些什麼來讓您能夠建立更多令人驚嘆的應用程式、遊戲和體驗。</p>
+<h3 id="WebAssembly：在網頁上追求原生效能"><a href="#WebAssembly：在網頁上追求原生效能" class="headerlink" title="WebAssembly：在網頁上追求原生效能"></a>WebAssembly：在網頁上追求原生效能</h3><p>今天，我們宣布在穩定版本中支援將 Flutter 網頁應用程式 <a href="https://docs.flutter.dev/platform-integration/web/wasm">編譯</a> 到 WebAssembly (Wasm)。這是一種針對網頁瀏覽器的新型指令格式，它提供了一種可移植的、平台中立的二進制程式碼格式。</p>
+<p>我們對 Wasm 的支援是一項深入的、多年來的投資。首先，我們與 Chrome 團隊合作，在 WebAssembly 中定義對 Dart 等高級別、受控語言的支援，這些語言通常使用垃圾回收。這產生的結果是 <a href="https://developer.chrome.com/blog/wasmgc/">WasmGC</a> <a href="https://github.com/WebAssembly/gc/blob/main/proposals/gc/Overview.md">提案</a>，它現在是一個完整且最終的標準，其運行時實作可在 Chrome（Chromium 119 及更高版本）和 Firefox（120 及更高版本）中使用，並且其他瀏覽器供應商預計會跟進。接下來，我們加入了一個全新的 Dart 編譯器後端，以生成 WasmGC 程式碼，並且 Dart 和 Flutter 團隊合作以將編譯後的應用程式程式碼和 Flutter 渲染引擎作為 Wasm 模組運行，並實現高效的 Wasm 到 Wasm 互操作。</p>
+<p>那麼最終的結果是什麼？我們看到效能大幅提升，接近我們在運行機器程式碼的行動和桌面設備上的效能。在我們的內部基準測試中（在 M1 MacBook 上的 Chrome 中），<a href="https://flutter.gskinner.com/wonderous/">Wonderous</a> 的畫面渲染時間在一般情況下提高了 2 倍，在 99% 最差情況下效能提高了 3 倍。改進的渲染效能對於需要動畫和豐富轉場的苛刻應用程式至關重要，在這些應用程式中，超過畫面預算（分配給渲染下一畫面的時間）會導致非常明顯的卡頓。Wasm 有可能消除這種現象，如下所示，將 Wonderous 應用程式使用我們的傳統 JS 編譯與 Wasm 編譯並排比較。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/719/0*ebpdPSPlak3EwoAU" />
+<figcaption><em>比較  [Wonderous](https://flutter.gskinner.com/wonderous/) 範例應用程式中 Javascript 與 Wasm 的渲染速度。</em></figcaption>
+</figure>
+
+<p>Flutter 網頁應用程式的 Wasm 編譯在今天就已在穩定版本中提供。若要開始使用，請查看我們的 <a href="https://dart.dev/web/wasm">Dart Wasm 文件</a> 和 <a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Wasm 文件</a>。</p>
+<h3 id="Dart-macros：提高開發抽象層級"><a href="#Dart-macros：提高開發抽象層級" class="headerlink" title="Dart macros：提高開發抽象層級"></a>Dart macros：提高開發抽象層級</h3><p>我們致力於提供一流的開發者體驗。這意味著解決 Dart 開發人員長期存在的痛點，例如序列化 JSON 資料。</p>
+<p>這是一個普遍的模式，既簡單又乏味。目前的解決方案意味著要么手動辛苦地編碼和解碼樣板，要么以程式碼生成解決方案（如 <a href="https://docs.flutter.dev/data-and-backend/serialization/json#serializing-json-using-code-generation-libraries">JsonSerializable</a> 套件）的形式疊加額外的工具。</p>
+<p>今天，我們宣布了一個更好的 JSON 選項的預覽版本：<a href="https://dart.dev/go/json-codable">JsonCodable</a> macro。</p>
+<p>macros 是用於建立更多程式碼的程式碼。它們就像程式碼生成，只是 macro 系統是 <em>內建在 Dart 中</em>，並且在您編輯和運行程式碼時 <em>實時發生</em>。它是一個整合的體驗，沒有延遲，完全支援我們現有的開發工作流程，例如熱重載，如這個螢幕錄製所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/896/0*rWeEWxzBvcmOFNM4" />
+<figcaption><em>螢幕錄製展示了使用 macro 的體驗：最初沒有 toJson 程式碼完成，但在將 @JsonCodable 加入到類別後，toJson 程式碼完成立即顯示。</em></figcaption>
+</figure>
+
+<p>我們很興奮地看到 macros 能夠為我們的開發人員解決各種問題。例如，資料類別，<a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">投票率最高</a> 的 Dart 語言功能。除了具體的應用之外，我們的最終目標是在 Dart 中擁有一個 macro 系統，允許使用者建立自己的 macros 並提高 Dart 程式的抽象層級。</p>
+<p>設計和實作這樣一個強大的 macro 系統是一項巨大的任務，因此目前沒有設定穩定版本的日期，如需更多詳細資訊，請查看 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 文章</a>。同時，請立即嘗試 JsonCodable macro 的預覽版本。如需更多資訊，請查看 <a href="http://dart.dev/go/json-codable">macro 文件</a>。</p>
+<h3 id="Flutter-遊戲開發的新資源"><a href="#Flutter-遊戲開發的新資源" class="headerlink" title="Flutter 遊戲開發的新資源"></a>Flutter 遊戲開發的新資源</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*F19xflZ4BfoCekFQ" />
+</figure>
+
+<p>我們看到我們對遊戲的早期投資取得了可喜的成果，包括來自行業領袖（如 <a href="http://flutter.dev/showcase/etermax">Etermax</a> 和 <a href="http://flutter.dev/showcase/supercell">Supercell</a>）的成功案例，他們每個都利用 Flutter 的力量和靈活性來高效地提供令人愉悅的使用者體驗並擴大他們的覆蓋範圍。</p>
+<p>今天，我們很興奮地繼續利用這些新的 Flutter 遊戲開發者資源來保持這種勢頭：</p>
+<ul>
+<li><a href="https://pub.dev/packages/flutter_soloud">SoLoud 音訊引擎</a> 已經推出：我們與 Flutter 社群 (@<a href="https://github.com/alnitak">Marco Bavagnoli</a>) 合作，創建了一個免費且可移植的音訊引擎，它提供低延遲、高性能的聲音，對於許多遊戲來說至關重要。我們還創建了一個新的 <a href="https://codelabs.developers.google.com/codelabs/flutter-codelab-soloud#0">聲音和音樂 codelab</a>，它使用 SoLoud。</li>
+<li>了解如何 <a href="https://codelabs.developers.google.com/codelabs/flutter-word-puzzle#0">生成廣泛的交叉字謎式網格</a> 以互鎖的文字，而不會影響使用者體驗，以及 <a href="https://codelabs.developers.google.com/codelabs/flutter-flame-forge2d#0">使用 2D 物理模擬在 Flutter 和 Flame 遊戲中製作遊戲機制</a>，就像名為 <a href="https://pub.dev/packages/forge2d">Forge2D</a> 的 Box2D 一樣。</li>
+<li>一個針對 <a href="https://medium.com/flutter/best-practices-for-optimizing-flutter-web-loading-speed-7cc0df14ce5c">優化 Flutter 基於網頁的遊戲載入速度</a> 的新指南：漫長的載入時間是基於網頁的遊戲的主要障礙。按照這個指南（由 <a href="https://twitter.com/chenglinlim">Cheng Lin</a> 撰寫）來優化您的載入速度，這樣玩家就不會因為載入速度慢而放棄您的遊戲。</li>
+</ul>
+<h3 id="Empowering-Sustainable-Game-Development"><a href="#Empowering-Sustainable-Game-Development" class="headerlink" title="Empowering Sustainable Game Development"></a>Empowering Sustainable Game Development</h3><p>在 2024 年 1 月，受到他們使用 Flutter 的 <a href="https://www.youtube.com/watch?v=qgOlg173gcI&amp;pp=ygUWR2xvYmFsIENpdGl6ZW4gRmx1dHRlcg==">故事</a> 的啟發，我們與 Global Citizen 合作，向我們的社群發起挑戰，要求他們使用 Flutter 設計、構建和發佈永續性遊戲。這些遊戲旨在激勵和賦能玩家，讓他們為環境採取一些微小但有意義的行動。今天，我們宣布 <a href="https://medium.com/flutter/announcing-the-winners-of-the-global-gamers-challenge-1ccf4d271226">10 位獲勝者</a>。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F_GgqdB9md1w&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D_GgqdB9md1w&amp;image=http%3A%2F%2Fi.ytimg.com%2Fvi%2F_GgqdB9md1w%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href">https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href</a></iframe>
+
+<p>恭喜所有獲獎者！</p>
+<h3 id="還有更多值得探索"><a href="#還有更多值得探索" class="headerlink" title="還有更多值得探索"></a>還有更多值得探索</h3><p>今天我們只能介紹這麼多，但還有許多其他令人興奮的改進我們沒有提到。以下是一些需要了解的內容：</p>
+<ul>
+<li>您可以 <a href="https://firebase.google.com/docs/vertex-ai/get-started?platform=flutter">預覽 Vertex AI for Firebase Dart SDK</a>，以便在 Dart 或 Flutter 應用程式中使用 Gemini API 來實現 AI 驅動的功能。SDK 與 Firebase App Check 整合，保護您的 API 呼叫，並保護您的後端基礎架構免受嚴重的威脅，例如帳單欺詐、網路釣魚和應用程式偽造。如需詳細資訊，請查看我們的 <a href="http://flutter.dev/ai">AI 頁面</a>。</li>
+<li><a href="https://docs.flutter.dev/perf/impeller">Impeller</a>，我們的 <a href="https://docs.flutter.dev/perf/impeller">下一代渲染引擎</a>，現在已在 Android 上功能完備。</li>
+<li><a href="https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture">Android 的預測式返回手勢</a> 現在支援在 Flutter 應用程式內導航、導航到其他應用程式或導航到主畫面時。</li>
+<li>iOS 上的 <a href="https://docs.flutter.dev/platform-integration/ios/platform-views">平台視圖</a> 已經過效能優化，將 CPU 使用量降低了 50%。</li>
+<li><strong>Google 行動廣告 SDK</strong> 已經擴展到支援更多廣告合作夥伴和調解選項。</li>
+<li>DevTools 擁有一個新的 <a href="https://docs.flutter.dev/tools/devtools/web/deep-linking">深層連結驗證器</a>，可幫助您識別和解決 Android 深層連結配置中的錯誤，以便您更輕鬆地將網頁體驗連接到 Flutter 應用程式。</li>
+<li><strong>dart fix</strong>，我們的 API 遷移工具，現在可以直接從 IDE 中呼叫。</li>
+<li><strong>DevTools</strong> 現在支援時間軸中的進階篩選和 CPU 樣本。</li>
+</ul>
+<p>請前往 <a href="https://medium.com/flutter/fbde6c164fe3">Flutter 技術文章</a> 和 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 文章</a> 獲取更多有關這些內容和更多內容的詳細資訊。</p>
+<p>與往常一樣，我們非常感謝您的持續支援、熱情、熱忱和回饋。沒有您，這個專案是不可能實現的，我們迫不及待地想看看您將如何繼續推動 Flutter 向前發展。 </p>
+<p>Flutter 完畢。我們希望很快再次在船上見到您！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5e211f708a37" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/io24-5e211f708a37">在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/20788461.html" data-id="cm1ntp44e0003v5173tlq9e56" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/9e5e250f.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】What’s new in Flutter 3.22
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/af71eac8.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Cross Platform development with Flutter — How Google Classroom gets teachers and students on the…</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/" rel="tag">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 20px;">Flutter</a> <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">九月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/0.html">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/archives/430aae7c.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/807a2f46.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>

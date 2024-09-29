@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Getting started with Flutter GPU | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 在 Flutter 中建立自訂渲染器並渲染 3D 場景。Flutter 3.24 版本引進了一個新的低階圖形 API，稱為 Flutter GPU。還有一個由 Flutter GPU 支援的 3D 渲染函式庫，稱為 Flutter Scene（套件：flutter_scene）。Flutter GPU 和 Flutter Scene 目前都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Getting started with Flutter GPU">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/807a2f46.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 在 Flutter 中建立自訂渲染器並渲染 3D 場景。Flutter 3.24 版本引進了一個新的低階圖形 API，稱為 Flutter GPU。還有一個由 Flutter GPU 支援的 3D 渲染函式庫，稱為 Flutter Scene（套件：flutter_scene）。Flutter GPU 和 Flutter Scene 目前都">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/900/0*hAqIOVkaI1IWnOHE">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*JEI3fLDGcRHWKruT">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*lKTtaX2ih6dFpSMQ">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*ebUDtzQOuIGmdlop">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*LWnGU5WPT_Eom0wJ">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*tC68CbPLef2rJp1e">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/912/0*vVWRLxJ348tCxv7T">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/912/0*74qs6ytcTjyVHwML">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/796/0*_-OFc0vhBHAhrPrO">
+<meta property="article:published_time" content="2024-08-06T10:02:39.000Z">
+<meta property="article:modified_time" content="2024-09-29T14:57:44.990Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/900/0*hAqIOVkaI1IWnOHE">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2024-08-06T18:02:39.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/807a2f46.html" class="article-date">
+  <time datetime="2024-08-06T10:02:39.000Z" itemprop="datePublished">2024-08-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Getting started with Flutter GPU
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="在-Flutter-中建立自訂渲染器並渲染-3D-場景。"><a href="#在-Flutter-中建立自訂渲染器並渲染-3D-場景。" class="headerlink" title="在 Flutter 中建立自訂渲染器並渲染 3D 場景。"></a>在 Flutter 中建立自訂渲染器並渲染 3D 場景。</h2><p>Flutter 3.24 版本引進了一個新的低階圖形 API，稱為 <a href="https://github.com/flutter/engine/blob/main/docs/impeller/Flutter-GPU.md">Flutter GPU</a>。還有一個由 Flutter GPU 支援的 3D 渲染函式庫，稱為 <a href="https://pub.dev/packages/flutter_scene">Flutter Scene</a>（套件：flutter_scene）。Flutter GPU 和 Flutter Scene 目前都處於預覽階段，僅在 Flutter 的 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 上可用（由於依賴實驗性功能），需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>，並且可能偶爾會引入重大變更。</p>
+<p>本文包含這兩個套件的兩個「入門」指南：</p>
+<ol>
+<li>🔺 <strong>進階：</strong><a href="#d558">使用 Flutter GPU 入門</a><br>如果您是經驗豐富的圖形程式設計師，或者您對低階圖形感興趣，並想在 Flutter 中從頭開始建立渲染器，那麼本指南將幫助您開始使用 Flutter GPU。您將從頭開始繪製第一個三角形… 在 Flutter 中！</li>
+<li>💚 <strong>中級：</strong><a href="#6b35">使用 Flutter Scene 進行 3D 渲染</a><br>如果您是想要將 3D 功能添加到應用程式中的 Flutter 開發人員，或者您想要使用 Dart 和 Flutter 建立 3D 遊戲，那麼本指南適合您！您將設定一個專案，在 Flutter 中匯入和渲染 3D 資產。</li>
+</ol>
+<h3 id="使用-Flutter-GPU-入門"><a href="#使用-Flutter-GPU-入門" class="headerlink" title="使用 Flutter GPU 入門"></a>使用 Flutter GPU 入門</h3><p>⚠️ 警告！⚠️ Flutter GPU 最終是一個低階 API。絕大多數將從 Flutter GPU 的存在中受益的 Flutter 開發人員很可能會透過使用在 pub.dev 上發佈的更高階渲染函式庫來做到這一點，例如 Flutter Scene 渲染套件。如果您對 Flutter GPU API 本身不感興趣，而只是對 3D 渲染感興趣，請跳到 <a href="#6b35">使用 Flutter Scene 進行 3D 渲染</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/900/0*hAqIOVkaI1IWnOHE" />
+<figcaption>哦，真閃亮。這是一個射線行進的符號距離場。您可以使用 Flutter GPU 渲染它，但使用 [自訂片段著色器](https://docs.flutter.dev/ui/design/graphics/fragment-shaders) 也完全有可能。 </figcaption>
+</figure>
+
+<h3 id="使用-Flutter-GPU-入門-1"><a href="#使用-Flutter-GPU-入門-1" class="headerlink" title="使用 Flutter GPU 入門"></a>使用 Flutter GPU 入門</h3><p>Flutter GPU 是 Flutter 內建的低階圖形 API。它允許您透過撰寫 Dart 程式碼和 GLSL 著色器在 Flutter 中建立和整合自訂渲染器。不需要原生平台程式碼。</p>
+<p>目前，Flutter GPU 處於早期預覽階段，並提供基本的柵格化 API，但隨著 API 逐漸穩定，將會繼續新增和改進更多功能。</p>
+<p>Flutter GPU 還需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。這表示它只能在 Impeller 支援的平台上使用。在撰寫本文時，Impeller 支援：</p>
+<ul>
+<li>iOS（預設啟用）</li>
+<li>macOS（選擇性預覽）</li>
+<li>Android（選擇性預覽）</li>
+</ul>
+<p>我們對 Flutter GPU 的目標是最終支援所有 Flutter 的平台目標。最終目標是促進 Flutter 中跨平台渲染解決方案的生態系統，這些解決方案對於套件作者來說易於維護，對於使用者來說易於安裝。</p>
+<p>3D 渲染只是一個可能的用例。Flutter GPU 也可以用於建立專用的 2D 渲染器，或者執行更非正統的操作，例如渲染 4D 空間的 3D 切片，或投影非歐幾里德空間。</p>
+<p>由 Flutter GPU 支援的自訂 2D 渲染器的絕佳用例範例將是依賴骨骼網格變形的 2D 角色動畫格式。Spine 2D 就是一個很好的例子。這種骨骼網格解決方案通常具有動畫剪輯，這些剪輯會操縱層次結構中骨骼的平移、旋轉和縮放屬性，並且每個頂點都具有一些關聯的「骨骼權重」，這些權重決定哪些骨骼應該影響頂點，以及影響程度。</p>
+<p>使用像 drawVertices 這樣的 Canvas 解決方案，需要在 CPU 上對每個頂點應用骨骼權重轉換。使用 Flutter GPU，骨骼轉換可以以統一陣列或甚至紋理取樣器的形式傳遞到頂點著色器，允許根據骨骼狀態和每個頂點的骨骼權重在 GPU 上並行計算每個頂點的最終位置。</p>
+<p>說到此，讓我們透過一個溫和的介紹來開始使用 Flutter GPU：繪製您的第一個三角形！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*JEI3fLDGcRHWKruT" />
+</figure>
+
+<h3 id="將-Flutter-GPU-加入您的專案"><a href="#將-Flutter-GPU-加入您的專案" class="headerlink" title="將 Flutter GPU 加入您的專案"></a>將 Flutter GPU 加入您的專案</h3><p>首先，請注意 Flutter GPU 目前處於早期預覽狀態，可能會發生 API 斷裂。目前 API 已經可以實現很多功能，但是有經驗的圖形工程師可能會注意到一些缺失的常見功能。Flutter GPU 在接下來的幾個月裡將會新增許多功能。</p>
+<p>基於這些原因，強烈建議您在針對 Flutter GPU 開發套件時，暫時使用 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 的頂端。如果您遇到任何意外行為、錯誤或有功能請求，請使用標準的 <a href="https://github.com/flutter/flutter/issues/new/choose">Flutter 問題範本</a> 在 GitHub 上提交問題。與 Flutter GPU 相關的所有追蹤問題都標記為 <a href="https://github.com/flutter/flutter/labels/flutter-gpu">flutter-gpu 標籤</a>。</p>
+<p>因此，在試驗 Flutter GPU 之前，請透過執行以下命令將 Flutter 切換到 main channel。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter channel main</span><br><span class="line">flutter upgrade</span><br></pre></td></tr></table></figure>
+
+<p>現在建立一個新的 Flutter 專案。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter create my_cool_renderer</span><br><span class="line">cd my_cool_renderer</span><br></pre></td></tr></table></figure>
+
+<p>接下來，將 flutter_gpu SDK 套件加入到您的 pubspec 中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_gpu --sdk=flutter</span><br></pre></td></tr></table></figure>
+
+<h3 id="建立和匯入著色器捆綁包。"><a href="#建立和匯入著色器捆綁包。" class="headerlink" title="建立和匯入著色器捆綁包。"></a>建立和匯入著色器捆綁包。</h3><p>為了使用 Flutter GPU 渲染任何東西，您需要撰寫一些 GLSL 著色器。Flutter GPU 的著色器與 Flutter 的 <a href="https://docs.flutter.dev/ui/design/graphics/fragment-shaders">片段著色器</a> 功能所使用的著色器具有不同的語義，特別是在統一繫結方面。您還需要定義一個頂點著色器，與片段著色器一起使用。</p>
+<p>從定義最簡單的著色器開始。您可以將著色器放置在專案中的任何位置，但是對於此範例，請建立一個 shaders 目錄，並使用兩個著色器填充它：simple.vert 和 simple.frag。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：shaders/simple.vert</span><br><span class="line"></span><br><span class="line">in vec2 position;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  gl_Position = vec4(position, 0.0, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在繪製三角形時，您將擁有一個定義每個頂點的資料列表。在本例中，它僅列出 2D 位置。對於這些頂點中的每一個，簡單的頂點著色器都會將這些 2D 位置分配給剪輯空間輸出內在 gl_Position。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：shaders/simple.frag</span><br><span class="line"></span><br><span class="line">out vec4 frag_color;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  frag_color = vec4(0, 1, 0, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>片段著色器甚至更簡單；它輸出一個 RGBA 顏色，範圍為 (0, 0, 0, 0) 到 (1, 1, 1, 1)。因此，所有內容都將被著色為綠色。</p>
+<p>好的，現在您有了著色器，請使用 Flutter 的提前編譯 (AOT) 著色器編譯器將它們編譯。為了為著色器捆綁包設定自動化的建置，我們建議您使用 <a href="https://pub.dev/packages/flutter_gpu_shaders">flutter_gpu_shaders</a> 套件。</p>
+<p>使用 pub 將 flutter_gpu_shaders 作為專案中的常規相依性加入。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_gpu_shaders</span><br></pre></td></tr></table></figure>
+
+<p>Flutter GPU 著色器捆綁到 .shaderbundle 檔案中，可以作為常規資產添加到專案的資產捆綁包中。著色器捆綁包包含針對平台目標的編譯著色器來源。</p>
+<p>接下來，建立一個著色器捆綁包宣告檔案，描述著色器捆綁包的內容。將以下內容添加到專案根目錄中的 my_renderer.shaderbundle.json。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;SimpleVertex&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;vertex&quot;,</span><br><span class="line">        &quot;file&quot;: &quot;shaders/simple.vert&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;SimpleFragment&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;fragment&quot;,</span><br><span class="line">        &quot;file&quot;: &quot;shaders/simple.frag&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>著色器捆綁包中的每個條目都可以具有任意名稱。在本例中，名稱是「SimpleVertex」和「SimpleFragment」。這些名稱用於在您的應用程式中查找著色器。</p>
+<p>接下來，使用 flutter_gpu_shaders 套件建置 shaderbundle。您可以透過啟用實驗性的「原生資產」功能來新增一個掛鉤，該掛鉤會自動觸發建置。使用以下命令來啟用原生資產並安裝 native_assets_cli 套件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter config --enable-native-assets</span><br><span class="line">flutter pub add native_assets_cli</span><br></pre></td></tr></table></figure>
+
+<p>啟用原生資產功能後，在掛鉤目錄下新增一個 build.dart 脚本，它將自動觸發建置著色器捆綁包。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：hook/build.dart</span><br><span class="line"></span><br><span class="line">import &#x27;package:native_assets_cli/native_assets_cli.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_gpu_shaders/build.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main(List&lt;String&gt; args) async &#123;</span><br><span class="line">  await build(args, (config, output) async &#123;</span><br><span class="line">    await buildShaderBundleJson(</span><br><span class="line">        buildConfig: config,</span><br><span class="line">        buildOutput: output,</span><br><span class="line">        manifestFileName: &#x27;my_renderer.shaderbundle.json&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>進行此更改後，當 Flutter 工具建置專案時，buildShaderBundleJson 將建置著色器捆綁包，並將結果輸出到套件根目錄下的 build&#x2F;shaderbundles&#x2F;my_renderer.shaderbundle。</p>
+<p>著色器捆綁包格式本身與您使用的 Flutter 特定版本綁定，並且可能會隨著時間推移而改變。如果您正在撰寫一個建置著色器捆綁包的套件，請不要將生成的 .shaderbundle 檔案檢查到您的原始碼樹中。相反，請使用建置掛鉤來自動化建置流程（如前所述）。</p>
+<p>這樣一來，使用您函式庫的開發人員將始終使用正確格式建置新的著色器捆綁包！</p>
+<p>現在，您已經自動化了著色器捆綁包的建置，請像常規資產一樣匯入它。將資產條目添加到專案的 pubspec.yaml 中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter:</span><br><span class="line">  assets:</span><br><span class="line">    - build/shaderbundles/</span><br></pre></td></tr></table></figure>
+
+<p>在未來，原生資產功能將允許建置掛鉤將資料資產附加到捆綁包中。一旦發生這種情況，就不需要再在建置掛鉤旁邊新增資 * * * * *產匯入規則了。</p>
+<p>接下來，新增一些程式碼，在執行時載入著色器。建立 lib&#x2F;shaders.dart 並新增以下程式碼。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：lib/shaders.dart</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter_gpu/gpu.dart&#x27; as gpu;</span><br><span class="line"></span><br><span class="line">const String _kShaderBundlePath =</span><br><span class="line">    &#x27;build/shaderbundles/my_renderer.shaderbundle&#x27;;</span><br><span class="line">// 注意：如果您正在建立函式庫，則路徑必須以套件名稱為前綴</span><br><span class="line">//      例如：</span><br><span class="line">//      &#x27;packages/my_cool_renderer/build/shaderbundles/my_renderer.shaderbundle&#x27;</span><br><span class="line"></span><br><span class="line">gpu.ShaderLibrary? _shaderLibrary;</span><br><span class="line">gpu.ShaderLibrary get shaderLibrary &#123;</span><br><span class="line">  if (_shaderLibrary != null) &#123;</span><br><span class="line">    return _shaderLibrary!;</span><br><span class="line">  &#125;</span><br><span class="line">  _shaderLibrary = gpu.ShaderLibrary.fromAsset(_kShaderBundlePath);</span><br><span class="line">  if (_shaderLibrary != null) &#123;</span><br><span class="line">    return _shaderLibrary!;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  throw Exception(&quot;Failed to load shader bundle! ($_kShaderBundlePath)&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此程式碼為 Flutter GPU 著色器執行時函式庫建立一個單例 getter。第一次訪問 shaderLibrary 時，會使用 gpu.ShaderLibrary.fromAsset(shader_bundle_path) 使用建置的資產捆綁包初始化執行時著色器函式庫。</p>
+<p>專案現在已經設定好使用 Flutter GPU 著色器。是時候渲染那個三角形了！</p>
+<h3 id="绘制您的第一個三角形"><a href="#绘制您的第一個三角形" class="headerlink" title="绘制您的第一個三角形"></a>绘制您的第一個三角形</h3><p>對於本指南，您將建立一個 RGBA Flutter GPU 紋理和一個 RenderPass，將紋理作為顏色輸出附加到它。然後，您將使用 <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImage.html">Canvas.drawImage</a> 在 Widget 中渲染紋理。</p>
+<p>為了簡潔起見，您將放棄最佳實務，只會為每一幀重新建置所有資源。</p>
+<p>只要您在分配紋理時將其標記為「著色器可讀取」，您就可以將其轉換為 dart:ui.Image。若要將渲染結果顯示在 Widget 樹中，請將其繪製到 dart:ui.Canvas 上！</p>
+<p>您可以透過使用自訂畫家為 Widget 樹架設腳手架來存取 Canvas。將 lib&#x2F;main.dart 的內容替換為以下內容：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:typed_data&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_gpu/gpu.dart&#x27; as gpu;</span><br><span class="line"></span><br><span class="line">// 注意：我們之前在設定著色器捆綁包匯入時建立了它!</span><br><span class="line">import &#x27;shaders.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;Flutter GPU Triangle Example&#x27;,</span><br><span class="line">      home: CustomPaint(</span><br><span class="line">        painter: TrianglePainter(),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class TrianglePainter extends CustomPainter &#123;</span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    // 嘗試存取 `gpu.gpuContext`。</span><br><span class="line">    // 如果 Flutter GPU 不受支援，將會拋出異常。</span><br><span class="line">    print(&#x27;Default color format: &#x27; +</span><br><span class="line">        gpu.gpuContext.defaultColorFormat.toString());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>現在，執行應用程式。提醒一下，Flutter GPU 目前需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。因此，您必須使用 Impeller 支援的平台。對於本指南，我將以 macOS 為目標。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*lKTtaX2ih6dFpSMQ" />
+</figure>
+
+<p>如果 Flutter GPU 正常工作，那麼您應該會看到預設顏色格式被列印到主控台中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter: Default color format: PixelFormat.b8g8r8a8UNormInt</span><br></pre></td></tr></table></figure>
+
+<p>如果 Impeller 未啟用，則在嘗試存取 gpu.gpuContext 時會拋出異常。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception: Flutter GPU requires the Impeller rendering backend to be enabled.</span><br><span class="line"></span><br><span class="line">The relevant error-causing widget was:</span><br><span class="line">  CustomPaint</span><br></pre></td></tr></table></figure>
+
+<p>為了簡便起見，您只會從這裡開始修改 paint 方法。</p>
+<p>首先，建立一個 Flutter GPU 紋理，清除它，然後透過將其繪製到 Canvas 上來顯示它。</p>
+<p>建立一個與 Canvas 大小相同的紋理。必須選擇一個 <code>StorageMode</code>。在本例中，您將紋理標記為 devicePrivate，因為您將只使用從設備 (GPU) 存取紋理記憶體的指令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final texture = gpu.gpuContext.createTexture(gpu.StorageMode.devicePrivate,</span><br><span class="line">    size.width.toInt(), size.height.toInt())!;</span><br></pre></td></tr></table></figure>
+
+<p>如果透過從主機 (CPU) 上傳資料來覆蓋紋理的資料，則使用 <code>StorageMode.hostVisible</code>。</p>
+<p>第三個可用的選項是 <code>StorageMode.deviceTransient</code>，它對於不需要超過單個 RenderPass 壽命的附件很有用（因此它們可以只存在於瓦片記憶體中，並且不需要由 VRAM 分配支援）。通常，深度&#x2F;模板紋理符合此標準。</p>
+<p>接下來，定義一個 <code>RenderTarget</code>。渲染目標包含一組「附件」，描述每個片段的記憶體佈局及其在 RenderPass 開始和結束時的設定&#x2F;拆卸行為。</p>
+<p>本質上，RenderTarget 是 RenderPass 的可重複使用描述器。</p>
+<p>現在，定義一個非常簡單的 <code>RenderTarget</code>，它只包含一個顏色附件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final renderTarget = gpu.RenderTarget.singleColor(</span><br><span class="line">gpu.ColorAttachment(texture: texture, clearValue: Colors.lightBlue));</span><br></pre></td></tr></table></figure>
+
+<p>請注意，此程式碼將 clearValue 設定為淡藍色。每個附件都具有 <code>LoadAction</code> 和 <code>StoreAction</code>，它們分別確定在傳遞的開始和結束時應該對附件的臨時瓦片記憶體執行什麼操作。</p>
+<p>預設情況下，顏色附件被設定為 <code>LoadAction.clear</code>（它將瓦片記憶體初始化為給定的顏色）和 <code>StoreAction.store</code>（它將結果儲存到附加的紋理的 VRAM 分配中）。</p>
+<p>現在，建立一個 <code>CommandBuffer</code>，使用前面的 RenderTarget 從其中產生一個 RenderPass，然後立即提交 CommandBuffer 以清除紋理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final commandBuffer = gpu.gpuContext.createCommandBuffer();</span><br><span class="line">final renderPass = commandBuffer.createRenderPass(renderTarget);</span><br><span class="line">// ... 繪製調用將放在這裡!</span><br><span class="line">commandBuffer.submit();</span><br></pre></td></tr></table></figure>
+
+<p>剩下的就是將初始化的紋理繪製到 Canvas 上！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final image = texture.asImage();</span><br><span class="line">canvas.drawImage(image, Offset.zero, Paint());</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ebUDtzQOuIGmdlop" />
+</figure>
+
+<p>現在您有了連接到螢幕顯示結果的 RenderPass，您就可以開始繪製三角形了。若要執行此操作，請設定以下內容：</p>
+<ol>
+<li>從著色器建立的 RenderPipeline，以及</li>
+<li>包含幾何形狀的 GPU 可存取緩衝區（三個頂點位置）。</li>
+</ol>
+<p>建立 RenderPipeline 很容易。您只需將函式庫中的頂點和片段著色器組合在一起。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">final vert = shaderLibrary[&#x27;SimpleVertex&#x27;]!;</span><br><span class="line">final frag = shaderLibrary[&#x27;SimpleFragment&#x27;]!;</span><br><span class="line">final pipeline = gpu.gpuContext.createRenderPipeline(vert, frag);</span><br></pre></td></tr></table></figure>
+
+<p>現在是幾何形狀。回想一下，「SimpleVertex」著色器只有一個輸入：<code>in vec2 position</code>。因此，若要繪製三個頂點，您需要三組兩個浮點數。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">final vertices = Float32List.fromList([</span><br><span class="line">  -0.5, -0.5, // 第一個頂點</span><br><span class="line">   0.5, -0.5, // 第二個頂點</span><br><span class="line">   0.0,  0.5, // 第三個頂點</span><br><span class="line">]);</span><br><span class="line">final verticesDeviceBuffer = gpu.gpuContext</span><br><span class="line">    .createDeviceBufferWithCopy(ByteData.sublistView(vertices))!;</span><br></pre></td></tr></table></figure>
+
+<p>剩下的就是繫結新的資源，並呼叫 renderPass.draw() 以完成記錄繪製調用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">renderPass.bindPipeline(pipeline);</span><br><span class="line"></span><br><span class="line">final verticesView = gpu.BufferView(</span><br><span class="line">  verticesDeviceBuffer,</span><br><span class="line">  offsetInBytes: 0,</span><br><span class="line">  lengthInBytes: verticesDeviceBuffer.sizeInBytes,</span><br><span class="line">);</span><br><span class="line">renderPass.bindVertexBuffer(verticesView, 3);</span><br><span class="line"></span><br><span class="line">renderPass.draw();</span><br></pre></td></tr></table></figure>
+
+<p>如果您啟動應用程式，您現在應該會看到一個綠色的三角形！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LWnGU5WPT_Eom0wJ" />
+</figure>
+
+<p>太棒了，您使用 Flutter、Dart 和一點 GLSL 從頭開始建立了一個渲染器！</p>
+<p>無論這是否是您第一次渲染三角形，或者您是經驗豐富的圖形專家，我都希望您能繼續使用 Flutter GPU，並查看我們正在開發的套件，例如 Flutter Scene。</p>
+<p>在未來，我們希望發佈友好的初學者程式碼實驗室，深入探討 Flutter GPU 的預設行為和最佳實務。我們還沒討論頂點屬性佈局、紋理繫結、統一和對齊要求、管道混合、深度和模板附件、透視校正等等！</p>
+<p>在那之前，我建議您探索 <a href="https://github.com/bdero/flutter_scene">Flutter Scene</a> 作為如何使用 Flutter GPU 的更全面的範例。</p>
+<h3 id="使用-Flutter-Scene-進行-3D-渲染"><a href="#使用-Flutter-Scene-進行-3D-渲染" class="headerlink" title="使用 Flutter Scene 進行 3D 渲染"></a>使用 Flutter Scene 進行 3D 渲染</h3><p>Flutter Scene（套件 flutter_scene）是一個新的 3D 場景圖套件，由 Flutter GPU 支援，它使 Flutter 開發人員能夠匯入動畫 glTF 模型並渲染即時 3D 場景。</p>
+<p>目的是提供一個套件，讓在 Flutter 中輕鬆建立互動式 3D 應用程式和遊戲。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*tC68CbPLef2rJp1e" />
+</figure>
+
+<p>該套件最初是作為一個 dart:ui 擴展，用於用 C++ 編寫的 3D 渲染器，並直接建置到 Flutter 的原生執行時中，但它已經使用更靈活的介面針對 Flutter GPU 重新撰寫。</p>
+<p>與 Flutter GPU API 本身一樣，Flutter Scene 目前處於早期預覽狀態，需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。Flutter Scene 通常與 Flutter GPU API 的重大變更保持同步，因此強烈建議您在試驗 Flutter Scene 時使用 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a>。</p>
+<p>接下來，使用 Flutter Scene 建立一個應用程式！</p>
+<h3 id="設定-Flutter-Scene-專案"><a href="#設定-Flutter-Scene-專案" class="headerlink" title="設定 Flutter Scene 專案"></a>設定 Flutter Scene 專案</h3><p>由於強烈建議您針對 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 使用 Flutter Scene，請從切換到主頻道開始。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter channel main</span><br><span class="line">flutter upgrade</span><br></pre></td></tr></table></figure>
+
+<p>接下來，建立一個新的 Flutter 專案。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter create my_3d_app</span><br><span class="line">cd my_3d_app</span><br></pre></td></tr></table></figure>
+
+<p>Flutter Scene 依靠實驗性的「原生資產」功能來自動化著色器的建置。您將在稍後使用原生資產來設定自動匯入 Flutter Scene 的 3D 模型。</p>
+<p>使用以下命令啟用原生資產。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter config --enable-native-assets</span><br></pre></td></tr></table></figure>
+
+<p>最後，將 Flutter Scene 添加為專案相依性。</p>
+<p>您還需要在與 Flutter Scene 的 API 互動時使用一些 vector_math 構造，因此也添加 vector_math 套件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_scene vector_math</span><br></pre></td></tr></table></figure>
+
+<p>接下來，匯入一個 3D 模型！</p>
+<h3 id="匯入-3D-模型"><a href="#匯入-3D-模型" class="headerlink" title="匯入 3D 模型"></a>匯入 3D 模型</h3><p>首先，您需要一個要渲染的 3D 模型。對於本指南，您將使用常見的 <a href="https://en.wikipedia.org/wiki/GlTF">glTF</a> 樣本資產： <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/DamagedHelmet">DamagedHelmet.glb</a>。以下是它的樣子。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/912/0*vVWRLxJ348tCxv7T" />
+<figcaption>原始的 Damaged Helmet 模型由 theblueturtle_ 在 2016 年建立（授權： [CC BY-NC 4.0 國際](https://creativecommons.org/licenses/by-nc/4.0/legalcode)）。轉換後的 glTF 版本由 ctxwing 在 2018 年建立（授權： [CC BY 4.0 國際](https://creativecommons.org/licenses/by/4.0/legalcode)）。 </figcaption>
+</figure>
+
+<p>您可以從 GitHub 上託管的 <a href="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/DamagedHelmet/glTF-Binary/DamagedHelmet.glb">glTF 樣本資產儲存庫</a> 中獲取它。將 DamagedHelmet.glb 放置在您的專案根目錄中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb</span><br></pre></td></tr></table></figure>
+
+<p>像大多數即時 3D 渲染器一樣，Flutter Scene 在內部使用專用的 3D 模型格式。您可以使用 Flutter Scene 的離線匯入器工具將標準 glTF 二進制檔案（.glb 檔案）轉換為此格式。</p>
+<p>將 flutter_scene_importer 套件作為常規相依性添加到專案中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_scene_importer</span><br></pre></td></tr></table></figure>
+
+<p>添加此套件可以使用 dart run 手動呼叫匯入器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dart --enable-experiment=native-assets \</span><br><span class="line">     run flutter_scene_importer:import \</span><br><span class="line">     --input &quot;path/to/my/source_model.glb&quot; \</span><br><span class="line">     --output &quot;path/to/my/imported_model.model&quot;</span><br></pre></td></tr></table></figure>
+
+<p>您可以透過使用原生資產建置掛鉤來自動執行匯入器。若要執行此操作，請先將 native_assets_cli 作為常規專案相依性安裝。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add native_assets_cli</span><br></pre></td></tr></table></figure>
+
+<p>現在您可以撰寫建置掛鉤了。使用以下內容建立 hook&#x2F;build.dart。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;package:native_assets_cli/native_assets_cli.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene_importer/build_hooks.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main(List&lt;String&gt; args) &#123;</span><br><span class="line">  build(args, (config, output) async &#123;</span><br><span class="line">    buildModels(buildConfig: config, inputFilePaths: [</span><br><span class="line">      &#x27;DamagedHelmet.glb&#x27;,</span><br><span class="line">    ]);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 flutter_scene_importer 中的 buildModels 公用程式，提供要建置的模型列表。路徑相對於專案的建置根目錄。</p>
+<p>當 Flutter 工具建置專案時，buildModels 現在將建置著色器捆綁包，並將結果輸出到套件根目錄下的 build&#x2F;models&#x2F;DamagedModel.model。</p>
+<p>匯入的模型格式本身與您使用的 Flutter Scene 特定版本綁定，並且會隨著時間推移而改變。在撰寫使用 Flutter Scene 的應用程式或函式庫時，請勿將生成的 .model 檔案檢查到您的原始碼樹中。相反，請使用建置掛鉤從您的原始模型中生成它們（如前所述）。</p>
+<p>這樣一來，隨著時間推移升級 Flutter Scene 時，您將始終使用正確格式建置新的 .model 檔案！</p>
+<p>接下來，像常規資產一樣匯入模型。將資產條目添加到專案的 pubspec.yaml 中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter:</span><br><span class="line">  assets:</span><br><span class="line">    - build/models/</span><br></pre></td></tr></table></figure>
+
+<p>在未來，原生資產功能將允許建置掛鉤將資料資產附加到捆綁包中。一旦發生這種情況，就不需要再在建置掛鉤旁邊新增資產匯入規則了。</p>
+<h3 id="渲染-3D-場景"><a href="#渲染-3D-場景" class="headerlink" title="渲染 3D 場景"></a>渲染 3D 場景</h3><p>現在是應用程式的程式碼了。</p>
+<p>首先，建立一個有狀態的 Widget，用於在多個幀中保留 Scene。</p>
+<p>您將根據時間進行動畫處理，因此將 SingleTickerProviderStateMixin 添加到狀態，以及一個 elapsedSeconds 成員。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter/scheduler.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/camera.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/node.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/scene.dart&#x27;;</span><br><span class="line">import &#x27;package:vector_math/vector_math.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatefulWidget&#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  MyAppState createState() =&gt; MyAppState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyAppState extends State&lt;MyApp&gt; with SingleTickerProviderStateMixin &#123;</span><br><span class="line">  double elapsedSeconds = 0;</span><br><span class="line">  Scene scene = Scene();</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;My 3D app&#x27;,</span><br><span class="line">      home: Placeholder(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>執行應用程式作為冒煙測試，以確保沒有錯誤。請記住要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/912/0*74qs6ytcTjyVHwML" />
+</figure>
+
+<p>在繼續之前，請為動畫設定計時器。覆蓋 MyAppState 中的 initState 以呼叫 createTicker。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">void initState() &#123;</span><br><span class="line">  createTicker((elapsed) &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).start();</span><br><span class="line">  </span><br><span class="line">  super.initState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只要 Widget 可見，計時器回呼就會為每一幀被呼叫。呼叫 setState 會觸發此 Widget 在每一幀重建。</p>
+<p>接下來，載入之前放置在專案中的 3D 模型，並將其添加到 Scene 中。</p>
+<p>使用 Node.fromAsset 從資產捆綁包中載入模型。將以下程式碼放置在 initState 中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">  model.name = &#x27;Helmet&#x27;;</span><br><span class="line">  scene.add(model);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>Node.fromAsset 會異步地從資產捆綁包中反序列化模型，並在模型準備好添加到場景中時解析返回的 Future<Node>。</p>
+<p>現在，MyAppState.initState 應該如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">void initState() &#123;</span><br><span class="line">  createTicker((elapsed) &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).start();</span><br><span class="line">  </span><br><span class="line">  Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">    model.name = &#x27;Helmet&#x27;;</span><br><span class="line">    scene.add(model);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  super.initState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，您仍然沒有實際渲染 3D Scene！若要執行此操作，請使用 <code>Scene.render</code>，它需要 UI Canvas、Flutter Scene Camera 和一個大小。</p>
+<p>存取 Canvas 的一種方法是建立一個 CustomPainter：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class ScenePainter extends CustomPainter &#123;</span><br><span class="line">  ScenePainter(&#123;required this.scene, required this.camera&#125;);</span><br><span class="line">  Scene scene;</span><br><span class="line">  Camera camera;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    scene.render(camera, canvas, viewport: Offset.zero &amp; size);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不要忘記將 shouldRepaint 覆蓋設置為返回 true，以便在每次重建發生時自訂畫家都會重新繪畫。</p>
+<p>最後，將 CustomPainter 添加到源樹中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  final painter = ScenePainter(</span><br><span class="line">    scene: scene,</span><br><span class="line">    camera: PerspectiveCamera(</span><br><span class="line">      position: Vector3(sin(elapsedSeconds) * 3, 2, cos(elapsedSeconds) * 3),</span><br><span class="line">      target: Vector3(0, 0, 0),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  return MaterialApp(</span><br><span class="line">    title: &#x27;My 3D app&#x27;,</span><br><span class="line">    home: CustomPaint(painter: painter),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此程式碼指示相機沿著一個連續的圓圈移動，但始終面向原點。</p>
+<p>最後，啟動應用程式！</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/796/0*_-OFc0vhBHAhrPrO" />
+</figure>
+
+<p>以下是我們組合的完整源程式碼。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/camera.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/node.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/scene.dart&#x27;;</span><br><span class="line">import &#x27;package:vector_math/vector_math.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatefulWidget &#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  MyAppState createState() =&gt; MyAppState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyAppState extends State&lt;MyApp&gt; with SingleTickerProviderStateMixin &#123;</span><br><span class="line">  double elapsedSeconds = 0;</span><br><span class="line">  Scene scene = Scene();</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void initState() &#123;</span><br><span class="line">    createTicker((elapsed) &#123;</span><br><span class="line">      setState(() &#123;</span><br><span class="line">        elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;).start();</span><br><span class="line"></span><br><span class="line">    Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">      model.name = &#x27;Helmet&#x27;;</span><br><span class="line">      scene.add(model);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    super.initState();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    final painter = ScenePainter(</span><br><span class="line">      scene: scene,</span><br><span class="line">      camera: PerspectiveCamera(</span><br><span class="line">        position: Vector3(sin(elapsedSeconds) * 3, 2, cos(elapsedSeconds) * 3),</span><br><span class="line">        target: Vector3(0, 0, 0),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;My 3D app&#x27;,</span><br><span class="line">      home: CustomPaint(painter: painter),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ScenePainter extends CustomPainter &#123;</span><br><span class="line">  ScenePainter(&#123;required this.scene, required this.camera&#125;);</span><br><span class="line">  Scene scene;</span><br><span class="line">  Camera camera;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    scene.render(camera, canvas, viewport: Offset.zero &amp; size);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Flutter-光明的未來"><a href="#Flutter-光明的未來" class="headerlink" title="Flutter 光明的未來"></a>Flutter 光明的未來</h3><p>如果您能夠成功地遵循這些指南中的其中一個並讓它運行起來：太棒了，恭喜！</p>
+<p>Flutter GPU 和 Flutter Scene 都非常年輕，平台支援有限。但我想總有一天，我們會懷念這些不起眼的開端。</p>
+<p>隨著 Impeller 的推廣，Flutter 團隊完全掌控了渲染堆疊，因為我们需要針對 Flutter 的用例專門化渲染器。現在，我們正在開啟 Flutter 歷史上的一個新篇章。一個由您共同掌控渲染的篇章！</p>
+<p>Flutter Scene 最初是 Impeller 中的 C++ 組件，與 2D Canvas 渲染器一起，帶有一個精簡的 dart:ui 擴展。在我構建它時，我已經意識到 Flutter Engine 不會是它的最終目的地。</p>
+<p>3D 渲染器的架構決策海洋是廣闊</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/807a2f46.html" data-id="cm1ntp44g000fv517aks5ds89" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/8ddf18fb.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】Getting started with Flutter GPU
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/6129811c.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/" rel="tag">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 20px;">Flutter</a> <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">九月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/0.html">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/archives/430aae7c.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/807a2f46.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>
