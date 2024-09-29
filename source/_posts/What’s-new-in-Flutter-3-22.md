@@ -1,0 +1,242 @@
+---
+abbrlink: '0'
+---
+## Flutter 3.22 的新功能：WebAssembly、圖形渲染增強功能等等
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*hf9CEzGh0uhxnzVZi2Kk4g.png" />
+</figure>
+
+歡迎回到另一個令人興奮的 Flutter 穩定版本！這次，我們很高興推出 Flutter 3.22。我們將 WebAssembly 帶入穩定通道，為 Android 上的 Impeller 提供功能齊全的 Vulkan 後端，有望實現更流暢的圖形和顯著的效能提升。我們還藉由新的 Widget 狀態屬性、動態視圖調整大小和改進的表單驗證來引入簡化的工作流程。但這還不是全部 - 您會發現風味條件資產捆綁、Firebase Vertex AI 的 Dart 預覽以及更新的 DevTools，讓您的生活更輕鬆。
+
+自上次更新以來，在短短幾個月的時間裡，我們已從 Flutter 社群合併了令人印象深刻的 1595 個拉取請求，其中 37 位新的社群成員首次為 Flutter 貢獻力量！
+
+所以，深入了解 Flutter 社群帶給這個最新版本的最新功能和增強功能吧！
+
+### WebAssembly
+
+隨著 Flutter 3.22 的發佈，Wasm 現在可在穩定通道上使用，可提供顯著的效能提升。在我們使用 M1 MacBook 上的 Chrome 進行的內部基準測試中，Wonderous 應用程式的畫面渲染時間平均提高了 2 倍，在最壞的情況下提高了 3 倍。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/719/0*x6HEkml8cFGc96hg" />
+</figure>
+
+這些增強功能對於具有動畫和豐富轉場的應用程式至關重要，因為在這些應用程式中，維持流暢的畫面速率至關重要。Wasm 透過減少效能瓶頸來幫助實現這一點，從而產生更流暢的動畫和轉場。若要開始使用 Wasm 與您的 Flutter Web 應用程式，請查看我們的 [Dart Wasm 文件](https://dart.dev/web/wasm) 和 [Flutter Wasm 文件](https://docs.flutter.dev/platform-integration/web/wasm)。若要完整了解公告，請訪問 [Flutter 在 Google I/O 的部落格文章](https://medium.com/flutter/io24-5e211f708a37)。
+
+### 引擎
+
+Flutter 3.22 對 Impeller 引入了重大更新，Impeller 是為 Flutter 應用程式提供動力的渲染引擎。主要亮點包括：完成 Android 上的 Vulkan 後端，以實現更流暢的圖形和改進的效能；持續優化模糊效果和複雜路徑渲染；以及一個用於使用 Impeller 進行測試的新實驗性 API。根據我們的 [路線圖](https://github.com/flutter/flutter/wiki/Roadmap#core-framework--engine)，我們致力於提升 Impeller 的品質和效能，包括完成 iOS 遷移到 Impeller 和擴展 Android 支援。
+
+#### Impeller
+
+#### **Android 上的 Vulkan 後端功能完整**
+
+在此版本中，Impeller 的 Android Vulkan 後端功能完整。特別是在過去幾個月裡，團隊一直在努力完成 [快速進階混合](https://github.com/flutter/engine/pull/50154) 的實作、使用 [FragmentProgram API](https://github.com/flutter/engine/pull/49543) 支援自訂片段著色器、[PlatformView](https://github.com/flutter/engine/pull/50730) 支援（儘管它需要 [小型 API 遷移](https://docs.flutter.dev/release/breaking-changes/android-surface-plugins)）、以及完整實作 [所有模糊樣式](https://github.com/flutter/flutter/issues/134178)。
+
+#### Android 預覽
+
+在 3.19 穩定版本中，在發佈 Impeller OpenGL 後端的改進之後，我們邀請使用者在具有和不具有 Vulkan 支援的 Android 設備上試用 Impeller。在過去的幾個月裡，在評估 OpenGL 後端的效能並估計 Vulkan 後端的剩餘工作量之後，我們決定將精力集中在首先使 Vulkan 後端投入生產。
+
+Impeller 解決了著色器編譯卡頓的問題。此外，在我們的基準測試中，它在平均、第 90 個百分位數和第 99 個百分位數畫面時間上優於傳統渲染器。因此，我們認為 Vulkan 後端在 Android 上的效能是可以接受的。在此版本 (3.22) 中，選擇加入 Impeller 的應用程式將在有空的情況下使用 Vulkan 後端。在未來的版本中，這將成為預設設定。當選擇加入 Impeller 的應用程式在不支持 Vulkan 的設備上運行時，Flutter 將自動優雅地回退到使用 Skia 的 OpenGL ES。您無需採取任何措施。在未來，當我們認為 OpenGL ES Impeller 後端已準備好投入生產時，此回退也將使用 Impeller。
+
+隨著 Android 上的 Impeller 預覽繼續在 3.22 穩定版本週期中進行，我們請求 Flutter 開發人員升級到最新的穩定版本，並在 [啟用 Impeller](https://docs.flutter.dev/perf/impeller#android) 時提交有關任何發現的不足的錯誤。在此階段的回饋對確保 Impeller 在 Android 上取得成功以及我們能夠在今年晚些時候的版本中自信地將其設為預設渲染器至關重要。Android 硬體生態系統非常多元。因此，關於 Impeller 最有用的回饋應包括有關發生問題的特定設備和 Android 版本的詳細資訊。
+
+#### 模糊效能提升
+
+模糊已在 Impeller 中為 iOS 和 Android [重新實作](https://github.com/flutter/engine/pull/47576)。特別是，新的方法類似於 Skia 的方法，將模糊的 CPU 和 GPU 時間在 [基準測試](https://flutter-flutter-perf.skia.org/e/?begin=1699468487&amp;end=1710262311&amp;keys=X01fc3d52ebd6fbf38afef91d82ab8d2b&amp;requestType=0&amp;selected=commit%3D38815%26name%3D%252Carch%253Dintel%252Cbranch%253Dmaster%252Cconfig%253Ddefault%252Cdevice_type%253DiPhone_11%252Cdevice_version%253Dnone%252Chost_type%253Dmac%252Csub_result%253Daverage_frame_rasterizer_time_millis%252Ctest%253Dbackdrop_filter_perf_ios__timeline_summary%252C&amp;xbaroffset=38815) 中減少了近一半。
+
+下圖顯示了 iPhone 11 設備上最壞情況、第 99 個百分位數、第 90 個百分位數和平均畫面光柵化時間以及 GPU 畫面時間（以毫秒為單位），這些時間是在旨在突出模糊效能的病態基準測試中獲得的。在重寫 Impeller 的模糊之後，背景過濾模糊的 CPU 和 GPU 成本都減少了近一半。這種改進的規模也適用於非病態情況，例如在典型應用程式中出現的情況。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*mtFyiLoIUSqk_zRB" />
+<figcaption>iPhone 11 設備上最壞情況、第 99 個百分位數、第 90 個百分位數和平均畫面光柵化時間以及 GPU 畫面時間（以毫秒為單位），這些時間是在旨在突出模糊效能的病態基準測試中獲得的。</figcaption>
+</figure>
+
+#### Stencil-then-Cover
+
+iOS 和 Android 上的 Impeller 都已 [遷移到基於 Stencil-then-Cover 方法的新渲染策略](https://github.com/flutter/engine/pull/51219)，如 [OpenGL Redbook](http://www.opengl-redbook.com/) 中的“使用模板緩衝區繪製填充的凹多邊形”章節所述。團隊成員在 GitHub 議題 [＃123671](https://github.com/flutter/flutter/issues/123671) 中討論了此技術在適用於 Flutter 時的更多信息。
+
+這種方法解決了光柵線程在 CPU 上為複雜路徑（例如 SVG 和 [Lottie 動畫](https://github.com/flutter/flutter/issues/141961)）計算細分的時間過長的問題。在更改之後，包含複雜路徑的畫面的總畫面時間（CPU 上的 UI 線程 + CPU 上的光柵線程 + GPU 工作）要低得多。使用者會注意到 Lottie 動畫和其他複雜路徑的渲染更加流暢，CPU 利用率更低，GPU 利用率略高。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*1lCd7dBwJ0ab_sieDlQNFw.gif" />
+<figcaption>(左) Lottie 動畫。以前，Impeller 在最近的 iPhone 上需要 64 毫秒 / 畫面的光柵線程 CPU 時間來渲染它。 (右) 在我們實施了 Stencil-then-Cover 優化之後，相同的動畫在相同的設備上。光柵時間快了將近 10 倍。</figcaption>
+</figure>
+
+儘管對這些改進感到滿意，但仍然有更多工作要做。在其他機會中，我們意識到多段線生成在 CPU 配置文件中仍然很突出，我們打算調查將這項工作轉移到 GPU 上。
+
+#### 新的 API
+
+雖然仍處於實驗階段，但 flutter test 現在接受 `--enable-impeller` 旗標，它使用 Vulkan 後端來練習 Impeller。
+
+### 架構
+
+#### Widget 狀態屬性
+
+MaterialState 已移出 Material 函式庫，並重新命名為 WidgetState，以便它可供 Cupertino、基本 Flutter 架構和套件作者使用。有關遷移到新的 WidgetState 的更多信息，請查看 [遷移指南](https://docs.flutter.dev/release/breaking-changes/material-state)。
+
+#### 動態視圖調整大小
+
+對動態視圖調整大小的 [增強功能](https://github.com/flutter/flutter/pull/140918) 有利於構建響應式佈局的開發人員，確保 UI 在各種設備螢幕上具有更好的適應性。
+
+#### 改進的表單驗證
+
+感謝 Flutter 社群成員 [SharbelOkzan](https://github.com/SharbelOkzan) 的 [貢獻](https://github.com/flutter/flutter/pull/135578)，Flutter 3.22 帶來了更靈活的表單驗證方法，允許開發人員建立更強大的使用者輸入處理，從而提高可用性和安全性。
+
+#### 2D API 中的協變體
+
+減少對 2D 圖形 API 中的類型轉換的需求，簡化了開發工作流程並提高了效能，這對於遊戲和複雜動畫來說很重要。
+
+#### 風味條件資產捆綁
+
+使用 [風味](https://docs.flutter.dev/deployment/flavors) 功能的開發人員現在可以配置單個資產，使其僅在為特定風味構建時才被捆綁。有關更多信息，請查看 [根據風味有條件地捆綁資產](https://docs.flutter.dev/deployment/flavors#conditionally-bundling-assets-based-on-flavor)。
+
+#### 使用 Dart 套件轉換資產
+
+使用者現在可以配置 Dart 套件以在捆綁應用程式的資產時轉換它們。有關更多信息，請查看 [在構建時轉換資產](http://docs.flutter.dev/ui/assets/asset-transformation)。
+
+### Android
+
+#### 深度連結
+
+深度連結可以顯著改善 Flutter 應用程式中的使用者體驗，充當將使用者無縫引導到應用程式中特定內容的捷徑，從而提高參與度和推動銷售。雖然強烈建議使用 iOS 的通用連結和 Android 的應用程式連結，因為它們具有安全性，並且對使用者友好，但設定它們可能有些棘手。
+
+在上次 Flutter 穩定版本中，我們在 DevTools 中引入了一個深度連結驗證工具，該工具支援檢查 Android 應用程式的 Web 組態。在此版本中，我們加入了一組新的功能來幫助驗證 Android 清單檔案中的設定。
+
+有關使用此工具的更多信息，請查看 [驗證深度連結](https://docs.flutter.dev/tools/devtools/deep-links)。
+
+#### 預測性返回手勢
+
+Flutter 現在為 Android 即將推出的預測性返回功能添加了更多支援，使用者可以在返回手勢期間查看之前的路線，甚至查看之前的應用程式。這仍然是 Android 設備上的功能旗標，但您可以找到有關如何自行嘗試 [在 GitHub 上的詳細信息](https://github.com/flutter/flutter/issues/132504#issuecomment-2025776552)。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/400/0*8b6DxQuMXAyYVu-w" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/400/0*hr_OF9DsfUcsLNHv" />
+</figure>
+
+#### Flutter 工具強制執行 Gradle、AGP、Java 和 Kotlin 的版本要求
+
+在此版本中，Flutter 工具強制執行關於它支援的 Gradle、Android Gradle Plugin (AGP)、Java 和 Kotlin 版本的政策。最初，工具只提供警告。
+
+目前，支援的版本範圍如下：
+
+* Gradle - 完全支援 7.0.2 到當前版本，否則警告
+* AGP - 完全支援 7.0.0 到當前版本，否則警告
+* Java - 完全支援 Java 11 到當前版本，否則警告
+* Kotlin - 完全支援 1.5.0 到當前版本，否則警告
+
+在下一個主要版本中，這些警告將變成錯誤，可以使用 `--android-skip-build-dependency-validation` 旗標覆蓋。更一般地說，在完全停止支援（產生錯誤）給定版本的這些相依性之前，工具至少會提供一個版本發佈的警告。
+
+這種政策在 [相關的設計規範](https://docs.google.com/document/d/1qeeM5QG-jiafttSgvc7yvC19IDRggFFZQTktBVxL6sI/edit?resourcekey=0-HLEAiBOMxAlQxDs-mEeffw) 中進行了討論。始終歡迎意見和回饋。
+
+#### 在 Android 上的 Gradle 構建腳本中支援使用 Gradle Kotlin DSL
+
+Gradle Kotlin DSL 現在在 Flutter 中受支援，為傳統的 Gradle Groovy DSL 提供了替代方案。這種支援允許更美好的程式碼編輯體驗，提供自動完成、快速存取文件、原始碼導航和上下文感知重構功能。
+
+此初始支援由 GitHub 使用者 [bartekpacia](https://github.com/bartekpacia) 貢獻。開發人員現在可以选择用 Kotlin 重寫他們的 Gradle 構建腳本以利用這些優點，雖然 Flutter 工具還不支持在使用 flutter create 時選擇 Kotlin 而不是 Groovy。
+
+有關更多詳細信息，請查看由 [bartekpacia](https://github.com/bartekpacia) 提交的 [PR 140744](https://github.com/flutter/flutter/pull/140744)。
+
+#### 平台視圖改進
+
+**注意所有 Flutter 應用程式開發人員！** 如果您使用 Flutter 構建依賴於原生 Android 組件（例如地圖、Web 視圖或某些 UI 元素）的應用程式，我們有一些重要的消息。
+
+由於 Android 14 中的一個錯誤，使用較舊版本的 Flutter 構建的應用程式可能無法在運行此新 Android 版本的設備上正常工作。
+
+Flutter 3.22 修復了此問題，並改進了 Android 應用程式中這些原生組件的整體效能。因此，要確保您的應用程式在所有 Android 設備上順暢運行，請務必使用 Flutter 3.22 重新構建和發佈您的應用程式。
+
+此更新還包括幕後改進，使 Android 上的平台視圖更加可靠和高效。
+
+#### 停止支援 KitKat
+
+Flutter 的最低支援 Android 版本現在是 Lollipop (API 21)。從 Flutter 3.22 穩定版本開始，Flutter 將不再在運行 Android KitKat (API 19) 的設備上工作。有關更多詳細信息，請查看我們的 [棄用指南](https://docs.flutter.dev/release/breaking-changes/android-kitkat-deprecation)。
+
+### iOS
+
+#### 平台視圖效能
+
+我們了解到 iOS 上的平台視圖效能一直是許多 Flutter 開發人員的痛點。這在使用平台視圖時，尤其是在捲軸視圖中很明顯。
+
+最近的更新直接解決了這些問題，在嵌入文章中的多個內聯廣告等情況下，效能得到了顯著提升。以下是我們 [基準測試](https://github.com/flutter/flutter/pull/144745) 中的一些關鍵改進：
+
+* **減少 GPU 使用量：** GPU 使用量減少了 50%，從而減少了功耗，並可能帶來更流暢的使用者體驗。
+* **改進畫面渲染：** 平均畫面渲染時間減少了 1.66 毫秒（33%）。
+* **最小化卡頓：** 最壞情況的畫面渲染時間減少了 3.8 毫秒（21%）。
+
+如果您之前在捲軸視圖中使用多個平台視圖（例如廣告、地圖等）時遇到效能挑戰，這些優化有可能為您帶來更流暢、更靈敏的捲軸體驗。請嘗試一下，並告訴我們您的想法。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*uk0URkHcImHdTq2M" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*-KX8Ubw77KpdGnPI" />
+</figure>
+
+### 生態系統
+
+#### Firebase Vertex AI Dart SDK 預覽版本
+
+Firebase Vertex AI 產品已發佈到公開預覽，並包含 Dart SDK。這使您可以使用 Gemini API 為您的 Dart 或 Flutter 應用程式構建生成式 AI 功能，同時考慮生產、效能和企業規模。SDK 與 [Firebase 應用程式檢查](https://firebase.google.com/docs/app-check) 整合，該檢查可以保護您的 API 調用，並保護您的後端基礎設施免遭嚴重的威脅，例如帳單詐騙、釣魚和應用程式冒充。進入 [Dart 的入門指南](https://firebase.google.com/docs/vertex-ai/get-started?platform=flutter)，並使用促銷碼開始免費使用它。
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*KmIhzrfoyskNW7r8" />
+</figure>
+
+[Google AI Dart SDK](https://ai.google.dev/gemini-api/docs/get-started/dart) 仍然可用，並且建議僅用於原型設計。Google AI 提供免費存取權限（在限制範圍內和有空的情況下）和按使用付費定價。如果您已使用 Google AI Dart SDK 進行原型設計，並且準備遷移到 Firebase Vertex AI，請查看 [遷移指南](https://firebase.google.com/docs/vertex-ai/migrate-to-vertex-ai?platform=flutter)。
+
+#### DevTools 更新
+
+我們將繼續改進 DevTools，這是 Dart 和 Flutter 的效能和除錯工具套件。此版本包括效能改進、一般潤色以及新的功能，例如在時間軸中包含 CPU 樣本、進階過濾以及支援匯入和匯出記憶體快照。
+
+devtools_extensions 和 devtools_app_shared 套件附帶了其他值得注意的改進，這些套件支援 DevTools 擴展作者。我們加入了支援將擴展連接到新的 Dart 工具 Daemon (DTD)，這使 DevTools 擴展可以存取由其他 DTD 客戶端（例如 IDE）註冊的公開方法，以及允許存取用於與開發專案互動的最小文件系統 API。
+
+若要進一步了解 Flutter 3.22 中包含的所有更新，請查看 DevTools 的發行備註 [2.32.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.32.0)，[2.33.0](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.33.0) 和 [2.34.1](https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.34.1)。
+
+#### Flutter 的 Google 行動廣告 SDK
+
+對於那些使用廣告變現 Flutter 應用程式的人來說，我們有一些令人興奮的消息：Flutter 的 Google 行動廣告剛剛發佈了 5.0.1 版的重大更新！
+
+**改進對使用者消息平台 (UMP) SDK 的支援：** 此更新加入了對 Android UMP SDK 2.2.0 版和 iOS UMP SDK 2.4.0 版的最新 API 的支援。UMP SDK 對於遵守隱私法規至關重要，它使您更容易獲得使用者對個性化廣告的同意。此新版本引入了一些新的 API 來簡化同意收集過程。
+
+**擴展的中介合作夥伴：** 我們透過提供與受歡迎的廣告合作夥伴的整合，擴展了您的廣告變現範圍，包括 [Unity](https://pub.dev/packages/gma_mediation_unity)，[Meta](https://pub.dev/packages/gma_mediation_meta)，[AppLovin](https://pub.dev/packages/gma_mediation_applovin)，[Iron Source](https://pub.dev/packages/gma_mediation_ironsource)，[Mintegral](https://pub.dev/packages/gma_mediation_mintegral)，[Pangle](https://pub.dev/packages/gma_mediation_pangle)，[DT Exchange](https://pub.dev/packages/gma_mediation_dtexchange)，[InMobi](https://pub.dev/packages/gma_mediation_inmobi) 以及 [Liftoff](https://pub.dev/packages/gma_mediation_liftoffmonetize)。您現在可以使用擴展的中介選項和簡化的實作來最大限度地提高您的應用程式收入。
+
+我們鼓勵您在 Flutter 應用程式中試用這些新功能，並告訴我們您希望看到我們支援的哪些其他中介合作夥伴。當我們繼續改進 Flutter 的 Google 行動廣告 SDK 時，您的回饋至關重要。
+
+### 重大變更和棄用
+
+#### 移除 v1 Android 嵌入
+
+版本一 Android 嵌入的刪除正在進行中。這對大多數應用程式可能沒有影響，因為
+
+1. 版本二已經是多年的預設版本
+2. Flutter 工具已經會阻止構建版本一應用程式，除非使用 `--ignore-deprecation` 旗標明確覆蓋。
+
+此版本完全中斷了 Flutter 工具對 v1 應用程式的支援。**現在不再可以覆蓋。**
+
+**Plugin 作者請注意：** 當最初棄用 v1 android 嵌入時，為 Plugin 作者編寫了一個遷移文件，位於 [https://docs.flutter.dev/release/breaking-changes/plugin-api-migration](https://docs.flutter.dev/release/breaking-changes/plugin-api-migration)。作為此遷移的一部分，建議 Plugin 作者透過在他們的 *Plugin.java* 中包含一個具有以下簽名的函式來保持對使用 v1 嵌入的應用程式的支援
+
+```java
+public static void registerWith(@NonNull io.flutter.plugin.common.PluginRegistry.Registrar registrar)
+```
+
+我們計劃在下一個版本中完全刪除 v1 Android 嵌入，**到那時，包含具有此簽名的函式的 Plugin 將不再編譯**（因為它引用了 v1 android 嵌入中的類型）。
+
+它目前沒有作用，因為此版本已中斷使用 v1 嵌入的應用程式。我們建議 Plugin 作者盡快發佈已移除 v1 程式碼的 Plugin 更新版本，以避免在 Flutter 的未來版本中出現中斷。例如，請查看 [PR 6494](https://github.com/flutter/packages/pull/6494)，其中移除了由 Flutter 團隊維護的 Plugin。
+
+#### 在 3.22 中移除的棄用
+
+此版本中的 [重大變更](https://docs.flutter.dev/release/breaking-changes) 包含在 v3.19 發佈之後過期的已棄用 API。若要查看所有受影響的 API，以及其他上下文和遷移指南，請查看 [此版本的棄用指南](https://docs.flutter.dev/release/breaking-changes/3-19-deprecations)。[Flutter fix](https://docs.flutter.dev/development/tools/flutter-fix) 支援這些 API 的許多功能，包括 IDE 中的快速修復。可以使用 `dart fix` 命令列工具評估和應用批量修復。
+
+與往常一樣，非常感謝社群為 [貢獻測試](https://github.com/flutter/tests/blob/master/README.md) - 這些測試幫助我們識別出這些重大變更。若要進一步了解，請查看 [Flutter 的重大變更政策](https://github.com/flutter/flutter/wiki/Tree-hygiene#handling-breaking-changes)。
+
+### 結語
+
+Flutter 成功背後的核心是您 - 我們非凡的社群。沒有您無數的貢獻和堅定的熱情，這個版本是不可能實現的。我們衷心感謝您。
+
+準備好探索 Flutter 3.22 了嗎？深入了解完整的發行備註和變更日誌，啟動您的終端機並運行 `flutter upgrade`。我們迫不及待想看看您會建立什麼！
+
+<img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=fbde6c164fe3" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-22-fbde6c164fe3">Flutter 3.22 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> 
