@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Announcing Dart 3 | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3來自 Google I&#x2F;O 2023 的問候。今天，我們將從山景城現場宣布 Dart 3——迄今為止最大的 Dart 版本！Dart 3 包含三個主要進展。首先，我們完成了通往 100% 聲稱空安全性的旅程。其次，我們為記錄、模式和類修飾符添加了主要的新語言功能。第三，我們正在預覽未來，在未來我們將透過 Wasm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 3">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/af8aacca.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3來自 Google I&#x2F;O 2023 的問候。今天，我們將從山景城現場宣布 Dart 3——迄今為止最大的 Dart 版本！Dart 3 包含三個主要進展。首先，我們完成了通往 100% 聲稱空安全性的旅程。其次，我們為記錄、模式和類修飾符添加了主要的新語言功能。第三，我們正在預覽未來，在未來我們將透過 Wasm">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*2XwxNKHrKb3SGaWEyqg2nA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*KPbxBAjFYPCSk2OqwjKs7A.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=53f065a10635">
+<meta property="article:published_time" content="2023-05-10T05:35:19.000Z">
+<meta property="article:modified_time" content="2024-09-29T17:30:38.632Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="releases">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*2XwxNKHrKb3SGaWEyqg2nA.png">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2023-05-10T13:35:19.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/af8aacca.html" class="article-date">
+  <time datetime="2023-05-10T05:35:19.000Z" itemprop="datePublished">2023-05-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Dart/">Dart</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Announcing Dart 3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Dart-3"><a href="#宣布-Dart-3" class="headerlink" title="宣布 Dart 3"></a>宣布 Dart 3</h2><p>來自 Google I&#x2F;O 2023 的問候。今天，我們將從山景城現場宣布 Dart 3——迄今為止最大的 Dart 版本！Dart 3 包含三個主要進展。首先，我們完成了通往 100% 聲稱空安全性的旅程。其次，我們為記錄、模式和類修飾符添加了主要的新語言功能。第三，我們正在預覽未來，在未來我們將透過 Wasm 編譯為 Web 提供原生程式碼，從而擴展我們的平台支援。讓我們深入了解細節。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*2XwxNKHrKb3SGaWEyqg2nA.png" />
+</figure>
+
+<h3 id="100-聲稱空安全性"><a href="#100-聲稱空安全性" class="headerlink" title="100% 聲稱空安全性"></a>100% 聲稱空安全性</h3><p>在過去的四年中，我們將 Dart 演變為一種快速、可移植且現代的語言。現在，有了 Dart 3，它成為了 100% 聲稱空安全的語言！正如我們之前所 <a href="https://medium.com/dartlang/the-road-to-dart-3-afdd580fbefa">討論過</a>的那樣，我們認為沒有其他程式設計語言曾經為現有的語言添加過聲稱空安全性。所以，這是一段漫長的旅程。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*KPbxBAjFYPCSk2OqwjKs7A.png" />
+</figure>
+
+<p>有了 Dart 中的 100% 空安全性，我們擁有一個 <em>聲稱</em> 的類型系統。您可以相信，如果類型表示值不為 null，那麼它永遠不會為 null。這避免了某些類型的編碼錯誤，例如空指標異常。它還允許我們的編譯器和運行時以在沒有空安全性時無法實現的方式優化程式碼。這個設計選擇涉及一個權衡。儘管遷移變得有點困難，但我們相信我們為 Dart 做出了正確的選擇。</p>
+<h4 id="遷移到-Dart-3"><a href="#遷移到-Dart-3" class="headerlink" title="遷移到 Dart 3"></a>遷移到 Dart 3</h4><p>在實現聲稱空安全性方面，Dart 社群的不懈支援至關重要：pub.dev 上排名前 1000 的套件中有 99% 支援空安全性！</p>
+<p>基於此，我們預計絕大多數已遷移到空安全性的套件和應用程式都可以在 Dart 3 中正常運行。在極少數情況下，Dart 3 中的少量相關清除可能會影響某些程式碼。一些遺留核心函式庫 API 已被移除（<a href="https://github.com/dart-lang/sdk/issues/34233">#34233</a>，<a href="https://github.com/dart-lang/sdk/issues/49529">#49529</a>），並且一些工具已調整（<a href="https://github.com/dart-lang/sdk/issues/50707">#50707</a>）。如果您在遷移到使用 Dart 3 SDK 時遇到任何問題，請參閱 <a href="https://dart.dev/resources/dart-3-migration">Dart 3 遷移指南</a>。除此之外，我們希望您能享受新的合理化核心函式庫和工具。</p>
+<h3 id="主要語言功能-記錄、模式和類修飾符"><a href="#主要語言功能-記錄、模式和類修飾符" class="headerlink" title="主要語言功能 - 記錄、模式和類修飾符"></a>主要語言功能 - 記錄、模式和類修飾符</h3><p>Dart 3 不僅僅是關於更改現有語言。它還包括添加重要的新功能和能力！這些包括記錄、模式和類修飾符。</p>
+<h4 id="使用記錄構建結構化資料"><a href="#使用記錄構建結構化資料" class="headerlink" title="使用記錄構建結構化資料"></a>使用記錄構建結構化資料</h4><p>傳統上，Dart 函數只能返回單個值。因此，需要返回多個值的函數必須將這些值打包到其他資料類型中，例如映射或列表，或者定義可以保存這些值的新的類別。使用未類型化的資料結構會削弱類型安全性。必須定義新的類別僅用於攜帶資料，這在編碼過程中會增加摩擦。您已經很清楚地告訴我們：對多個返回值的語言請求是我們 <a href="https://github.com/dart-lang/language/issues?q=is:issue+sort:reactions-+1-desc+">排名第四</a> 的問題。</p>
+<p>使用記錄，您可以使用乾淨利落的語法構建結構化資料。考慮這個函數。它讀取 JSON blob 的名稱和年齡，並將它們都返回到一個記錄中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">String</span>, <span class="built_in">int</span>) userInfo(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; json) &#123;</span><br><span class="line">  <span class="keyword">return</span> (json[<span class="string">&#x27;name&#x27;</span>] <span class="keyword">as</span> <span class="built_in">String</span>, json[<span class="string">&#x27;height&#x27;</span>] <span class="keyword">as</span> <span class="built_in">int</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這對所有 Dart 開發人員來說應該很熟悉。記錄看起來像列表常量，例如 [<code>&#39;Michael&#39;</code>, <code>&#39;Product Manager&#39;</code> ]，但使用括号而不是方括号。在 Dart 中，記錄是一個通用功能。它們可以用於函數返回值以外的其他用途。您也可以將它們存儲在變數中，將它們放入列表中，將它們用作映射中的鍵，或建立包含其他記錄的記錄。您可以添加未命名的欄位，就像我們在之前的示例中所做的那樣，以及命名的欄位，例如 <code>(42, description: &#39;Meaning of life&#39;)</code>。</p>
+<p>記錄是值類型，沒有身份。這使得我們的編譯器可以在某些情況下完全擦除記錄物件。記錄還帶有自動定義的 <code>==</code> 運算符和 <code>hashCode</code> 函數。<a href="https://dart.dev/language/records">記錄文件</a> 具有更多詳細信息。</p>
+<h4 id="使用模式和模式匹配處理結構化資料"><a href="#使用模式和模式匹配處理結構化資料" class="headerlink" title="使用模式和模式匹配處理結構化資料"></a>使用模式和模式匹配處理結構化資料</h4><p>記錄簡化了您構建結構化資料的方式。這不會取代使用類別來構建更正式的類型層次結構。它只提供另一個選項。無論哪種情況，您可能都希望將這些結構化資料分解成其個別元素以進行處理。這就是模式匹配發揮作用的地方。</p>
+<p>考慮一種基本的模式形式。以下記錄模式將記錄分解成兩個新的變數 <code>name</code> 和 <code>height</code>。這些變數之後可以像任何其他變數一樣使用，例如在呼叫 <code>print</code> 時：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (<span class="built_in">String</span> name, <span class="built_in">int</span> height) = userInfo(&#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Michael&#x27;</span>, <span class="string">&#x27;height&#x27;</span>: <span class="number">180</span>&#125;);</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;User <span class="subst">$name</span> is <span class="subst">$height</span> cm tall.&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>列表和映射也存在類似的模式。對於所有這些模式，您可以使用下劃線模式來跳過個別元素：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (<span class="built_in">String</span> name, _) = userInfo(...);</span><br></pre></td></tr></table></figure>
+
+<p>模式在 <code>switch</code> 語句中使用時效果顯著。Dart 從一開始就對 <code>switch</code> 提供了有限的支援。在 Dart 3 中，我們擴展了 <code>switch</code> 語句的功能和表現力。我們現在在這些情況下支援模式匹配。我們已經不需要在每個 <code>case</code> 的末尾添加 <code>break</code>。我們還支援邏輯運算符來組合 <code>case</code>。以下示例展示了一個乾淨利落的 <code>switch</code> 語句，它解析字元碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (charCode) &#123;</span><br><span class="line">  <span class="keyword">case</span> slash <span class="keyword">when</span> nextCharCode == slash:</span><br><span class="line">    skipComment();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> slash || star || plus || minus:</span><br><span class="line">    <span class="keyword">operator</span>(charCode);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">case</span> &gt;= digit0 &amp;&amp; &lt;= digit9:</span><br><span class="line">    number();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    invalid();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>當您需要為每個 <code>case</code> 使用一個或多個語句時，<code>switch</code> 語句提供了很好的幫助。在某些情況下，您只想做的是計算一個值。對於這種情況，我們提供了一個非常簡潔的 <code>switch</code> <em>表達式</em>。這類似於 <code>switch</code> <em>語句</em>，但使用不同的語法，該語法針對表達式進行了微調。以下示例函數返回一個 <code>switch</code> 表達式的值，以計算當前日期的星期幾描述：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> describeDate(<span class="built_in">DateTime</span> dt) =&gt; </span><br><span class="line">  <span class="keyword">switch</span> (dt.weekday) &#123;</span><br><span class="line">      <span class="number">1</span> =&gt; <span class="string">&#x27;Feeling the Monday blues?&#x27;</span>,</span><br><span class="line">      <span class="number">6</span> || <span class="number">7</span> =&gt; <span class="string">&#x27;Enjoy the weekend!&#x27;</span>,</span><br><span class="line">      _ =&gt; <span class="string">&#x27;Hang in there.&#x27;</span></span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>模式的一個強大功能是能夠檢查「窮舉性」。此功能確保 <code>switch</code> 處理所有可能的情況。在前面的示例中，我們正在處理 <code>weekday</code> 的所有可能值，<code>weekday</code> 是一個 <code>int</code>。我們透過組合針對特定值 1、6 或 7 的匹配語句，然後使用預設情況 <code>_</code> 來處理剩餘情況，來窮舉所有可能的值。若要啟用對使用者定義的資料層次結構（例如類別層次結構）的這種檢查，請在類別層次結構頂部使用新的 <code>sealed</code> 修飾符，如以下示例所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sealed</span> <span class="class"><span class="keyword">class</span> <span class="title">Animal</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cow</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Sheep</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123; ... &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span> <span class="keyword">extends</span> <span class="title">Animal</span> </span>&#123; ... &#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">String</span> whatDoesItSay(Animal a) =&gt;</span><br><span class="line">    <span class="keyword">switch</span> (a) &#123; Cow c =&gt; <span class="string">&#x27;<span class="subst">$c</span> says moo&#x27;</span>, Sheep s =&gt; <span class="string">&#x27;<span class="subst">$s</span> says baa&#x27;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>這將返回以下錯誤，提醒我們漏掉了對最後一個可能的子類型 <code>Pig</code> 的處理：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">line <span class="number">6</span> • The type <span class="string">&#x27;Animal&#x27;</span> <span class="keyword">is</span> not exhaustively matched by the <span class="keyword">switch</span> cases</span><br><span class="line">since it doesn<span class="string">&#x27;t match &#x27;</span>Pig()<span class="string">&#x27;.</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，<code>if</code> 語句也可以使用模式。在下面的示例中，我們正在使用 <em>if-case</em> 匹配一個映射模式來分解 JSON 映射。在其中，我們根據常量值（字串，例如 <code>&#39;name&#39;</code> 和 <code>&#39;Michael&#39;</code>）和類型測試模式 <code>int h</code> 進行匹配，以讀取 JSON 值。如果模式匹配失敗，Dart 將執行 <code>else</code> 語句。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> json = &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Michael&#x27;</span>, <span class="string">&#x27;height&#x27;</span>: <span class="number">180</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Find Michael&#x27;s height.</span></span><br><span class="line"><span class="keyword">if</span> (json <span class="keyword">case</span> &#123;<span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;Michael&#x27;</span>, <span class="string">&#x27;height&#x27;</span>: <span class="built_in">int</span> h&#125;) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Michael is <span class="subst">$h</span> cm tall.&#x27;</span>); </span><br><span class="line">&#125; <span class="keyword">else</span> &#123; </span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Error: json contains no height info for Michael!&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這僅觸及了您可以使用模式完成的所有事情。我們相信它們將在所有 Dart 程式碼中變得普遍。若要進一步了解，請查看 <a href="http://dart.dev/language/patterns">模式文件</a> 和 <a href="https://codelabs.developers.google.com/codelabs/dart-patterns-records">模式程式碼實驗室</a>。</p>
+<h4 id="使用類修飾符為類別提供細粒度的存取控制"><a href="#使用類修飾符為類別提供細粒度的存取控制" class="headerlink" title="使用類修飾符為類別提供細粒度的存取控制"></a>使用類修飾符為類別提供細粒度的存取控制</h4><p>第三個 Dart 3 語言功能是類修飾符。與我們期望每個 Dart 開發人員使用的記錄和模式不同，這更像是一個強大的使用者功能。它滿足了編寫大型 API 表面或構建企業級應用程式的 Dart 開發人員的需求。</p>
+<p>類修飾符使 API 作者能夠僅支援特定功能集。不過，預設值保持不變。我們希望 Dart 保持簡單易懂。因此，和以前一樣，常規類別可以 <em>構造</em>、<em>擴展</em> 和 <em>實作</em>，如下面的示例所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> make; <span class="built_in">String</span> model;</span><br><span class="line">  <span class="keyword">void</span> moveForward(<span class="built_in">int</span> meters) &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Construct.</span></span><br><span class="line"><span class="keyword">var</span> myCar = Vehicle(make: <span class="string">&#x27;Ford&#x27;</span>, model: <span class="string">&#x27;T&#x27;</span>,);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Extend.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">extends</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> passengers;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Implement.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MockVehicle</span> <span class="keyword">implements</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span> <span class="keyword">void</span> moveForward ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>類修飾符支援對此添加限制。考慮一些示例用例：</p>
+<ul>
+<li>使用介面類別，您可以為其他人定義一個要實作的合約。介面類別不能被擴展。</li>
+<li>使用基類別，您可以確保您類別的所有子類型都繼承自它，而不是實作其介面。這確保私有方法在所有實例上都可用。</li>
+<li>使用 <code>final</code> 類別，您可以關閉類型層次結構，防止在您自己的函式庫之外建立任何子類別。作為一個示例優點，這允許 API 擁有者添加新的成員，而不會冒著對 API 使用者造成重大變更的風險。</li>
+</ul>
+<p>有關詳細信息，請參閱新的 <a href="https://dart.dev/language/class-modifiers">類修飾符文件</a>。</p>
+<h3 id="未來展望"><a href="#未來展望" class="headerlink" title="未來展望"></a>未來展望</h3><p>Dart 3 不僅僅是您今天可以使用的功能方面的一個重大進步。我們還將預覽一下下一步。</p>
+<h4 id="Dart-語言"><a href="#Dart-語言" class="headerlink" title="Dart 語言"></a>Dart 語言</h4><p>記錄、模式和類修飾符是十分重要的新功能，因此，它們的設計部分可能存在可以改進的地方。我們將繼續監控 <a href="https://github.com/dart-lang/language/issues">您的回饋</a>，並查看是否需要在 Dart 3 後的次要版本中進行更新。</p>
+<p>我們還正在考慮一些更小、更增量式的功能，這些功能完全不可破壞，並且專注於提高開發人員的生產力，而無需遷移成本。我們正在探索的兩個示例是 <a href="https://github.com/dart-lang/language/issues/2727">內聯類別</a>，用於以零成本的「包裝器」包裝現有類型，以及 <a href="https://github.com/dart-lang/language/issues/2364">主建構函數</a>；此功能引入了定義包含少數欄位和主建構函數的類別的更簡潔的語法。</p>
+<p>我們之前討論過宏（也稱為 <a href="https://github.com/dart-lang/language/blob/main/working/macros/feature-specification.md">元程式設計</a>）。我們特別關注這一點，以實現對 JSON（和類似資料）的更好的反序列化，以及啟用資料類別。考慮到元程式設計的規模和固有的風險，我們正在採取非常徹底的方法，因此我們沒有任何明確的時間表可以分享，即使是最終確定設計決定的時間表。</p>
+<h4 id="原生互操作"><a href="#原生互操作" class="headerlink" title="原生互操作"></a>原生互操作</h4><p>行動裝置和桌面的應用程式通常依賴於原生平台提供的許多 API，無論是通知、支付還是獲取手機的位置。傳統上，在 Flutter 中，這些 API 是透過構建外掛來存取的，這需要同時編寫 API 的 Dart 程式碼和大量平台特定程式碼以提供實作。</p>
+<p>我們已經支援與編譯成 C 函式庫的程式碼進行互操作，可以使用 <a href="https://dart.dev/guides/libraries/c-interop">dart:ffi</a>。我們目前正在努力擴展此支援，以支援 Android 上的 <a href="https://dart.dev/guides/libraries/java-interop">Java 和 Kotlin 互操作</a> 以及 iOS&#x2F;macOS 上的 <a href="https://dart.dev/guides/libraries/objective-c-interop">Objective C 和 Swift 互操作</a>。若要了解 Android 互操作的簡介，請查看新的 Google I&#x2F;O 23 <a href="https://io.google/2023/program/2f02692d-9a41-49c0-8786-1a22b7155628/">Android 互操作性影片</a>。</p>
+<h4 id="編譯成-WebAssembly-使用原生程式碼定位-Web"><a href="#編譯成-WebAssembly-使用原生程式碼定位-Web" class="headerlink" title="編譯成 WebAssembly - 使用原生程式碼定位 Web"></a>編譯成 WebAssembly - 使用原生程式碼定位 Web</h4><p><a href="https://webassembly.org/">WebAssembly</a>（簡稱為 Wasm）作為一種平台中立的二進制指令格式，在 <a href="https://caniuse.com/wasm">所有現代瀏覽器</a> 中日益成熟。Flutter 架構已經使用 Wasm 一段時間了。這是我們將以 C++ 編寫的 SKIA 圖形渲染引擎透過 Wasm 編譯的模組傳遞到瀏覽器的方式。我們一直對使用 Wasm 部署 Dart 程式碼很感興趣，但我們一直受阻。Dart 與許多其他面向物件語言一樣，使用垃圾回收。在過去的一年中，我們已與 Wasm 生態系統中的多個團隊合作，為 WebAssembly 標準添加新的 WasmGC 功能。這現在在 Chromium 和 Firefox 瀏覽器中接近穩定狀態。</p>
+<p>我們在將 Dart 編譯成 Wasm 模組方面的工作具有兩個針對 Web 應用程式的目標：</p>
+<ul>
+<li><strong>載入時間：</strong>我們希望我們能夠使用瀏覽器載入速度更快的 Wasm 傳遞部署有效載荷，從而縮短到達使用者可以與 Web 應用程式互動的點所需的時間。</li>
+<li><strong>效能：</strong>由 JavaScript 驅動的 Web 應用程式需要即時編譯才能實現良好的效能。Wasm 模組是更低階的，更接近機器碼，因此我們認為它們可以透過更少的卡頓和更一致的畫面速率提供更高的效能。</li>
+<li><strong>語義一致性：</strong>Dart 對於我們支援的平台之間的高度一致性感到自豪。但是，在 Web 上，有一些例外。例如，Dart Web 目前在 <a href="https://dart.dev/guides/language/numbers">數字的表示方式</a> 方面有所不同。有了 Wasm 模組，我們將能夠將 Web 視為一個「原生」平台，其語義類似於其他原生目標。</li>
+</ul>
+<p>我們很興奮地宣布今天首次預覽將 Dart 編譯成 Wasm！我們最初的重點是 Flutter Web 支援。這還處於早期階段，我們還有很多工作要做，但我們 <a href="https://flutter.dev/wasm">邀請您進行嘗試</a>，看看您是否像我們一樣興奮。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>感謝您耐心閱讀到結尾。我們希望這篇文章讓您對 Dart 3 感到興奮，Dart 3 目前已在獨立的 <a href="https://dart.dev/get-dart">Dart SDK</a> 和 <a href="https://medium.com/flutter/whats-new-in-flutter-3-10-b21db2c38c73">Flutter 3.10 SDK</a> 中提供。</p>
+<p>我們已使用聲稱空安全性、核心函式庫和工具清理對 Dart 語言進行了重大改進。有一些主要的新語言功能，使 Dart 透過記錄和模式變得更具表現力和簡潔性。對於大型 API 表面，類修飾符啟用了詳細的控制。我們還包括對 WebAssembly 的支援預覽。</p>
+<p>有了所有這些功能，我們認為 Dart 3 展示了我們的長期願景：<em>為在任何平台上構建快速應用程式構建最具生產力的程式設計語言</em>。我們希望您也這麼認為！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=53f065a10635" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-3-53f065a10635">宣布 Dart 3</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/af8aacca.html" data-id="cm1nvba220001h117gk5cbngq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/releases/" rel="tag">releases</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/46a8336.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】Dart 3.1 &amp; a retrospective on functional style programming in Dart 3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/cb368ef1.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Introducing Realm for Dart &amp; Flutter</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 11.43px;">Flutter</a> <a href="/tags/announcements/" style="font-size: 15.71px;">announcements</a> <a href="/tags/cross-platform/" style="font-size: 10px;">cross-platform</a> <a href="/tags/dart/" style="font-size: 18.57px;">dart</a> <a href="/tags/dartlang/" style="font-size: 17.14px;">dartlang</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-app-development/" style="font-size: 14.29px;">flutter-app-development</a> <a href="/tags/flutter-development/" style="font-size: 10px;">flutter-development</a> <a href="/tags/flutter-web/" style="font-size: 10px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 11.43px;">game-development</a> <a href="/tags/games/" style="font-size: 10px;">games</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 10px;">ios-app-development</a> <a href="/tags/open-source/" style="font-size: 10px;">open-source</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 11.43px;">release-notes</a> <a href="/tags/releases/" style="font-size: 12.86px;">releases</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>

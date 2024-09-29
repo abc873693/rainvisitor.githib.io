@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Dart 3.1 &amp; a retrospective on functional style programming in Dart 3 | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 Dart 3.1：回顧 Dart 3 中的功能式程式設計風格模式匹配和窮舉式切換結合在一起，可以啟用與 Dart 的物件導向核心無縫融合的功能式風格資料模型。   Dart 3 重構使用功能式風格特性的內部程式碼庫的 diff   今天我們發佈 Dart 3.1，這是自 5 月份重大 Dart 3.0 發佈以來，我們的第一个穩定版本。Dar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart 3.1 &amp; a retrospective on functional style programming in Dart 3">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/46a8336.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 Dart 3.1：回顧 Dart 3 中的功能式程式設計風格模式匹配和窮舉式切換結合在一起，可以啟用與 Dart 的物件導向核心無縫融合的功能式風格資料模型。   Dart 3 重構使用功能式風格特性的內部程式碼庫的 diff   今天我們發佈 Dart 3.1，這是自 5 月份重大 Dart 3.0 發佈以來，我們的第一个穩定版本。Dar">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*IWd8aRO__OzDkJVsjfoe2A.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*mA116alArq7XKrm_PSCjyw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/986/1*qYQb8DZyeJDFD-VKEb4P6Q.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a1f4b3a7cdda">
+<meta property="article:published_time" content="2023-08-16T10:00:21.000Z">
+<meta property="article:modified_time" content="2024-09-29T17:29:46.182Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="releases">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="functional-programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*IWd8aRO__OzDkJVsjfoe2A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2023-08-16T18:00:21.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/46a8336.html" class="article-date">
+  <time datetime="2023-08-16T10:00:21.000Z" itemprop="datePublished">2023-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Dart/">Dart</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Dart 3.1 &amp; a retrospective on functional style programming in Dart 3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Dart-3-1：回顧-Dart-3-中的功能式程式設計風格"><a href="#Dart-3-1：回顧-Dart-3-中的功能式程式設計風格" class="headerlink" title="Dart 3.1：回顧 Dart 3 中的功能式程式設計風格"></a>Dart 3.1：回顧 Dart 3 中的功能式程式設計風格</h2><p><strong>模式匹配和窮舉式切換結合在一起，可以啟用與 Dart 的物件導向核心無縫融合的功能式風格資料模型。</strong></p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*IWd8aRO__OzDkJVsjfoe2A.png" />
+<figcaption>Dart 3 重構使用功能式風格特性的內部程式碼庫的 diff</figcaption>
+</figure>
+
+<p><em>今天我們發佈 Dart 3.1，這是自 5 月份重大 <a href="https://medium.com/dartlang/announcing-dart-3-53f065a10635">Dart 3.0</a> 發佈以來，我們的第一个穩定版本。Dart 3.1 包含一些次要更新，以及一些 API 調整，以進一步使用 3.0 中介紹的類別修飾符（您可以在 <a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#310">變更日誌</a> 中了解更多資訊）。不過，大多數情況下，我們一直在花時間研究新的路線圖項目，我們希望看到它們在未來的版本中達到 beta 和穩定版本。敬請期待未來關於這方面的更多資訊！</em></p>
+<p><em>因此，作為傳統發佈文章的替代，我們將回顧 Dart 3 中主要功能的一部分，討論它們如何徹底改變（在某些情況下）以及如何大幅改進您撰寫和組織 Dart 程式碼的方式。</em></p>
+<h3 id="您如何建模資料？"><a href="#您如何建模資料？" class="headerlink" title="您如何建模資料？"></a>您如何建模資料？</h3><p>物件導向 (OO) 和函數式語言在許多方面有所不同，但可以說，<em>每種範式如何建模資料</em> 是區分它們的決定性特徵。具體來說，建模相關資料的不同變體以及對這些變體的操作的問題。</p>
+<p>但<em>「我應該如何建模這些資料？」</em> 通常不是我們在開始新專案時會意識地思考的事情。我們傾向於使用我們所使用語言類型中常見的任何資料建模範式，而不是相反，根據對我們的資料最有意義的模型來選擇語言。</p>
+<p>如果您使用的是 OO 語言，您將使用類別階層和對子類別的操作來建模資料。如果您使用的是某些函數式語言，與類別階層模型等效的是 <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">代數資料類型</a> 模型，其對操作子類別的操作等效於使用 <a href="https://en.wikipedia.org/wiki/Pattern_matching">模式匹配</a> 在它們之間切換。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*mA116alArq7XKrm_PSCjyw.png" />
+<figcaption>物件導向類別階層模型和函數式代數資料類型模型的簡化並列比較</figcaption>
+</figure>
+
+<p>Dart 是一種物件導向語言，但隨著時間推移一直在穩步地整合函數式特性，允許以更多多範式方法進行資料建模。最近，Dart 3 添加了 <a href="https://dart.dev/language/patterns">模式匹配</a>，<a href="https://dart.dev/language/patterns#switch-statements-and-expressions">switch</a> 上的新功能，以及 <a href="https://dart.dev/language/class-modifiers#sealed">封閉類型</a>。這些特性使在 Dart 中實作出代數資料類型成為可能，讓您可以在繼續最大限度地利用 Dart 的物件導向核心的同時，撰寫功能式風格的程式碼。</p>
+<p>像 Dart 這樣的多範式語言為您提供了從單行運算式到整個類別階層的設計工具和機會。您可以考慮哪個模型最適合您的專案，或者僅僅只是考慮您的個人喜好。為了幫助您做出最佳決定，本文將分別總結每個範式的結構和優勢，然後教您如何在 Dart 3 中使用新特性來重構一些經典的物件導向設計，這些設計最適合以函數式風格撰寫。</p>
+<h4 id="物件導向方法"><a href="#物件導向方法" class="headerlink" title="物件導向方法"></a>物件導向方法</h4><p>當您針對不同的資料類型具有特定操作時，在 OO 語言中，標準組織方法是在基類上建立一個方法，以及一組覆寫基類以定義其唯一行為的子類別。每個子類別都將其資料和操作放在其宣告中的一個位置。</p>
+<p>以這個（高級偽程式碼）建模食譜的範例來說。將食材和步驟與食譜結合在一起，擁有食譜物件是有意義的。食譜基類可能具有用於烹飪方法的一些函數，每個食譜都會覆寫這些函數，以滿足其唯一的需求：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/3a6f22bcd1ef1ff84f0fe4b47689a631/href">https://medium.com/media/3a6f22bcd1ef1ff84f0fe4b47689a631/href</a></iframe>
+
+<p>具有實例方法的類別階層使您能夠輕鬆地新增新的子類別，而無需觸摸任何現有程式碼。這適用於某些領域，例如 Flutter，您在其中有數不盡的 Widget 都擴展了 Widget 類別。每個 Widget 都可以唯一地擴展和覆寫其定義中的任何必要行為。您 <em>絕對</em> 不需要知道每個 Widget 子類型如何定義其方法來新增專門的行為到您的自己的 Widget。</p>
+<h4 id="函數式方法（代數資料類型）"><a href="#函數式方法（代數資料類型）" class="headerlink" title="函數式方法（代數資料類型）"></a>函數式方法（代數資料類型）</h4><p>您可以將函數式風格架構視為 OO 架構的逆向。與將 <em>一種類型的所有程式碼放在一個位置</em>（OO 實例方法在子類別宣告中）不同，您將 <em>一個操作的所有程式碼放在一個位置</em>（函數式切換類型以定義行為）。</p>
+<p>這引發了一個問題，什麼時候 <em>有必要</em> 知道階層中每個子類型如何定義操作？可能基於以下幾個原因：</p>
+<ul>
+<li>當在程式碼中並排新增、維護和理解同一操作行為的變體更容易時。</li>
+<li>當您無法修改子類別本身，但又想定義特定於每個子類別的新行為時。</li>
+<li>當操作行為對於不同類型的變體之間的關係比它們與它們所操作的類型之間的關係更緊密時。</li>
+</ul>
+<p>有時這很明顯，但大多數情況下隻是一種觀點轉變。再次思考食譜範例。從某種意義上說，例如烤箱手冊，將烤箱說明按每個食譜分組到一個位置更有意義：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/fce49155327bfd44fd1f78a4ca589728/href">https://medium.com/media/fce49155327bfd44fd1f78a4ca589728/href</a></iframe>
+
+<p>在此範例中，程式結構側重於 bake 操作。無論 bake 對哪些類型進行操作，它們都隻是同一函數的不同可能的輸出；bake 與其操作的類型無關。</p>
+<p>這就是 <strong>代數資料類型模型</strong>（以數學集合論中的「代數」命名）。它是函數式語言的核心組織模型，如同類別階層是 OO 語言的核心一樣。代數資料類型透過按操作將所有類型的行為分組在一起，來將行為與資料分開。</p>
+<p>現在，可以使用 Dart 3 協調一致地實作出代數資料類型！</p>
+<h3 id="建模物件導向代數資料類型"><a href="#建模物件導向代數資料類型" class="headerlink" title="建模物件導向代數資料類型"></a>建模物件導向代數資料類型</h3><p>函數式語言通常透過對 <a href="https://en.wikipedia.org/wiki/Tagged_union">總和類型</a> 中的案例進行模式匹配來實作出 <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">代數資料類型</a> ，以將行為分配給每個變體。Dart 3 在 switch 案例中使用 <a href="https://dart.dev/language/patterns#switch-statements-and-expressions">模式匹配</a> 來實現同樣的效果，並利用了 OO 子類型自然地建模總和類型的特性。這使我們可以使用與 Dart 無縫融合的物件來實作真正 <a href="https://dart.dev/language/patterns#algebraic-data-types">多範式代數資料類型</a>。</p>
+<p>以下各節將向您展示如何在 Dart 中設計代數資料類型模型，以及使用前 Dart 3 的相同功能的範例。</p>
+<ul>
+<li>首先，我們將說明如何透過在 <a href="https://dart.dev/language/pattern-types#object">物件模式</a> 上進行切換來將操作的基於類型的變體分組在一起。</li>
+<li>然後，我們將退一步，看看如何使用新的 <a href="https://dart.dev/language/class-modifiers#sealed">封閉</a> 類別修飾符來設計子類別本身，以確保 switch 為 <a href="https://dart.dev/language/branches#exhaustiveness-checking">物件可能採用的所有可能子類型</a> 定義行為。</li>
+</ul>
+<h4 id="在類型之間分組行為"><a href="#在類型之間分組行為" class="headerlink" title="在類型之間分組行為"></a>在類型之間分組行為</h4><p>Dart 語言的個別部分（例如語句、類別和文字）在類別階層中都有自己的定義，但都受到多個系統（例如解析器、格式化程序和編譯器操作）的操作影響。想像一下，如果每個應用於每個語言元素的函數都必須在這些元素的宣告中定義，語言實作將會變得多麼混亂！它看起來會像這樣：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ffb98bc8686a75e1c08e1459a68267a0/href">https://medium.com/media/ffb98bc8686a75e1c08e1459a68267a0/href</a></iframe>
+
+<p>出於這個原因，Dart 的內部程式碼已經自然地傾向於將函數與類型定義分開的功能式方法。以 Dart 編譯器中的 <a href="https://github.com/dart-lang/sdk/blob/main/pkg/analyzer/lib/src/error/annotation_verifier.dart">annotation_verifier</a> 函式庫為例。它包含定義注釋行為的函數（例如 @override 或 @deprecated），具體取決於注釋所附加的程式碼部分（例如 @override 如何影響類別與欄位）。</p>
+<p>但根據類型分配行為不像一開始做出將行為分開的決定那麼簡單。根據類型定義行為的標準方法是使用鏈式 if-else 語句，您在注釋驗證器中經常會看到。以以下未使用任何 Dart 3 特性撰寫的驗證函數為例。它驗證了 <a href="https://github.com/dart-lang/sdk/commit/4079a47cc4fb8f88e2dd9b7faff3bd587931a379">最近貢獻的</a> @visibleOutsideTemplate 注釋的行為，該注釋選擇退出另一個注釋 @visibleForTemplate 的級聯效應：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/a3c434f36ddd91f30755438674324b2b/href">https://medium.com/media/a3c434f36ddd91f30755438674324b2b/href</a></iframe>
+
+<p>該函數使用精心設計的鏈式 if-else 語句，測試注釋的祖父母是否為某種宣告（ClassDeclaration、EnumDeclaration 或 MixinDeclaration），然後根據類型定義其行為。</p>
+<p>使用 Dart 3，您可以在 switch 案例中使用物件模式將此結構顯著地重構為更宣告式的風格，使其更短、更容易閱讀。原始作者 <a href="https://github.com/dart-lang/sdk/blob/4079a47cc4fb8f88e2dd9b7faff3bd587931a379/pkg/analyzer/lib/src/error/annotation_verifier.dart#L417-L426">就是這麼做的</a>！16 行鏈式 if-else 語句被精簡為 7 行 switch 語句：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/80466ddfaaece549a847e51911950a0b/href">https://medium.com/media/80466ddfaaece549a847e51911950a0b/href</a></iframe>
+
+<p>這裡的每個案例都是一個 <a href="https://dart.dev/language/pattern-types#object">物件模式</a>，它與 grandparent 的靜態類型進行比對。與說 if (object is Type &amp;&amp; object.property !&#x3D; null) 不同，每個案例都檢查物件的模式是否與模式 Type(propertyOfType) 相符。此外，當物件與物件模式相符時，它隱含地要求它不為 null，因此無需進行顯式空檢查！</p>
+<p>物件模式還可以使用嵌套的 <a href="https://dart.dev/language/pattern-types#variable">變數模式</a>，讓您可以在與之進行比對的同一行程式碼中從物件中提取（或 <a href="https://dart.dev/language/patterns#destructuring">解構</a>）屬性值。語法 (:var metadata) 隻是表示「比對並宣告一個與此 getter 名稱相同的變數」。這就是變數 metadata 如何進入最後的 for 迴圈的範圍。非常簡潔！</p>
+<p>請注意，for 迴圈現在在每個案例之間是共用的。每個類型的 declaredElement 屬性實際上是另一個類型 InterfaceElement（classElement、enumElement 或 mixinElement）的不同子類型。因此，前 Dart 3 的鏈式 if-else 語句在每個 if 子句中分別迭代 metadata，以確保最終注釋對於 metadata 可能採用的所有可能類型都是類型安全的。</p>
+<p>現在，重構後的結構對每個案例使用深度嵌套的物件模式，將 metadata 提升到其超類型 InterfaceElement。這使單個共用 for 迴圈能夠在案例之間迭代 metadata，成為類型安全的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/986/1*qYQb8DZyeJDFD-VKEb4P6Q.png" />
+<figcaption>深度嵌套的物件和變數模式的語法註釋圖</figcaption>
+</figure>
+
+<p>在 Dart 3 的代數資料類型實作中，在物件模式上進行切換很重要，因為它能夠簡潔地測試子類型並解構值。一個很好的副作用是可以透過單行程式碼提供同時的保證。重申一下，此重構中的每個案例模式都同時驗證：</p>
+<ul>
+<li>物件是 ClassDeclaration、EnumDeclaration 或 MixinDeclaration 之一。</li>
+<li>物件具有 declaredElement 屬性。</li>
+<li>declaredElement 具有 metadata 屬性。</li>
+<li>metadata 的類型為 InterfaceElement。</li>
+<li>所有正在考慮的物件或屬性都不為 null。</li>
+</ul>
+<p>這是 Dart 3 如何徹底實作模式以考慮 OO 語言的許多細微差別，以及如何真正使物件導向代數資料類型成為 Dart 中的實際設計選項的完美範例。</p>
+<p>在物件模式上進行類型測試非常適合將行為與類型分開。但它缺少 OO 子類型的其中一個特性，即編譯器可以讓您知道是否宣告了新的子類型，但沒有為其超類型的抽象方法定義行為。當我們不再處理類型宣告上的實例方法時，Dart 的代數資料類型模型如何實作相同的安全保證？答案是 <em>窮舉式檢查</em>。</p>
+<h4 id="窮舉式檢查"><a href="#窮舉式檢查" class="headerlink" title="窮舉式檢查"></a>窮舉式檢查</h4><p>函數式語言對代數資料類型的實作使用可枚舉的總和類型，這意味著編譯器始終知道正在切換的類型的所有可能變體。然後，編譯器可以讓您知道您的 switch 是否缺少案例，因此可能某些值可能會在未被處理的情況下通過該 switch。</p>
+<p>這稱為 <a href="https://dart.dev/language/branches#exhaustiveness-checking">窮舉式檢查</a>。從技術上講，它始終存在於 Dart 中，用於可枚舉的類型，例如枚舉和布林值。這些類型具有一組不可變化的可能值，如果您要對它們進行切換，編譯器會在您遺漏一個值時告知您。使用預設子句是另一種偽窮舉式檢查。由於預設會匹配所有未明確考慮的案例，它會導致編譯器在不知道是否實際考慮到所有可能的類型的情況下，認為 switch 是窮舉式的。</p>
+<p>如前所述，我們想要使用子類型而不是總和類型來進行 Dart 的代數資料類型建模。但由於 Dart 中的類別可以從任何函式庫中進行擴展，因此編譯器不可能窮舉列舉類別的子類型，因為它不知道任何子類別是否在外部函式庫中宣告。</p>
+<p>為了解決這個問題並完成 Dart 的代數資料類型實作，我們在 Dart 3 中加入了 <a href="https://dart.dev/language/class-modifiers#sealed">封閉類別修飾符</a>。封閉類別不能從除了自身以外的任何函式庫（<a href="https://dart.dev/language/libraries">包含其定義的檔案</a>）進行擴展或實作。這確保編譯器始終知道任何和所有可能的子類型，使其完全可枚舉。</p>
+<p>以下是一個作為 3.1 版本發佈的一部分加入到 Dart SDK 中的實際重構範例：<a href="https://github.com/dart-lang/sdk/commit/c3e815bc7ad488eddf00344ab4106485a9d1ba32#diff-e98c6de423bf7e0b5b961cd10efed50330004229243aa87c18ad6314fef054b0L879-R879">封閉</a> <a href="https://github.com/dart-lang/sdk/commit/c3e815bc7ad488eddf00344ab4106485a9d1ba32#diff-e98c6de423bf7e0b5b961cd10efed50330004229243aa87c18ad6314fef054b0L879-R879">FileSystemEvent</a>，以便可以對其子類型進行窮舉式切換。做好心理準備，重構很困難…</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ebbec98bf5109bbc14be7867a3b4c117/href">https://medium.com/media/ebbec98bf5109bbc14be7867a3b4c117/href</a></iframe>
+
+<p>開玩笑的，這一點也不難！不過，需要注意的是，封閉現有的類別階層是一種重大變更。針對舊版本 Dart 的程式碼將無法實作或擴展該類別，因此始終檢查相依性並提醒可能在其他地方子類型化您的類別的任何使用者。</p>
+<p>封閉 FileSystemEvent 允許透過 FileSystemEntity.watch 生成的事件（對應於 FileSystemEvent 的子類型）進行窮舉式切換。通常，您會監聽此事件串流並使用 <a href="https://github.com/dart-lang/sdk/issues/52273">鏈式</a> <a href="https://github.com/dart-lang/sdk/issues/52273">if-else</a> 語句來根據發生的事件類型確定操作。</p>
+<p>但封閉基類不僅允許您在物件模式上進行切換，例如上一節中的 _checkVisibleOutsideTemplate 範例。它還確保在這樣做的同時，您正在考慮該類型可能產生的所有可能值，而無需使用預設案例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9618c7e18185c98dcb4e4cf9968759f9/href">https://medium.com/media/9618c7e18185c98dcb4e4cf9968759f9/href</a></iframe>
+
+<p>如果曾經新增了新的子類型，例如 FileSystemSyncEvent，編譯器會知道它，因為它隻能新增到 <a href="https://github.com/dart-lang/sdk/blob/main/sdk/lib/io/file_system_entity.dart">與 FileSystemEvent 相同的函式庫</a> 中。由於類別階層是封閉的，因此編譯器要求對其實例進行任何切換都必須是窮舉式的，並且會生成 <a href="https://dart.dev/tools/diagnostic-messages#non_exhaustive_switch_expression">錯誤</a> 來提醒使用者（編寫 switch 的人，而不是函式庫擁有者）未處理的案例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">The type &#x27;FileSystemEvent&#x27; is not exhaustively matched by the switch cases since it doesn&#x27;t match &#x27;FileSystemSyncEvent&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>將封閉類別和在物件模式上進行切換結合在一起，可以使 Dart 中的完整、物件導向代數資料類型程式設計架構成為可能。</p>
+<h4 id="附加功能式特性"><a href="#附加功能式特性" class="headerlink" title="附加功能式特性"></a>附加功能式特性</h4><p>上面的窮舉式切換範例包含了比促進代數資料類型更多的 Dart 3 功能特性。</p>
+<p>請注意，switch 在 _fileListener 函數的 return 語句的右側 - 那是 Dart 3 中新的 <a href="https://dart.dev/language/branches#switch-expressions">switch 運算式</a>。對運算式和函數的一般強調是函數式語言的關鍵元素。Dart 3 允許生成值的 switch 運算式，並且可以在允許使用運算式的任何地方使用。</p>
+<p>那麼，_fileListener 在前面的範例中最終返回什麼？那是個 <a href="https://dart.dev/language/records">記錄</a>，這是 Dart 3 的另一個新特性，也與函數式程式設計相關。記錄讓您可以從函數中返回多個異質值，擴展了函數在 Dart 中的用途，並進一步減少了對自訂類別的依賴（這將是除了在過程中不會丟失其類型之外，返回不同類型的多個值的唯一其他方法）。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>您可以透過以下方式在 Dart 中建模代數資料類型：</p>
+<ul>
+<li>撰寫一個在封閉類別的實例 <em>上</em> 進行切換，並 <em>在</em> 其子類型 <em>上</em> 切換的函數，</li>
+<li>並在 switch 案例中定義每個子類型的行為差異。</li>
+</ul>
+<p>在物件模式上進行切換允許您以簡潔的方式將所有操作保持在一起，而窮舉式檢查確保編譯器會在您遺漏任何類型的行為定義時提醒您。而且所有這些都建立在 Dart 已經使用的物件導向類別之上。</p>
+<p>最棒的是，您不必選擇物件導向或函數式風格；這兩種範式可以融合在一起，您可以使用最適合您正在定義的操作的風格。</p>
+<p>您可以透過少量修改使現有的類別階層更具函數式特性，甚至可以在同一個類別階層中混合使用實例方法和代數資料類型。無論將行為與類型緊密結合起來是否有意義，還是將不同類型的行為分組到一個函數中，您都可以使用最合理的風格。</p>
+<p>我們希望這個介紹能夠激發您對函數式程式設計以及嘗試使用新的 Dart 3 特性的興趣。誰知道呢，也許我們很快就會看到第一個完全使用函數式風格的 Dart 程式出自你們其中一位！</p>
+<h4 id="資源"><a href="#資源" class="headerlink" title="資源"></a>資源</h4><ul>
+<li>若要進一步了解 Dart 中的函數式程式設計，請查看以下資源：<ul>
+<li>有關 <a href="https://dart.dev/language/patterns">模式</a> 和 <a href="https://dart.dev/language/branches#exhaustiveness-checking">窮舉式檢查</a> 的官方 Dart 文件。</li>
+<li>有關使用 Dart 3 重構 Flutter 程式碼的 <a href="https://codelabs.developers.google.com/codelabs/dart-patterns-records#0">模式和記錄程式碼實驗室</a>。</li>
+<li>來自 FlutterCon 的關於 Dart 中函數式程式設計的 <a href="https://www.droidcon.com/2023/08/07/the-joy-of-functional-programming-in-dart/">社群演講</a>。</li>
+<li>這篇 <a href="https://journal.stuffwithstuff.com/2023/08/04/representing-heterogeneous-data/">部落格文章</a> 介紹了 Bob Nystrom（<a href="https://github.com/dart-lang/language/blob/main/accepted/3.0/patterns/feature-specification.md">在 Dart 中設計模式</a> 的作者！）的個人部落格，講述了如何建模異質資料。</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a1f4b3a7cdda" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-1-a-retrospective-on-functional-style-programming-in-dart-3-a1f4b3a7cdda">Dart 3.1 和回顧 Dart 3 中的功能式程式設計風格</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p>undefined</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/46a8336.html" data-id="cm1nvba250005h117c93o8lrd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/releases/" rel="tag">releases</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/6c7c35de.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】Announcing Dart 3.2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/af8aacca.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Announcing Dart 3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 11.43px;">Flutter</a> <a href="/tags/announcements/" style="font-size: 15.71px;">announcements</a> <a href="/tags/cross-platform/" style="font-size: 10px;">cross-platform</a> <a href="/tags/dart/" style="font-size: 18.57px;">dart</a> <a href="/tags/dartlang/" style="font-size: 17.14px;">dartlang</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-app-development/" style="font-size: 14.29px;">flutter-app-development</a> <a href="/tags/flutter-development/" style="font-size: 10px;">flutter-development</a> <a href="/tags/flutter-web/" style="font-size: 10px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 11.43px;">game-development</a> <a href="/tags/games/" style="font-size: 10px;">games</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 10px;">ios-app-development</a> <a href="/tags/open-source/" style="font-size: 10px;">open-source</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 11.43px;">release-notes</a> <a href="/tags/releases/" style="font-size: 12.86px;">releases</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>

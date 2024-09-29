@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Announcing Dart 3.2 | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.2作者： Kevin Moore 和 Michael Thomsen 今天，我們宣布推出 Dart 3.2，其中包含一個新的語言功能，用於對私有 final 欄位進行非空推斷，透過新的互操作性功能改進開發人員體驗，支援 DevTools 中的擴展，以及關於我們的 Web 路線圖的更新，包括對 Wasm（又名 WebAss">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 3.2">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/6c7c35de.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.2作者： Kevin Moore 和 Michael Thomsen 今天，我們宣布推出 Dart 3.2，其中包含一個新的語言功能，用於對私有 final 欄位進行非空推斷，透過新的互操作性功能改進開發人員體驗，支援 DevTools 中的擴展，以及關於我們的 Web 路線圖的更新，包括對 Wasm（又名 WebAss">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*u5YRn1uMmXf94b2aPbcLRQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*N6ZSt1McXO_opQU7">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c8de8fe1b91f">
+<meta property="article:published_time" content="2023-11-15T13:44:57.000Z">
+<meta property="article:modified_time" content="2024-09-29T17:29:13.849Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*u5YRn1uMmXf94b2aPbcLRQ.png">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2023-11-15T21:44:57.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/6c7c35de.html" class="article-date">
+  <time datetime="2023-11-15T13:44:57.000Z" itemprop="datePublished">2023-11-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Dart/">Dart</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Announcing Dart 3.2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Dart-3-2"><a href="#宣布-Dart-3-2" class="headerlink" title="宣布 Dart 3.2"></a>宣布 Dart 3.2</h2><p>作者： <a href="https://medium.com/u/441fe70f4b5e">Kevin Moore</a> 和 <a href="https://medium.com/u/a6d788faa5e5">Michael Thomsen</a></p>
+<p>今天，我們宣布推出 Dart 3.2，其中包含一個新的語言功能，用於對私有 final 欄位進行非空推斷，透過新的互操作性功能改進開發人員體驗，支援 DevTools 中的擴展，以及關於我們的 Web 路線圖的更新，包括對 Wasm（又名 WebAssembly）的支援。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*u5YRn1uMmXf94b2aPbcLRQ.png" />
+</figure>
+
+<h3 id="私有-final-欄位的非空推斷"><a href="#私有-final-欄位的非空推斷" class="headerlink" title="私有 final 欄位的非空推斷"></a>私有 final 欄位的非空推斷</h3><p>自從我們在 Dart 2.12 中引入 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">可靠的空安全</a> 已經過了好幾年。在空安全中，您可以宣告哪些類型是可空的（可能包含值或 null），以及哪些類型是非空的（始終包含值）。空安全與 <a href="https://dart.dev/null-safety/understanding-null-safety#flow-analysis">流分析</a> 結合在一起，可以偵測到可空變數何時可以「推斷」為更安全的非空類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> definitelyInt(<span class="built_in">int?</span> aNullableInt) &#123;</span><br><span class="line">  <span class="keyword">if</span> (aNullableInt == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果流分析到達此處，</span></span><br><span class="line">  <span class="comment">// aNullableInt 可以安全地推斷為非空的 int。</span></span><br><span class="line">  <span class="keyword">return</span> aNullableInt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>類型推斷自 Dart 2.12 起一直是空安全的核心部分，但僅限於區域變數。欄位或頂層變數無法推斷，例如在這種情況下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Container</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int?</span> _fillLevel;</span><br><span class="line">  Container(<span class="keyword">this</span>._fillLevel);</span><br><span class="line">  check() &#123;</span><br><span class="line">    <span class="keyword">if</span> (_fillLevel != <span class="keyword">null</span>) &#123;</span><br><span class="line">      <span class="built_in">int</span> i = _fillLevel; <span class="comment">// 在 Dart 3.2 之前，會導致錯誤。</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這種限制是由于在流分析無法安全地確定何時或如何更改欄位的一些複雜情況造成的。例如，在類別的欄位推斷情況下，如果子類別使用 getter 覆蓋欄位，而 getter 有時會返回 null，就會出現問題。</p>
+<p>在 Dart 3.2 中，我們改進了我們的流分析引擎，現在能夠推斷 <strong>私有 final 欄位</strong> 的類型。現在，上面的程式碼片段可以在沒有錯誤的情況下通過。這利用了這樣一種了解，即對於私有和 final 欄位，在初始賦值之後，該值永遠不會改變，因此只檢查一次被認為是安全的。私有的 final 欄位推斷從 Dart 3.2 開始可用，並且將應用於 Dart SDK <a href="https://dart.dev/guides/language/evolution#language-versioning">下限</a> 為 3.2 或更高的專案。</p>
+<h3 id="package-lints-3-0-中的新的程式碼分析選項"><a href="#package-lints-3-0-中的新的程式碼分析選項" class="headerlink" title="package:lints 3.0 中的新的程式碼分析選項"></a>package:lints 3.0 中的新的程式碼分析選項</h3><p>說到程式碼分析，我們還在 <a href="https://pub.dev/packages/lints">package:lints</a> 中對我們的標準程式碼分析規則進行了一些改進。這個套件包含與使用 <code>dart create</code> 或 <code>flutter create</code> 建立的任何新專案一起提供的預設和推薦的靜態分析規則集（透過 <a href="https://pub.dev/packages/flutter_lints">package:flutter_lints</a> - package:lints 的擴展）。</p>
+<p>這個 lint 集的最新主要版本 3.0 現在已經可以使用了。此修訂版在核心集添加了六個 lint，在推薦集添加了兩個 lint。它具有用於驗證 pubspec URL、驗證集合方法是否使用正確參數調用等的 lint。若要查看完整的更改列表，請查看 <a href="https://github.com/dart-lang/lints/blob/main/CHANGELOG.md#300">變更日誌</a>。3.0 版本將是下一個版本中新專案的預設版本。對於現有專案，您可以 <a href="https://github.com/dart-lang/lints#upgrading-to-the-latest-lints">立即升級</a>。</p>
+<h3 id="Dart-互操作性更新"><a href="#Dart-互操作性更新" class="headerlink" title="Dart 互操作性更新"></a>Dart 互操作性更新</h3><p>在 <a href="https://dart.dev/overview#platform">各種平台</a> 上的多平台支援一直是 Dart 的核心原則。但是，即使 Dart 程式碼行可以在所有這些平台上無需更改地執行，大型應用程式仍然經常需要與現有程式碼互操作。這可能意味著來自舊專案的程式碼，或在其他函式庫或系統 API 中可用的 API。我們在這個領域進行了一系列投資，從用於 <a href="https://dart.dev/guides/libraries/c-interop">與原生 C API 互操作</a> 的 FFI 開始。我們目前正在努力將其擴展以支援與 <a href="https://dart.dev/guides/libraries/java-interop">Java 和 Kotlin</a> 以及 <a href="https://dart.dev/guides/libraries/objective-c-interop">Objective C 和 Swift</a> 互操作。有關 JS 互操作性的令人興奮的更新，請查看下面的 Dart Web 部分。</p>
+<p>截至 Dart 3.2，我們對原生互操作性進行了許多改進：</p>
+<ul>
+<li>我們為 C FFI 引入了 <a href="https://api.dart.dev/stable/dart-ffi/NativeCallable/NativeCallable.isolateLocal.html">NativeCallable.isolateLocal</a> 建構函式，它從任意 Dart 函數建立 C 函數指標。這是 <a href="https://api.dart.dev/stable/dart-ffi/Pointer/fromFunction.html">Pointer.fromFunction</a> 提供的功能的擴展，它只能從頂層函數建立函數指標。</li>
+<li>我們更新了 Objective-C 綁定生成器，以使用 <a href="https://api.dart.dev/stable/dart-ffi/NativeCallable/NativeCallable.listener.html">NativeCallable.listener</a>，我們在 Dart 3.1 中添加了它。生成器現在可以自動處理包含異步回調的 API，例如 <a href="https://developer.apple.com/documentation/coremotion">Core Motion</a>。以前，此類 API 需要手動編寫一些綁定程式碼。</li>
+<li>我們繼續改進用於 Java 和 Kotlin 互操作性的 <a href="https://dart.dev/guides/libraries/java-interop">package:jnigen</a>。這使我們能夠將 <a href="https://pub.dev/packages/cronet_http">package:cronet_http</a> - Android Cronet HTTP 客戶端的包裝器 - 從手動編寫的綁定程式碼遷移到自動 <a href="https://github.com/dart-lang/http/blob/master/pkgs/cronet_http/jnigen.yaml">生成的</a> 包裝器。</li>
+<li>我們在 <a href="https://github.com/dart-lang/sdk/issues/50565">原生資產</a> 功能方面取得了重大進展，該功能旨在解決與依賴原生程式碼的 Dart 套件分發相關的許多問題。它透過提供用於整合與構建 Flutter 和獨立 Dart 應用程式相關的各種構建系統的統一掛鉤來實現。若要查看預覽，請查看 <a href="http://dart.dev/guides/libraries/c-interop#native-assets">文件</a>。</li>
+</ul>
+<h3 id="Dart-套件的-DevTools-擴展"><a href="#Dart-套件的-DevTools-擴展" class="headerlink" title="Dart 套件的 DevTools 擴展"></a>Dart 套件的 DevTools 擴展</h3><p>Dart <a href="https://dart.dev/tools/dart-devtools">DevTools</a> 是一套用於除錯和效能分析的工具，支援純 Dart 和 Flutter 應用程式。在 Dart 3.2 和 Flutter 3.16 中，我們 <a href="https://medium.com/p/c8bc1aaf8e5f/">宣布</a> 推出一個新的 <a href="https://pub.dev/packages/devtools_extensions">擴展框架</a>，它使套件作者能夠為他們的套件構建自訂工具，並直接在 DevTools 中顯示。這允許包含框架的 pub.dev 套件提供專門針對其用例的自訂工具。例如，<a href="https://pub.dev/packages/serverpod">Serverpod</a> 的作者一直在努力為他們的套件構建開發人員工具，並且很高兴地宣布他們将在即将发布的 <a href="https://github.com/orgs/serverpod/projects/4">1.2 版本</a> 中发布 DevTools 扩展。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*N6ZSt1McXO_opQU7" />
+<figcaption><em>計劃在即將推出的 ServerPod 1.2 版本中使用的 DevTools 擴展</em></figcaption>
+</figure>
+
+<h3 id="Dart-Web-和-Wasm-更新"><a href="#Dart-Web-和-Wasm-更新" class="headerlink" title="Dart Web 和 Wasm 更新"></a>Dart Web 和 Wasm 更新</h3><p>Wasm（也稱為 <a href="https://webassembly.org/">WebAssembly</a>）是一種用於 Web 瀏覽器的令人興奮的新指令格式，它提供了一種可移植、平台中立的二進制程式碼格式，以便在現代瀏覽器中執行。像 Dart 這樣的更高級別的受控語言使用垃圾收集，而垃圾收集正在添加到 Wasm 標準中。截至 Chrome 119，<a href="https://developer.chrome.com/blog/wasmgc/">Wasm 的垃圾收集支援</a>（稱為 Wasm-GC）已預設啟用。Wasm-GC 支援也即將在 Firefox 120 中推出，這是他們的下一個穩定版本。那麼 Dart、Flutter 和 Wasm-GC 的狀態如何呢？</p>
+<p>Dart 到 Wasm 編譯器幾乎已完成功能。團隊對效能和相容性非常滿意。我們現在的重點是邊緣情況，以確保我們的輸出在各種情況下都能快速執行。</p>
+<p>對於 Flutter Web，我們已完成一個新的「Skwasm」渲染引擎。為了最大限度地提高效能，Swasm 將編譯後的應用程式程式碼直接連接到使用 wasm 到 wasm 綁定的自訂 <a href="https://skia.org/docs/user/modules/canvaskit/">CanvasKit Wasm 模組</a>。它也是 Flutter Web 多線程渲染支援的第一個版本，它可以進一步提高幀時間。</p>
+<p>在 Flutter Web 與 Wasm 擺脫目前的實驗狀態之前，還有一些事情需要完成：</p>
+<ul>
+<li><strong>雙重編譯：</strong> 生成 Wasm 和 JavaScript 輸出，并在運行時啟用功能偵測，以支持具有 Wasm-GC 支援和沒有 Wasm-GC 支援的瀏覽器。</li>
+<li><strong>現代 JavaScript 互操作性：</strong> 基於 <a href="https://github.com/dart-lang/language/issues/2727">擴展類型</a> 的新的 JS 互操作性機制，以在針對 JavaScript 和 Wasm 時，在 Dart 程式碼、瀏覽器 API 和 JS 函式庫之間實現簡潔、類型安全的調用。</li>
+<li><strong>具有 Wasm 支援的瀏覽器 API：</strong> 一個新的 package:web，基於現代 JS 互操作性機制，取代 dart:html（以及相關的函式庫）。這將為 JS 和 Wasm 目標上的瀏覽器 API 提供簡單的存取權。</li>
+</ul>
+<p>我們開始將許多內部專案遷移到 package:web 和新的 JS 互操作性機制，並預計在下一個穩定版本中會有更多更新。同時，您可以在我們的 <a href="https://flutter.dev/wasm">WebAssembly 支援</a> 頁面上獲取最新詳細資訊。</p>
+<h3>結語</h3>
+
+<p>今天就到這裡。Dart 3.2 現在可以從 <a href="https://dart.dev/get-dart">dart.dev</a> 中獲取，或者作為今天 <a href="https://medium.com/flutter/whats-new-in-flutter-3-16-dba6cb1015d1">Flutter 3.16</a> 版本的一部分。下次再見，祝您使用 Dart 開發愉快！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c8de8fe1b91f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-2-c8de8fe1b91f">宣布 Dart 3.2</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+<p>undefined</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/6c7c35de.html" data-id="cm1nvba250004h1177es5ge3y" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/c653c78e.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】Dart in Google Summer of Code 2024
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/46a8336.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Dart 3.1 &amp; a retrospective on functional style programming in Dart 3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 11.43px;">Flutter</a> <a href="/tags/announcements/" style="font-size: 15.71px;">announcements</a> <a href="/tags/cross-platform/" style="font-size: 10px;">cross-platform</a> <a href="/tags/dart/" style="font-size: 18.57px;">dart</a> <a href="/tags/dartlang/" style="font-size: 17.14px;">dartlang</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-app-development/" style="font-size: 14.29px;">flutter-app-development</a> <a href="/tags/flutter-development/" style="font-size: 10px;">flutter-development</a> <a href="/tags/flutter-web/" style="font-size: 10px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 11.43px;">game-development</a> <a href="/tags/games/" style="font-size: 10px;">games</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 10px;">ios-app-development</a> <a href="/tags/open-source/" style="font-size: 10px;">open-source</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 11.43px;">release-notes</a> <a href="/tags/releases/" style="font-size: 12.86px;">releases</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>

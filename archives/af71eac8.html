@@ -7,12 +7,12 @@
   
   <title>【文章翻譯】Cross Platform development with Flutter — How Google Classroom gets teachers and students on the… | RainVisitor Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致Google 的 Classroom 應用程式最初於 2014 年推出，全球有 1.5 億名教育工作者和學生使用它來組織作業、成績和課堂上的溝通。該應用程式在 Android 和 iOS 上都可使用，開發工作最初始於同年，並橫跨了兩個行動">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致Google Classroom 應用程式最初於 2014 年推出，如今全球有 1.5 億教師和學生使用它來組織作業、成績和課堂通訊。該應用程式可在 Android 和 iOS 上使用，開發工作始於當年早些時候，並經歷了兩個行動平台的巨變">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【文章翻譯】Cross Platform development with Flutter — How Google Classroom gets teachers and students on the…">
 <meta property="og:url" content="https://blog.rainvisitor.me/archives/af71eac8.html">
 <meta property="og:site_name" content="RainVisitor Blog">
-<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致Google 的 Classroom 應用程式最初於 2014 年推出，全球有 1.5 億名教育工作者和學生使用它來組織作業、成績和課堂上的溝通。該應用程式在 Android 和 iOS 上都可使用，開發工作最初始於同年，並橫跨了兩個行動">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致Google Classroom 應用程式最初於 2014 年推出，如今全球有 1.5 億教師和學生使用它來組織作業、成績和課堂通訊。該應用程式可在 Android 和 iOS 上使用，開發工作始於當年早些時候，並經歷了兩個行動平台的巨變">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*-u0y5vTqoC_sCyOHpvUnNA.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*yJhbJRuTHa2wt-ofA9fazw.png">
@@ -20,9 +20,13 @@
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*JS2z5_kG8Z8hAfbrxeOtCw.png">
 <meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=597d4f3b450c">
 <meta property="article:published_time" content="2024-05-07T07:02:05.000Z">
-<meta property="article:modified_time" content="2024-09-29T16:56:35.134Z">
+<meta property="article:modified_time" content="2024-09-29T17:38:48.807Z">
 <meta property="article:author" content="Rainvisitor">
-<meta property="article:tag" content="Flutter">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="education-technology">
+<meta property="article:tag" content="cross-platform">
+<meta property="article:tag" content="enterprise-technology">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*-u0y5vTqoC_sCyOHpvUnNA.png">
   
@@ -79,6 +83,10 @@
   <time datetime="2024-05-07T07:02:05.000Z" itemprop="datePublished">2024-05-07</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -96,52 +104,52 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="使用-Flutter-開發跨平台應用程式-Google-Classroom-如何讓教師和學生步調一致"><a href="#使用-Flutter-開發跨平台應用程式-Google-Classroom-如何讓教師和學生步調一致" class="headerlink" title="使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致"></a>使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致</h2><p>Google 的 Classroom 應用程式最初於 2014 年推出，全球有 1.5 億名教育工作者和學生使用它來組織作業、成績和課堂上的溝通。該應用程式在 Android 和 iOS 上都可使用，開發工作最初始於同年，並橫跨了兩個行動平台上巨大變革的時代。事實證明，管理這些不同的變革具有挑戰性。</p>
-<p>儘管努力進行同步，但 7 年後的 2021 年，Classroom 應用的 Android 和 iOS 獨立程式碼庫在功能、UI 和實作方面逐漸偏離。從最明顯的方面，例如不同平台對相同 UI 採取不同的方法，到不太明顯的方面，例如驗證和應用程式啟動邏輯的差異；Classroom 逐漸變成一個難以維護和改進的應用程式，兩個程式碼庫給少數開發人員的團隊帶來了沉重的負擔。</p>
-<p>當時有許多選擇，從堅持現狀到增加更多開發人員，再到使用跨平台框架完全重寫兩個程式碼庫。團隊致力於改進，這排除了堅持現狀的選擇，然後評估穩定兩個現有程式碼庫需要付出什麼代價，這排除了僅僅增加更多開發人員的方案。最終，團隊選擇了第三個方案：重新構思 Classroom，使用單一來源、跨平台的解決方案，最終選擇了 Flutter。</p>
-<h3 id="Flutter-如何簡化-Classroom-應用程式"><a href="#Flutter-如何簡化-Classroom-應用程式" class="headerlink" title="Flutter 如何簡化 Classroom 應用程式"></a>Flutter 如何簡化 Classroom 應用程式</h3><h4 id="不一致的-UI"><a href="#不一致的-UI" class="headerlink" title="不一致的 UI"></a>不一致的 UI</h4><p>Classroom 最明顯的問題 - UI 變異 - 強迫教師熟悉 Android 和 iOS 兩個 UI。畢竟，很容易想像學生會詢問關於這個作業螢幕和說明的問題，而一個平台上的說明與學生在另一台設備上看到的內容相比，沒有什麼意義。</p>
+<h2 id="使用-Flutter-開發跨平台應用程式-Google-Classroom-如何讓教師和學生步調一致"><a href="#使用-Flutter-開發跨平台應用程式-Google-Classroom-如何讓教師和學生步調一致" class="headerlink" title="使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致"></a>使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致</h2><p>Google Classroom 應用程式最初於 2014 年推出，如今全球有 1.5 億教師和學生使用它來組織作業、成績和課堂通訊。該應用程式可在 Android 和 iOS 上使用，開發工作始於當年早些時候，並經歷了兩個行動平台的巨變時代。事實證明，管理這些分歧的變化帶來了挑戰。</p>
+<p>儘管努力同步，但在 2021 年，也就是 7 年後，Classroom 應用程式的 Android 和 iOS 程式碼庫在功能、UI 和實作方面逐漸出現分歧。從最明顯的地方，例如屏幕對相同 UI 採取不同方法，到不太明顯的地方，例如驗證和應用程式啟動邏輯的差異；Classroom 逐漸變成一個難以維護和改進的應用程式，兩個程式碼庫給一個小型開發人員團隊帶來了沉重的負擔。</p>
+<p>有許多選項可供選擇，從堅持現狀，到增加更多開發人員，再到使用跨平台框架完全重寫兩個程式碼庫。該團隊致力於改進，這排除了堅持現狀的選項，然後評估穩定兩個現有程式碼庫需要做些什麼，這排除了僅添加更多開發人員的方案。最終，團隊選擇了第三個方案：使用單一來源、跨平台的解決方案重新構想 Classroom，而這個方案最終是 Flutter。</p>
+<h3 id="Flutter-如何簡化-Classroom-應用程式"><a href="#Flutter-如何簡化-Classroom-應用程式" class="headerlink" title="Flutter 如何簡化 Classroom 應用程式"></a>Flutter 如何簡化 Classroom 應用程式</h3><h4 id="不一致的-UI"><a href="#不一致的-UI" class="headerlink" title="不一致的 UI"></a>不一致的 UI</h4><p>Classroom 最明顯的問題 - UI 變異 - 強迫教師熟悉 Android 和 iOS 的 UI。畢竟，很容易想像學生會問關於作業屏幕和說明的問題，而一個平台上的說明在另一個平台上對於學生來說可能毫無意義。</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-u0y5vTqoC_sCyOHpvUnNA.png" />
 </figure>
 
-<p>傳統方法是由不同的團隊開發的獨立客戶端應用程式，這些應用程式會隨著時間推移而產生差異。只有對每個功能進行一致、細緻入微的同步工作才能防止這種情況。相比之下，Flutter 的本質顛覆了這種預設結果。使用 Flutter，UI 預設情況下是相同的 [1]，直到積極的工作（通常為了追求適應性）迫使它們為了使用者的利益而產生差異。</p>
-<blockquote>[1] 在 Classroom 的 Flutter 客戶端中，仍然存在一些小的、刻意造成的差異，例如系統列和底部控制項。Flutter 保留了這些平台特有的細節，同時將螢幕中間 90% 的空間留給單一 UI 實作。</blockquote>
+<p>傳統方法是由不同的團隊開發的獨立的客戶端應用程式，這些應用程式會隨著時間推移而出現分歧。只有對每個功能進行一致而艱苦的同步工作才能阻止這種情況。相比之下，Flutter 的本質顛覆了這種預設結果。使用 Flutter，UI 預設情況下是相同的 [1]，直到主動工作（<a href="https://medium.com/flutter/extreme-ui-adaptability-in-flutter-how-google-earth-supports-every-use-case-on-earth-6db4661e7a17">通常為了適應性</a>）迫使它們為了使用者利益而出現分歧。</p>
+<blockquote>[1] 在 Classroom 的 Flutter 客戶端中，保留了一些細微的故意差異，例如系統欄和底部控制項。Flutter 保留了這些平台特有的細節，同時將屏幕中央 90% 的區域留給單個 UI 實作來填充。</blockquote>
 
-<h4 id="混亂的商業邏輯"><a href="#混亂的商業邏輯" class="headerlink" title="混亂的商業邏輯"></a>混亂的商業邏輯</h4><p>Classroom 的 Android 和 iOS 客戶端不僅在 UI 上不一致。受伺服器端解決方案的影響，該解決方案將一些複雜的商業邏輯卸載到客戶端，舊的 Classroom 應用程式還處理了核心實作之間的差異。除了造成偶爾的平台特定錯誤（這可能會讓工程師嘗試重現問題時感到沮喪！）之外，這還給任何評估任一實作的正確性的人帶來了相當大的心理負擔。</p>
-<p>使用 Flutter 重寫 Classroom 解決了許多錯誤，包括以前已報告的和未報告的錯誤，這完全是因為 Flutter 如何處理原生平台互動。</p>
-<p>在原始程式碼中，多年的持續開發偶爾會模糊 UI、商業和平台特定邏輯之間的界線。這意味著使用者的錯誤報告幾乎總是需要付出巨大的努力才能隔離，因為整個呼叫堆疊都有可能是罪魁禍首。請求的檔案沒有載入是因為檔案系統讀取不正確，是因為商業邏輯中的錯誤溝通，還是因為 UI 收到了檔案，但後來遺失了它？找出答案的唯一方法是 <em>調查所有內容</em>。</p>
-<p>當然，Flutter 開發人員可以像其他人一樣模糊這些界線並混合邏輯，但 Classroom 工程團隊發現，遵循框架最佳實務會讓這種嘗試顯得痛苦地明顯。Flutter 的宣告式 UI 系統強烈建議不要意外地將商業邏輯放置在 UI Widget 中，而新的 MVVM 架構甚至有助於在 Flutter Widget 背後的龐大程式碼庫中強制執行明確的責任層級。</p>
-<p>Flutter 應用程式仍然定期與底層平台通話 - 畢竟，上傳和檢視作業的使用者旅程無法在不使用檔案系統的情況下進行 - 但是，Flutter 將平台特定邏輯隔離到專用 Plugin 中的模式再次防止例如常規磁碟 I&#x2F;O 潛入不屬於它的位置。以下範例展示了 Flutter 應用程式存取檔案系統而不弄亂整個呼叫堆疊的實際方法。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:path/path.dart&#x27;</span> <span class="keyword">as</span> path;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:path_provider/path_provider.dart&#x27;</span> <span class="keyword">as</span> path_provider;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 載入學生為特定作業儲存的作業。</span></span><br><span class="line"><span class="comment">// 回傳值的 exists() 函數如果學生的狗吃了他們的作業，則會回傳 False。</span></span><br><span class="line">Future&lt;File&gt; getHomework(Assignment assignment) <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">// 使用 `path_provider` 套件來抽象化平台特有的檔案系統怪癖</span></span><br><span class="line">  <span class="keyword">final</span> Directory homeworkDirectory =</span><br><span class="line">    <span class="keyword">await</span> path_provider.getApplicationSupportDirectory();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 擷取學生的上傳作業</span></span><br><span class="line">  <span class="keyword">return</span> File(</span><br><span class="line">    path.join([homeworkDirectory.absolute.path, assignment.name]),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="混亂的業務邏輯"><a href="#混亂的業務邏輯" class="headerlink" title="混亂的業務邏輯"></a>混亂的業務邏輯</h4><p>Classroom 的 Android 和 iOS 客戶端之間存在著差異，這不僅僅是 UI 的問題。受伺服器端解決方案的影響，該方案將一些複雜的業務邏輯轉移到客戶端，舊版的 Classroom 應用程式還處理核心實作方面的差異。除了造成偶爾的平台特定錯誤（這可能會讓工程師難以重現！）之外，這還給任何評估兩種實作正確性的人都帶來了相當大的認知負擔。</p>
+<p>使用 Flutter 重寫 Classroom 解決了一系列錯誤，包括先前報告的和未報告的錯誤，這純粹是 Flutter 如何處理原生平台互動的結果。</p>
+<p>在原始程式碼中，多年的持續開發偶爾會模糊 UI、業務和平台特定邏輯之間的界限。這意味著使用者的錯誤報告幾乎總是需要付出巨大的努力才能隔離，因為整個呼叫堆疊都可能存在問題。是否由於檔案系統讀取錯誤、業務邏輯通信錯誤，或者由於 UI 接收了檔案但隨後遺失了檔案而導致請求的檔案無法載入？唯一的解決方法是 <em>調查所有內容</em>。</p>
+<p>當然，Flutter 開發人員可以像其他人一樣混淆這些界限並混合邏輯，但 Classroom 工程團隊發現，遵循框架最佳實務使這種嘗試變得十分明顯。Flutter 的聲明式 UI 系統強烈建議不要將業務邏輯意外放置在 UI Widget 中，而新的 MVVM 架構甚至有助於在位於 Flutter Widget 背後的龐大程式碼庫中強制執行明確的責任層級。</p>
+<p>Flutter 應用程式仍然會定期與底層平台進行通信 - 畢竟，上傳和查看作業的使用者旅程離不開檔案系統 - 但 Flutter 將平台特定邏輯隔離到專用 Plugin 的模式再次阻止了例行磁碟 I&#x2F;O 偷偷溜進不應該出現的地方。以下範例展示了 Flutter 應用程式在不混淆整個呼叫堆疊的情況下存取檔案系統的一種實際方式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import &quot;dart:io&quot;;</span><br><span class="line">import &quot;package:path/path.dart&quot; as path;</span><br><span class="line">import &quot;package:path_provider/path_provider.dart&quot; as path_provider;</span><br><span class="line"></span><br><span class="line">// 載入學生為特定作業儲存的作業。</span><br><span class="line">// 回傳值的 exists() 函式會在學生將作業交給狗狗吃掉的情況下返回 False。</span><br><span class="line">Future&lt;File&gt; getHomework(Assignment assignment) async &#123;</span><br><span class="line">  // 使用 `path_provider` 套件將平台特定的檔案系統怪癖抽象化</span><br><span class="line">  final Directory homeworkDirectory = </span><br><span class="line">    await path_provider.getApplicationSupportDirectory();</span><br><span class="line"></span><br><span class="line">  // 提取學生上傳的作業</span><br><span class="line">  return File(</span><br><span class="line">    path.join([homeworkDirectory.absolute.path, assignment.name]),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>這個範例很簡單，而 Classroom 工程團隊最終開發了幾個他們自己的 Plugin 來包含更多複雜的與主機平台的互動。有趣的是，這麼做使他們的原生程式碼 <em>更容易除錯</em>，比他們在原始原生應用程式中所做的還要容易。這是怎麼做到的？在 Flutter Plugin 中遵循「不要重複自己」（DRY）原則意味著將盡可能多的商業邏輯提升到 Dart 程式碼中，只留下最簡單的輸入和輸出方法呼叫供原生互動使用。這迫使域邏輯和平台邏輯之間嚴格分離；這意味著 Classroom 的 Android 或 iOS 程式碼中的任何錯誤都可能出現在隔離的、單一責任的函數中，這些函數很容易推理。</p>
-<h4 id="效能損耗"><a href="#效能損耗" class="headerlink" title="效能損耗"></a>效能損耗</h4><p>當使用者旅程失敗時，會提交一個具體的錯誤報告，所有人都同意需要修復它。但是，對於更柔和的問題，例如應用程式啟動時間緩慢，並且自應用程式推出以來逐年加劇，會發生什麼情況？加上對保持多個客戶端同步的擔憂，突然之間，對應用程式遲緩的啟動流程進行故障排除感覺像是個無望的任務。</p>
-<p>在這裡，Flutter 有助於它本身足夠快，不會使問題惡化，更重要的是，它提供了從頭開始的機會。Classroom 團隊知道他們要建立的是全新的東西，而不是繞過多年開發的框架，因此他們透過移除多餘的 API 呼叫、並行化其他獨立的 API 呼叫，並在所有內容都解析時顯示閃爍效果和其他 UI 預覽，使他們的授權和啟動流程變得清晰。結果是應用程式啟動時間驚人地 *減少了 80%*！</p>
-<h4 id="註解功能"><a href="#註解功能" class="headerlink" title="註解功能"></a>註解功能</h4><p>Classroom 的大部分功能都可以被視為一個相當例行的應用程式，將使用者聚集在共享內容周圍，例如作業和上傳的作業。但是，有一個功能脫穎而出，顯然 <em>很棘手</em>。Classroom 的一個主要功能是檔案共享，教師和學生都可以建立、檢視和編輯檔案，包括自由形式的註解，就像使用筆或記號筆在真實紙張上繪製一樣。這個註解共享功能已經存在於 Classroom 的原生 Android 和 iOS 客戶端中，因此將其移植到 Flutter 的任何摩擦都將是交易破壞者。</p>
-<p>Classroom 團隊能夠將這個註解功能重新打包到一個 Plugin 中，該 Plugin 將平台特定實作委派給單獨的函式庫。對於檔案註解，這些變成了 Google One、Google Keep 和舊的 Classroom 應用程式中已使用的預先存在的原生函式庫的薄包裝。在內部，Android 和 iOS 對檔案共享有不同的實作要求。在 iOS 上，Classroom 應用程式透過原生視圖存取檔案，但在 Android 上，它會直接打開 Google Keep 應用程式。但是，良好的 Plugin 設計原則能夠隔離這些實作細節，並且仍然為應用程式中的其他部分提供乾淨、單一的 Dart API 來瀏覽。最終，Classroom 的「最棘手」功能之一已成功移植到 Flutter。</p>
-<p>以下是 Classroom 在 Android 上的註解功能的視覺化圖示，概述了原生 UI 組件和 Flutter UI 組件的混合。</p>
+<p>這個範例很簡單，Classroom 工程團隊最終開發了他們自己的幾個 Plugin，以包含更複雜的與主機平台的互動。有趣的是，這麼做讓他們的原生程式碼 <em>更容易除錯</em>，比他們最初的原生應用程式更容易。這是怎麼做到的呢？在 Flutter Plugin 中遵循「不要重複自己 (DRY)」原則意味著將儘可能多的業務邏輯提升到 Dart 程式碼中，只為原生互動保留最簡單的進出方法呼叫。這會強制在領域邏輯和平台邏輯之間建立堅如磐石的分隔；這意味著 Classroom 的 Android 或 iOS 程式碼中的任何錯誤都可能出現在隔離的單一責任函式中，這些函式很容易進行推理。</p>
+<h4 id="效能消耗"><a href="#效能消耗" class="headerlink" title="效能消耗"></a>效能消耗</h4><p>當使用者旅程失敗時，就會提交一個具體的錯誤，所有人都同意需要解決。但對於更微妙的問題，例如應用程式啟動時間隨著時間推移越來越慢，自應用程式推出以來每年都在惡化，該怎麼辦？再加上對保持多個客戶端同步的擔憂，突然之間，對應用程式啟動流程的緩慢進行故障排除感覺就像一項無望的任務。</p>
+<p>在這裡，Flutter 通過自身速度足够快，不至於加剧问题，更重要的是，它提供了從頭開始的機會。Classroom 團隊知道他們是在建立新的東西，而不是繞過多年開發積累的骨架，他們通過移除冗餘的 API 呼叫，並行化其他獨立的 API 呼叫，以及在所有內容解析完成時顯示閃爍效果和其他 UI 預覽，使他們的授權和啟動流程更加清晰明了。结果是應用程式启动时间惊人地 *减少了 80%*！</p>
+<h4 id="注釋功能"><a href="#注釋功能" class="headerlink" title="注釋功能"></a>注釋功能</h4><p>Classroom 的大部分功能可以看作是一個相當例行的應用程式，它將使用者圍繞共享內容（如作業和上傳的作業）聚集在一起。但有一個功能顯得 <em>非常棘手</em>。Classroom 的主要功能之一是檔案共享，教師和學生都可以創建、查看和編輯檔案，包括自由形式的注釋，就像在真紙上用筆或記號筆繪畫一樣。這個注釋共享功能已經存在於 Classroom 的原生 Android 和 iOS 客戶端中，因此將其移植到 Flutter 的任何摩擦都會成為阻礙。</p>
+<p>Classroom 團隊能夠將這個注釋功能重新打包到一個 Plugin 中，該 Plugin 將平台特定實作委派給單獨的函式庫。對於檔案注釋，這些函式庫成為了 Google One、Google Keep 和舊版 Classroom 應用程式中已經使用的預先存在的原生函式庫的薄薄包裝。在內部，Android 和 iOS 對檔案共享有不同的實作要求。在 iOS 上，Classroom 應用程式通過原生視圖存取檔案，但在 Android 上，它會直接打開 Google Keep 應用程式。但是，良好的 Plugin 設計原則能夠將這些實作細節隔離，同時仍然為應用程式中的其他部分提供一個乾淨的、單一的 Dart API 來進行導航。最終，Classroom 中「最棘手」的功能之一已成功移植到 Flutter。</p>
+<p>以下是 Classroom 在 Android 上的注釋功能的可視化，概述了原生和 Flutter UI 組件的混合。</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*yJhbJRuTHa2wt-ofA9fazw.png" />
-<figcaption>四個並排的行動螢幕，共同展示了選擇和註解檔案的使用者流程</figcaption>
+<figcaption>四個並排的行動裝置屏幕，共同展示了選擇和注釋檔案的使用者流程</figcaption>
 </figure>
 
-<p>更廣泛地說，Flutter 中典型的 Plugin 設計如下所示，其中一個單一、簡化的介面載入平台特定函式庫，這些函式庫依次使用 FFI 或 JNI 與底層平台通話。這允許 Flutter 應用程式在所有構建目標中使用平台特定的原生 API，而不會將這些考量因素洩露到 Dart 程式碼中。</p>
+<p>更籠統地說，典型的 Flutter Plugin 設計看起來像下面這樣，其中一個單一的、簡化的介面載入平台特定的函式庫，這些函式庫反過來又使用 FFI 或 JNI 與底層平台進行通信。這允許 Flutter 應用程式與所有構建目標的平台特定原生 API 互動，而不會將這些考慮因素洩露到 Dart 程式碼中。</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/928/1*slexehY5Bz7L36tuIuxP4g.png" />
-<figcaption>如何設計 Flutter Plugin 的圖示</figcaption>
+<figcaption>Flutter Plugin 設計圖</figcaption>
 </figure>
 
-<h3 id="回顧"><a href="#回顧" class="headerlink" title="回顧"></a>回顧</h3><h4 id="開發人員速度"><a href="#開發人員速度" class="headerlink" title="開發人員速度"></a>開發人員速度</h4><p>Classroom 團隊花了兩年時間使用一個團隊重寫了他們的應用程式，該團隊從 1 名工程師（用於最初的原型製作階段）到開發高峰期的 10 名全職工程師。這不是一筆小投資，但團隊做出了這個承諾，承諾在未來永久性地實現更快的開發和維護。Classroom 於 2023 年 6 月在 iOS 上推出了他們的 Flutter 重寫版本，並於 2024 年 1 月在 Android 上推出，完成了該專案。從那以後，平均花在新增功能上的工程師時間減少了三分之二，這意味著開發人員速度提高了三倍！在等待了 2 年新增功能後，利害關係人對久違的 ✨更快的功能開發✨ 到來感到興奮。</p>
-<p>Classroom 團隊決定重寫的部分原因是，知道他們的專案永遠不會「完成」，因此新的功能可能會在很長一段時間內不斷新增。這為重寫提供了一個令人信服的理由，即使是昂貴的重寫，最終也會物超所值。Classroom 團隊在重寫投資後的哪個時間點會達到盈虧平衡的公式是：</p>
+<h3 id="回顧"><a href="#回顧" class="headerlink" title="回顧"></a>回顧</h3><h4 id="開發速度"><a href="#開發速度" class="headerlink" title="開發速度"></a>開發速度</h4><p>Classroom 團隊花費了兩年的時間來使用一個團隊重寫他們的應用程式，這個團隊從 1 名工程師（用於最初的原型設計階段）到開發高峰期的 10 名全職工程師不等。這不是一筆小投入，但團隊基於更快開發和維護的承諾做出了這個決定。Classroom 於 2023 年 6 月在 iOS 上推出了他們的 Flutter 重寫版本，並於 2024 年 1 月在 Android 上推出該專案。此後，用於新功能的平均工程師時間減少了三分之二，這意味著開發速度提高了三倍！在等了兩年之後，利益相關者對期待已久的 ✨更快功能開發✨ 感到非常高興。</p>
+<p>Classroom 團隊決定重寫的部分原因是，他們知道他們的專案永遠不會「完成」，新的功能很可能會在很長一段時間內不斷添加。這為一個有說服力的案例提供了支持，即重寫，即使是一項昂貴的重寫，最終也會得到回報。Classroom 團隊計算他們使用 Flutter 重寫應用程式後何時才能實現投資回報的公式是：</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*JS2z5_kG8Z8hAfbrxeOtCw.png" />
-<figcaption>估計使用 Flutter 重寫應用程式後速度提升何時會超過重寫時間的公式。公式是重寫時間除以使用 Flutter 撰寫功能時間減少量等於達到盈虧平衡所需的發佈後功能數量。</figcaption>
+<figcaption>估算使用 Flutter 重寫應用程式後，提高的速度何時會超過重寫時間的公式。公式為重寫時間除以使用 Flutter 編寫功能所需時間的減少量，等於達到盈虧平衡點的發佈後功能數量。</figcaption>
 </figure>
 
-<p>在發佈 iOS 版本的 9 個月裡，Classroom 估計已經透過 Flutter 提供的開發人員速度提高三倍，從而收回最初投資的 40%。</p>
-<h4 id="開發人員體驗"><a href="#開發人員體驗" class="headerlink" title="開發人員體驗"></a>開發人員體驗</h4><p>比利害關係人更開心的只有開發人員 <em>本身</em>。對於 Classroom 團隊來說，他們開發人員速度提高三倍的結果來自於只撰寫每個功能一次（或者最多在具有大量原生組件的情況下撰寫 1.5 次），消除了兩個團隊（他們的時間安排通常相差數月）的協調成本，當然還有熱重載。熱重載本身，憑藉其約 99% 的重建時間減少，讓 Classroom 團隊的士氣比他們使用兩個原生客戶端時更高。最終，Classroom 團隊發現在他們轉向 Flutter 之後，很容易吸引和留住工程師。</p>
-<p>此外，Classroom 團隊發現，新功能平均需要更少的程式碼行數來實作，減少了至少 50%。實際上，減少的幅度可能要高得多，因為他們在重寫過程中建立的每個功能甚至都沒有在兩個原生客戶端中正式實作！換句話說，減少 50% 的程式碼行數可以交付所有舊的功能，以及 <em>大型</em> 功能差距的覆蓋範圍（包括 iOS 上的離線支援）。</p>
-<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>大約在開始重寫的兩年後，Classroom 團隊已將他們的應用程式發佈到 Android 和 iOS，並且新增了足夠多的功能來償還最初投資的 40%。他們的全新應用程式的啟動速度幾乎是舊版本的 <em>五倍</em>，為開發人員和最終使用者節省了時間和挫折。展望未來，新功能的開發成本平均是舊現狀的三分之一，享受在兩個平台上的同時發佈，<em>並且</em> 更容易進行故障排除和維護。總體而言，使用者、開發人員和利害關係人的士氣從未像 Classroom 轉向 Flutter 以重新投資他們的未來之後那樣高漲。</p>
+<p>在 iOS 推出 9 個月後，Classroom 估計已經通過 Flutter 提供的開發速度提高三倍，從而收回了最初投資的 40%。</p>
+<h4 id="開發人員體驗"><a href="#開發人員體驗" class="headerlink" title="開發人員體驗"></a>開發人員體驗</h4><p>除了利益相關者之外，唯一比開發速度提高更讓 <em>開發人員自己</em> 高興的是 - <em>開發人員自己</em>。對於 Classroom 團隊來說，他們 3 倍的速度增長來自於僅需編寫一次每個功能（或者至少 1.5 次，在具有大量原生組件的情況下），消除了協調兩個團隊的成本，而這兩個團隊的時間表通常相差數月，當然還有熱重載。熱重載本身及其大約 99% 的重建時間減少，讓 Classroom 團隊的士氣比他們使用兩個原生客戶端時更高。最終，Classroom 團隊發現，在他們轉向 Flutter 之後，很容易吸引和留住工程師。</p>
+<p>此外，Classroom 團隊發現，平均來說，新的功能需要減少至少 50% 的程式碼行數才能實現。實際上，減少量可能要高得多，因為他們在重寫過程中建立的每個功能在兩個原生客戶端中都沒有真正實現！換句話說，50% 的程式碼行數實現了所有舊的功能，還覆蓋了 <em>大量</em> 功能缺口（包括 iOS 上的離線支援）。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>在開始重寫大約兩年後，Classroom 團隊將他們的應用程式發佈到 Android 和 iOS，並添加了足夠的額外功能，以償還他們前期投資的 40%。他們的全新應用程式啟動速度是舊版本啟動速度的 <em>五倍</em>，為開發人員和最終使用者節省了時間和挫折。展望未來，新的功能平均開發成本是舊狀況的 <em>三分之一</em>，可以在兩個平台上同時發佈，並且 <em>更容易</em> 除錯和維護。最終，在 Classroom 切換到 Flutter 以重新投資他們的 <em>未來</em> 後，使用者、開發人員和利益相關者的士氣達到了前所未有的高度。</p>
 <p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=597d4f3b450c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/cross-platform-development-with-flutter-how-google-classroom-gets-teachers-and-students-on-the-597d4f3b450c">使用 Flutter 開發跨平台應用程式 - Google Classroom 如何讓教師和學生步調一致</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
 
       
@@ -150,7 +158,7 @@
       <a data-url="https://blog.rainvisitor.me/archives/af71eac8.html" data-id="cm1ntp44b0000v5175q567zy3" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li></ul>
 
     </footer>
   </div>
@@ -186,7 +194,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
     </div>
   </div>
 
@@ -196,7 +204,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/" rel="tag">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li></ul>
     </div>
   </div>
 
@@ -206,7 +214,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 20px;">Flutter</a> <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a>
+      <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 11.43px;">Flutter</a> <a href="/tags/announcements/" style="font-size: 15.71px;">announcements</a> <a href="/tags/cross-platform/" style="font-size: 10px;">cross-platform</a> <a href="/tags/dart/" style="font-size: 18.57px;">dart</a> <a href="/tags/dartlang/" style="font-size: 17.14px;">dartlang</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-app-development/" style="font-size: 14.29px;">flutter-app-development</a> <a href="/tags/flutter-development/" style="font-size: 10px;">flutter-development</a> <a href="/tags/flutter-web/" style="font-size: 10px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 11.43px;">game-development</a> <a href="/tags/games/" style="font-size: 10px;">games</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 10px;">ios-app-development</a> <a href="/tags/open-source/" style="font-size: 10px;">open-source</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 11.43px;">release-notes</a> <a href="/tags/releases/" style="font-size: 12.86px;">releases</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a>
     </div>
   </div>
 
@@ -215,7 +223,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
     </div>
   </div>
 
@@ -226,6 +234,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
         
           <li>
             <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
@@ -241,10 +253,6 @@
         
           <li>
             <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
-          </li>
-        
-          <li>
-            <a href="/archives/d685d4ac.html">【文章翻譯】Announcing the winners of the Global Gamers Challenge</a>
           </li>
         
       </ul>
