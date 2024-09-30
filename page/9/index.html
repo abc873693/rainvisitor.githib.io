@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="RainVisitor Blog">
+<meta property="og:url" content="https://blog.rainvisitor.me/page/9/index.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:author" content="Rainvisitor">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-2021-09-01T00:29:04.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/ef11ad01.html" class="article-date">
+  <time datetime="2021-08-31T16:29:04.000Z" itemprop="datePublished">2021-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/ef11ad01.html">【文章翻譯】Raster thread performance optimization tips</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="柵格執行緒效能優化技巧"><a href="#柵格執行緒效能優化技巧" class="headerlink" title="柵格執行緒效能優化技巧"></a>柵格執行緒效能優化技巧</h2><p>最近，我坐下來調整 FlutterFolio 的效能，這個應用程式是作為 Flutter Engage 的設計展示而建立的。只改變了一處，我就讓 FlutterFolio 變得快了很多。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*16rv_KQNNU3IsAHCfI3G6A.png" />
+</figure>
+
+<p>不過，首先，我必須找出要改什麼。這篇文章就是關於這個搜尋的。</p>
+<p>FlutterFolio 是一個功能完整的應用程式，從設計到實作，花了 6 個星期 (!) 時間完成，支援行動裝置、桌面和網頁。開發團隊顯然必須做一些妥協 - 沒有任何批評。專案的範圍和非常短的時程迫使他們這樣做。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fx4xZkdlADWo%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dx4xZkdlADWo&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fx4xZkdlADWo%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/7c22b91a90a681b78e65ebfbd4728965/href">https://medium.com/media/7c22b91a90a681b78e65ebfbd4728965/href</a></iframe>
+
+<p>事實上，這是一個絕佳的機會，因為這個應用程式比我想到的所有範例應用程式都更加「真實」。</p>
+<p>而且，效能優化在真實應用程式上比在合成問題上更好解釋。</p>
+<h3 id="第-1-步：效能分析"><a href="#第-1-步：效能分析" class="headerlink" title="第 1 步：效能分析"></a>第 1 步：效能分析</h3><p>任何優化的第一步是什麼？量測。知道一個應用程式看起來很慢是不夠的。你需要更精確一點。兩個原因：</p>
+<ol>
+<li>量測可以將我們引導到最糟糕的肇事者。任何應用程式的每個部分都可以變得更快、更有效率。但是，你必須從某個地方開始。效能分析讓我們看到哪些部分做得還可以，哪些部分做得不好。然後，我們可以專注於做得不好的部分，並在有限的時間內取得更大的進展。</li>
+<li>我們可以比較前後。有時，程式碼變更看起來像是個好主意，但實際上，它並沒有產生顯著的差異。有了基準（之前）就表示我們可以量化變更的影響。我們可以將之前與之後進行比較。</li>
+</ol>
+<p>應用程式的效能分析很困難。我在 2019 年寫了一篇關於這方面的 <a href="https://medium.com/flutter/performance-testing-of-flutter-apps-df7669bb7df7">長篇文章</a>。所以，讓我們從簡單的開始。我們在 profile 模式下執行應用程式，開啟效能覆蓋圖，並使用應用程式，同時觀察效能覆蓋圖的圖表。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*H6YKXQ1-ToTZ50v2" />
+</figure>
+
+<p>我們立即看到柵格執行緒正在努力。</p>
+<p>這尤其發生在捲軸瀏覽應用程式的主頁時。您應該始終優先考慮使用者花費大部分時間的部分或效能問題對使用者特別明顯的部分。換句話說，如果您有兩個效能問題，其中一個發生在開始畫面，另一個埋藏在設定頁面中，請先修復開始畫面。</p>
+<p>讓我們看看柵格執行緒在做什麼。</p>
+<h3 id="旁白：UI-執行緒-vs-柵格執行緒"><a href="#旁白：UI-執行緒-vs-柵格執行緒" class="headerlink" title="旁白：UI 執行緒 vs. 柵格執行緒"></a>旁白：UI 執行緒 vs. 柵格執行緒</h3><p>其實，讓我們先澄清柵格執行緒做什麼。</p>
+<p>所有 Flutter 應用程式都在至少兩個並行執行緒上運行：UI 執行緒和柵格執行緒。UI 執行緒是您建立 Widget 和應用程式邏輯運行的地方。（您可以建立隔離區，這表示您可以在其他執行緒上運行邏輯，但為了簡單起見，我們將忽略這一點。）柵格執行緒是 Flutter 用來 <em>柵格化</em> 您的應用程式的方式。它接收來自 UI 執行緒的指令，並將它們轉換成可以傳送到圖形卡的東西。</p>
+<p>為了更具體，讓我們看看一個 build 函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> Image.asset(<span class="string">&#x27;dash.png&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的程式碼在 UI 執行緒上運行。Flutter 架構找出要放置 Widget 的位置、要給它什麼尺寸，等等 - 仍然在 UI 執行緒上。</p>
+<p>然後，在 Flutter 知道有關畫面的所有資訊之後，它就會交給柵格執行緒。柵格執行緒會取得 <code>dash.png</code> 中的位元組，調整圖片的大小（如果需要），然後應用不透明度、混合模式、模糊等等，直到它取得最終的像素。然後，柵格執行緒將得到的資訊傳送到圖形卡，因此也傳送到螢幕。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/497/0*zJIzYT-PwDfPDcj3" />
+</figure>
+
+<h3 id="第-2-步：深入時間軸"><a href="#第-2-步：深入時間軸" class="headerlink" title="第 2 步：深入時間軸"></a>第 2 步：深入時間軸</h3><p>好的，回到 FlutterFolio。開啟 Flutter DevTools 讓我們可以更仔細地查看時間軸。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ypQsScjnj0Mw5Ijg" />
+</figure>
+
+<p>在 <strong>效能</strong> 標籤中，您可以看到 UI 執行緒（淡藍色條）做得很好，而柵格執行緒（深藍色和紅色條）在每個畫面中花費了令人驚訝的時間，特別是在捲軸向下瀏覽主頁時。因此，問題不在於低效的 build 方法或商業邏輯。問題是要求柵格執行緒做太多事。</p>
+<p>事實上，<em>每個畫面</em> 都花費了很長時間在柵格執行緒上，這告訴了我們一些事情。它表示我們要求柵格執行緒做一些工作 <em>一次又一次</em> - 它不是偶爾做一次的事情。</p>
+<p>讓我們選擇一個畫面，看看 <strong>時間軸事件</strong> 面板。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*W7OF2hEK--gS5XwF" />
+</figure>
+
+<p>時間軸的頂部，帶有淺灰色背景，是 UI 執行緒。再次，您可以看到 UI 執行緒不是問題。</p>
+<p>在 UI 執行緒下方，您可以看到柵格執行緒上的事件，從 GPURasterizer:Draw 開始。不幸的是，這就是事情變得有點模糊的地方。有許多對異國情調名稱方法的呼叫，例如 TransformLayer::Preroll、OpacityLayer::Preroll、PhysicalShapeLayer::Paint 等等。沒有關於這些方法中發生了什麼事情的詳細資訊，而且這些不是大多數 Flutter 開發人員認識的名稱。</p>
+<p>它們是來自 Flutter 引擎的 C++ 方法。如果您想，您可以 <a href="https://www.google.com/search?q=PhysicalShapeLayer::Paint">搜尋</a> 這些方法名稱，閱讀程式碼和註解，看看幕後發生了什麼。有時，這可以讓您對柵格執行緒在做什麼有更多直覺。但是，這種研究對於找出效能問題來說並不嚴格需要。（我直到相對最近才做過這種研究，但仍然能夠優化許多應用程式的效能。）</p>
+<p>然後，有一個標記為 SkCanvas::Flush 的長事件。它花了 18 毫秒，遠遠超過合理範圍。不幸的是，該事件也沒有任何詳細資訊，因此我們需要做一點偵探工作。</p>
+<p>SkCanvas 中的 Sk 代表 <a href="https://skia.org/">Skia</a>，這是 Flutter 用於在其堆疊最底層進行渲染的圖形引擎。<a href="https://api.skia.org/classSkCanvas.html">SkCanvas</a> 是一個低階 C++ 類別，類似於 Flutter 自己 的 <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a>（如果您使用 <a href="https://api.flutter.dev/flutter/widgets/CustomPaint-class.html">CustomPaint</a>，您可能已經熟悉它）。您應用程式的所有像素、線條、漸變 - 所有 UI - 都會經過 SkCanvas。而且，SkCanvas::Flush 是這個類別在收集到所有需要的資訊後進行大部分工作的地方。文件 <a href="https://api.skia.org/classSkCanvas.html#a3f8ea661c6021dc4dde325aab87870bf">指出</a> Flush 方法「解決所有未決的 GPU 作業」。</p>
+<p>讓我們回顧一下我們從效能時間軸中学到的东西：</p>
+<ul>
+<li>柵格執行緒是主要問題。UI 執行緒做得相對良好。</li>
+<li>在捲軸時，柵格執行緒在 <em>每個畫面</em> 中花費了很長時間。一些昂貴的柵格化工作一直在進行。</li>
+<li><code>SkCanvas::Flush</code> 花費了很長時間，這表示 Skia 正在做很多功課。</li>
+</ul>
+<p>我們 <em>不知道</em> 那個功課是什麼。讓我們回顧一下程式碼。</p>
+<h3 id="第-3-步：閱讀程式碼"><a href="#第-3-步：閱讀程式碼" class="headerlink" title="第 3 步：閱讀程式碼"></a>第 3 步：閱讀程式碼</h3><p>有了知識，讓我們看看原始碼。如果程式碼不熟悉（就像我對 FlutterFolio 的情況一樣），最好從 profile 模式切換到 debug 模式，並使用 <a href="https://flutter.dev/docs/development/tools/devtools/inspector">Flutter Inspector</a> 跳轉到相關 Widget 的原始碼。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*OvXs3e-CZJzW49hA" />
+</figure>
+
+<p>FlutterFolio 的主頁，至少在行動裝置上，似乎基本上是一個由 <a href="https://github.com/gskinnerTeam/flutter-folio/blob/2bb2101c14ee3f30e11f966e9ce6c50dee600c0b/lib/views/home_page/covers_flow_list_mobile.dart#L36-L40">BookCoverWidgets</a> 填充的垂直 <a href="https://github.com/gskinnerTeam/flutter-folio/blob/2bb2101c14ee3f30e11f966e9ce6c50dee600c0b/lib/views/home_page/covers_flow_list_mobile.dart#L36-L40">PageView</a>。查看 BookCoverWidget，您可以看到它本質上是一個 <a href="https://github.com/gskinnerTeam/flutter-folio/blob/2bb2101c14ee3f30e11f966e9ce6c50dee600c0b/lib/views/home_page/book_cover/book_cover.dart#L77-L122">各種 Widget 的堆疊</a>，從底部的大型圖片開始，繼續是一些動畫覆蓋層、主要文字內容，最後是頂部的滑鼠懸停覆蓋層。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">child: Stack(fit: StackFit.expand, children: [</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">/////////////////////////////<span class="language-xml"><span class="tag">&lt;<span class="name">br</span>&gt;</span></span></span></span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">背景圖片</span></span></span><br><span class="line">  <span class="comment">// 當我們滑鼠懸停時，動畫縮放</span></span><br><span class="line">  AnimatedScale(</span><br><span class="line">    duration: Times.slow,</span><br><span class="line">    begin: <span class="number">1</span>,</span><br><span class="line">    end: isClickable ? <span class="number">1.1</span> : <span class="number">1</span>,</span><br><span class="line">    child: BookCoverImage(widget.data),</span><br><span class="line">  ),</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">黑色覆蓋層，在滑鼠懸停時淡出</span></span></span><br><span class="line">  AnimatedContainer(duration: Times.slow, </span><br><span class="line">     color: Colors.black.withOpacity(overlayOpacity)),</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">當處於大型模式時，顯示一些漸變，</span></span></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">應該位於文字元素下方</span></span></span><br><span class="line">  <span class="keyword">if</span> (widget.largeMode) ...[</span><br><span class="line">    FadeInLeft(</span><br><span class="line">      duration: Times.slower,</span><br><span class="line">      child: _SideGradient(Colors.black),</span><br><span class="line">    ),</span><br><span class="line">    FadeInUp(child: _BottomGradientLg(Colors.black))</span><br><span class="line">  ] <span class="keyword">else</span> ...[</span><br><span class="line">    FadeInUp(child: _BottomGradientSm(Colors.black)),</span><br><span class="line">  ],</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">放在文字內容下方，點擊時取消焦點。</span></span></span><br><span class="line">  GestureDetector(behavior: HitTestBehavior.translucent, </span><br><span class="line">      onTap: InputUtils.unFocus),</span><br><span class="line"></span><br><span class="line">  <span class="comment">/// <span class="language-markdown">BookContent，顯示大型封面或小型封面</span></span></span><br><span class="line">  Align(</span><br><span class="line">    alignment: widget.topTitle ? Alignment.topLeft : Alignment.bottomLeft,</span><br><span class="line">    <span class="comment">// 根據我們處於哪種模式，對填補進行動畫轉場</span></span><br><span class="line">    child: AnimatedContainer(</span><br><span class="line">      duration: Times.slow,</span><br><span class="line">      padding: EdgeInsets.all(widget.largeMode ? Insets.offset : Insets.sm),</span><br><span class="line">      child: (widget.largeMode)</span><br><span class="line">          ? LargeBookCover(widget.data)</span><br><span class="line">          : SmallBookCover(widget.data, topTitle: widget.topTitle),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">滑鼠懸停效果</span></span></span><br><span class="line">  <span class="keyword">if</span> (isClickable) ...[</span><br><span class="line">    Positioned.fill(child: FadeIn(child: RoundedBorder(color: theme.accent1, ignorePointer: <span class="keyword">false</span>))),</span><br><span class="line">  ],</span><br><span class="line">]),</span><br></pre></td></tr></table></figure>
+
+<p>現在，請記住：您正在尋找的是在每個畫面中都會發生的東西（也就是說，它始終存在），並且可能對於 Skia 渲染器來說繪製起來很昂貴（圖片、模糊、混合等等）。</p>
+<h3 id="第-4-步：深入探討"><a href="#第-4-步：深入探討" class="headerlink" title="第 4 步：深入探討"></a>第 4 步：深入探討</h3><p>現在，您需要深入探討以找出可能存在问题的 Widget。一種方法是暫時從應用程式中移除各種 Widget，看看這對效能有什麼影響。</p>
+<p>請記住，堆疊的第一個子元素是背景，每個後續子元素都是之前 Widget 上方的圖層。所以，第一個子元素是背景圖片，由 BookCoverImage 表示。您可以移除它，但主頁看起來會像這樣：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*gC4MeiTr5qVd1fW7" />
+</figure>
+
+<p>這就失去了整個頁面的意義。仔細查看 BookCoverImage，您可以看到它只是一個簡單的 Image 函式包裝器。除了一个值得注意的例外（本文稍後會提到）之外，這裡沒有什麼可以改進的地方。</p>
+<p>繼續，有這段程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">黑色覆蓋層，在滑鼠懸停時淡出</span></span></span><br><span class="line">AnimatedContainer(duration: Times.slow, </span><br><span class="line">  color: Colors.black.withOpacity(overlayOpacity)),</span><br></pre></td></tr></table></figure>
+
+<p>這是一個用透明黑色覆蓋整個圖片的 Widget。overlayOpacity 預設情況下為 0（而且大部分時間都是如此），所以這個圖層是完全透明的。嗯。讓我們將它移除，並再次在 profile 模式下執行應用程式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*NiyiyjMKhKn7LJFk" />
+</figure>
+
+<p>有趣！柵格執行緒仍然承擔了大量負載，但效能有了顯著改善。</p>
+<p>我決定為 FlutterFolio 實作一個更強大的效能分析工具，以便我可以證明改進是真實的，而不仅仅是偶然。這個變更讓我柵格化所花費的 CPU 時間整體減少了 20%，潛在的卡頓減少了 50%。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*oE665wZJZhFsz-7s" />
+</figure>
+
+<p>總的來說，這是一個巨大的變化，因為移除了一個大部分時間都無效的單個 Widget。</p>
+<p><a href="https://github.com/gskinnerTeam/flutter-folio/pull/62">修復</a> 很簡單：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">黑色覆蓋層，在滑鼠懸停時淡出</span></span></span><br><span class="line"><span class="keyword">if</span> (overlayOpacity &gt; <span class="number">0</span>)</span><br><span class="line">  AnimatedContainer(duration: Times.slow,</span><br><span class="line">      color: Colors.black.withOpacity(overlayOpacity)),</span><br></pre></td></tr></table></figure>
+
+<p>現在，您只在它具有非零不透明度（也就是說，它至少部分可見）時才會加入透明覆蓋層。您避免了（非常常見的！）情況，即建立並柵格化一個完全透明的圖層，但它没有任何效果。</p>
+<p>就這樣，應用程式變得更加流暢，也更節省電量。</p>
+<p><strong>注意：</strong>為什麼你需要這樣做？Flutter 不應該足夠聰明地為我們執行這個優化嗎？請閱讀 <a href="https://github.com/flutter/flutter/pull/72526#issuecomment-749185938">此處</a> 的議題，了解為什麼它做不到。為什麼透明不透明度在第一時間會變慢？這超出了本文的範圍，但它與堆疊中更上方的 BackdropFilter Widget 相關，它會與下方每個 Widget 相互作用。</p>
+<p>本文的主要目的不是教你關於這個特定效能陷阱的知識。你可能永遠不會再看到它。我的目標是教你如何一般性地優化柵格執行緒效能。</p>
+<h3 id="第-5-步：概括"><a href="#第-5-步：概括" class="headerlink" title="第 5 步：概括"></a>第 5 步：概括</h3><p>在繼續處理一個完全不同的問題之前，通常最好查看專案中的其他地方，看看是否有類似的問題。我們的應用程式中是否有其他地方使用了大面積覆蓋層？你能避免它們嗎？</p>
+<p>在這種情況下，接下來的幾行會建立在您捲軸時會淡入的大型漸變：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">當處於大型模式時，顯示一些漸變，</span></span></span><br><span class="line"><span class="comment">/// <span class="language-markdown">應該位於文字元素下方</span></span></span><br><span class="line"><span class="keyword">if</span> (widget.largeMode) ...[</span><br><span class="line">  FadeInLeft(</span><br><span class="line">    duration: Times.slower,</span><br><span class="line">    child: _SideGradient(Colors.black),</span><br><span class="line">  ),</span><br><span class="line">  FadeInUp(child: _BottomGradientLg(Colors.black))</span><br><span class="line">] <span class="keyword">else</span> ...[</span><br><span class="line">  FadeInUp(child: _BottomGradientSm(Colors.black)),</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>而且，果然，移除這些動畫的、幾乎佔據全螢幕的漸變會顯著改善捲軸效能。不幸的是，在這種情況下，解決方案不像之前的範例那样简单。這些漸變不是無形的。它們會在使用者到達特定封面時開始淡入。移除它们 <em>确实</em> 会造成視覺上的差異。</p>
+<p>一個想法是稍微延遲淡入，這樣動畫只会在使用者降落在特定 BookCover 上時才會開始。這樣一來，您就可以減輕柵格執行緒的負載，而使用者在捲軸時，也希望可以避免一些潛在的卡頓。</p>
+<p>但是，這涉及到對應用程式的動態設計進行修改，因此需要與更廣泛的團隊討論。許多效能優化都會屬於這類。效能優化通常是折衷的過程。</p>
+<h3 id="重複步驟-2-5-直到滿意"><a href="#重複步驟-2-5-直到滿意" class="headerlink" title="重複步驟 2-5 直到滿意"></a>重複步驟 2-5 直到滿意</h3><p>到目前為止，我們只查看了一種類型的問題。總是會有更多問題。</p>
+<p>以下是一個關於下一步的想法：應用程式的圖片資產是否太大？請記住，柵格執行緒負責取得圖片位元組、解碼它們、調整大小、應用濾鏡等等。如果它將一個 20 MB 的高解析度圖片載入到螢幕上的一個小頭像圖片中，那麼您就是在浪費資源。</p>
+<p>當您的應用程式在 debug 模式下執行時，您可以使用 Flutter Inspector 來 <a href="https://api.flutter.dev/flutter/painting/debugInvertOversizedImages.html">反轉過大的圖片</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*VBQwkJIdQBuQl6G9Xy0glg.png" />
+</figure>
+
+<p>這將會反轉顏色並翻轉應用程式中對於實際用途來說太大的所有圖片。然后，您可以仔细检查应用程序，并注意不自然的变化。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*n7AfpJ2tNR4CLB0V" />
+</figure>
+
+<p>debug 模式還會在每次遇到這種圖片時報告一個錯誤，例如：</p>
+<blockquote>[錯誤] 圖片 assets/images/empty-background.png 的顯示大小為 411×706，但解碼大小為 2560×1600，額外使用了 19818KB。</blockquote>
+
+<p>不過，這裡的解決方案並不直接。在行動裝置上，您不需要 2560×1600 的圖片，但在桌面上，您可能需要。請記住，FlutterFolio 是一個在所有 Flutter 目標上執行的應用程式，包括桌面。如有疑問，請 <a href="https://api.flutter.dev/flutter/painting/debugInvertOversizedImages.html">閱讀 API 文件</a>。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>如您所見，優化效能是一门艺术和科学。強大的基準測試以及對框架及其內建 Widget 的深刻理解都有助於這一點。</p>
+<p>最终，熟能生巧。優化足夠多的應用程式，你就會變得更好。</p>
+<p>祝您狩獵愉快。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e949b9dbcf06" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/raster-thread-performance-optimization-tips-e949b9dbcf06">柵格執行緒效能優化技巧</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+<p><a href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/ef11ad01.html" data-id="cm1orxykv004mj917avvxdlhd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/performance/" rel="tag">performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-08-23T21:37:55.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/2bed4075.html" class="article-date">
+  <time datetime="2021-08-23T13:37:55.000Z" itemprop="datePublished">2021-08-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/2bed4075.html">【文章翻譯】Writing a good code sample</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="寫一個好的程式碼範例"><a href="#寫一個好的程式碼範例" class="headerlink" title="寫一個好的程式碼範例"></a>寫一個好的程式碼範例</h2><p>撰寫好的程式碼範例很難。讓我說明一下，製作一個範例來演示 API 的用法或展示 UI 慣用語可能很快且容易。難度來自於你需要添加到你的儲存庫中的額外部分，以保持程式碼範例新鮮並吸引你的開發人員。</p>
+<p>首先，你需要在你的程式碼中添加一個好的 README，從一個摘要開始，說明開發人員為什麼應該投入時間和精力來研究和理解這個範例。接著，提供使用說明和連結到問題追蹤器，開發人員可以在其中提出錯誤並要求澄清，如果遇到令人困惑的部分。</p>
+<p>接下來是程式碼本身。程式碼是否遵循佈局和使用的慣例？這可能像程式碼放在哪裡一樣簡單，也可能像 linter 等適當的設定一樣複雜。我喜歡已經採用了強大的程式碼格式、佈局和 linting 規則集標準的程式設計社群語言。這些標準使程式碼的外觀保持一致，從而更容易導航。若要強制執行 Dart 和 Flutter 的程式碼格式，你可以將以下命令添加到你的 CI 管線，如果格式不正確，則會使構建失敗：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart format --output none --set-exit-if-changed .</span><br></pre></td></tr></table></figure>
+
+<p>在程式碼格式化後，下一步是強制執行一套好的 lints。對於 Dart，我強烈建議研究 <a href="https://pub.dev/packages/lints">lints</a> 套件，對於 Flutter，我同樣建議研究 <a href="https://pub.dev/packages/flutter_lints">flutter_lints</a> 套件。若要確保 lints 在 CI 管線中通過，請添加以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart analyze</span><br></pre></td></tr></table></figure>
+
+<p>測試。哦，這麼多測試。單元測試、整合測試，對於 Flutter，我們還有 Widget 測試。測試對於範例來說非常棒，因為測試傳達了如何使用程式碼片段的意圖。測試還與前面提到的 CI 管線結合使用，可以使程式碼庫保持常青。想要了解更多關於 Flutter 測試功能的資訊，可以到 <a href="https://codelabs.developers.google.com/codelabs/flutter-app-testing">如何測試 Flutter 應用程式 codelab</a> 了解更多。Dart 和 Flutter 的 CI 命令分別為：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter test   # 適用於 Flutter 專案</span><br><span class="line">$ dart test      # 適用於純 Dart 專案</span><br></pre></td></tr></table></figure>
+
+<p>如果你的程式碼儲存庫託管在 GitHub 上，那麼我建議你如果擁有 Dart 專案，請使用 <a href="https://github.com/marketplace/actions/setup-dart-sdk">Dart Setup</a> 操作，如果擁有 Flutter 專案，請使用 <a href="https://github.com/marketplace/actions/flutter-action">Flutter Action</a>。為了獲得額外積分，請考慮添加 <a href="https://github.com/marketplace/actions/very-good-coverage">Very Good Coverage</a> 操作以保持高測試覆蓋率。既然你已經做到了這一步，你可能應該使用 <a href="https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge">工作流程狀態徽章</a> 來宣傳你的 CI 狀態。</p>
+<p>希望以上添加的項目清單能夠指導你，讓你的程式碼範例對你的目標受眾更有價值。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=323358edd9f3" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/writing-a-good-code-sample-323358edd9f3">Writing a good code sample</a> was originally published in <a href="https://medium.com/flutter">Flutter</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/2bed4075.html" data-id="cm1orxykv004fj9171z0x50b1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/code-samples/" rel="tag">code-samples</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/testing/" rel="tag">testing</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-08-19T18:00:00.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/d103755c.html" class="article-date">
+  <time datetime="2021-08-19T10:00:00.000Z" itemprop="datePublished">2021-08-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/d103755c.html">【文章翻譯】Flutter Hot Reload</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Flutter-熱重載：原理與效能提升"><a href="#Flutter-熱重載：原理與效能提升" class="headerlink" title="Flutter 熱重載：原理與效能提升"></a>Flutter 熱重載：原理與效能提升</h2><p>Flutter 的熱重載功能非常棒，按下鍵盤上的 “r” 鍵，就能在幾秒鐘內看到變更的效果。在終端機（或 IDE 底部）您可能會看到類似的訊息：<code>Reloaded 1 of 553 libraries in 297ms</code>。但熱重載背後的運作原理是什麼？Dart 和 Flutter 團隊又是如何讓它變得更快呢？</p>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*iaLz5LEBdsZJRR_W8UCQcQ.png" />
+</figure>
+
+<h3 id="熱重載概述"><a href="#熱重載概述" class="headerlink" title="熱重載概述"></a>熱重載概述</h3><p>Flutter 的熱重載主要包含以下五個步驟：</p>
+
+<ol>
+<li><strong>flutter_tools 掃描需要的檔案變更。</strong> 它會檢查每個必要的檔案，並確認它的最後修改時間戳記是否比之前的編譯時間戳記更新。</li>
+<li><strong>flutter_tools 指示正在執行的 Dart 編譯器重新編譯應用程式，並告知它哪些檔案已變更。</strong> Dart 編譯器開始重新編譯。</li>
+<li><strong>flutter_tools 將更新的檔案傳送到設備。</strong> 這包括任何變更的資產和新編譯的 _delta kernel 檔案_（編譯的輸出，Dart VM 可以理解的檔案）。</li>
+<li><strong>flutter_tools 要求設備上的 Dart VM 中的所有隔離區重新載入它們的來源（讀取變更的 delta kernel 檔案並執行其魔力）。</strong></li>
+<li><strong>flutter_tools 指示設備上的應用程式重新組合 - 重新建立螢幕上的所有 Widget、重新載入資產、重新執行佈局、重新繪製等等。</strong></li>
+</ol>
+<p>在我的開發者機器上，目標設備為 Linux（也就是本地執行的桌面應用程式），在只更新 `lib/main.dart` 檔案的時間戳記後，在一個新建立的 `flutter create` 應用程式上執行第一次熱重載，我得到了以下時序（從 `flutter run -v` 中提取）：</p>
+
+<ol>
+<li>掃描檔案需要 ~13 ms。</li>
+<li>重新編譯需要 ~67 ms。</li>
+<li>將檔案傳送到設備需要 ~2 ms。</li>
+<li>Dart VM 重新載入來源需要 ~96 ms。</li>
+<li>重新組合需要 ~114 ms。</li>
+</ol>
+<p>如果我改用一個更大的應用程式（並變更其他檔案），我可能會得到以下時序：</p>
+
+<ol>
+<li>掃描檔案需要 ~12 ms。</li>
+<li>重新編譯需要 ~386 ms。</li>
+<li>將檔案傳送到設備需要 ~2 ms。</li>
+<li>Dart VM 重新載入來源需要 ~171 ms。</li>
+<li>重新組合需要 ~229 ms。</li>
+</ol>
+<p>在兩種情況下，以下步驟佔用了最多的時間：</p>
+
+<ul>
+<li>重新編譯</li>
+<li>重新載入</li>
+<li>重新組合</li>
+</ul>
+<p>要使熱重載速度更快，我們必須讓這三個步驟中的其中一個或多個步驟變得更快。 這裡我將重點關注第一部分：將變更的原始碼檔案重新編譯成 Dart VM 可以使用的內容。</p>
+
+<h3 id="重新編譯"><a href="#重新編譯" class="headerlink" title="重新編譯"></a>重新編譯</h3><p>從邏輯上來說，如果我作為使用者變更了一個檔案，例如 `foo.dart`，我可能會期望重新編譯看起來像這樣：</p>
+
+<ol>
+<li>編譯器在記憶體中保留了舊的狀態。</li>
+<li>編譯器被告知 <code>foo.dart</code> 已變更。</li>
+<li>編譯器丟棄它對 <code>foo.dart</code> 的內部狀態。</li>
+<li>編譯器重新編譯 <code>foo.dart</code>。</li>
+<li>完成。</li>
+</ol>
+<p>這將非常棒。這意味著，無論我變更了哪個檔案，我只會重新編譯那個檔案，並且（可能）重新編譯速度很快。</p>
+
+<p>不幸的是，重新編譯通常不會像這樣運作。以下是有兩個例子說明了為什麼重新編譯可能沒有那麼簡單：</p>
+
+<ul>
+<li><code>foo.dart</code> 曾經包含類別 <code>Foo</code>，該類別在各處使用。變更後的檔案不包含此類別（也許它被手動重新命名），並且每個使用此類別的檔案都應該出現編譯錯誤。</li>
+<li><code>foo.dart</code> 曾經定義了一個字段為 <code>var z = 42</code>。另一個檔案使用此字段：<code>var z2 = z * 2</code>。Dart 類型推斷確定 <code>z</code> 是一個整數，而 <code>z2</code> 是一個整數，因為 <code>z</code> 是一個整數。現在，字段變更為 <code>var z = 42.2</code>。這次 Dart 類型推斷將會確定該字段是一個雙精度數，但如果不重新編譯另一個函式庫，那么 <code>z2</code> 將仍然（錯誤地）被標記為一個整數。</li>
+</ul>
+<p>因此，Dart 中的重新編譯長期以來都是像這樣執行的：</p>
+
+<ol>
+<li>編譯器在記憶體中保留了舊的狀態。</li>
+<li>編譯器被告知 <code>foo.dart</code> 已變更。</li>
+<li>編譯器丟棄它對 <code>foo.dart</code> 的內部狀態。</li>
+<li>編譯器檢查哪些檔案匯入或匯出 <code>foo.dart</code>，並將這些檔案也丟棄。</li>
+<li>編譯器檢查哪些檔案匯入或匯出步驟 4 中的檔案，並將這些檔案也丟棄。</li>
+<li>不斷重複：丟棄所有傳遞性匯入者和匯出者。</li>
+<li>編譯器重新編譯所有（現在）“遺漏”的函式庫。</li>
+<li>完成。</li>
+</ol>
+<p>這聽起來可能很糟糕，但在許多情況下並非如此。雖然變更您自己的自訂 Widget 組合可能會導致重新編譯您編寫的所有程式碼，但它不會導致重新編譯 Flutter 框架本身，例如，因為 Flutter 框架不匯入或匯出您的函式庫。另一方面，如果您變更了 Flutter 框架的核心檔案，那麼您最終將重新編譯（幾乎）所有內容。</p>
+
+<p>回顧一下為什麼只重新編譯單一變更檔案不起作用的原因的不完整列表，我們可能會看到一個模式：它不起作用是因為您進行了 _全局_ 變更 - 影響其他函式庫的變更。但是，如果您只變更了註釋呢？或者在您的建構方法中加入了另一個除錯列印？或者修正了實用方法中的一處錯誤？這些變更不是全局的，我們應該可以做得更好！</p>
+
+<h3 id="改進"><a href="#改進" class="headerlink" title="改進"></a>改進</h3><p>對於非全局變更（不能影響其他函式庫編譯的變更），我們實際上可以只重新編譯變更的函式庫，並且仍然保持語義。主要問題是確定何時變更是全局的，何時不是（並且要快速完成）。幸運的是，這可以通過增量步驟來完成：我們不必立即（或根本不必）使其完美。</p>
+
+<p>第一步可能是比較檔案的舊版本和新版本，同時忽略兩個版本的檔案中的註釋。如果，用這種方式比較時，兩個版本的檔案相同，那麼我們認為沒有全局變更，然後我們繼續重新編譯單一變更的檔案，而不是傳遞性匯入匯出圖。這種技術並不完美。例如，它仍然會在修正實用方法中的錯誤時觸發所有傳遞性匯入者和匯出者的重新編譯。但它允許您在只重新編譯一個檔案的同時修正註釋中的拼寫錯誤。</p>
+
+<p>這裡快速說明一下：如果我們只變更了註釋，為什麼我們必須重新編譯？主要原因是堆疊追蹤。在內部，一些節點（表示您的程式碼）包含 _偏移量_ - 有關它們在檔案中的位置的資訊。如果此資訊過時，您的堆疊追蹤將包含無效的資訊。例如，它可能會聲稱某件事發生在第 42 行，而實際上並非如此。</p>
+
+<p>若要達到可以實際上修正實用方法中的錯誤，同時仍然只重新編譯該檔案的狀態，我們必須在檢查全局變更時忽略另一件事：函數體。我們將再次比較變更檔案的之前版本和之後版本，這次同時忽略註釋和函數體。如果它們相同，我們將只重新編譯該檔案。</p>
+
+<p>現在，我們實際上可以進行一些有用的變更，而無需重新編譯超出您變更的檔案的內容。您可以加入、移除或以其他方式變更註釋。您可以在您的建構方法中加入（和移除）除錯列印。您甚至可以修正實用方法中的錯誤。</p>
+
+<h3 id="好消息！"><a href="#好消息！" class="headerlink" title="好消息！"></a>好消息！</h3><p>事實證明，這些對重新編譯的改進已經實現。如果您使用的是 Flutter 2.2，您可能已經注意到它了。如果沒有，您可能現在就會注意到。老實說，對於小型應用程式，您可能不會注意到多少速度提升，但對於大型應用程式，您應該會注意到。</p>
+
+<p>我已經製作了一些非全局變更的示例，以評估其效果。</p>
+
+<p>對於 [Veggie Seasons](https://github.com/flutter/samples/tree/master/veggieseasons) 示例應用程式（一個相對較小的應用程式）：</p>
+
+<ul>
+<li>變更 <code>lib/main.dart</code> 沒有改善。它之前編譯一個檔案，現在仍然編譯一個檔案。</li>
+<li>變更 <code>lib/data/veggie.dart</code> 會帶來 30% 的改善。在我的電腦上，實際的編譯時間從 100 多毫秒下降到不到 20 毫秒（它以前編譯 18 個檔案，現在只編譯 1 個檔案）。這自然遠遠超過 30%，但由於重新編譯只是三個時間消耗中的其中一個（另外兩個是重新載入和重新組合），所以總體變更大約是 30%。</li>
+</ul>
+<p>對於 [Flutter Gallery](https://github.com/flutter/gallery)（一個相對較大的應用程式）：</p>
+
+<ul>
+<li>變更 <code>lib/main.dart</code> 會產生非常小的改善（它編譯 1 個檔案而不是 2 個檔案）。</li>
+<li>變更 <code>lib/layout/adaptive.dart</code> 會導致重新載入時間幾乎減半。僅重新編譯時間從近 400 毫秒下降到 40 毫秒（重新編譯 1 個檔案而不是 47 個檔案）。</li>
+</ul>
+<p>您應該期望在實際情況中，Flutter 2.2 中的熱重載平均速度比 Flutter 2.0 中快 30%。從這個角度來看，這個變更為 Flutter 開發人員節省了超過一年時間，每 5 天就少等一次熱重載。</p>
+
+<h3 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h3><p>我們對熱重載的變更並不總是意味著編譯器做的事情更少。例如，如果您加入或移除了一個方法，編譯器不會做的事情更少。如果您變更了字段的初始化器，編譯器不會做的事情更少。如果您變更了類別層級，編譯器不會做的事情更少。如果您變更了函數體（編譯器通常應該做的事情更少），由於混合和 FFI 方面的技術問題，編譯器可能仍然需要做同樣多的工作。</p>
+
+<p>此外，當我們討論比較檔案時，我們跳過了幾個技術細節。首先，我們不能忽略 _所有_ 註釋：我們需要保留 [語言版本選擇器](https://dart.dev/guides/language/evolution#per-library-language-version-selection) `@dart version 標記` ，因為它具有語義意義。其次，我們不能忽略所有函數體，因為混合和 FFI 方面存在實作上的問題。</p>
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>Flutter 2.0 中的熱重載速度很快，但 Flutter 2.2 中的速度更快。平均而言，Flutter 2.2 中的熱重載速度比 Flutter 2.0 快約 30%，這為 Flutter 開發人員節省了超過一年時間，每 5 天就少等一次熱重載。</p>
+
+<p>如果您尚未更新（甚至尚未嘗試使用 Flutter），現在可能是參觀 [flutter.dev](http://flutter.dev) 並嘗試一下的好時機。</p>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f3c5994e2cee" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/flutter-hot-reload-f3c5994e2cee">Flutter 熱重載</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/d103755c.html" data-id="cm1orxykv004cj9174ux0beu6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hot-reload/" rel="tag">hot-reload</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-08-13T21:04:20.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/7efc9369.html" class="article-date">
+  <time datetime="2021-08-13T13:04:20.000Z" itemprop="datePublished">2021-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/7efc9369.html">【文章翻譯】What can we do better to improve Flutter? — Q2 2021 user survey results</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h3 id="我們如何才能讓-Flutter-變得更好？-2021-年第二季使用者調查結果"><a href="#我們如何才能讓-Flutter-變得更好？-2021-年第二季使用者調查結果" class="headerlink" title="我們如何才能讓 Flutter 變得更好？- 2021 年第二季使用者調查結果"></a>我們如何才能讓 Flutter 變得更好？- 2021 年第二季使用者調查結果</h3><p>撰寫者： <a href="https://medium.com/@jayoung.lee">JaYoung</a> 和 <a href="https://medium.com/@mariam.hasnany">Mariam</a></p>
+<p>Flutter 團隊每季都會進行使用者調查，以聽取 Flutter 使用者的意見並為未來做出規劃。最近一次的調查是在 5 月份進行的，這是我們第 13 次使用者調查，收集了超過 7,000 份回覆。我們請 Flutter 開發人員評估他們對 Flutter 各部分的滿意度，對於那些不完全滿意的開發人員，我們請他們說明原因。團隊不僅總結了多選題調查回覆，還閱讀了調查中留下的開放式意見。總共有 3,403 則意見。我們再次回來分享我們從您那裡學到的東西。</p>
+<h3 id="滿意度"><a href="#滿意度" class="headerlink" title="滿意度"></a>滿意度</h3><p>總體而言，92% 的受訪者表示他們對 Flutter 持正面滿意度（39% 有點滿意，53% 非常滿意）。Flutter 的子系統滿意度得分不同，範圍從 72% 到 93%，如下圖所示。雖然我們很高興分享我們正在維持高滿意度，但我們也關注可以改進的特定領域。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*m2ihVMc99emY4hQY" />
+</figure>
+
+<h3 id="開放式問題"><a href="#開放式問題" class="headerlink" title="開放式問題"></a>開放式問題</h3><p>調查中有兩個開放式問題：</p>
+<ul>
+<li><em>「您為什麼對 Flutter 不滿意？請分享您的原因：」</em></li>
+<li><em>「您想對 Flutter 團隊說些什麼嗎？ 」</em></li>
+</ul>
+<p>我們從第一個問題收集了 847 則意見，從第二個問題收集了 2,556 則意見。這些意見首先使用機器學習演算法被劃分為各種主題（例如文件、生態系統、Web 支援等）。然後，每個主題會被分配給在該領域工作的團隊進行分析。</p>
+<p>當然，團隊不能一次承擔所有工作並解決所有問題。然而，每個團隊都試圖從意見中提取見解並優先處理想法，仔細評估需要達成的效果和付出的努力。在以下章節中，我們將分享一些我們得到的結論的範例。</p>
+<h4 id="範例-1：關於一般的開發者體驗"><a href="#範例-1：關於一般的開發者體驗" class="headerlink" title="範例 1：關於一般的開發者體驗"></a>範例 1：關於一般的開發者體驗</h4><p>在高層面上，透過閱讀書面回饋對我們有三個幫助：</p>
+<ol>
+<li>確認現有問題</li>
+<li>找出新的關注領域和想法</li>
+<li>察覺到對額外資訊和證據的需求</li>
+</ol>
+<p>首先，我們確認了在許多其他來源（例如 GitHub Issues 標籤、Reddit 和 Stack Overflow）中經常觀察到的痛點。這些範例包括但不限於記憶體消耗和升級技能的範例。我們非常了解這些挑戰，並在每個小組內為它們設定優先順序。同時，我們希望再次宣傳現有的資源，例如 <a href="https://flutter.dev/docs/development/tools/devtools/memory">使用記憶體檢視</a> 或 <a href="https://events.flutter.dev/engage/learn/beginner">學習中心</a>。</p>
+<p>其次，我們發現了一些令我們驚訝的主題。例如，有幾則意見表達了對擴展到桌面和 Web 的擔憂。這些意見要求我們專注於讓 iOS 和 Android 變得更好，不要分散我們的注意力。我們理解這種擔憂，並且會注意這個問題。我們也會更好地傳達我們如何努力成為一種強大的行動技術，以及隨著時間的推移如何擴展對其他平台的支援。</p>
+<p>最後，我們希望獲得有關調查中報告的一些問題的更多資訊，特別是那些與效能和文件相關的問題。如果您想與 Flutter 貢獻者進行對話，並為您的問題添加更多細節，請考慮將它們發佈到 GitHub Issues 標籤。這個標籤會定期由團隊進行分類。在您發佈時，請遵循 <a href="https://github.com/flutter/flutter/wiki/Issue-hygiene#file-bugs-for-everything">為所有問題提交錯誤</a> 中的規則。（當然，在 Stack Overflow 或 Discord 等支援論壇中回答「如何」類別的問題效果會更好！請查看 <a href="https://flutter.dev/community">社群</a> 頁面以獲取更多資訊。）</p>
+<h4 id="範例-2：關於-Flutter-的-Web-支援"><a href="#範例-2：關於-Flutter-的-Web-支援" class="headerlink" title="範例 2：關於 Flutter 的 Web 支援"></a>範例 2：關於 Flutter 的 Web 支援</h4><p>團隊發現，圍繞缺乏穩定版本 Web 支援而提出的不滿意回饋，在 Flutter 2.0 於 3 月份 <a href="https://medium.com/flutter/flutter-web-support-hits-the-stable-milestone-d6b84e83b425">穩定發佈 Web 支援</a> 之後已得到緩解。我們為 Flutter Web 支援的穩定版本新增的許多功能都是基於去年的 <a href="https://medium.com/flutter/flutter-on-the-web-slivers-and-platform-specific-issues-user-survey-results-from-q3-2020-f8034236b2a8">調查</a>，在那裡我們詢問了您可能需要的 Web 應用程式功能。</p>
+<p><a href="https://medium.com/flutter/flutter-on-the-web-slivers-and-platform-specific-issues-user-survey-results-from-q3-2020-f8034236b2a8">2020 年第三季調查</a> 中的 Web 特定問題是基於我們去年第二季調查中收到的開放式回饋。您的意見幫助我們確定了我們應該優先考慮的領域，以作為 Flutter Web 支援的初始穩定版本。</p>
+<p>在 2020 年，15% 的意見是關於效能和卡頓的，因此我們優先改進 HTML 渲染器的效能，以及穩定 CanvasKit 渲染器。另外 15% 的意見是關於我們的 Plugin 差距，以及對 GoogleMaps、Firestore 等等的要求，因此我們確保了在 Web 穩定版本中支援了大多數 Google 自有 Plugin，包括 GoogleMaps、Firebase_analytics、cloud_firestore 等等。有幾則意見是關於捲軸和文字渲染的。雖然我們在這些領域仍然需要做更多工作，但我們能夠為支援 <a href="https://github.com/flutter/flutter/issues/70866">桌面外觀尺寸上的捲軸</a> 以及支援 <a href="https://github.com/flutter/flutter/issues/33523">富文本功能</a>（例如文字欄位中的多行文字選取）奠定堅實的基礎。</p>
+<p>本季，我們得知使用者認為 Flutter 的 Web 支援仍然需要改進。Web 應用程式的「外觀和感覺」是最常被提及的不滿意 Flutter Web 支援的原因。我們也被要求提供更多 Web 特定 Widget、直觀的響應式 Widget 等等。搜尋引擎優化 (SEO) 的要求也被注意到。其他的不滿意原因是從右到左 (RTL) 文字支援、程式碼大小、路由和除錯。</p>
+<p>我們計劃在下一次使用者調查中詢問一些這些領域，因為我們正在規劃下一個版本。對於其他的問題，我們已經取得了進展，例如新增 <a href="https://github.com/flutter/flutter/projects/159">RTL 文字支援</a>，透過我們目前的 <a href="https://github.com/flutter/uxr/tree/master/nav2-usability">UXR 研究</a> 了解路由問題，以及研究降低程式碼大小的方法。</p>
+<h3 id="接下來要做什麼？"><a href="#接下來要做什麼？" class="headerlink" title="接下來要做什麼？"></a>接下來要做什麼？</h3><p>每季調查計劃是讓我們更好地了解您的需求的結構化方式，但它不是我們聽取 Flutter 開發者意見的唯一管道。如果您有需要後續處理的緊急問題，請在 <a href="https://github.com/flutter/flutter/issues">GitHub</a> 上提交它們。</p>
+<p>Flutter UXR 團隊將繼續透過 flutter.dev 上的公告、Flutter IDE Plugin 或 Twitter @FlutterDev 每季進行調查。請繼續提供您的想法，因為團隊正在尋找重要問題的答案。您也可以透過 <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0i4De809KXVCdljGKrjMj3lxhuzbuFKCtY5PEQPCYtGxFMg/viewform">註冊即將到來的 UXR 研究</a> 來參與其他研究。</p>
+<p>再次感謝所有參與本次調查並提供寶貴意見的各位。我們的目標是建立您喜歡的產品，我們感謝您撥冗幫助我們。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=1037fb8f057b" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/what-can-we-do-better-to-improve-flutter-q2-2021-user-survey-results-1037fb8f057b">我們如何才能讓 Flutter 變得更好？- 2021 年第二季使用者調查結果</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/7efc9369.html" data-id="cm1orxyku0048j917996s8ysb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer-experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/surveys/" rel="tag">surveys</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/user-experience/" rel="tag">user-experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/user-research/" rel="tag">user-research</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-07-28T17:34:30.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/ba84fd2d.html" class="article-date">
+  <time datetime="2021-07-28T09:34:30.000Z" itemprop="datePublished">2021-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/ba84fd2d.html">【文章翻譯】Adding Flutter to your existing iOS and Android codebases</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="將-Flutter-加入現有的-iOS-和-Android-程式碼庫"><a href="#將-Flutter-加入現有的-iOS-和-Android-程式碼庫" class="headerlink" title="將 Flutter 加入現有的 iOS 和 Android 程式碼庫"></a>將 Flutter 加入現有的 iOS 和 Android 程式碼庫</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*xYlql5GqpIvedZvkJxGcaA.png" />
+</figure>
+
+<p>無論您是為小型代理商工作，為眾多客戶建立行動應用程式，還是為擁有數百個內部應用程式的龐大企業開發，支援多個程式碼庫都可能很困難且昂貴（如果真的要做到）。我們驚訝地發現，一個常見的場景是，一些公司有數十甚至數百個應用程式是用於一個主要的行動平台，但沒有為另一個平台開發。這會讓他們許多使用者（通常是員工）無法像其他人一樣高效地執行相同的任務，從而可能導致價值流失。</p>
+<p>Flutter 是一個可以從單一程式碼庫支援多個平台的 UI 架構，它可以幫助解決這些問題。雖然在理想情況下，您可以使用 Flutter 從頭開始建立應用程式，但當公司已經投入時間和金錢開發一個或多個平台的應用程式時，這個計劃通常行不通。</p>
+<p>在本教程中，我們將透過學習稱為 <strong><em>add-to-app</em></strong> 的功能，探討一種更務實的方法，即隨著時間推移逐步將現有的 iOS 或 Android 應用程式轉換為 Flutter。雖然此功能並不能立即為您提供完整的 Flutter 應用程式，但它允許您在轉換過程中保持與當前程式碼庫的功能一致性和穩定性，而不是需要完整的重構，而重構可能會充滿意想不到的問題和「陷阱」。</p>
+<p>在我們逐步完成本教程時，我們將從一個簡單的基本案例應用程式開始，與您期望從「<a href="https://en.wikipedia.org/wiki/%22Hello,_World!%22_program">你好，世界！</a>」範例中得到的結果類似，適用於 iOS 和 Android，而不是加入已經存在的實際應用程式的複雜性。之後，我們將建立將為每個平台新增新視圖（用 Flutter 編寫）所需的基礎架構。在實作 add-to-app 時，預期您已經具備一些 Flutter 的經驗，但本教程盡可能保持簡單，以便專注於如何將 Flutter 加入非 Flutter 應用程式。透過這種方式，您最終將擁有必要的詞彙，並知道在您準備好自己嘗試時該去哪裡尋找。</p>
+<p>讓我們開始進行吧！</p>
+<h3 id="Flutter-安裝"><a href="#Flutter-安裝" class="headerlink" title="Flutter 安裝"></a>Flutter 安裝</h3><p>如果您尚未在電腦上安裝 Flutter SDK，現在正是時候。請按照 <a href="https://flutter.dev/docs/get-started/install">此連結</a> 中的說明來設定您的機器。我會在這裡等您：) 如果你想在沒有跟著做的情況下繼續閱讀，那也是完全可以的。</p>
+<p>…</p>
+<p>都準備好了嗎？太棒了！</p>
+<p>因此，將 Flutter 加入現有應用程式的第一步是，毫不意外地，建立一個要加入應用程式的 Flutter 元件。從命令列介面，導航到您想要儲存 Flutter 模組的目錄，並使用 Flutter CLI 工具執行以下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter create --template module add_to_app_flutter_module</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*99QwoGv8y0bLsB7rzal4Uw.png" />
+</figure>
+
+
+<p>這會建立一個基本 Flutter 應用程式並將其放置在一個名為 add_to_app_flutter_module 的新目錄中，不過您可以隨意為模組命名 - 本教程假設您使用的是 add_to_app_flutter_module 名稱。</p>
+<h3 id="iOS-安裝"><a href="#iOS-安裝" class="headerlink" title="iOS 安裝"></a>iOS 安裝</h3><p>通常，在實作 add-to-app 功能時，您已經有現有的 iOS 或 Android 應用程式。在本教程中，您將從頭開始建立新的應用程式，以便專注於實作基礎。您將從 Xcode 中建立一個全新的 iOS 應用程式開始。如果您沒有使用 Mac 電腦或為 iOS 開發，請隨時跳到 Android 部分，或繼續閱讀以了解此過程。我只會有點失望您沒有閱讀全部內容。啟動 Xcode。當出現第一個選項螢幕時，選擇 <strong>App</strong> 並點擊 <strong>Next</strong>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*71k72zGf7k8gwQhoapobIQ.png" />
+</figure>
+
+<p>在下一頁，適當地填寫文字欄位。在本教程中，使用 <strong>Storyboard</strong> 介面、<strong>Swift</strong> 作為語言，以及 <strong>UIKit App Delegate</strong> 作為生命週期。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Q8oBiSt7DNywtG0z0PXm_A.png" />
+</figure>
+
+<p>此時，系統會提示您在電腦上的某個位置建立一個新的目錄，並將您的應用程式放置到其中。在本教程中，將新的 iOS 專案資料夾儲存在與您之前建立的 Flutter 模組相同的父目錄中。建立該目錄後，您將進入 Xcode 專案螢幕，資料夾結構類似於此：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/508/1*WDZwukEh-RHLPByOtEn6Bg.png" />
+</figure>
+
+<p>回到命令列，導航到您在上一步中建立的新的 iOS 專案目錄，並使用以下命令初始化 CocoaPods：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod init</span><br></pre></td></tr></table></figure>
+
+<p>初始化 Podfile 後，從 CLI 打開它，並將其內容替換為以下內容（請記住將目標名稱從 <em>Add-to-App</em> 更改為反映您自己的應用程式名稱，並將 flutter_application_path 更改為與 Flutter 模組的路徑匹配，如果您使用的是不同的值）：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5a3461edaa403dc928c4cc82259191f9/href">https://medium.com/media/5a3461edaa403dc928c4cc82259191f9/href</a></iframe>
+
+<p>更新 Podfile 後，儲存檔案並執行以下命令將 Flutter 模組連結到新的 iOS 專案：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
+
+<h3 id="從-iOS-應用程式打開預設-Flutter-頁面"><a href="#從-iOS-應用程式打開預設-Flutter-頁面" class="headerlink" title="從 iOS 應用程式打開預設 Flutter 頁面"></a>從 iOS 應用程式打開預設 Flutter 頁面</h3><p>現在 Flutter 模組和 iOS 專案已連結，是時候學習如何從 iOS ViewController 導航到行動應用程式中的 Flutter 頁面了。首先打開 <strong>AppDelegate.swift</strong> 檔案，將類別設定為繼承 FlutterAppDelegate 而不是預設的 UIAppDelegate。您還想定義一個新的 FlutterEngine 物件，它是用於橋接原生 iOS 應用程式和 Flutter 類別的 Flutter 環境容器：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/082ee51f20cde17d84bdabc40d484792/href">https://medium.com/media/082ee51f20cde17d84bdabc40d484792/href</a></iframe>
+
+<p>要完成 simpleFlutterAppDelegate 類別，請建立一個新的應用程式函數，在啟動 iOS 應用程式時註冊 FlutterEngine：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/75beb3aab5497d5f35bc23c6284adbbe/href">https://medium.com/media/75beb3aab5497d5f35bc23c6284adbbe/href</a></iframe>
+
+<p>在 AppDelegate 類別中，您只需要執行這些操作（暫時如此）。要啟動預設的 Flutter 螢幕，請轉到專案的 <strong>ViewController.swift</strong> 檔案（不過，在更完善的應用程式中，您可以使用任何 ViewController）。新增一個名為 showFlutter() 的函數，該函數會擷取 FlutterEngine，並使用預設的 Flutter 輸入點建立一個新的 FlutterViewController 物件，然後顯示它：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/aff84a5ae1f84bdc33e6a88d81122536/href">https://medium.com/media/aff84a5ae1f84bdc33e6a88d81122536/href</a></iframe>
+
+<p>接下來，您需要一種方法來呼叫該函數。為簡單起見，直接在 Swift 程式碼中為螢幕定義一個按鈕，不過您可以使用任何適合您的其他導航模式或技術。在本教程中，建立一個新的 UIButton，將其置於螢幕中間，將新的 showFlutter() 函數指定給按鈕的動作，然後將其附加到視圖，所有這些都來自 viewDidLoad() 生命週期函數：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/35769c462b2a1e0e52ca3c32abf186e7/href">https://medium.com/media/35769c462b2a1e0e52ca3c32abf186e7/href</a></iframe>
+
+<p>現在嘗試執行應用程式。如果一切按預期進行（祈禱吧！），那麼您應該能夠啟動 iOS 應用程式，點擊 <em>顯示 Flutter！</em> 按鈕，然後觀看新的 Flutter 螢幕彈出：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/368/1*o4tMnqTbK73cRpJ8m4bhIw.gif" />
+</figure>
+
+<h3 id="Android-安裝"><a href="#Android-安裝" class="headerlink" title="Android 安裝"></a>Android 安裝</h3><p>現在您已經使 iOS&#x2F;Flutter 組合正常運作，是時候嘗試設定 Android 應用程式了。就像您對 iOS 專案所做的那樣，建立一個新的 Android 專案，並在第一個螢幕上選擇 <strong>基本活動</strong> 模板。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*5lDz6tLm4M0LHZaF8GUYHA.png" />
+</figure>
+
+<p>在下一頁，為名稱和套件名稱填寫適當的資訊。為了使一切與此範例的 iOS 版本保持一致，請將您的專案儲存在與 Flutter 模組和 iOS 應用程式相同的父目錄下。您還需要確保在本教程中將專案的語言設定為 Kotlin，儘管相同 add-to-app 邏輯適用於使用 Java 編寫的 Android 應用程式。準備好後，點擊藍色的 <strong>完成</strong> 按鈕。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*DMCxqTeZpSD5-b1RJY_pig.png" />
+</figure>
+
+<p>現在您有了基礎 Android 專案，新增您之前建立的 Flutter 模組。您可以透過轉到 <strong>檔案 -&gt; 新建 -&gt; 新模組…</strong> 來完成此操作。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*qZQDQmS47Pqvza3UucvEVA.png" />
+</figure>
+
+<p>從那裡，轉到新視窗底部的 <strong>匯入 Flutter 模組</strong> 選項，加入 Flutter 模組位置，然後點擊藍色的 <strong>完成</strong> 按鈕。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*XeyFOIlwbKa8cOqlb3j4Cw.png" />
+</figure>
+
+<p>接下來，打開 <strong>settings.gradle</strong> 檔案，並將其內容替換為以下內容：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/b234a9dd19a3a3a9cfdf73b8a08d3a1a/href">https://medium.com/media/b234a9dd19a3a3a9cfdf73b8a08d3a1a/href</a></iframe>
+
+<p>這裡主要的部分是綁定並將 <strong>include_flutter.groovy</strong> 檔案加入到專案中。完成後，轉到專案級別的 <strong>build.gradle</strong> 檔案（位於 Android 專案的根目錄中），新增一個 allprojects 區塊，以便您可以編譯應用程式（這可能在以後不需要，但我遇到了 Android Studio Arctic Fox 的問題，因此我在這裡寫下來，以防有人用得上：)）</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5914fe5f6223aad361019c4eeec5ae27/href">https://medium.com/media/5914fe5f6223aad361019c4eeec5ae27/href</a></iframe>
+
+<p>最後，打開 <em>應用程式級別</em> 的 <strong>build.gradle</strong> 檔案（位於 <em>your_project_name&#x2F;app</em> 目錄中），並在 dependencies 節點中新增一行，以將 Flutter 模組作為來源加入到 Android 專案中：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/d5ea9e3d6281390e59a2431bb364dcbd/href">https://medium.com/media/d5ea9e3d6281390e59a2431bb364dcbd/href</a></iframe>
+
+<p>此時，Android 應用程式應該可以編譯和建構，而且您會在 IDE 中看到 Flutter 模組。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/640/1*AbRB1VZYePJoXMk0sHN05A.png" />
+</figure>
+
+<h3 id="從-Android-應用程式打開預設-Flutter-頁面"><a href="#從-Android-應用程式打開預設-Flutter-頁面" class="headerlink" title="從 Android 應用程式打開預設 Flutter 頁面"></a>從 Android 應用程式打開預設 Flutter 頁面</h3><p>現在 Android 應用程式的安裝過程已完成，您需要準備好使用新的 Flutter 元件來啟動應用程式。幸運的是，現在安裝已完成，因此這相對容易。首先打開 <strong>AndroidManifest.xml</strong> 檔案。Flutter add-to-app 使用自訂 FlutterActivity 在 Android 中顯示 Flutter 內容，因此您需要確保在清單中宣告 FlutterActivity，方法是在 application 標籤內新增以下區塊：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/864ed107bf4cbdad1166e7d63c3d1f52/href">https://medium.com/media/864ed107bf4cbdad1166e7d63c3d1f52/href</a></iframe>
+
+<p>接下來，打開 <strong>MainActivity.kt</strong> 檔案，並將應用程式 FloatingActionButton 顯示的 Snackbar 替換為以下程式碼，以啟動新的 FlutterActivity。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5a3193658ee9998aab444caf583044c2/href">https://medium.com/media/5a3193658ee9998aab444caf583044c2/href</a></iframe>
+
+<p>現在，當您點擊 FloatingActionButton 時，您應該會看到 Flutter 頁面直接在您的應用程式中彈出！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/346/1*0F312mW_EgR9554m6gcxWA.gif" />
+</figure>
+
+<p>除了能夠啟動完整的活動螢幕（類似於您之前在 iOS 中所做的），Android 的額外好處是能夠將 Flutter 元件作為 Fragment 或自訂視圖的一部分來啟動。雖然這兩種技術超出了本教程的範圍，但您可以在官方文件找到如何使用 <a href="https://flutter.dev/docs/development/add-to-app/android/add-flutter-fragment">FlutterFragment</a> 和 <a href="https://flutter.dev/docs/development/add-to-app/android/add-flutter-view">FlutterView</a>。</p>
+<h3 id="開啟其他-Flutter-螢幕"><a href="#開啟其他-Flutter-螢幕" class="headerlink" title="開啟其他 Flutter 螢幕"></a>開啟其他 Flutter 螢幕</h3><p>雖然能夠直接從原生 iOS 或 Android 應用程式開啟 Flutter 螢幕很棒，但考慮到使用 add-to-app 的整個想法是您可以慢慢地實作各種 Flutter 功能，因此 <em>它實際上並沒有達到您想要的程度</em>。要做到這一點，您很可能需要多個輸入點和多個 Flutter 元件。幸運的是，有一種方法可以在原生應用程式中建立多個 Flutter 實例，不過值得注意的是，在撰寫本文時，此功能 <em>處於實驗階段</em>。雖然表面層面的東西很有可能保持不變，但也可能語法或其他細節會在日後發生變化。</p>
+<p>首先，透過打開 <em>flutter 模組&#x2F;lib</em> 目錄中的 <strong>main.dart</strong>，更新 Flutter 模組中的程式碼以支援第二個螢幕。在 main.dart 中，透過在 main() 的宣告下方新增以下幾行，宣告您的第一個新的輸入點。請注意，此程式碼片段包含一個註釋，將此方法指定為應用程式中的新輸入點。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ea233ca8e7a30717c2a1248b04c7cfa6/href">https://medium.com/media/ea233ca8e7a30717c2a1248b04c7cfa6/href</a></iframe>
+
+<p>MySecondAppScreen 只會返回一個具有綠色主題和新標題的新 MaterialApp，以便您可以區分它和 main() 輸入點。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/7e4a43f565b3dadadce2db9650a468e1/href">https://medium.com/media/7e4a43f565b3dadadce2db9650a468e1/href</a></iframe>
+
+<p>接下來，您可能會注意到您需要為 MySecondaryHomePage 建立另一個程式碼塊。這是一個新的 StatefulWidget，它包含 Flutter 螢幕的狀態物件。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e0075e4379e9a1ae2110c4b48a01a8f7/href">https://medium.com/media/e0075e4379e9a1ae2110c4b48a01a8f7/href</a></iframe>
+
+<p>最後，建立新的狀態物件。在本範例中，Widget 會顯示 AppBar 和 Text Widget。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9df09644bdde328255366934c93b848f/href">https://medium.com/media/9df09644bdde328255366934c93b848f/href</a></iframe>
+
+<p>您現在有兩個不同的 Flutter 螢幕可以從原生應用程式啟動。接下來，您將在現有的 Android 範例應用程式中實作新螢幕。</p>
+<h3 id="Android-中的多個-Flutter-輸入點"><a href="#Android-中的多個-Flutter-輸入點" class="headerlink" title="Android 中的多個 Flutter 輸入點"></a>Android 中的多個 Flutter 輸入點</h3><p>此擴展的 add-to-app 功能透過建立 FlutterEngine 類別的多個實例（與用於顯示單一預設 Flutter 螢幕的工具相同）並將它們儲存在 FlutterEngineGroup 中來執行，然後在需要時呼叫適當的引擎。首先，建立一個新的應用程式類別來初始化 FlutterEngineGroup。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/1874717ba2d4d487f0c27f54b85f4501/href">https://medium.com/media/1874717ba2d4d487f0c27f54b85f4501/href</a></iframe>
+
+<p>接下來，建立一個輔助類別，在本例中名為 EngineBindings，它會接收輸入點的名稱，並將其懶加載到 FlutterEngineGroup 中，以便可以在原生應用程式中顯示它。這是懶加載的，因為您需要確保應用程式已完全載入，然後再開始建立 FlutterEngine，否則您可能會遇到意想不到的（且難以除錯）競爭條件。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c66a7cc80c0923aa8795ba0a71e9c840/href">https://medium.com/media/c66a7cc80c0923aa8795ba0a71e9c840/href</a></iframe>
+
+<p>您需要加入的最後一個類別會擴展您在上一節 Android 中使用的 FlutterActivity。建立一個名為 <strong>SingleFlutterActivity.kt</strong> 的新的 Kotlin 類別檔案，它會擴展 FlutterActivity：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/49cef27d6145fd5c45d09e4c965b9f0c/href">https://medium.com/media/49cef27d6145fd5c45d09e4c965b9f0c/href</a></iframe>
+
+<p>在此檔案中，透過傳入新的輸入點名稱（在本例中為 <strong>“secondary”</strong>）來初始化 EngineBindings，以匹配您在 Dart 檔案中新增的輸入點的名稱，並為擷取適當的引擎撰寫一個輔助方法：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/f3ed277ea9b2a5672d65e32376ef34f0/href">https://medium.com/media/f3ed277ea9b2a5672d65e32376ef34f0/href</a></iframe>
+
+<p>要完成 FlutterActivity，請使用新建立的引擎從 <code>onCreate()</code> 顯示 Flutter 螢幕。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/f3df93438410f99b3fd8683543a1c5c3/href">https://medium.com/media/f3df93438410f99b3fd8683543a1c5c3/href</a></iframe>
+
+<p>接下來，您只需要再做幾件事就能完成此範例應用程式。回到 MainActivity，轉到原本用於啟動主要 Flutter 螢幕的 FloatingActionButton，並更改 Intent，使其啟動新的 SingleFlutterActivity 類別。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c3fb86b678c665b5a4a21167a1f286c1/href">https://medium.com/media/c3fb86b678c665b5a4a21167a1f286c1/href</a></iframe>
+
+<p>最後，打開 <strong>AndroidManifest.xml</strong>，將新的應用程式類別與 application 標籤關聯起來，並新增 SingleFlutterActivity 的活動標籤。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/3166253a1f8d7ac490935790f60d64c4/href">https://medium.com/media/3166253a1f8d7ac490935790f60d64c4/href</a></iframe>
+
+<p>您現在應該能夠執行應用程式，點擊 FloatingActionButton，並看到新的螢幕，而不是預設的 Flutter Widget。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/346/1*jQUUrVeSYGvjM4zgrt-zNg.gif" />
+</figure>
+
+<h3 id="iOS-中的多個-Flutter-輸入點"><a href="#iOS-中的多個-Flutter-輸入點" class="headerlink" title="iOS 中的多個 Flutter 輸入點"></a>iOS 中的多個 Flutter 輸入點</h3><p>您還在嗎？太好了！</p>
+<p>接下來，您將在 iOS 範例應用程式中新增對多個輸入點的支援。回到 Xcode，打開 AppDelegate 類別，並將所有程式碼替換為這個簡化的版本，它會建立一個單一的 FlutterEngineGroup，可以在整個應用程式中訪問。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/8271345d88a1e2b9fe910b9e58f914a5/href">https://medium.com/media/8271345d88a1e2b9fe910b9e58f914a5/href</a></iframe>
+
+<p>類似於您在 Android 應用程式中所做的，建立一個名為 <strong>SingleFlutterViewController.swift</strong> 的新檔案，它會擴展標準的 FlutterViewController。此類別會接收一個包含您想要使用的輸入點名稱的字串，然後建立並顯示一個新的 FlutterEngine。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ddd4e938cb47b74729e137fb47ba32a1/href">https://medium.com/media/ddd4e938cb47b74729e137fb47ba32a1/href</a></iframe>
+
+<p>最後，返回基礎 ViewController 類別，並更新 showFlutter() 函數，以便它使用指定的輸入點顯示新的 SingleFlutterViewController 類別。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/2b3785e8faaeaa2b01befb697584c893/href">https://medium.com/media/2b3785e8faaeaa2b01befb697584c893/href</a></iframe>
+
+<p>更新完程式碼後，更新 Podfile 以使用 Flutter 模組的最新版本，因為您已將新的輸入點和螢幕程式碼新增到 <strong>main.dart</strong> 中。完成後，您應該能夠建構和執行 iOS 應用程式，以查看您的原生程式碼切換到新的 Flutter 元件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/412/1*scdrE_wYehIvimaJhOUklQ.gif" />
+</figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>嘿，您做到了！恭喜！</p>
+<p>在本教程中，您學習了如何將 Flutter 逐步新增到現有的 Android 和 iOS 應用程式中，以建立一個統一且更易於維護的程式碼庫。您已經了解了如何在兩個平台上從單一輸入點新增 Flutter，以及如何建立多個輸入點。如果您有興趣了解更多資訊，我在下方包含了一個連結，連結到 Flutter 的官方文件頁面，該頁面提供了有關 add-to-app 的更多細節資訊，以及討論 <strong><em>平台通道</em></strong> 的連結，平台通道允許您在 Flutter 和原生級別程式碼之間來回通訊。最後，請查看討論 Plugin 和如何撰寫自己的 Plugin 的連結，這些連結可以讓使用 Flutter 為多個平台開發變得更容易，無論是對您還是對開發人員社群。</p>
+<p>我們期待看到您的跨平台應用程式實際運作！</p>
+<ul>
+<li><a href="https://flutter.dev/docs/development/add-to-app">將 Flutter 加入現有應用程式</a></li>
+<li><a href="https://flutter.dev/docs/development/platform-integration/platform-channels">撰寫自訂平台特定程式碼</a></li>
+<li><a href="https://flutter.dev/docs/development/packages-and-plugins/using-packages">使用套件</a></li>
+<li><a href="https://flutter.dev/docs/development/packages-and-plugins/developing-packages">開發套件和 Plugin</a></li>
+</ul>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3e2c5a4797c1" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/adding-flutter-to-your-existing-ios-and-android-codebases-3e2c5a4797c1">將 Flutter 加入現有的 iOS 和 Android 程式碼庫</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/ba84fd2d.html" data-id="cm1orxyku0046j91759vv6huz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android-app-development/" rel="tag">android-app-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-06-14T18:00:28.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/31aeddc4.html" class="article-date">
+  <time datetime="2021-06-14T10:00:28.000Z" itemprop="datePublished">2021-06-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/31aeddc4.html">【文章翻譯】Improving Platform Channel Performance in Flutter</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*0lyQIh8t-STSy1o2Yjj1tQ.png" /></figure>
+
+<p>過去幾年，我一直對「如何讓 Flutter 與其主機平台之間的通訊更快、更容易？」這個問題感到興趣。這對 Flutter Plugin 開發人員和增加到應用程式開發人員來說，是一個特別感興趣的問題。</p>
+
+<p>Flutter 與主機平台之間的通訊通常使用 [平台通道](https://flutter.dev/docs/development/platform-integration/platform-channels) 完成，因此我的精力一直集中在這裡。在 2019 年後期，為了解決使用平台通道所需的過多樣板和 [字串類型](https://wiki.c2.com/?StringlyTyped) 程式碼，我設計了一個程式碼產生套件 [Pigeon](https://pub.dev/packages/pigeon)，它使平台通道類型安全，並且團隊持續改進它。在 2020 年春季，我對 [平台通道和外部函式介面 (FFI) 效能進行了審查](https://docs.google.com/document/d/1bD_tiN987fWEPtw7tjXHzqZVg_g9H95IS32Cm609VZ8/edit)。現在，我將目光放在 [改進平台通道的效能](https://docs.google.com/document/d/1oNLxJr_ZqjENVhF94-PqxsGPx0qGXx-pRJxXL6LSagc/edit?usp=sharing) 上。由於 Pigeon 建立在平台通道之上，而我計畫在 Pigeon 之上建立一個 [多個 Flutter 實例的資料同步解決方案](http://flutter.dev/go/data-sync)，這是一個很好的機會，可以幫助滿足開發人員的許多不同需求，以及我的計劃。</p>
+
+<p>經過一番調查，我能夠識別出透過平台通道傳送的資料的冗餘副本，並且能夠將其移除。您將在下面找到該變更的結果以及識別和移除這些副本的相關工作概述。</p>
+
+<h3>結果</h3>
+
+<p>在移除透過平台通道從 Flutter 傳送到主機平台的 1 MB 二元資料時，並響應 1 MB 的資料，我們看到 [iOS 上的效能大約提高了 42%](https://flutter-flutter-perf.skia.org/e/?begin=1620764044&amp;end=1621044607&amp;queries=sub_result%3Dplatform_channel_basic_binary_2host_1MB%26test%3Dmac_ios_platform_channels_benchmarks_ios&amp;requestType=0)。在 Android 上，結果稍微複雜一些。我們的自動化效能測試 [大約提高了 15%](https://flutter-flutter-perf.skia.org/e/?begin=1621972627&amp;end=1622677144&amp;queries=sub_result%3Dplatform_channel_basic_binary_2host_1MB%26test%3Dlinux_platform_channels_benchmarks&amp;requestType=0)，而本地測試在遷移到新的 [BinaryCodec.INSTANCE_DIRECT](https://github.com/flutter/engine/blob/b3ebb6dd62cefe3c30a7bd15ed73c578030140e2/shell/platform/android/io/flutter/plugin/common/BinaryCodec.java#L27) 編碼器時，[大約提高了 52%](https://github.com/flutter/engine/pull/26331#issuecomment-854071096)。這種差異可能是因為自動化效能測試在舊設備上運行，但也可能是微基準測試在舊設備上的執行方式產生的假象（例如，不斷地讓垃圾收集器執行）。您可以在 [platform_channels_benchmarks/lib/main.dart](https://github.com/flutter/flutter/blob/00bfe9061369bb6fdfe4a74fb27086b77df107bf/dev/benchmarks/platform_channels_benchmarks/lib/main.dart#L165) 中找到自動化效能測試的原始碼。</p>
+
+<p>對於使用 StandardMessageCodec 的平台通道，我發現效能增益較小（[使用 14k 負載大約為 5%](https://flutter-flutter-perf.skia.org/e/?begin=1620764044&amp;end=1621044607&amp;queries=sub_result%3Dplatform_channel_basic_standard_2host_large%26test%3Dmac_ios_platform_channels_benchmarks_ios&amp;requestType=0)）。我使用一個大型支援類型陣列對其進行測試，以對編碼和解碼進行壓力測試。我發現，MessageCodecs 的編碼和解碼時間遠遠超過在平台之間複製訊息所花費的時間。大部分的編碼時間都是由於對資料結構進行遞迴，並使用反射來找出其內容的成本所致。</p>
+
+<p>因此，根據您使用平台通道的方式和設備，您的結果可能會有很大差異。如果您想要使用平台通道進行最快的通訊，那麼您應該使用 BasicMessageChannels，並在 iOS 上使用 [FlutterBinaryCodec](https://github.com/flutter/engine/blob/b3ebb6dd62cefe3c30a7bd15ed73c578030140e2/shell/platform/darwin/common/framework/Headers/FlutterCodecs.h#L52)，在 Android 上使用 [BinaryCodec.INSTANCE_DIRECT](https://github.com/flutter/engine/blob/b3ebb6dd62cefe3c30a7bd15ed73c578030140e2/shell/platform/android/io/flutter/plugin/common/BinaryCodec.java#L27)，並為編碼和解碼訊息開發自己的協定，該協定不依賴於反射。（實作新的 MessageCodec 可能更乾淨。）</p>
+
+<p>如果您想試用新的、更快的平台通道，它們現在已在 [master 通道](https://flutter.dev/docs/development/tools/sdk/upgrading#switching-flutter-channels) 上提供。</p>
+
+<h3>詳細複製移除</h3>
+
+<p>如果您對如何實現這些結果以及我必須克服的問題不感興趣，那麼現在就可以停止閱讀了。如果您喜歡了解詳細資訊，請继续阅读。</p>
+
+<p>平台通道 API 自 2017 年以來沒有太大變化。由於平台通道是引擎和 Plugin 操作的基礎，因此它們不容易更改。雖然我對平台通道的運作方式有一定的了解，但它們在一定程度上是複雜的。因此，改進其效能的第一步是準確地了解它們的運作方式。</p>
+
+<p>下圖概述了框架在使用平台通道與 iOS 進行通訊時從 Flutter 遵循的原始流程：</p>
+
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1002/0*2fUEEmUdocImYO4x" /></figure>
+
+<p>圖表中的一些收穫：</p>
+
+<ul>
+<li>訊息會從 UI 線程跳轉到平台線程，然後再跳回 UI 線程。（在 Flutter 引擎術語中，UI 線程是執行 Dart 的位置，而平台線程是主機平台的主線程。）</li>
+<li>訊息及其響應使用 C++ 作為介於 Flutter 與主機平台目標語言之間的介面層。</li>
+<li>訊息的資訊在到達 Objective-C (Obj-C) 處理程式之前被複製了 4 次（步驟 3、5、7、8）。步驟 3 和 8 執行翻譯，而步驟 5 和 8 執行複製，將資料的所有權轉移到新的記憶體佈局。相同的過程反向重複以進行回覆。</li>
+<li>步驟 1、9 和 16 是使用 Flutter 的開發人員編寫的程式碼。</li>
+</ul>
+
+<p>從 Flutter 傳送訊息到 Java/Kotlin 類似，只是在 C++ 和 Java 虛擬機器 (JVM) 之間有一個 Java 本機介面 (JNI) 層。</p>
+
+<p>在確定平台通道的運作方式後，很明顯，消除在這些層之間傳輸資料時進行的複製（例如，從 C++ 到 Obj-C）是改進效能的顯而易見的方法。為了實現這一點，Flutter 引擎必須將資料放置在記憶體中，以使其可以直接從 Java/Obj-C 存取，並且具有與主機平台相容的記憶體管理語義。</p>
+
+<p>平台通道訊息最終由主機平台的 MessageCodec 的 decodeMessage 方法使用。在 Android 上，這意味著一個 [ByteBuffer](https://github.com/flutter/engine/blob/58459a5e342f84c755919f2ad5029b22bcddd548/shell/platform/android/io/flutter/plugin/common/MessageCodec.java#L38)，在 iOS 上，這意味著一個 [NSData](https://github.com/flutter/engine/blob/58459a5e342f84c755919f2ad5029b22bcddd548/shell/platform/darwin/common/framework/Headers/FlutterCodecs.h#L38)。C++ 中的資料必須符合這些介面。在處理此問題時，我發現訊息的資訊儲存在 C++ 記憶體中，作為一個 [std::vector](https://github.com/flutter/engine/blob/70ebfc3610c38c463469ffedea85578f35ccc0a0/lib/ui/window/platform_message.h#L39)，位於由 [共用指標](https://en.wikipedia.org/wiki/Smart_pointer) 維護的 PlatformMessage 物件中。這意味著開發人員在將資料從 C++ 傳送到主機平台時，無法安全地移除複製，因為他們沒有保證資料在傳送到主機平台後不會被 C++ 變異。此外，我必須小心，因為 BinaryCodec 實作將 encodeMessage 和 decodeMessage 視為無操作，這可能導致使用 BinaryCodec 的程式碼在不知情的情況下收到直接 ByteBuffer。雖然有人可能會對 MessageCodec 的變更感到意外，但很少有人實作自己的編碼器。另一方面，使用 BinaryCodecs 非常普遍。</p>
+
+<p>在閱讀程式碼後，我發現，雖然 PlatformMessage 由共用指標管理，但它在語義上是唯一的指標。目的是一次只允許一個客戶端存取它（這並不完全是這樣，因為在線程之間傳遞 PlatformMessage 時，暫時會存在多個副本，但这僅僅是为了方便，而并非真正意图）。這意味著我們可以從共用指標遷移到唯一指標，允許我們安全地將資料傳遞到主機平台。</p>
+
+<p>在 [遷移到唯一指標](https://github.com/flutter/engine/commit/7424400f07be684bd87633bbe2d263821181345a#diff-d5a1c9b29bed0d80dc68f228550643925a216e65173364e1ae5a03067b60160d) 後，我必須找到一種方法，將資訊的所有權從 C++ 傳遞到 Obj-C。（我首先實作了 Obj-C，稍後將更詳細地討論 Java）。資訊儲存在一個 std::vector 中，它沒有辦法釋放底層緩衝區的所有權。您唯一的选择是复制出数据、提供一个包含std::vector的适配器、或消除std::vector的使用。</p>
+
+<p>我的第一次嘗試是子類化 NSData，它會 std::move std::vector 並從那裡讀取其資料，從而消除複製。這種嘗試效果不佳，因為結果證明 NSData 是 [Foundation](https://developer.apple.com/documentation/foundation?language=objc) 中的 [類別叢集](https://developer.apple.com/library/archive/documentation/General/Conceptual/CocoaEncyclopedia/ClassClusters/ClassClusters.html)。這意味著您不能只子類化 NSData。在閱讀了許多 Apple 的文件之後，他們似乎建議使用組合和訊息轉發，使物件的行為和外觀像 NSData 一樣。這會欺騙使用代理物件的人，除了那些呼叫 -[NSObject isKindOfClass:] 的人以外。雖然這不太可能，但我無法排除這種可能性。雖然我認為可能有一些與 Obj-C 執行時相關的調整，可以使物件按照我想要的方式運行，但它變得越來越複雜。我選擇將記憶體從 std::vector 移動到 [我們自己的緩衝區類別](https://github.com/flutter/engine/commit/b0bb8eab1d2f7e58230298c28a28ddfeddedeb64#diff-d5a1c9b29bed0d80dc68f228550643925a216e65173364e1ae5a03067b60160d) 中，該類別允許釋放資料的所有權。這樣，我就可以使用 -[NSData dataWithBytesNoCopy:length:] 將資料的所有權傳遞到 Obj-C。</p>
+
+<p>在 Android 上複製這個過程證明更困難。在 Android 上，平台通道符合 ByteBuffer，它具有 [直接](https://docs.oracle.com/javase/7/docs/api/java/nio/ByteBuffer.html) [ByteBuffers](https://docs.oracle.com/javase/7/docs/api/java/nio/ByteBuffer.html) 的概念，允許 Java 程式碼直接與以 C/C++ 方式佈局的記憶體進行介面。我在短時間內實作了遷移到直接 ByteBuffers，但我沒有看到預期的改進。我花費了很長時間學習 Android 分析工具，最終選擇了追蹤語句，因為那些工具失敗了，或者返回了我無法相信的結果。事實證明，從平台線程到 UI 線程排程對平台通道訊息的回覆非常慢，而且似乎慢到這種程度，這種減速程度會隨著訊息的負載而增加。長話短說，我在編譯 Dart VM 時使用了錯誤的編譯標誌，以為 -no-optimization 代表 -no-link-time optimization，但該標誌實際上是針對運行時優化的。</p>
+
+<p>在我發現自己的錯誤時，我忘記了在將資料傳送到 Flutter 客戶端程式碼（特別是透過自訂 MessageCodecs 或 BinaryCodec 的客戶端）時使用直接 ByteBuffer 的後果。傳送直接 ByteBuffer 意指您有一個 Java 物件正在與 C/C++ 記憶體進行通訊，因此，如果您刪除 C/C++ 記憶體，那麼 Java 會與隨機垃圾進行交互，並且可能會因作業系統的存取衝突而當機。</p>
+
+<p>效仿 iOS 的做法，我嘗試將 C/C++ 記憶體的所有權傳遞給 Java，以便在 Java 物件被垃圾收集時，它會刪除 C/C++ 記憶體。結果證明，當直接 ByteBuffer 是透過 JNI 透過 [NewDirectByteBuffer](https://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/functions.html#NewDirectByteBuffer) 建立時，這是做不到的。JNI 沒有提供在 Java 物件刪除時得知的掛鉤。您無法子類化 ByteBuffer，以便在它被終止時呼叫 JNI。唯一的希望是在上圖中的步驟 5 中從 Java API 分配直接 ByteBuffer。透過 Java 分配的直接 ByteBuffers 沒有這個限制。但是，在 Java 中引入新的入口點將是一個巨大的變革，而且任何使用過 JNI 的人都知道這是很危險的。</p>
+
+<p>相反，我選擇請團隊接受在 decodeMessage 呼叫中使用直接 ByteBuffers。起初，我在 MessageCodec 中引入了一個新的方法，bool wantsDirectByteBufferForDecoding()，以確保沒有人獲得直接 ByteBuffer，除非他們請求它，並且知道其語義（也就是，當底層 C/C++ 記憶體仍然有效時）。這被證明是複雜的，並且令人擔憂的是，開發人員可能會訂閱，但不知道直接 ByteBuffers 的語義，因為它們的運作方式與典型的 ByteBuffers 相反，可能會在他們身下刪除其 C 記憶體支援。儲存編碼的緩衝區是不尋常的使用方式，而且不太可能使用，但團隊無法排除這種可能性。經過多次討論和協商，我們決定每個 MessageCodec 都會獲得一個直接 ByteBuffer，在呼叫 decodeMessage 後會被清除。這樣，如果有人快取編碼的訊息，那麼如果他們在底層 C 記憶體被清理後嘗試使用 ByteBuffer，他們就會在 Java 中得到一個確定性的、適當的錯誤。</p>
+
+<p>讓每個人都能獲得直接 ByteBuffers 效能提升的優點效果很好，但這對 BinaryCodec 來說是一個重大變革，其 encodeMessage 和 decodeMessage 實作是無操作的，它們只是將輸入作為返回值轉發。為了保持 BinaryCodec 的相同記憶體語義，我引入了一個 [新的實例變數](https://github.com/flutter/engine/blob/01d1ed459a313f19e2e01cf8d62331d19b907637/shell/platform/android/io/flutter/plugin/common/BinaryCodec.java#L29)，它控制解碼的訊息是直接 ByteBuffer（新的、更快的程式碼）還是標準 ByteBuffer（舊的、更慢的程式碼）。我們無法建立一種方法，讓 BinaryCodec 的所有客戶端都能獲得效能提升。</p>
+
+<h3>未來工作</h3>
+
+<p>現在已經消除了複製，我下一步改進 Flutter 與主機平台之間通訊的努力是：
+
+<ol>
+<li>為 Pigeon 實作自訂 MessageCodec，該編碼器不依賴於反射，以實現更快的編碼和解碼。</li>
+<li>實作 FFI 平台通道，讓您可以在不跳轉 UI 和平台線程之間的情況下，從 Dart 呼叫主機平台。</li>
+</ol>
+
+<p>我希望您喜歡這次對此效能改進的詳細資訊的深入探討！</p>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e5b4e5df04af" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/improving-platform-channel-performance-in-flutter-e5b4e5df04af">改進 Flutter 中的平台通道效能</a> 最初發表在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/31aeddc4.html" data-id="cm1orxyku0043j917htsa6obr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-plugin/" rel="tag">flutter-plugin</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/software-development/" rel="tag">software-development</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-05-19T18:32:20.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/3418b624.html" class="article-date">
+  <time datetime="2021-05-19T10:32:20.000Z" itemprop="datePublished">2021-05-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/3418b624.html">【文章翻譯】What’s new in Flutter 2.2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Flutter-2-2-新功能"><a href="#Flutter-2-2-新功能" class="headerlink" title="Flutter 2.2 新功能"></a>Flutter 2.2 新功能</h2><p><em>Flutter 2.2 版本專注於完善和優化，包括 iOS 效能改進、Android 延遲組件、更新的 Flutter Web 服務工作者等等！</em></p>
+<p>今天，我們正式發佈 Flutter 2.2。您可以透過切換到 stable channel 並升級您目前的 Flutter 安裝，或前往 <a href="http://flutter.dev/docs/get-started">flutter.dev&#x2F;docs&#x2F;get-started</a> 開始新的安裝來取得它。</p>
+<p>儘管距離 Flutter 2 發佈只有幾個月，但我們在 2.2 版本中有很多改進要分享。此版本合併了框架、引擎和 Plugin 儲存庫中的 2,456 個 PR 並解決了 3,105 個問題。特別感謝廣大的 Flutter 社群，他們提供了大量的 PR 和 PR 審查，包括貢獻最多 PR（17 個）的 <a href="https://github.com/Abhishek01039">Abhishek01039</a> 和審查最多 PR（9 個）的 <a href="https://github.com/xu-baolin">xu-baolin</a>，他們為 Flutter 2.2 做出了貢獻。感謝所有貢獻者幫助將 Flutter 2.2 帶入 stable channel。沒有您的協助，我們無法做到。</p>
+<p>隨著每個新的 Flutter 版本穩定發佈，都會有一系列新的更新，無論是效能增強、新功能還是錯誤修復。此外，發佈版本還包含一些尚未準備好投入生產使用的功能，但我們希望您能夠驗證它們是否按您的預期運作。最後，每個新版本都帶有一組相關的工具更新和來自更廣泛的 Flutter 社群的更新。老實說，如今每次 Flutter 新版本發佈時都會發生很多事情，我們不可能在一篇部落格文章中涵蓋所有內容，但我們會盡力突出重點。</p>
+<h3 id="穩定版-Flutter-2-2-更新"><a href="#穩定版-Flutter-2-2-更新" class="headerlink" title="穩定版 Flutter 2.2 更新"></a>穩定版 Flutter 2.2 更新</h3><p>此版本在 Flutter 2 的基礎上涵蓋了廣泛的改進，包括 Android、iOS 和 Web 的更新，新的 Material 圖示、文字處理更新、捲軸行為和 TextSpan Widget 的滑鼠游標支援，以及有關如何從單一原始碼庫最佳支援多種平台的新指南。所有這些功能現在都可以在 stable 版本中使用，您可以用於生產應用程式。所有這些功能都建立在新的 Dart 版本之上。</p>
+<h4 id="Dart-2-13"><a href="#Dart-2-13" class="headerlink" title="Dart 2.13"></a>Dart 2.13</h4><p>Flutter 2.2 與 Dart 2.13 版本一起發佈。除了其他功能外，此 Dart 更新還包含一個新的類型別名功能，使您能夠為類型和函數建立別名：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/0e191a2788d6baa097a5d30aef8ab23e/href">https://medium.com/media/0e191a2788d6baa097a5d30aef8ab23e/href</a></iframe>
+
+<p>類型別名使您能夠為長而複雜的類型提供簡潔的短名稱，它還讓您以非破壞性的方式重新命名類別。Dart 2.13 中還有更多新功能；在 <a href="https://medium.com/dartlang/announcing-dart-2-13-c6d547b57067">Dart 2.13 發佈公告</a> 中查看詳細資訊。</p>
+<h4 id="Flutter-Web-更新"><a href="#Flutter-Web-更新" class="headerlink" title="Flutter Web 更新"></a>Flutter Web 更新</h4><p>Flutter 最新的穩定平台 Web 在此版本中得到了改進。</p>
+<p>首先，我們使用新的服務工作者載入機制優化了快取行為，並修復了 <code>main.dart.js</code> 的重複下載問題。在以前的 Flutter Web 版本中，服務工作者在向使用者提供應用程式的舊版本時，會在背景中下載應用程式的更新。下載更新後，使用者必須刷新瀏覽器頁面幾次才能看到這些更改。從 Flutter 2.2 開始，當新的服務工作者偵測到更改時，使用者將等待更新下載才能使用應用程式，但他們將看到更新，而無需再次手動刷新頁面。</p>
+<p>若要啟用此更改，您需要重新產生 Flutter 應用程式的 <code>index.html</code> 檔案。若要執行此操作，請儲存您的修改，刪除 <code>index.html</code> 檔案，然後在您的專案目錄中執行 <code>flutter create .</code> 以重新建立它。</p>
+<p>我們還對兩個 Web 渲染器都進行了改進。對於 HTML，我們加入了對 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-feature-settings">字體功能</a> 的支援，以啟用設定 <a href="https://api.flutter.dev/flutter/dart-ui/FontFeature-class.html">FontFeature</a> 以及使用畫布 API 渲染文字，以便在懸停時文字顯示在正確的位置。對於 HTML 和 CanvasKit，我們加入了對著色器遮罩和 <a href="https://api.flutter.dev/flutter/painting/TextPainter/computeLineMetrics.html">computeLineMetrics</a> 的支援，解決了 Flutter Web 和行動應用程式之間的奇偶性差距。例如，開發人員現在可以使用 <a href="https://api.flutter.dev/flutter/widgets/Opacity-class.html">不透明遮罩</a> 透過著色器遮罩執行淡出轉場，並像在行動應用程式中一樣使用 <code>computeLineMetrics</code>。</p>
+<p>對於 Flutter Web 以及 Flutter 本身，無障碍功能是我們的首要任務之一。按照設計，Flutter 透過建立 SemanticsNode 樹來實作無障碍功能。當 Flutter Web 應用程式使用者啟用無障碍功能時，框架會產生一個與 RenderObject DOM 樹平行的 DOM 樹，並將語義屬性轉換為 Aira。在此版本中，我們改進了語義節點位置，以在使用轉換時縮短行動和桌面 Web 應用程式之間的差距，這意味著當 Widget 透過轉換進行樣式設定時，焦點框應正確顯示在元素之上。若要實際查看此功能，請查看 Victor Tsaran 的這個影片，他在影片中使用 VoiceOver 和 Flutter Gallery App：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FA6Sx0lBP8PI%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DA6Sx0lBP8PI&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FA6Sx0lBP8PI%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="640" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/1da83a64c4b5cf1037aba0503dd22606/href">https://medium.com/media/1da83a64c4b5cf1037aba0503dd22606/href</a></iframe>
+
+<p>我們還透過命令列標誌在配置文件和發行模式下公開了語義節點除錯樹，以幫助開發人員透過視覺化為其 Web 應用程式建立的語義節點來除錯無障碍功能。</p>
+<p>若要為您自己的 Flutter Web 應用程式啟用此功能，請執行以下操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter run -d chrome --profile </span><br><span class="line">  --dart-define=FLUTTER_WEB_DEBUG_SHOW_SEMANTICS=true </span><br></pre></td></tr></table></figure>
+
+<p>啟用該標誌後，您將可以在 Widget 上方看到語義節點，這讓您能夠除錯並查看語義元素是否放置在不應放置的位置。如果您發現此類範例，請隨時 <a href="https://goo.gle/flutter_web_issue">提交錯誤報告</a>。</p>
+<p>雖然我們在支援一組核心無障碍功能方面取得了重大進展，但我們將繼續改進無障碍功能支援。在 2.2 穩定版本之後，在 master 和 dev channel 上提供的版本中，我們加入了一個 API，讓開發人員可以透過程式設計方式 <a href="https://github.com/flutter/engine/pull/25830">自動啟用應用程式的無障碍功能</a>，並且正在修復 <a href="https://github.com/flutter/engine/pull/25797">使用螢幕閱讀器與 Tab 鍵</a> 的問題。</p>
+<p>最後，但同樣重要的是，最新版本的 Flutter DevTools 現在支援 Flutter Web 應用程式的佈局瀏覽器。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*fS4WbRPwmo_FQgDo" />
+</figure>
+
+<p>此更新為您提供了與行動和桌面應用程式相同的佈局除錯工具。</p>
+<h4 id="iOS-頁面轉場和增量安裝"><a href="#iOS-頁面轉場和增量安裝" class="headerlink" title="iOS 頁面轉場和增量安裝"></a>iOS 頁面轉場和增量安裝</h4><p>對於 iOS，在此版本中，我們 <a href="https://github.com/flutter/flutter/pull/75670">在 Cupertino 中使頁面轉場更加流暢</a>，透過將渲染動畫畫面的時間縮短 75%，而在低端手機上可能會縮短更多時間。我們不僅尋找最終使用者效能的改進；我們始終在尋找改進開發效能的方法。</p>
+<p>在此版本中，我們 <a href="https://github.com/flutter/flutter/pull/77756">在開發過程中實作了增量 iOS 安裝</a>。在我們的基準測試中，我們發現安裝更新版本的 iOS 應用程式所需的時間減少了 40%，這減少了測試應用程式更改時的週轉時間。</p>
+<h4 id="使用-Flutter-建立平台適應性應用程式"><a href="#使用-Flutter-建立平台適應性應用程式" class="headerlink" title="使用 Flutter 建立平台適應性應用程式"></a>使用 Flutter 建立平台適應性應用程式</h4><p>隨著 Flutter 在 stable 版本中擴展到支援更多平台，考慮支援不同外觀尺寸（例如行動裝置、平板電腦和桌面），以及不同輸入類型（觸控 vs. 滑鼠 + 鍵盤）和具有不同慣例的平台（例如導航抽屜 vs. 系統選單用於導航）的應用程式變得很有用。我們將能夠根據不同目標平台的細節進行調整的應用程式稱為「平台適應性」應用程式。</p>
+<p>對於在建立平台適應性應用程式時需要牢記的考量，我們建議您參考 Kevin Moore 的 <a href="https://events.google.com/io/session/868dfd56-7f8c-49ee-84ad-ac69a23ba19d?lng=en">建立平台適應性應用程式</a> 議程。若要更詳細地查看，請查看 <a href="https://flutter.dev/docs/development/ui/layout/building-adaptive-apps">flutter.dev 上的平台適應性應用程式指南</a>。</p>
+<p>最後，對於根據這些原則為多個平台編寫的範例應用程式，我們建議您使用 gSkinner 的 <a href="https://flutter.gskinner.com/flokk">Flokk</a> 和 <a href="https://flutter.gskinner.com/folio">Flutter Folio</a> 應用程式。您可以下載 <a href="https://github.com/gskinnerTeam/flokk">Flokk</a> 和 <a href="https://github.com/gskinnerTeam/flutter-folio">Folio</a> 的程式碼，以及從各個應用程式商店下載 <a href="https://flutter.gskinner.com/flokk/#g-download">Flokk</a> 和 <a href="https://flutter.gskinner.com/folio/#g-download">Folio</a>，或直接從瀏覽器中執行它們。另一個很棒的範例是是用於建立指南本身的應用程式：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F8YUIrIGGc3Y%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D8YUIrIGGc3Y&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F8YUIrIGGc3Y%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/77a372bd95e8a21fd997f4fce6dc2f53/href">https://medium.com/media/77a372bd95e8a21fd997f4fce6dc2f53/href</a></iframe>
+
+<p>Flutter 平台適應性應用程式指南的 UX 部分是基於新的 <a href="https://material.io/blog/material-design-for-large-screens">Material 大型螢幕指南</a>。Material 團隊的這項新指南包括重新設計多個主要佈局文章，以及更新多個元件和更新的設計工具包，所有這些都是針對大螢幕進行的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ROXD5MqgkYuZgDZQ" />
+</figure>
+
+<p>Flutter 的目標一直是啟用不僅可以在多個平台上執行，而且在所有目標平台上都能 <em>出色</em> 執行的應用程式。Flutter 擁有您需要的支援，不僅可以將應用程式定位到多個平台，而且還打算為每個平台的螢幕大小、輸入模式和慣例 <em>量身打造</em> 您的應用程式。</p>
+<h4 id="更多-Material-圖示"><a href="#更多-Material-圖示" class="headerlink" title="更多 Material 圖示"></a>更多 Material 圖示</h4><p>談到 Material 指南，在此版本中，我們不僅加入了一個，而是 <a href="https://github.com/flutter/flutter/pull/76607">兩個</a> <a href="https://github.com/flutter/flutter/pull/78311">獨立的</a> PR，為 Flutter 加入新的 Material 圖示，包括 Dash 本人的圖示！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hlsSKR8Uco4AurMH" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*K7L6ppH1A1gBmVY-" />
+</figure>
+
+<p>這些更新使您的應用程式可用的 Material 圖示總數增加到 7,000 多個。如果您在這麼多豐富的圖示中找不到您要尋找的圖示（誰會呢？），您可以在 <a href="http://fonts.google.com/icons">fonts.google.com&#x2F;icons</a> 根據類別和名稱搜尋。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*NofBGAEBtDHtwclP" />
+<figcaption>根據名稱搜尋 Flutter Material 圖示</figcaption>
+</figure>
+
+<p>找到完美的圖示後，新的「Flutter」標籤會顯示如何使用它，或者您可以僅下載該圖示以作為獨立資產用於您的應用程式中。將 Dash 加入您的 Flutter 應用程式中從未如此簡單。</p>
+<h4 id="改進的文字處理"><a href="#改進的文字處理" class="headerlink" title="改進的文字處理"></a>改進的文字處理</h4><p>隨著我們繼續改進 Flutter 以支援每個平台的細節，我們繼續推進到在行動外觀尺寸上並不那麼重要，但在桌面外觀尺寸上很重要的新領域。其中一個領域是文字處理。在此版本中，我們已開始重構處理文字輸入的方式，以啟用取消鍵盤輸入（當鍵盤輸入透過 Widget 階層級別傳播時）、以及透過引入能夠完全自訂與文字動作相關的鍵盤輸入的能力。</p>
+<p>能夠取消鍵盤輸入讓 Flutter 能夠實作使用空格鍵和箭頭鍵而不會觸發捲軸事件的功能，為您的最終使用者提供更直观的體驗。您可以在自己的應用程式中使用相同的功能來處理鍵盤輸入，然後再輸入到父 Widget 中。另一個範例是，在此版本中，您可以在 Flutter 應用程式中的 TextField 和按鈕之間按 Tab 鍵，並且它可以正常運作：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9fe050af78589eeadd639f27427eb938/href">https://medium.com/media/9fe050af78589eeadd639f27427eb938/href</a></iframe>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*krVx4ycTN2nTl7wO" />
+<figcaption>Flutter 2.2 可以取消鍵盤輸入從 Widget 階層級別向上傳播，例如允許 TAB 將焦點從 TextField 切換</figcaption>
+</figure>
+
+<p>自訂文字動作允許您執行諸如在 TextField 中對 Enter 鍵進行特殊處理之類的操作；例如，您可以觸發在聊天客戶端中發送訊息，同時仍然允許透過 Ctrl+Enter 插入換行符。這些相同的文字動作 <a href="https://github.com/flutter/flutter/pull/75032">讓 Flutter 本身能夠提供不同的鍵盤輸入</a>，以將文字編輯的行為與主機作業系統本身相匹配，例如 Windows 和 Linux 上的 Ctrl+C，但 macOS 上的 Cmd+C。</p>
+<p>舉例來說，以下範例覆蓋了預設的左箭頭動作，並為退格鍵和刪除鍵提供了一個新的動作：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/802c94f664ff9b3badd620731d1dc52a/href">https://medium.com/media/802c94f664ff9b3badd620731d1dc52a/href</a></iframe>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*RFbQWBEWCoP4PF1j" />
+<figcaption>不可饒恕的 TextField 範例，其中按下左箭頭或 ESC 鍵會清除文字</figcaption>
+</figure>
+
+<p>我們還有更多工作要做，但我們正在努力為您提供完整的文字編輯動作。我們的目標是，當 Flutter 桌面到達 stable 版本時，您的使用者將無法區分在 Flutter 應用程式和主機作業系統上的任何其他應用程式中編輯文字。</p>
+<h4 id="自動捲軸行為"><a href="#自動捲軸行為" class="headerlink" title="自動捲軸行為"></a>自動捲軸行為</h4><p>作為我們不斷努力讓 Flutter 應用程式像每個平台上最好的應用程式一樣運作的一部分，我們在此版本中再次查看了捲軸條。在實際顯示捲軸條方面，Android 和 iOS 都是一樣的；預設情況下，它們不會顯示捲軸條。另一方面，對於桌面應用程式，當內容比容器大時，通常會自動顯示捲軸條，這需要您加入 Scrollbar 父 Widget。若</p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/3418b624.html" data-id="cm1orxyku0041j91713s8bxmt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-desktop/" rel="tag">flutter-desktop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-05-18T20:02:12.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/1bf8dfb3.html" class="article-date">
+  <time datetime="2021-05-18T12:02:12.000Z" itemprop="datePublished">2021-05-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/1bf8dfb3.html">【文章翻譯】Announcing Flutter 2.2 at Google I/O 2021</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Flutter-2-2：領先的多平台-UI-工具組的持續發展"><a href="#宣布-Flutter-2-2：領先的多平台-UI-工具組的持續發展" class="headerlink" title="宣布 Flutter 2.2：領先的多平台 UI 工具組的持續發展"></a>宣布 Flutter 2.2：領先的多平台 UI 工具組的持續發展</h2><p>在今天的 Google I/O 上，我們宣布了 [Flutter 2.2](https://flutter.dev/docs/whats-new)，這是我們開源工具組的最新版本，可以用於從單一平台建立適用於任何設備的精美應用程式。Flutter 2.2 是迄今為止最佳的 Flutter 版本，它提供了更新，使開發人員比以往更容易透過應用程式內購買、付款和廣告來獲利；連接到擴展應用程式以支援新功能的雲端服務和 API；以及工具和語言功能，讓開發人員能夠消除一整類錯誤，提高應用程式效能，並縮減套件大小。</p>
+
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/0*NCBwYFewFf602uvF" /></figure>
+
+<h3 id="建立在-Flutter-2-的基礎之上"><a href="#建立在-Flutter-2-的基礎之上" class="headerlink" title="建立在 Flutter 2 的基礎之上"></a>建立在 Flutter 2 的基礎之上</h3><p>Flutter 2.2 建立在 Flutter 2 的基礎之上，Flutter 2 將 Flutter 從行動端擴展到包含 Web、桌面和嵌入式使用。它專為環境計算世界而設計，在環境計算世界中，使用者擁有各種不同的設備和外形尺寸，並希望獲得跨越他們日常生活的連貫體驗。有了 Flutter 2.2，企業、新創公司和企業家都可以建立高品質的解決方案，這些方案可以發揮其可尋址市場的全部潛力，讓創意靈感（而非目標平台）成為唯一的限制因素。</p>
+
+<blockquote>Flutter 現在是跨平台開發最受歡迎的框架。</blockquote>
+
+<p>最近的一項行動開發人員研究突顯了 Flutter 的成長。分析公司 [SlashData](https://www.slashdata.co/) 的 [2021 年行動開發人員人口預測](https://www.slashdata.co/reports/?category=mobile-desktop) 顯示，Flutter 現在是跨平台開發最受歡迎的框架，45% 的開發人員選擇使用它，從 2020 年第一季到 2021 年第一季成長了 47%。我們自己的數據證實了這種向 Flutter 的轉變；在過去 30 天中，Play 商店中超過八分之一的新應用程式都是使用 Flutter 建立的。</p>
+
+<p>在 I/O 上，我們分享了現在僅在 Play 商店中就有超過 20 萬個應用程式是使用 Flutter 建立的。這些應用程式來自像騰訊這樣的公司，其 [微信](https://apps.apple.com/us/app/wechat/id414478124) 通訊應用程式在 iOS 和 Android 上擁有超過 12 億使用者；[字節跳動](https://www.bytedance.com/en/products/)，TikTok 的創始人，他們現在已經使用 Flutter 建立了 70 個不同的應用程式；以及其他來自包括 [BMW](https://www.press.bmwgroup.com/global/article/detail/T0328610EN/the-my-bmw-app:-new-features-and-tech-insights-for-march-2021?language=en)、[SHEIN](https://apps.apple.com/app/id878577184)、[Grab](https://apps.apple.com/app/id647268330) 和 [DiDi](https://play.google.com/store/apps/details?id=com.xiaojukeji.didi.global.customer&amp;hl=None) 等公司的應用程式。當然，Flutter 不僅僅被大型企業使用。一些最具創新性的應用程式來自您可能從未聽說過的名字：例如，[Wombo](https://play.google.com/store/apps/details?id=com.womboai.wombo&amp;hl=None)，病毒式的唱歌自拍應用程式；[Fastic](https://play.google.com/store/apps/details?id=de.fastic.app&amp;hl=None)，間歇性禁食應用程式；以及 [Kite](https://play.google.com/store/apps/details?id=com.zerodha.kite3&amp;hl=None)，一個精美的投資交易應用程式。</p>
+
+<h3 id="介紹-Flutter-2-2"><a href="#介紹-Flutter-2-2" class="headerlink" title="介紹 Flutter 2.2"></a>介紹 Flutter 2.2</h3><p>Flutter 2.2 版本重點改進開發體驗，幫助您為客戶提供更可靠、更高效能的應用程式。
+
+<p>聲明性空安全現在是新專案的預設值。空安全增加了對空引用異常的保護，讓開發人員能夠在程式碼中表達非空類型。由於 Dart 的實作是 *聲明性的*，編譯器可以在執行時消除空檢查，為您的應用程式提供更高的效能。生態系統迅速做出回應，大約有 5,000 個套件已經更新以支援空安全。</p>
+
+<p>此版本中也包含許多效能改進：對於 Web 應用程式，我們提供了使用服務工作者的背景快取；對於 Android 應用程式，Flutter 支援延遲組成部分；對於 iOS，我們一直在努力開發工具以預先編譯著色器，以消除或減少第一次運行的卡頓。我們還為 DevTools 套件添加了一些新功能，這些功能可以幫助您了解應用程式中的記憶體分配方式，以及對第三方工具擴展的支援。</p>
+
+<p>此外，我們一直在著手幾個重要的潤色領域，例如改進 Web 目標的可存取性。</p>
+
+<p>我們的發展不僅限於 Flutter 的核心。我們還與其他 Google 團隊合作，幫助將 Flutter 整合到我們更廣泛的開發人員堆疊中。特別是，我們繼續建立值得信賴的服務，幫助開發人員負責任地在應用程式中獲利。此版本中更新了我們的 [新廣告 SDK](https://developers.google.com/admob/flutter/quick-start)，包含空安全和對適應性橫幅格式的支援。我們還引入了一個由 Google Pay 團隊合作開發的 [新的付款 Plugin](http://pub.dev/packages/pay)，它讓您可以在 iOS 和 Android 上對實體商品進行付款。此外，我們更新了 [應用程式內購買 Plugin](https://pub.dev/packages/in_app_purchase)，以及相應的 [Codelab](https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases)。</p>
+
+<p>作為驅動 Flutter 的「秘訣」，[Dart](https://dart.dev) 也在此版本中進行了更新。Dart 2.13 擴展了對原生互操作性的支援，包括在 FFI 中支援陣列和封包結構。它還包括對類型別名的支援，這提高了可讀性，並為某些重構情境提供了一個平緩的路徑。我們繼續為更廣泛的生態系統添加整合，包括一個 Dart [GitHub Action](https://github.com/marketplace/actions/setup-dart-sdk) 和一個經過優化的 [Docker 官方映像](https://hub.docker.com/_/dart)，專為雲端部署業務邏輯而設計。</p>
+
+<h3 id="超越-Google-專案"><a href="#超越-Google-專案" class="headerlink" title="超越 Google 專案"></a>超越 Google 專案</h3><p>雖然 Google 仍然是 Flutter 專案的主要貢獻者，但我們很高兴看到圍繞 Flutter 的更廣泛生態系統的成長。</p>
+
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zroRqBB-vjUR_UCvYCKSUg.png" /></figure>
+
+<p>在最近幾個月中，Flutter 的成長表現特別突出，它被用於越來越多的平台和作業系統。在 Flutter Engage 上，我們宣布了 [豐田將把 Flutter 带入他們的下一代車輛信息娛樂系統](https://medium.com/googleplaydev/seamless-multi-platform-app-development-with-flutter-ea0e8003b0f9#f53d)。上個月，Canonical 發佈了他們的首個 [帶有整合 Flutter 支援的 Ubuntu](https://ubuntu.com/blog/ubuntu-21-04-is-here)，具有 Snap 整合和對 Wayland 的支援。</p>
+
+<p>兩位新合作夥伴證明了這個不斷發展的生態系統。[三星正在將 Flutter 移植到 Tizen](https://github.com/flutter-tizen/flutter-tizen)，  開源儲存庫可供其他人貢獻。而 [索尼正在帶頭努力為嵌入式 Linux 提供解決方案](https://github.com/sony/flutter-embedded-linux)。</p>
+
+<p>設計師也從這個專案的開源性質中受益，[Adobe 宣布了其更新的 XD to Flutter 外掛](https://medium.com/adobetech/announcing-xd-to-flutter-v2-0-82d09f3909a7)。Adobe XD 為設計師提供了一個很好的方式來實驗和迭代。現在，隨著增強的 Flutter 支援，設計師和開發人員可以在相同的資產上進行合作，讓好點子更快地投入生產。</p>
+
+<p>最後，微軟繼續與我們合作；除了 Surface 團隊一直在努力使用 Flutter 建立可折疊體驗之外，本週還推出了為 Windows 10 建立的 [Flutter 對 UWP 應用程式的 Alpha 版支援](https://flutter.dev/desktop#windows-uwp)。我們很高兴看到更多利用 Flutter 中內建的平台適應來提供跨行動、桌面、Web 和其他平台的優質體驗的應用程式。</p>
+
+<h3>建立出色的體驗</h3>
+
+<p>最重要的是，我們建立 Flutter 是為了幫助開發人員建立出色的體驗。我們熱衷於這樣的想法：應用程式開發可以變得更好；我們可以透過消除傳統的障礙來讓您接觸到您的受眾，來賦予您力量。</p>
+
+<p>我們喜歡看到您如何將 Flutter 運用於實際工作中。一個例子來自美國退伍軍人事務部的一個專案。下面的影片顯示了他們的 Flutter 應用程式如何幫助他們為患有創傷後壓力症候群的士兵提供康復服務。</p>
+
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F2S-KkvFuLWs%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D2S-KkvFuLWs&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F2S-KkvFuLWs%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/2cebe8af06aff25eb907f5adf248d40e/href">https://medium.com/media/2cebe8af06aff25eb907f5adf248d40e/href</a></iframe>
+
+<p>Google I/O 上有 [關於 Flutter 的各種研討會、簡報和隨選課程](https://events.google.com/io/program/content?4=topic_flutter)，我們很高興能與大家分享我們的成果。不要忘記查看我們用 Flutter 建立的有趣的 [照片亭 Web 應用程式](https://photobooth.flutter.dev)，它讓您能夠與我們的 Dash 吉祥物和她的朋友們合照自拍！</p>
+
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ZdwECz0chT1hOq6Y" /></figure>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=92f0fcbd7ef9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-flutter-2-2-at-google-i-o-2021-92f0fcbd7ef9">在 Google I&#x2F;O 2021 上宣布 Flutter 2.2</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+</p> 
+
+
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/1bf8dfb3.html" data-id="cm1orxyku003zj917dic47iax" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/google/" rel="tag">google</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/programming/" rel="tag">programming</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ui/" rel="tag">ui</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-05-13T02:17:12.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/d5e92173.html" class="article-date">
+  <time datetime="2021-05-12T18:17:12.000Z" itemprop="datePublished">2021-05-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/d5e92173.html">【文章翻譯】Which factors affected users’ decisions to adopt Flutter? — Q1 2021 user survey results</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h3 id="哪些因素影響了使用者採用-Flutter-的決定？—-2021-年第一季使用者調查結果"><a href="#哪些因素影響了使用者採用-Flutter-的決定？—-2021-年第一季使用者調查結果" class="headerlink" title="哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果"></a>哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果</h3><p>Flutter 團隊在此分享本季使用者調查的結果！本季，我們在 3 月 5 日至 11 日期間，歷時 7 天，收集了超過 8,000 份回覆。這個季度的調查計畫旨在以結構化的形式聽取您的意見，以便 Flutter 團隊能夠專注於對使用者最重要的方面。先前調查的結果也發佈在 <a href="https://medium.com/flutter/search?q=survey">Medium</a> 上。</p>
+<h3 id="使用者滿意度"><a href="#使用者滿意度" class="headerlink" title="使用者滿意度"></a>使用者滿意度</h3><p>在本季度的調查中，8,652 位受訪者中有 92% 表示對 Flutter 感到滿意（55% 非常滿意，37% 有點滿意），與上一季度的結果類似。</p>
+<p>本季值得注意的是，89% 的受訪者也對 Dart 語言感到滿意，創下歷史新高。這個消息讓團隊非常鼓舞，因為這個百分比在 2019 年起步時只有 80%。Dart 團隊做了很多工作來改善開發人員使用 Dart 語言的體驗，以達成此滿意度，包括 <a href="https://dart.dev/null-safety">健全的空安全</a>。我們很高興分享這個調查結果，並感謝那些承認該語言獨特優勢的人。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*9CO8AmwyqIudhgK6" />
+<figcaption><em>對 Dart 感到滿意的使用者比例從 2019 年第三季度的 80% 增加到 2021 年第一季度的 89%，增長了 9%。</em></figcaption>
+</figure>
+
+<h3 id="哪些因素影響了使用者採用-Flutter-的決定？"><a href="#哪些因素影響了使用者採用-Flutter-的決定？" class="headerlink" title="哪些因素影響了使用者採用 Flutter 的決定？"></a>哪些因素影響了使用者採用 Flutter 的決定？</h3><p>Flutter 團隊希望了解不同的因素如何影響使用者為新專案採用 Flutter 的決定。目標是找到團隊應該投入的領域，以減輕使用者的疑慮，並讓使用者感到滿意。此外，透過分享結果，我們希望您也能使用這些資訊來尋找貢獻 Flutter 社群的方式，或在您的組織或社群中宣傳 Flutter。</p>
+<p>由於這次調查的目標是現有的 Flutter 使用者，因此我們詢問了使用者最近評估 Flutter 用於其下一個新專案的經驗。我們了解到 75% 的受訪者在過去 3 個月內評估了 Flutter 與其他技術的比較，其中 67% 是出於商業原因，其次是學習（17%）和興趣（14%）。</p>
+<p>首先，我們詢問什麼因素讓使用者傾向於採用 Flutter。如以下圖表所示，使用者傾向於採用 Flutter 的主要原因是 Flutter 支援以下功能，按重要性排序：</p>
+<ol>
+<li>單一程式碼庫。</li>
+<li>現成的 UI Widget。</li>
+<li>熱重載。</li>
+</ol>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*lmC1UJVINDIXumGt" />
+<figcaption><em>讓開發人員傾向於為其下一個專案採用 Flutter 的因素</em></figcaption>
+</figure>
+
+<p>接下來，我們詢問什麼因素讓使用者傾向於不採用 Flutter。使用者最擔心的因素是以下這些，按重要性排序：</p>
+<ol>
+<li>Google 對 Flutter 的承諾。</li>
+<li>Flutter 對於他們正在構建的應用程式規模的成熟度。</li>
+<li>Flutter 生態系統中提供的套件和插件。</li>
+</ol>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*0d3CyUdb9K75qjt2" />
+<figcaption><em>讓開發人員不願為其下一個專案採用 Flutter 的因素</em></figcaption>
+</figure>
+
+<p>從這些結果中，團隊了解到使用者擔心 Flutter 是否會長期存在。這是一個合理的擔憂，因為您將您的職業或應用程式與我們的框架綁定在一起。因此，我們想再次提到內部採用的規模。在 Flutter Engage 上，我們分享了 Google 有超過 30 個團隊正在使用 Flutter 構建任務關鍵的應用程式。這些團隊包括 <a href="https://youtu.be/IdrCyS7EF8M?t=67">Google Pay、Google Ads、Nest Hub 和 Stadia</a>，這些團隊擁有數千名開發人員致力於 Flutter 開發。今年，Flutter 將再次在 <a href="https://events.google.com/io/">Google I&#x2F;O</a> 上佔據重要地位。請留意我們最新的公告，並從 5 月 5 日開始註冊 <a href="https://events.google.com/io/program/content?4=topic_flutter&lng=en">I&#x2F;O 網站</a> 上列出的 Flutter 會議。</p>
+<p>我們還想指出，Flutter 的成長不僅僅是因為 Google 的支援——Google 外部的貢獻者比 Google 內部的貢獻者更多。全球充滿活力的開源開發人員社群正在為我們共同的成功做出貢獻！看看其他大型和小型貢獻者，例如 <a href="https://youtu.be/IdrCyS7EF8M?t=237">Toyota</a> 或 Ubuntu。</p>
+<p>接下來的擔憂是 Flutter 的成熟度，包括它周圍的生態系統。我們正在投資開發套件和插件生態系統，並致力於核心框架的穩定性和品質。隨著 Flutter 2 的發布和不斷增長的生態系統支援它，我們看到人們在這裡的觀點正在改善。現在網頁支援已穩定，桌面支援也處於 Beta 階段，我們在即將到來的版本中主要將會以完善框架和提升您使用 Flutter 可以達到的生產力為主題。同時，您可以查看 Flutter 網站的 <a href="https://flutter.dev/showcase">展示區</a>，了解 BMW、eBay、Nubank、騰訊、Square 和 Sonos 等主要品牌如何使用 Flutter 構建應用程式。</p>
+<p>我們還收集了數千條關於各種主題的原始評論，以回應開放式問題。我們至少舉辦了三個不同的研討會，Flutter 子團隊的工程師在這些研討會上聚在一起閱讀和消化關於各種主題的評論，包括生態系統、開發人員工具等等。研討會期間產生的想法將作為團隊未來幾個季度目標的輸入。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*_m-0usdhsHPmeZ8U" />
+<figcaption><em>Flutter 團隊用於根據調查中的評論生成和組織有關開發人員工具的想法的線上便利貼</em></figcaption>
+</figure>
+
+<p>社群貢獻者也可以做一些事情。我們從使用者評論中了解到，許多 Flutter 開發人員仍然希望擁有品質更高的套件，並提供更好的維護，儘管他們承認 Flutter 的生態系統隨著時間推移而成熟。有很多關於多媒體套件（如音訊和影片播放器）和藍牙套件的提及，這些套件需要更好的支援。我們歡迎您貢獻這些領域，擴展覆蓋範圍，例如向現有套件提交 PR，因為 Flutter 團隊努力提供高品質的 <a href="https://pub.dev/publishers/flutter.dev/packages">第一方套件</a>。</p>
+<h3 id="基於雲端的服務和產品"><a href="#基於雲端的服務和產品" class="headerlink" title="基於雲端的服務和產品"></a>基於雲端的服務和產品</h3><p>Flutter 團隊知道一些 Flutter 使用者對雲端服務有興趣，但團隊並不清楚使用者在尋找哪種類型的雲端解決方案。感謝調查，我們了解到 40% 的開發人員使用基於雲端的服務，27% 的開發人員計畫在他們的 Flutter 專案中使用基於雲端的服務。</p>
+<p>對於那些已經使用基於雲端的服務的人來說，最受歡迎的雲端解決方案是 Firebase (82%)，其次是 Google Cloud Platform (GCP) (34%) 和 Amazon Web Services (AWS) (25%)。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*VLupMT920gd2acrw" />
+</figure>
+
+<p>使用者表示，他們選擇 Firebase 和 GCP 的原因是它們易於與 Flutter 一起使用。許多選擇 AWS 和 Azure 的使用者表示，這是因為他們已經熟悉這些平台。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*d0IHqqnl0KoeLuT8" />
+</figure>
+
+<p>Flutter 團隊與 Firebase  和 GCP 密切合作。我們將繼續支援 <a href="https://firebase.flutter.dev/">FlutterFire Plugin</a>，團隊也與 GCP 團隊合作，使其更容易與 Flutter 一起使用。</p>
+<h3 id="接下來要做什麼？"><a href="#接下來要做什麼？" class="headerlink" title="接下來要做什麼？"></a>接下來要做什麼？</h3><p>Flutter UXR 團隊將每季度進行調查。您可以在 <a href="https://flutter.dev/">flutter.dev</a> 上，Flutter IDE Plugin 中，或 Twitter 上 @FlutterDev 找到公告。您也可以註冊即將到來的 UX 研究，參與其他研究。請繼續分享您的想法，因為團隊正在尋找重要問題的答案。</p>
+<p>再次感謝所有參與此次調查並提供寶貴意見的人。我們閱讀了每則意見回饋，並將其銘記於心。我們的目標是打造一款您喜愛的產品，我們感謝您的時間和努力幫助我們！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=563e61fc68c9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/which-factors-affected-users-decisions-to-adopt-flutter-q1-2021-user-survey-results-563e61fc68c9">哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/d5e92173.html" data-id="cm1orxykv004jj917bkq5bqxz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/developer-experience/" rel="tag">developer-experience</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mobile-development/" rel="tag">mobile-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/surveys/" rel="tag">surveys</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2021-04-29T14:03:19.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/4c254af9.html" class="article-date">
+  <time datetime="2021-04-29T06:03:19.000Z" itemprop="datePublished">2021-04-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/archives/4c254af9.html">【文章翻譯】Announcing XD to Flutter v2.0!</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-XD-to-Flutter-v2-0！"><a href="#宣布-XD-to-Flutter-v2-0！" class="headerlink" title="宣布 XD to Flutter v2.0！"></a>宣布 XD to Flutter v2.0！</h2><h4>* 為設計師提供通往生產 Flutter 程式碼的快速路徑 *</h4>
+
+<figure>
+  <img alt="XD to Flutter" src="https://cdn-images-1.medium.com/max/1024/1*OoVDCYfw18QB91Fpe5jDAg.png" />
+</figure>
+
+<p>Flutter 是 Google 的開源 UI 工具包，可使用單一程式碼庫為行動、桌面、網頁和嵌入式設備構建精美的應用程式。在過去的幾年中，它已成為想要為多個平台構建應用程式的開發人員的領先選擇；但設計師需要一個視覺工具來製作原型和建立 Flutter UI，而不是手工編寫 Dart 原始碼。這就是 <a href="https://github.com/AdobeXD/xd-to-flutter-plugin">XD to Flutter</a> 誕生的原因！</p>
+<p>從插件的第一次預覽發布至今已將近一年，我們一直都在不斷改進和完善它，進行了一些小更新，在去年夏天發布了重大的 v1.0 版本，現在又發布了 v2.0 版本，以配合 Flutter 2 的發布！</p>
+<h3 id="等等，XD-to-Flutter-是什麼？"><a href="#等等，XD-to-Flutter-是什麼？" class="headerlink" title="等等，XD to Flutter 是什麼？"></a>等等，XD to Flutter 是什麼？</h3><p>這個名字可能已經洩露了答案，但 XD to Flutter 插件是一個功能強大、易於使用的工具，可以將您在 <a href="https://www.adobe.com/products/xd.html">Adobe XD</a> 中設計的精美作品匯出為乾淨、功能性的 Flutter 程式碼。您可以從設計中複製特定視覺元素的程式碼，匯出可重複使用的 Widget，甚至可以匯出完整的視圖。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FraG7NjM0p0k%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DraG7NjM0p0k&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FraG7NjM0p0k%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/1d6faec4a7d9de9a3356bfb9cedd6126/href">https://medium.com/media/1d6faec4a7d9de9a3356bfb9cedd6126/href</a></iframe>
+
+<p>這意味著，使用 XD to Flutter 插件，您可以透過點擊按鈕，讓您的設計在幾乎任何設備上運行。它不會為您編寫整個應用程式，但會為您提供一個良好的開端。</p>
+<p>XD to Flutter 由 <a href="https://gskinner.com/">gskinner</a> 與 Adobe 合作開發，並作為 Adobe XD 本身的插件發布，因此您可以將它用於您正在建立的任何現有 Adobe XD 設計。</p>
+<h3 id="太棒了！那麼有什麼新功能？"><a href="#太棒了！那麼有什麼新功能？" class="headerlink" title="太棒了！那麼有什麼新功能？"></a>太棒了！那麼有什麼新功能？</h3><p>XD to Flutter 的初始版本對輸出設計中的所有不同視覺元素提供了良好的支援 - 向量圖形、圖片、富文字、背景模糊、混合模式、陰影等 - 但結果可能是靜態且缺乏彈性的。</p>
+<p>雖然它對於擷取圖示或文字樣式很方便，但我們希望它能做更多事情！XD 使設計師能夠使用響應式佈局、可捲軸區域、堆疊和網格等工具來建立動態 UI；我們希望插件支援所有這些功能，而 v2.0 版本讓我們取得了很大進展。</p>
+<h4 id="響應式調整大小"><a href="#響應式調整大小" class="headerlink" title="響應式調整大小"></a>響應式調整大小</h4><p>XD to Flutter 支援 XD 的響應式佈局功能，讓您可以在其封閉的父元素中「固定」元素，並精確控制它們的調整大小方式。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Ep_TKKdQqNDhNGtYjXSmzQ.png" />
+  <figcaption>Adobe XD 中的響應式設計</figcaption>
+</figure>
+
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/707/1*A6Kateq9HjSt3XADTQzaow.gif" />
+  <figcaption>Flutter 中的響應式調整大小</figcaption>
+</figure>
+
+<p>這是透過在開源的 <a href="https://pub.dev/packages/adobe_xd">adobe_xd</a> 套件中使用自訂的 Pinned 佈局 Widget 來實現的，開發人員可以直接在他們的專案中利用它。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*F_lxL7fE3-MkjobRiJLqpA.png" />
+  <figcaption>Pinned Widget 程式碼範例</figcaption>
+</figure>
+
+<h4 id="堆疊和捲軸組"><a href="#堆疊和捲軸組" class="headerlink" title="堆疊和捲軸組"></a>堆疊和捲軸組</h4><p>「堆疊」和捲軸組提供了在 Adobe XD 中以動態方式佈置螢幕上內容的新方法。XD 中的堆疊讓您可以在水平或垂直列表中排列許多不同的元素，元素之間的間距各不相同；它們更類似於 Flutter 中的 Flex Widget，而不是它們的同名 Stack Widget。</p>
+<p>捲軸組預測性地讓您可以在設計中直接定義一個區域，以垂直或水平方式捲軸更大的內容組。</p>
+<p>XD to Flutter v2.0 支援這兩種功能，將它們轉換為常見的 Flutter Widget（<code>Column</code>、<code>Row</code> 和 <code>SingleChildScrollView</code>）。您甚至可以將堆疊放在捲軸組中，輕鬆建立一個捲軸項目列表。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*avGeBrHwEcAyptu0aKyc4w.gif" />
+  <figcaption>XD 中的堆疊和捲軸組（左）以及 Flutter 中的堆疊和捲軸組（右）</figcaption>
+</figure>
+
+<h4 id="填補和背景元素"><a href="#填補和背景元素" class="headerlink" title="填補和背景元素"></a>填補和背景元素</h4><p>另一個新功能是背景元素，讓您可以將視覺元素指定為組的背景。這可以與填補配對，將背景的邊緣與內容分開。</p>
+<p>Flutter 匯出使用 Stack Widget 將背景元素放置在內容後面，內容被放置在 Padding Widget 中。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-nUSSGKplXOzmySlrEUwXg.gif" />
+  <figcaption>XD 中的填補和背景（左）以及 Flutter 中的填補和背景（右）</figcaption>
+</figure>
+
+<h4 id="Flutter-2-和空安全性"><a href="#Flutter-2-和空安全性" class="headerlink" title="Flutter 2 和空安全性"></a>Flutter 2 和空安全性</h4><p>上面描述的佈局功能使 UI 具有更強的響應性，這與 Flutter 2 對桌面和網頁等外觀形式的支援增強相得益彰。</p>
+<p>Flutter 2 還引入了健全的空安全性 - 一個語言功能，可以幫助開發人員在空值問題引發應用程式問題之前捕獲它們。XD to Flutter v2.0 包括一個新的設定「匯出空安全程式碼」，確保生成的程式碼是面向未來的。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*4Gdqc7x5Vk85t47tQIocmw.png" />
+  <figcaption>「匯出空安全程式碼」設定和輸出</figcaption>
+</figure>
+
+<h4 id="聽起來很棒！我該如何開始？"><a href="#聽起來很棒！我該如何開始？" class="headerlink" title="聽起來很棒！我該如何開始？"></a>聽起來很棒！我該如何開始？</h4><p>無論您是使用它來複製複雜漸變的程式碼，還是匯出完全響應式、參數化、互動式 Widget，加入已經使用 XD to Flutter 插件的數千名創意專業人士都很簡單。</p>
+<p>您可以透過從 Adobe XD 的「插件」選單中選擇「瀏覽插件…」並搜尋「Flutter」（奇怪的是，搜尋「XD to Flutter」不起作用）來安裝它，或者只訪問 <a href="https://adobe.com/go/xd_to_flutter">adobe.com&#x2F;go&#x2F;xd_to_flutter</a>。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*aSDHtLA_ZQyiyXX3y9j2Ng.png" />
+</figure>
+
+<p>安裝好之後，從插件面板中打開 XD to Flutter 面板，然後點擊「需要幫助？」連結以查看 <a href="https://github.com/AdobeXD/xd-to-flutter-plugin/blob/master/README.md">插件文件</a>。</p>
+<p>Flutter 2 是框架向前邁出的令人興奮的一步，重點是構建可以在幾乎任何地方運行的精美應用程式。在 <a href="https://gskinner.com/">gskinner</a>，我們很高興能與 Adobe 和 Google 合作，確保 XD to Flutter 繼續使將迷人的設計忠實地轉換為工作產品的過程變得更加容易。</p>
+<p>敬請期待插件的更多令人興奮的更新！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c743bac2aeeb" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-xd-to-flutter-v2-0-c743bac2aeeb">宣布 XD to Flutter v2.0！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/4c254af9.html" data-id="cm1orxykt003pj9171kk28k6u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/adobe-xd/" rel="tag">adobe-xd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/app-development/" rel="tag">app-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mobile-app-development/" rel="tag">mobile-app-development</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/17daysofflutter/" rel="tag">17daysofflutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2d-animation/" rel="tag">2d-animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/a11y/" rel="tag">a11y</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/accessibility/" rel="tag">accessibility</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptive-ui/" rel="tag">adaptive-ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adobe/" rel="tag">adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adobe-xd/" rel="tag">adobe-xd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ads/" rel="tag">ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/" rel="tag">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-app-development/" rel="tag">android-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-development/" rel="tag">android-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation-and-design/" rel="tag">animation-and-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcment/" rel="tag">announcment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app-development/" rel="tag">app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apple/" rel="tag">apple</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apps/" rel="tag">apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/breaking-changes/" rel="tag">breaking-changes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/casual-games/" rel="tag">casual-games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/challenge/" rel="tag">challenge</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud-firestore/" rel="tag">cloud-firestore</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/code-samples/" rel="tag">code-samples</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codepen/" rel="tag">codepen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/coding/" rel="tag">coding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/contests/" rel="tag">contests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/continuous-integration/" rel="tag">continuous-integration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/course/" rel="tag">course</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crashlytics/" rel="tag">crashlytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform-apps/" rel="tag">cross-platform-apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dark-theme/" rel="tag">dark-theme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dependency-injection/" rel="tag">dependency-injection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deprecated/" rel="tag">deprecated</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/" rel="tag">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design-process/" rel="tag">design-process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/designer/" rel="tag">designer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/desktop/" rel="tag">desktop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/developer-experience/" rel="tag">developer-experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/developer-tools/" rel="tag">developer-tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/development/" rel="tag">development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/devtools/" rel="tag">devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/events/" rel="tag">events</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension-development/" rel="tag">extension-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/firebase/" rel="tag">firebase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-animation/" rel="tag">flutter-animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-desktop/" rel="tag">flutter-desktop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-forward/" rel="tag">flutter-forward</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-game/" rel="tag">flutter-game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-game-development/" rel="tag">flutter-game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-navigator/" rel="tag">flutter-navigator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-on-the-web/" rel="tag">flutter-on-the-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-package/" rel="tag">flutter-package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-plugin/" rel="tag">flutter-plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-routing/" rel="tag">flutter-routing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-widget/" rel="tag">flutter-widget</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-windows/" rel="tag">flutter-windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gemini/" rel="tag">gemini</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gestures/" rel="tag">gestures</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/global-citizen/" rel="tag">global-citizen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/" rel="tag">google</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-ads/" rel="tag">google-ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-earth/" rel="tag">google-earth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-fonts/" rel="tag">google-fonts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-news-initiative/" rel="tag">google-news-initiative</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/" rel="tag">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hamilton/" rel="tag">hamilton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-reload/" rel="tag">hot-reload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibm/" rel="tag">ibm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/icons/" rel="tag">icons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/integrated-development/" rel="tag">integrated-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/integration-testing/" rel="tag">integration-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-development/" rel="tag">ios-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keyboard/" rel="tag">keyboard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/" rel="tag">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning-and-development/" rel="tag">learning-and-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning-to-code/" rel="tag">learning-to-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-design/" rel="tag">material-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-you/" rel="tag">material-you</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meetup/" rel="tag">meetup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/" rel="tag">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-ads/" rel="tag">mobile-ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-app-development/" rel="tag">mobile-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-apps/" rel="tag">mobile-apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-development/" rel="tag">mobile-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-programming/" rel="tag">mobile-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monetization/" rel="tag">monetization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiplatform/" rel="tag">multiplatform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/news/" rel="tag">news</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nullpointerexception/" rel="tag">nullpointerexception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/payments/" rel="tag">payments</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance-testing/" rel="tag">performance-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/policy/" rel="tag">policy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming/" rel="tag">programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototyping/" rel="tag">prototyping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pub/" rel="tag">pub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pubdev/" rel="tag">pubdev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/range-slider/" rel="tag">range-slider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/roadmaps/" rel="tag">roadmaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shaders/" rel="tag">shaders</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/slider/" rel="tag">slider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/software-development/" rel="tag">software-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/software-testing/" rel="tag">software-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/surveys/" rel="tag">surveys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tablets/" rel="tag">tablets</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technology/" rel="tag">technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technology-news/" rel="tag">technology-news</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/" rel="tag">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typography/" rel="tag">typography</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui/" rel="tag">ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui-design/" rel="tag">ui-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/updates/" rel="tag">updates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-experience/" rel="tag">user-experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-interface/" rel="tag">user-interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-research/" rel="tag">user-research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux/" rel="tag">ux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux-design/" rel="tag">ux-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux-research/" rel="tag">ux-research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-design/" rel="tag">web-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-development/" rel="tag">web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-development/" rel="tag">windows-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xcode/" rel="tag">xcode</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/17daysofflutter/" style="font-size: 10px;">17daysofflutter</a> <a href="/tags/2d-animation/" style="font-size: 10px;">2d-animation</a> <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 10.67px;">Flutter</a> <a href="/tags/a11y/" style="font-size: 10px;">a11y</a> <a href="/tags/accessibility/" style="font-size: 10.67px;">accessibility</a> <a href="/tags/adaptive-ui/" style="font-size: 10px;">adaptive-ui</a> <a href="/tags/adobe/" style="font-size: 10px;">adobe</a> <a href="/tags/adobe-xd/" style="font-size: 10.67px;">adobe-xd</a> <a href="/tags/ads/" style="font-size: 10.67px;">ads</a> <a href="/tags/ai/" style="font-size: 10.67px;">ai</a> <a href="/tags/android/" style="font-size: 13.33px;">android</a> <a href="/tags/android-app-development/" style="font-size: 14px;">android-app-development</a> <a href="/tags/android-development/" style="font-size: 10px;">android-development</a> <a href="/tags/animation-and-design/" style="font-size: 10px;">animation-and-design</a> <a href="/tags/announcements/" style="font-size: 19.33px;">announcements</a> <a href="/tags/announcment/" style="font-size: 10px;">announcment</a> <a href="/tags/app-development/" style="font-size: 13.33px;">app-development</a> <a href="/tags/apple/" style="font-size: 10.67px;">apple</a> <a href="/tags/apps/" style="font-size: 10.67px;">apps</a> <a href="/tags/breaking-changes/" style="font-size: 10px;">breaking-changes</a> <a href="/tags/casual-games/" style="font-size: 10px;">casual-games</a> <a href="/tags/challenge/" style="font-size: 10px;">challenge</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/cloud-firestore/" style="font-size: 10px;">cloud-firestore</a> <a href="/tags/code-samples/" style="font-size: 10px;">code-samples</a> <a href="/tags/codepen/" style="font-size: 10px;">codepen</a> <a href="/tags/coding/" style="font-size: 10px;">coding</a> <a href="/tags/contests/" style="font-size: 10.67px;">contests</a> <a href="/tags/continuous-integration/" style="font-size: 10px;">continuous-integration</a> <a href="/tags/course/" style="font-size: 10px;">course</a> <a href="/tags/crashlytics/" style="font-size: 10px;">crashlytics</a> <a href="/tags/cross-platform/" style="font-size: 10.67px;">cross-platform</a> <a href="/tags/cross-platform-apps/" style="font-size: 10px;">cross-platform-apps</a> <a href="/tags/dark-theme/" style="font-size: 10px;">dark-theme</a> <a href="/tags/dart/" style="font-size: 18px;">dart</a> <a href="/tags/dartlang/" style="font-size: 14px;">dartlang</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency-injection</a> <a href="/tags/deprecated/" style="font-size: 10px;">deprecated</a> <a href="/tags/design/" style="font-size: 11.33px;">design</a> <a href="/tags/design-process/" style="font-size: 10px;">design-process</a> <a href="/tags/designer/" style="font-size: 10px;">designer</a> <a href="/tags/desktop/" style="font-size: 11.33px;">desktop</a> <a href="/tags/developer-experience/" style="font-size: 14.67px;">developer-experience</a> <a href="/tags/developer-tools/" style="font-size: 10.67px;">developer-tools</a> <a href="/tags/development/" style="font-size: 12px;">development</a> <a href="/tags/devtools/" style="font-size: 10.67px;">devtools</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/events/" style="font-size: 10px;">events</a> <a href="/tags/extension-development/" style="font-size: 10px;">extension-development</a> <a href="/tags/firebase/" style="font-size: 12.67px;">firebase</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-animation/" style="font-size: 11.33px;">flutter-animation</a> <a href="/tags/flutter-app-development/" style="font-size: 18.67px;">flutter-app-development</a> <a href="/tags/flutter-desktop/" style="font-size: 11.33px;">flutter-desktop</a> <a href="/tags/flutter-development/" style="font-size: 10.67px;">flutter-development</a> <a href="/tags/flutter-forward/" style="font-size: 10px;">flutter-forward</a> <a href="/tags/flutter-game/" style="font-size: 10.67px;">flutter-game</a> <a href="/tags/flutter-game-development/" style="font-size: 10px;">flutter-game-development</a> <a href="/tags/flutter-navigator/" style="font-size: 10px;">flutter-navigator</a> <a href="/tags/flutter-on-the-web/" style="font-size: 10px;">flutter-on-the-web</a> <a href="/tags/flutter-package/" style="font-size: 10.67px;">flutter-package</a> <a href="/tags/flutter-plugin/" style="font-size: 12px;">flutter-plugin</a> <a href="/tags/flutter-routing/" style="font-size: 10px;">flutter-routing</a> <a href="/tags/flutter-web/" style="font-size: 14px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/flutter-widget/" style="font-size: 10.67px;">flutter-widget</a> <a href="/tags/flutter-windows/" style="font-size: 10px;">flutter-windows</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 12.67px;">game-development</a> <a href="/tags/games/" style="font-size: 14px;">games</a> <a href="/tags/gemini/" style="font-size: 10px;">gemini</a> <a href="/tags/gestures/" style="font-size: 10px;">gestures</a> <a href="/tags/global-citizen/" style="font-size: 10px;">global-citizen</a> <a href="/tags/google/" style="font-size: 15.33px;">google</a> <a href="/tags/google-ads/" style="font-size: 10.67px;">google-ads</a> <a href="/tags/google-earth/" style="font-size: 10px;">google-earth</a> <a href="/tags/google-fonts/" style="font-size: 10px;">google-fonts</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-news-initiative/" style="font-size: 10px;">google-news-initiative</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics/" style="font-size: 10px;">graphics</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/hamilton/" style="font-size: 10px;">hamilton</a> <a href="/tags/hot-reload/" style="font-size: 10px;">hot-reload</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ibm/" style="font-size: 10px;">ibm</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/integrated-development/" style="font-size: 10px;">integrated-development</a> <a href="/tags/integration-testing/" style="font-size: 10px;">integration-testing</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 14.67px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 14px;">ios-app-development</a> <a href="/tags/ios-development/" style="font-size: 10.67px;">ios-development</a> <a href="/tags/keyboard/" style="font-size: 10px;">keyboard</a> <a href="/tags/learning/" style="font-size: 10.67px;">learning</a> <a href="/tags/learning-and-development/" style="font-size: 10px;">learning-and-development</a> <a href="/tags/learning-to-code/" style="font-size: 10px;">learning-to-code</a> <a href="/tags/linux/" style="font-size: 10.67px;">linux</a> <a href="/tags/material-design/" style="font-size: 12.67px;">material-design</a> <a href="/tags/material-you/" style="font-size: 10px;">material-you</a> <a href="/tags/meetup/" style="font-size: 10px;">meetup</a> <a href="/tags/mobile/" style="font-size: 11.33px;">mobile</a> <a href="/tags/mobile-ads/" style="font-size: 10px;">mobile-ads</a> <a href="/tags/mobile-app-development/" style="font-size: 17.33px;">mobile-app-development</a> <a href="/tags/mobile-apps/" style="font-size: 10.67px;">mobile-apps</a> <a href="/tags/mobile-development/" style="font-size: 10.67px;">mobile-development</a> <a href="/tags/mobile-programming/" style="font-size: 10px;">mobile-programming</a> <a href="/tags/monetization/" style="font-size: 10px;">monetization</a> <a href="/tags/multiplatform/" style="font-size: 10.67px;">multiplatform</a> <a href="/tags/news/" style="font-size: 10.67px;">news</a> <a href="/tags/nullpointerexception/" style="font-size: 10px;">nullpointerexception</a> <a href="/tags/open-source/" style="font-size: 11.33px;">open-source</a> <a href="/tags/payments/" style="font-size: 10px;">payments</a> <a href="/tags/performance/" style="font-size: 12.67px;">performance</a> <a href="/tags/performance-testing/" style="font-size: 10px;">performance-testing</a> <a href="/tags/policy/" style="font-size: 10px;">policy</a> <a href="/tags/programming/" style="font-size: 14.67px;">programming</a> <a href="/tags/prototyping/" style="font-size: 10px;">prototyping</a> <a href="/tags/pub/" style="font-size: 10px;">pub</a> <a href="/tags/pubdev/" style="font-size: 10px;">pubdev</a> <a href="/tags/range-slider/" style="font-size: 10px;">range-slider</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 13.33px;">release-notes</a> <a href="/tags/releases/" style="font-size: 14.67px;">releases</a> <a href="/tags/roadmaps/" style="font-size: 10px;">roadmaps</a> <a href="/tags/shaders/" style="font-size: 10px;">shaders</a> <a href="/tags/slider/" style="font-size: 10px;">slider</a> <a href="/tags/software-development/" style="font-size: 10px;">software-development</a> <a href="/tags/software-testing/" style="font-size: 10px;">software-testing</a> <a href="/tags/surveys/" style="font-size: 16px;">surveys</a> <a href="/tags/tablets/" style="font-size: 10.67px;">tablets</a> <a href="/tags/technology/" style="font-size: 10px;">technology</a> <a href="/tags/technology-news/" style="font-size: 10px;">technology-news</a> <a href="/tags/testing/" style="font-size: 12.67px;">testing</a> <a href="/tags/typography/" style="font-size: 10.67px;">typography</a> <a href="/tags/ui/" style="font-size: 10.67px;">ui</a> <a href="/tags/ui-design/" style="font-size: 10.67px;">ui-design</a> <a href="/tags/updates/" style="font-size: 10px;">updates</a> <a href="/tags/user-experience/" style="font-size: 11.33px;">user-experience</a> <a href="/tags/user-interface/" style="font-size: 10px;">user-interface</a> <a href="/tags/user-research/" style="font-size: 10px;">user-research</a> <a href="/tags/ux/" style="font-size: 10.67px;">ux</a> <a href="/tags/ux-design/" style="font-size: 10.67px;">ux-design</a> <a href="/tags/ux-research/" style="font-size: 11.33px;">ux-research</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/web/" style="font-size: 12px;">web</a> <a href="/tags/web-design/" style="font-size: 10px;">web-design</a> <a href="/tags/web-development/" style="font-size: 16.67px;">web-development</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/windows-development/" style="font-size: 10px;">windows-development</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>

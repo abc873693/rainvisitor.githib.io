@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>【文章翻譯】Announcing Flutter 1.22 | RainVisitor Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Flutter 1.22我們很高兴地宣布 Flutter 的最新版本，它对 iOS 14 和 Android 11 提供了广泛的支持。Flutter 1.22 在以前版本的基础上构建，让开发者能够从单一代码库构建快速、美观的跨平台用户体验。我们的季度稳定版本包含最新的功能、性能改进和错误修复，适合广泛的生产使用。 由于这是新移动操作系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Flutter 1.22">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/687439a5.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Flutter 1.22我們很高兴地宣布 Flutter 的最新版本，它对 iOS 14 和 Android 11 提供了广泛的支持。Flutter 1.22 在以前版本的基础上构建，让开发者能够从单一代码库构建快速、美观的跨平台用户体验。我们的季度稳定版本包含最新的功能、性能改进和错误修复，适合广泛的生产使用。 由于这是新移动操作系">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/864/0*ZGKu3IhnPNp6fS_e">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*8MER4IM-IEt2ye2a">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*lPO4ueKwxvV0QP_I">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*DFRjYzbqIc5kOoDm">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/910/1*crNLxg7CCtlQkB4mLI_ErA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*di6uPEKEsRHoFtRryHeWPg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/0*UBVlGmhw5NUWbg5I">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/500/0*luz0EiazQQqsAEC4">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*OVbaUaMkAXrpLQCy">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/720/0*1298qhTKz_FjPuRN">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/700/1*9pvyafhpaMEMhJfLVsz1JQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/943/0*vfMD0AQZUOUwzfZ4">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*gA2waLDAyITCzD7K">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/781/0*-FukCwELl9DLlefP">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/994/0*k-fEpOpbV_MiX9Fn">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*RQZ-EVyFP1-BqBIX">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*prigrwpp7gE6ChCE">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*yLWTxV_YTJ2HKhuz">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=44f146009e5f">
+<meta property="article:published_time" content="2020-10-01T06:57:05.000Z">
+<meta property="article:modified_time" content="2024-09-30T07:26:32.906Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="ios">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="mobile-app-development">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/864/0*ZGKu3IhnPNp6fS_e">
+  
+    <link rel="alternate" href="/atom.xml" title="RainVisitor Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainVisitor Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.rainvisitor.me"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-2020-10-01T14:57:05.000Z" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/archives/687439a5.html" class="article-date">
+  <time datetime="2020-10-01T06:57:05.000Z" itemprop="datePublished">2020-10-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Flutter/">Flutter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【文章翻譯】Announcing Flutter 1.22
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Flutter-1-22"><a href="#宣布-Flutter-1-22" class="headerlink" title="宣布 Flutter 1.22"></a>宣布 Flutter 1.22</h2><p>我們很高兴地宣布 Flutter 的最新版本，它对 iOS 14 和 Android 11 提供了广泛的支持。Flutter 1.22 在以前版本的基础上构建，让开发者能够从单一代码库构建快速、美观的跨平台用户体验。我们的季度稳定版本包含最新的功能、性能改进和错误修复，适合广泛的生产使用。</p>
+<p>由于这是新移动操作系统版本的发布季节，因此此版本专注于确保 Android 11 和 iOS 14 与 Flutter 完美配合。对这两个操作系统的更新包括大量幕后工作，以符合最新的 SDK，并确保一切通过我们的全面测试套件。对于 iOS 14，此版本包含对新 Xcode 12、新图标的支持，以及对新 iOS 14 App Clips 功能的预览支持。对于 Android 11，更新支持新的显示切口类型，以及在弹出软键盘时的更流畅动画。</p>
+<p>此版本在我们的 1.20 版本发布两个月后发布，因此比大多数版本都要短。即使在这段时间内，我们也关闭了 3,024 个问题，并合并了来自 197 位贡献者的 1,944 个 PR。在这 197 位贡献者中，有 114 位（58％）来自更广泛的社区，他们贡献了 271 个 PR。最大的单一贡献者是 <a href="https://github.com/a14n">a14n</a>，他再次成为我们的顶级贡献者榜单，贡献了 20 个 PR，其中大多数是作为 Flutter 中支持空安全的工作的一部分完成的（更多相关内容即将推出）。</p>
+<p>除了对新移动操作系统版本的支持外，我们还有很多新闻要分享，包括对 Android 最受欢迎功能之一的预览：状态恢复、一个新的 Material 按钮“宇宙”、与热重载配合使用的新国际化和本地化支持、一个新的 Navigator、Platform Views 的稳定版本（Google Maps 和 WebView Plugin 的基础）以及可以在代码中添加的开关，以改善具有高频率显示屏的设备上的滚动效果。我们还提供了一个新的工具来剖析应用大小，并确保您构建的 Plugin 仅支持您想要支持的平台。</p>
+<h3 id="针对-iOS-14"><a href="#针对-iOS-14" class="headerlink" title="针对 iOS 14"></a>针对 iOS 14</h3><p>每当宣布新版本的移动操作系统时，我们都会对其进行彻底测试，寻找影响 Flutter 及其工具的不兼容性或更改。</p>
+<p>在 iOS 14 的情况下，我们对 Flutter 做了一些更改，以确保它按开发者想要的方式工作：</p>
+<ul>
+<li>Xcode 12 要求 iOS 9.0 或更高版本，因此我们的默认模板将默认值从 8.0 提高到 9.0。</li>
+<li>iOS 14 特定的崩溃和字体渲染问题已在 Flutter 1.22 中修复。</li>
+<li>截至 Flutter 1.20.4，已修复部署到实体设备的问题。</li>
+<li>一项新政策，当应用访问其剪贴板时会显示使用通知，导致 Flutter 应用出现虚假通知，这个问题已在 Flutter 1.20.4 中修复。</li>
+<li>限制禁止在 iOS 14 设备上运行调试应用，除非作为调试过程的一部分。</li>
+<li>针对本地调试的 Flutter 应用的网络安全新政策会导致 iOS 14 显示一次性确认对话框（仅在开发期间，而不是针对已发布的 Flutter 应用）。</li>
+</ul>
+<p>底线：如果您要针对 iOS 14 使用 Flutter 应用，我们强烈建议您使用 Flutter 1.22 重新构建它并将其部署到 App Store，以确保您的 iOS 14 用户获得最佳体验。</p>
+<p>有关使用 Flutter 针对 iOS 14 的更多详细信息，包括一些 Add-to-App、深层链接和通知注意事项，请参阅 <a href="https://flutter.dev/docs/development/ios-14">flutter.dev 上的 iOS 14 文档</a>。</p>
+<p>希望所有这些对工具和 SDK 支持的工作可以让您专注于您关心的编码——利用新的 iOS 14 功能。</p>
+<p>其中一项功能是对 iOS 的新 SF Symbols 字体的更新支持，这启发了我们花了一些时间对 <a href="https://pub.dev/packages/cupertino_icons">cupertino_icon 包</a> 进行刷新。一旦您将 cupertino_icons 依赖项更新到新的 1.0 主要版本，现有的 CupertinoIcons 使用情况将自动映射到新样式。如果您将 cupertino_icons 1.0 与 Flutter 1.22 结合使用，您还可以通过 <a href="https://api.flutter.dev/flutter/cupertino/CupertinoIcons-class.html">CupertinoIcons</a> API 访问约 900 个新图标。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/864/0*ZGKu3IhnPNp6fS_e" />
+</figure>
+
+<p>您可以在 <a href="https://flutter.github.io/cupertino_icons/">cupertino_icons</a> 预览页面上查看完整的图标列表，以及 <a href="https://flutter.dev/docs/release/breaking-changes/cupertino-icons-1.0.0">flutter.dev 上的迁移详细信息页面</a>。</p>
+<p>您可以尝试在 iOS 14 上使用 Flutter 的另一项功能是 <a href="https://developer.apple.com/app-clips/">App Clips</a>，这是一项新的 iOS 14 功能，支持快速、无需安装的应用执行，可以执行 10MB 以下的应用的轻量级版本。在 Flutter 1.22 版本中，我们对使用 Flutter 构建的 App Clip 目标进行了预览。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*8MER4IM-IEt2ye2a" />
+<figcaption>由 Flutter 提供支持的 App Clip 体验</figcaption>
+</figure>
+
+<p>有关使用 Flutter 构建 App Clips 的更多详细信息，请查看 <a href="https://flutter.dev/docs/development/platform-integration/ios-app-clip">flutter.dev 上的文档</a>。您还可以参考这个 <a href="https://github.com/flutter/samples/tree/master/ios_app_clip">简单的示例项目</a>。</p>
+<h3 id="Android-11"><a href="#Android-11" class="headerlink" title="Android 11"></a>Android 11</h3><p>此版本的 Flutter 也与本月推出的 Android 11 版本同步。Flutter 框架和引擎已更新，以支持最新版本的 Android 中引入的两个新功能。</p>
+<p>首先，Flutter 现在支持公开 Android 切口、切出部分和瀑布显示边缘的安全内边距。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*lPO4ueKwxvV0QP_I" />
+</figure>
+
+<p>通过使用 <a href="https://api.flutter.dev/flutter/widgets/MediaQuery-class.html">MediaQuery</a> 和 <a href="https://api.flutter.dev/flutter/widgets/SafeArea-class.html">SafeArea</a> API，您可以确保将活跃的 UI 和交互式元素放置在设备显示屏的无障碍区域。此外，您还应避免在容易发生意外触碰的瀑布边缘区域放置手势检测器。</p>
+<p>其次，动画与 Android 11 同步，因为它显示了软件键盘。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*DFRjYzbqIc5kOoDm" />
+<figcaption>查看 FAB 的位置动画</figcaption>
+</figure>
+
+<p>问题 <a href="https://github.com/flutter/flutter/issues/19279">＃19279</a> 是一个长期存在的问题，即系统键盘显示&#x2F;隐藏动画与 Flutter 的内边距不同步。这个问题已在 Android 11 中修复。</p>
+<p>关于 Android 嵌入 API 的一个说明。在去年的 Flutter 1.12 版本中，我们为 Android 推出了新的 Flutter 引擎和 Flutter Plugin API 集。我们创建了这些 v2 API 以更好地支持我们在 Android 上的 Add-to-App 用户。一年后，超过 80％ 的 Android Plugin 使用了新的 Android API。从 1.22 版本开始，我们将弃用旧的 v1 API。</p>
+<p>如果您仍在使用 Android v1 API，以下内容与您相关：</p>
+<ul>
+<li>新创建的 Plugin 将不再针对 v1 API。</li>
+<li>Flutter 工具的<code> -no-enable-android-embedding-v2</code> 配置标志已删除，现在是默认行为。</li>
+<li>仍在使用 v1 API 的旧应用将在构建过程中显示一个弃用警告，该警告指向 <a href="https://flutter.dev/docs/development/packages-and-plugins/plugin-api-migration">支持新的 Android Plugin API 的文档</a>。</li>
+</ul>
+<p>同时，如果您仍然具有基于 v1 Android API 的 Flutter 应用，它将继续工作。但是，您可能会开始遇到仅针对 v2 API 且无法被 v1 Android API 使用的新 Plugin。有关更多详细信息，请参阅 <a href="https://flutter.dev/docs/release/breaking-changes/android-v1-embedding-create-deprecation">重大更改文档</a>。</p>
+<h3 id="扩展按钮“宇宙”"><a href="#扩展按钮“宇宙”" class="headerlink" title="扩展按钮“宇宙”"></a>扩展按钮“宇宙”</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/910/1*crNLxg7CCtlQkB4mLI_ErA.png" />
+<figcaption>一个新的 Material Design 按钮“宇宙”</figcaption>
+</figure>
+
+<p>现有的 Flutter 按钮看起来不错，但可能 <a href="http://flutter.dev/go/material-button-system-updates">难以使用</a>，特别是在您需要自定义主题时。此外，Material 规范已扩展到包含具有新样式的新按钮。</p>
+<p>为了让 Flutter 与 Material 指南保持同步，我们很高兴地宣布 Flutter 1.22 中推出了全新的按钮“宇宙”。</p>
+<p>与其尝试就地演变现有的按钮类及其主题，<a href="https://github.com/flutter/flutter/pull/59702">此 PR</a> 引入了新的替换按钮 Widget 和主题。除了让我们摆脱演化现有类所必需的后向兼容迷宫外，新名称还使 Flutter 与 <a href="https://material.io/components/buttons/">Material Design 规范</a> 同步，该规范使用新名称来表示按钮组件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*di6uPEKEsRHoFtRryHeWPg.png" />
+</figure>
+
+<p>新主题遵循 Flutter 最近为新的 Material Widget 采用的“规范化”模式。如果您想尝试一个演示，<a href="https://dartpad.dev/e560e1c2e4455ad53aac245079ccdcf2">这里有一个很棒的 DartPad 演示</a>。这不是重大更改，因为 FlatButton、OutlineButton、RaisedButton、ButtonBar、ButtonBarTheme 和 ButtonTheme 的语义不会改变。您可以根据自己的喜好混合和匹配旧按钮和新按钮。</p>
+<h3 id="新的国际化和本地化支持"><a href="#新的国际化和本地化支持" class="headerlink" title="新的国际化和本地化支持"></a>新的国际化和本地化支持</h3><p>从 Flutter 的诞生之日起，Flutter 就提供了应用程序国际化 (i18n) 和本地化 (l10n) 所需的核心功能。但是，在此版本中，我们将对最佳实践的看法融入到我们的工具中，甚至启用热重载支持，以便在您添加新的 l10n 信息时更新您的应用。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*UBVlGmhw5NUWbg5I" />
+</figure>
+
+<p>如果您希望了解有关 Flutter 对 l10n 支持的更多详细信息，包括本地化消息、带有参数的消息、日期、数字和货币，请 <a href="http://flutter.dev/go/i18n-user-guide">阅读 Flutter 国际化用户指南</a>。</p>
+<p>此外，如果您对 i18n 和 l10n 感兴趣，那么您可能也对不适合纯 ASCII 字符串的字符（例如 Unicode 和表情符号）感兴趣。最近，Dart 团队发布了 <a href="https://pub.dev/packages/characters">characters 包</a>，它帮助开发者处理 Unicode（扩展）字形群集。此包帮助解决了诸如如何将类似于“A 🇬🇧 text in English”的字符串正确缩短到前 15 个字符的问题。使用 String 类，该缩写将是“A 🇬🇧 text in”，这只有 12 个用户感知字符。另一方面，使用 characters 包会产生正确的缩写“A 🇬🇧 text in Eng”。</p>
+<p>通过 <a href="https://github.com/flutter/flutter/pull/59267">此 PR</a>，Flutter 使用 characters 包来正确处理这些复杂的字符。例如，当使用带有 maxLength 限制的 TextField 时，像👨‍👩‍👦这样的字符现在被正确地视为单个字符。此外，通过 <a href="https://github.com/flutter/flutter/pull/59620">此 PR</a>，characters 包在 Flutter 所在的项目中自动可用，无需手动添加它。希望这将使处理来自所有语言环境的所有类型的字符串变得更加容易。有关 characters 包的更多详细信息，请查看这篇文章：<a href="https://medium.com/dartlang/dart-string-manipulation-done-right-5abd0668ba3e">如何正确进行 Dart 字符串操作</a>。</p>
+<h3 id="Google-Maps-和-WebView-Plugin-现已做好生产准备"><a href="#Google-Maps-和-WebView-Plugin-现已做好生产准备" class="headerlink" title="Google Maps 和 WebView Plugin 现已做好生产准备"></a>Google Maps 和 WebView Plugin 现已做好生产准备</h3><p>在 Flutter 团队中，我们通常谨慎地将某些东西标记为“生产就绪”，直到我们自己对其进行彻底测试。在 <a href="https://pub.dev/packages/google_maps_flutter">google_maps_flutter</a> 和 <a href="https://pub.dev/packages/webview_flutter">webview_flutter</a> Plugin 的情况下，限制因素一直是底层的 <a href="http://flutter.dev/docs/development/platform-integration/platform-views">Platform Views</a> 实现，它允许来自 Android 和 iOS 的原生 UI 组件托管在 Flutter 应用中。在此版本的 Flutter 中，我们很高兴地宣布，我们已充分增强了框架管道，足以宣布这两个 Plugin 为生产就绪。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/500/0*luz0EiazQQqsAEC4" />
+<figcaption>webview_flutter Plugin 托管 flutter.dev</figcaption>
+</figure>
+
+<p>在 Flutter 1.22 中，我们添加了一个替代的 Platform Views 实现，它修复了 <a href="https://github.com/flutter/flutter/issues/61133">Android 视图的所有已知键盘和辅助功能问题</a>。此外，它与 Android API 级别 19 及更高版本配合使用（以前需要级别 20）。我们还在 iOS 上进行了线程改进，这些改进使平台视图更有效、更健壮（并且不再需要将 io.flutter.embedded_views_preview 标志添加到您的 iOS Info.plist 中）。</p>
+<p>webview_flutter Plugin 支持新的 Android Platform Views 模式，但目前需要 <a href="https://github.com/flutter/plugins/blob/master/packages/webview_flutter/README.md#android">手动启用</a>。一旦它在更广泛的社区中得到更多使用，我们将在未来的版本中默认启用它。</p>
+<p>Google Maps 和 WebView Plugin 已经从 Platform Views 中的改进中受益。如果您想使用 Platform Views 在 iOS 或 Android 上托管您自己的原生 UI 组件，您可以在 <a href="https://flutter.dev/docs/development/platform-integration/platform-views">使用 Platform Views 在 Flutter 应用中托管原生 Android 和 iOS 视图</a> 上了解如何操作。</p>
+<h3 id="Navigator-2-0"><a href="#Navigator-2-0" class="headerlink" title="Navigator 2.0"></a>Navigator 2.0</h3><p>如果您以前在 Flutter 应用中使用过 <a href="https://flutter.dev/docs/development/ui/navigation">导航</a>，您可能已经注意到核心数据结构（用户正在浏览的页面堆栈）对您隐藏了。相反，要管理它，您会调用 Navigator.pop() 或 Navigator.push()。例如，假设您想在主页上显示一个 Widget 列表，并允许用户点击其中一个 Widget 以进入专门针对该颜色的详细信息页。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*OVbaUaMkAXrpLQCy" />
+</figure>
+
+<p>这两个屏幕可以这样实现：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/72f4a4ffdac907c3e8eda2da84dda0f6/href">https://medium.com/media/72f4a4ffdac907c3e8eda2da84dda0f6/href</a></iframe>
+
+<p>使用最简单的 Navigator 1.0 样式可以让您以看起来非常简单的方式在这两个屏幕之间导航：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/05fab7a288dd55acf6ed63f02d36f916/href">https://medium.com/media/05fab7a288dd55acf6ed63f02d36f916/href</a></iframe>
+
+<p>调用 Navigator.push() 是将另一个页面推到第一个页面之上的所需操作，从而创建一个包含两个页面的堆栈。但是，与在 ColorListScreen 的 build 方法中创建的 Container 列表不同，该堆栈对您隐藏了。由于它被隐藏了，因此很难管理其他场景，例如处理由原生嵌入提供的初始路由的深层链接，例如来自网页的 URL 或来自 Android 的 intent。管理相同页面不同排列之间的嵌套路由也极其困难。</p>
+<p>Navigator 2.0 通过使页面堆栈可见来解决这些问题以及更多问题。以下是在 ColorListScreen 和 ColorScreen 之间导航的更新示例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9db4a0d060729ba3e043ce6388465861/href">https://medium.com/media/9db4a0d060729ba3e043ce6388465861/href</a></iframe>
+
+<p>应用明确地创建一个 Navigator，并为它提供一个页面列表，该列表表示完整的堆栈。我们创建了一个空 <code>_selectedColor</code> 来指示尚未选择任何颜色，因此我们不会最初显示 ColorScreen。当用户选择颜色时，我们会像往常一样调用 <code>setState()</code> 以指示 Flutter 您希望再次调用 <code>build()</code> 方法，该方法现在将在顶部创建一个包含 ColorScreen 的堆栈。</p>
+<p>例如，您可以在 OnPopPage 回调中更新您的状态，如果用户弹出了，那么他们就“取消选择”了当前颜色，我们不再希望显示该页面。</p>
+<p>如果 Navigator 2.0 看起来与 Flutter 的其他部分一样，那就是我们的意图——它是声明性的，与命令式的 Navigator 1.0 不同。我们的想法是统一导航和 Flutter 其他部分之间的模型，同时修复大量问题并添加功能。事实上，这个小例子只是 Navigator 2.0 中一部分内容的表面描述。有关详细信息，我强烈推荐这篇文章：<a href="https://medium.com/flutter/learning-flutters-new-navigation-and-routing-system-7c9068155ade">Flutter 中的声明式导航和路由</a>。</p>
+<p>此外，您现有的 Navigator 1.0 使用方式将继续与今天一样工作，并且不会很快被移除。如果您喜欢该模型，您当然可以继续使用它。但是，如果您尝试使用 Navigator 2.0，我们认为您会喜欢它。</p>
+<h3 id="预览：Android-的状态恢复"><a href="#预览：Android-的状态恢复" class="headerlink" title="预览：Android 的状态恢复"></a>预览：Android 的状态恢复</h3><p>此版本中可供您体验的新功能是对 <a href="https://developer.android.com/topic/libraries/architecture/saving-states">Android 上的状态恢复</a> 的支持。这是我们 <a href="https://github.com/flutter/flutter/issues/6827">最受欢迎的功能之一</a>，获得了 217 个点赞！</p>
+<p>对于那些不熟悉状态恢复需求的人来说，移动操作系统可能会终止后台应用以回收资源以供前台应用使用。发生这种情况时，操作系统会通知要终止的应用尽快保存任何 UI 状态，以便在用户返回到该应用时恢复它。如果实现正确，这将为用户提供无缝的体验，同时更好地利用设备资源。到目前为止，Flutter 不支持状态恢复，在没有框架支持的情况下正确地做到这一点非常困难。这就是我们很高兴能够为 Android 提供此功能的基础实现的原因。</p>
+<p>以下是如何 <a href="https://api.flutter.dev/flutter/widgets/RestorationMixin-mixin.html#widgets.RestorationMixin.1">恢复默认 Flutter Counter 应用的状态的简单示例</a>：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5b53da24e0462f59d442d2af47bb265a/href">https://medium.com/media/5b53da24e0462f59d442d2af47bb265a/href">https://medium.com/media/5b53da24e0462f59d442d2af47bb265a/href</a></iframe>
+
+<p>简而言之，每个 Widget 都获得一个存储桶，该存储桶使用唯一的 ID 与 <a href="https://api.flutter.dev/flutter/widgets/RestorationMixin-mixin.html">RestorationMixin</a> 关联。通过使用 <a href="https://master-api.flutter.dev/flutter/widgets/RestorableProperty-class.html">RestorableProperty</a> 类型（此处使用的是 RestorableInt）来存储 UI 特定的数据，并通过将该数据与状态恢复功能关联，数据将在 Android 终止应用之前自动存储，并在应用恢复时恢复。就这样。存储在 Restoration* 类型中的任何数据，例如 RestorableInt、RestorableString 和 RestorableTextEditingController（我们有很多这样的类型），都将被恢复。如果我们没有涵盖您希望恢复的所有类型，您可以通过扩展 <a href="https://api.flutter.dev/flutter/widgets/RestorableProperty-class.html">RestorableProperty&lt;T&gt;</a> 创建您自己的类型。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/720/0*1298qhTKz_FjPuRN" />
+</figure>
+
+<p>为了对状态恢复进行自动化测试，我们已向 <a href="https://api.flutter.dev/flutter/flutter_test/WidgetTester/restartAndRestore.html">WidgetTester 添加了一个新的 restartAndRestore API</a>。为了手动测试，最简单的方法是在 Android 设备上启动启用了状态恢复的 Flutter 应用，在 Android 的开发者设置中启用“不保留活动”，运行 Flutter 应用，将其置于后台，然后返回到它。此时，Android 将终止并恢复您的应用，因此您可以查看一切是否按预期工作。</p>
+<p>虽然我们很高兴将此状态恢复的预览版本交给您，但仍有更多工作要做。例如，状态恢复不仅适用于 Android，iOS 应用也可以从中受益。此外，我们正在忙于更新我们自己的 Widget，以在恢复期间保持其状态。我们已经在 Scrollable 类（例如 ListView 和 SingleChildScrollView）（记住用户的滚动位置）和 TextField（恢复用户输入的文本）中提供了支持，并计划将其扩展到其他 Widget。</p>
+<p>但是，我们尚未添加的关键恢复支持，也是使它成为预览版本的原因是导航（1.0 或 2.0）。这意味着用户在应用中的位置将不会被恢复。该功能将很快在测试版中推出，并在 Flutter 的下一个稳定版本中推出。</p>
+<h3 id="预览：为无与伦比的输入和显示频率提供流畅的滚动效果"><a href="#预览：为无与伦比的输入和显示频率提供流畅的滚动效果" class="headerlink" title="预览：为无与伦比的输入和显示频率提供流畅的滚动效果"></a>预览：为无与伦比的输入和显示频率提供流畅的滚动效果</h3><p>Flutter 团队与我们内部的 Google 合作伙伴合作，在输入频率和显示频率不相同的情况下大大改善了滚动的性能。例如，Pixel 4 的输入频率为 120hz，而显示频率为 90hz。这种不匹配会导致滚动时出现性能损失。使用新的 resamplingEnabled 标志，您可以利用我们在 Flutter 中完成的性能工作来解决此问题：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ac9c676eb1233dd1597b234b73ffc8a3/href">https://medium.com/media/ac9c676eb1233dd1597b234b73ffc8a3/href">https://medium.com/media/ac9c676eb1233dd1597b234b73ffc8a3/href</a></iframe>
+
+<p>根据所涉及的频率差异，通过启用此标志，您可能会看到滚动时的卡顿减少高达 97%。当我们确定这是最佳体验时，我们计划在未来的版本中默认启用此标志。</p>
+<h3 id="一个新的统一-Dart-开发者工具"><a href="#一个新的统一-Dart-开发者工具" class="headerlink" title="一个新的统一 Dart 开发者工具"></a>一个新的统一 Dart 开发者工具</h3><p>与往常一样，更新 Flutter 不仅仅意味着引擎和框架，还包括工具。Flutter 1.22 包括新的 Dart 版本（2.10），并且有一个新的 dart CLI 工具，您可能会发现它也很有用。</p>
+<p>Dart 历史上拥有许多较小的开发者工具（例如用于格式化的 dartfmt 和用于代码分析的 dartanalyzer）。在 Dart 2.10 中新增了一个统一的 dart 开发者工具，它与 flutter 工具非常相似。</p>
+<figure>
+<img alt="Screenshot of the output of `dart help`." src="https://cdn-images-1.medium.com/max/700/1*9pvyafhpaMEMhJfLVsz1JQ.png" />
+</figure>
+
+<p>从今天的 Flutter 1.22 SDK 开始，您会发现 <code>&lt;flutter-sdk&gt;/bin</code> 文件夹（您可能将其放在 PATH 中）包含 flutter 和 dart 命令。有关更多详细信息，请参阅 <a href="https://medium.com/@mit.mit/announcing-dart-2-10-350823952bd5">Dart 2.10 部落格文章</a>。</p>
+<h3 id="应用大小分析工具"><a href="#应用大小分析工具" class="headerlink" title="应用大小分析工具"></a>应用大小分析工具</h3><p>作为 Flutter 1.22 的一部分发布的工具包含一个新的输出大小分析实用程序。此工具帮助诊断 Flutter 您的应用的大小分解随着时间的推移是否发生了变化。</p>
+<p>您可以使用此工具通过传递一个<code>--analyze-size</code> 标志到以下任何命令来收集分析所需的数据：</p>
+<ul>
+<li>flutter build apk</li>
+<li>flutter build appbundle</li>
+<li>flutter build ios</li>
+<li>flutter build linux</li>
+<li>flutter build macos</li>
+<li>flutter build windows</li>
+</ul>
+<p>在构建 Flutter 输出工件时使用此标志将打印工件大小和组成的摘要。这包括原生代码、资产，甚至编译的 Dart 代码的包级别分解。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/943/0*vfMD0AQZUOUwzfZ4" />
+<figcaption>Flutter Gallery 发布的 APK 的示例分解</figcaption>
+</figure>
+
+<p>此摘要对于快速识别应用程序包大小使用情况中的热点很有用。此外，收集的数据还可用作 Dart DevTools 中的 JSON 文件，它允许您进一步探索应用的内容，查明大小问题，并通过遵循 <a href="https://flutter.dev/docs/development/tools/devtools/app-size">flutter.dev 上的说明</a> 查看两个不同 JSON 文件之间的更改。加载 JSON 文件后，您将拥有一个界面，该界面将为您提供应用大小的树状图视图。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*gA2waLDAyITCzD7K" />
+<figcaption>Dart DevTools 中的示例 APK 分解</figcaption>
+</figure>
+
+<p>有关使用应用大小工具可以执行的操作的更多详细信息，请阅读 <a href="https://flutter.dev/docs/development/tools/devtools/app-size">flutter.dev 上的使用应用大小工具文档</a>。</p>
+<h3 id="预览：DevTools-中更新的网络页面"><a href="#预览：DevTools-中更新的网络页面" class="headerlink" title="预览：DevTools 中更新的网络页面"></a>预览：DevTools 中更新的网络页面</h3><p>此版本中的另一个 DevTools 预览功能是能够在 <strong>网络</strong> 选项卡中查看 HTTP 和 HTTPS 响应正文。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/781/0*-FukCwELl9DLlefP" />
+</figure>
+
+<p>若要启用此功能，请确保您通过 <code>flutter channel dev</code> 和 <code>flutter channel upgrade</code> 位于 Flutter dev 频道。</p>
+<p>此外，对于有大量网络流量的应用，我们提供搜索和筛选功能。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/994/0*k-fEpOpbV_MiX9Fn" />
+</figure>
+
+<p>有关 <strong>网络</strong> 选项卡文档，请参阅 <a href="https://flutter.dev/docs/development/tools/devtools/network">flutter.dev 上的使用网络视图</a>。</p>
+<h3 id="IntelliJ-中托管的-DevTools-Inspector-选项卡"><a href="#IntelliJ-中托管的-DevTools-Inspector-选项卡" class="headerlink" title="IntelliJ 中托管的 DevTools Inspector 选项卡"></a>IntelliJ 中托管的 DevTools Inspector 选项卡</h3><p>一段时间以来，我们一直在维护我们 Flutter 某些工具的两个副本，例如 IntelliJ 中的 <strong>Inspector</strong> 窗格和 Dart DevTools 中的 <strong>Inspector</strong> 选项卡。这不仅会降低我们的速度，因为我们必须维护两个代码库，而且某些功能（例如布局资源管理器）尚未加入 IntelliJ Plugin。因此，为了解决这两个问题，我们启用了直接在 IntelliJ 中托管来自 Dart DevTools 的 <strong>Inspector</strong> 选项卡的功能。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*RQZ-EVyFP1-BqBIX" />
+</figure>
+
+<p>请注意布局资源管理器的添加，您可以在代码旁边使用它。若要打开此选项，请转到 <strong>首选项</strong> &gt; <strong>语言和框架</strong> &gt; <strong>Flutter</strong> &gt; <strong>启用嵌入式 DevTools Inspector</strong>。</p>
+<h3 id="Visual-Studio-Code-中改进的输出链接"><a href="#Visual-Studio-Code-中改进的输出链接" class="headerlink" title="Visual Studio Code 中改进的输出链接"></a>Visual Studio Code 中改进的输出链接</h3><p>所有 Flutter 开发者都会遇到的一个常规操作是从终端或堆栈跟踪中的错误输出开始。在 Visual Studio Code 的 Flutter 扩展的最新版本中，这些链接现在将被正确地解析，以启用从输出中的链接直接进行跳转。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*prigrwpp7gE6ChCE" />
+</figure>
+
+<p>这看起来似乎是一个小事情，但对这一功能的初步反馈已经非常积极。</p>
+<p>与往常一样，这里列出的工具更改太多，但我建议您查看以下公告以获取详细信息：</p>
+<ul>
+<li><a href="https://groups.google.com/g/flutter-announce/c/UxMv8MzE_uo/m/ED539pi2AAAJ">Dart DevTools - 0.9.0</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/y27h86ATFJM">Dart DevTools - 0.9.1</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/24LppkXdMtM">Dart DevTools - 0.9.3</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/nvgDi3RLAUE/m/Fx4Ze0vrBAAJ">Flutter IntelliJ Plugin M48.1 版本</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/-ZMKRIBRtGU">Flutter IntelliJ Plugin M49 版本</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/u0zU6zv3o44/m/2y0JsX1_AwAJ">Flutter IntelliJ Plugin M50 版本</a></li>
+<li><a href="https://groups.google.com/g/flutter-announce/c/8e8e-ZrgySY">VS Code 扩展 v3.14.0</a></li>
+<li><a href="https://dartcode.org/releases/v3-15/">VS Code 扩展 v3.15.0</a></li>
+</ul>
+<h3 id="客户案例：EasyA"><a href="#客户案例：EasyA" class="headerlink" title="客户案例：EasyA"></a>客户案例：EasyA</h3><p>EasyA 是一款订阅应用，旨在让学龄学生通过即时消息与优秀的导师联系，并使用 Flutter 编写。最近它被 Apple 评为 <a href="https://apps.apple.com/gb/story/id1527472788">Apple 的“今日应用”</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*yLWTxV_YTJ2HKhuz" />
+</figure>
+
+<blockquote>“当学校今年早些时候开始上网时，我们知道我们需要快速推出我们的辅导应用来帮助学生。使用 Flutter 进行开发的超快速度意味着我们能够为 iOS 和 Android 实现获奖设计，并发布到网页——恰逢封锁期间！通常情况下，这是不可能实现的。但由于 Flutter 允许我们同时定位所有三个平台，因此我们能够高效地共享代码，并充分利用我们的小型开发者团队。”</blockquote>
+
+<blockquote>— 菲利普·郭，[EasyA](https://easya.io/) 的联合创始人</blockquote>
+
+<h3 id="重大更改"><a href="#重大更改" class="headerlink" title="重大更改"></a>重大更改</h3><p>与往常一样，我们一直努力将重大更改的数量降至最低。以下是 Flutter 1.22 版本的列表。</p>
+<ul>
+<li><a href="https://github.com/flutter/flutter/pull/56413">56413</a> <a href="https://docs.google.com/document/d/1BZhxy176uUnqOCnXdnHM1XetS9mw9WIyUAOE-dgVdUM/edit?usp=sharing">防止 viewport.showOnScreen 在指定的 Rect 已经可见时滚动 viewport</a>。</li>
+<li><a href="https://github.com/flutter/flutter/pull/62395">62395</a> [gen_l10n] 默认情况下进行合成包生成。</li>
+<li><a href="https://github.com/flutter/flutter/pull/62588">62588</a> 更少地构建路由。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Flutter 1.22 稳定版本可能是在上一个版本之后快速发布的，但它包含了如此多的优秀内容，以至于这篇文章无法全部提及。我们希望此版本能帮助您为 iOS 和 Android 构建出色的应用，我们迫不及待地想看看您将会实现什么！感谢您的支持——我们为你们构建 Flutter。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=44f146009e5f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-flutter-1-22-44f146009e5f">宣布 Flutter 1.22</a> 最初发布在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人们在那里通过突出显示和回应这个故事，继续进行讨论。</p> </p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.rainvisitor.me/archives/687439a5.html" data-id="cm1orxyko002dj9175yw18t7g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mobile-app-development/" rel="tag">mobile-app-development</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/archives/9f00e92f.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【文章翻譯】Performance testing on the web
+        
+      </div>
+    </a>
+  
+  
+    <a href="/archives/2d868a67.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">【文章翻譯】Learning Flutter’s new Navigation and Routing system</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Dart/">Dart</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Flutter/">Flutter</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/17daysofflutter/" rel="tag">17daysofflutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/2d-animation/" rel="tag">2d-animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/3d/" rel="tag">3d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Flutter/" rel="tag">Flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/a11y/" rel="tag">a11y</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/accessibility/" rel="tag">accessibility</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adaptive-ui/" rel="tag">adaptive-ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adobe/" rel="tag">adobe</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/adobe-xd/" rel="tag">adobe-xd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ads/" rel="tag">ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ai/" rel="tag">ai</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android/" rel="tag">android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-app-development/" rel="tag">android-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/android-development/" rel="tag">android-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/animation-and-design/" rel="tag">animation-and-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcements/" rel="tag">announcements</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/announcment/" rel="tag">announcment</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app-development/" rel="tag">app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apple/" rel="tag">apple</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apps/" rel="tag">apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/breaking-changes/" rel="tag">breaking-changes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/casual-games/" rel="tag">casual-games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/challenge/" rel="tag">challenge</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud/" rel="tag">cloud</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cloud-firestore/" rel="tag">cloud-firestore</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/code-samples/" rel="tag">code-samples</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/codepen/" rel="tag">codepen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/coding/" rel="tag">coding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/contests/" rel="tag">contests</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/continuous-integration/" rel="tag">continuous-integration</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/course/" rel="tag">course</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/crashlytics/" rel="tag">crashlytics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform/" rel="tag">cross-platform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cross-platform-apps/" rel="tag">cross-platform-apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dark-theme/" rel="tag">dark-theme</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dart/" rel="tag">dart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dartlang/" rel="tag">dartlang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dependency-injection/" rel="tag">dependency-injection</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/deprecated/" rel="tag">deprecated</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/" rel="tag">design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design-process/" rel="tag">design-process</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/designer/" rel="tag">designer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/desktop/" rel="tag">desktop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/developer-experience/" rel="tag">developer-experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/developer-tools/" rel="tag">developer-tools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/development/" rel="tag">development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/devtools/" rel="tag">devtools</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/education-technology/" rel="tag">education-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/enterprise-technology/" rel="tag">enterprise-technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/events/" rel="tag">events</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension-development/" rel="tag">extension-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/firebase/" rel="tag">firebase</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter/" rel="tag">flutter</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-animation/" rel="tag">flutter-animation</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-app-development/" rel="tag">flutter-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-desktop/" rel="tag">flutter-desktop</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-development/" rel="tag">flutter-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-forward/" rel="tag">flutter-forward</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-game/" rel="tag">flutter-game</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-game-development/" rel="tag">flutter-game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-navigator/" rel="tag">flutter-navigator</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-on-the-web/" rel="tag">flutter-on-the-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-package/" rel="tag">flutter-package</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-plugin/" rel="tag">flutter-plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-routing/" rel="tag">flutter-routing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web/" rel="tag">flutter-web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-web-development/" rel="tag">flutter-web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-widget/" rel="tag">flutter-widget</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/flutter-windows/" rel="tag">flutter-windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/functional-programming/" rel="tag">functional-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/game-development/" rel="tag">game-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/games/" rel="tag">games</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gemini/" rel="tag">gemini</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gestures/" rel="tag">gestures</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/global-citizen/" rel="tag">global-citizen</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/" rel="tag">google</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-ads/" rel="tag">google-ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-earth/" rel="tag">google-earth</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-fonts/" rel="tag">google-fonts</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-io-2024/" rel="tag">google-io-2024</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-news-initiative/" rel="tag">google-news-initiative</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google-summer-of-code/" rel="tag">google-summer-of-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics/" rel="tag">graphics</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graphics-programming/" rel="tag">graphics-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/guides-and-tutorials/" rel="tag">guides-and-tutorials</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hamilton/" rel="tag">hamilton</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hot-reload/" rel="tag">hot-reload</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ibm/" rel="tag">ibm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/icons/" rel="tag">icons</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/integrated-development/" rel="tag">integrated-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/integration-testing/" rel="tag">integration-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/interoperability/" rel="tag">interoperability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/" rel="tag">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-app-development/" rel="tag">ios-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios-development/" rel="tag">ios-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keyboard/" rel="tag">keyboard</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning/" rel="tag">learning</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning-and-development/" rel="tag">learning-and-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/learning-to-code/" rel="tag">learning-to-code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-design/" rel="tag">material-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/material-you/" rel="tag">material-you</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/meetup/" rel="tag">meetup</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile/" rel="tag">mobile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-ads/" rel="tag">mobile-ads</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-app-development/" rel="tag">mobile-app-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-apps/" rel="tag">mobile-apps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-development/" rel="tag">mobile-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mobile-programming/" rel="tag">mobile-programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/monetization/" rel="tag">monetization</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/multiplatform/" rel="tag">multiplatform</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/news/" rel="tag">news</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nullpointerexception/" rel="tag">nullpointerexception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/open-source/" rel="tag">open-source</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/payments/" rel="tag">payments</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance/" rel="tag">performance</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/performance-testing/" rel="tag">performance-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/policy/" rel="tag">policy</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/programming/" rel="tag">programming</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototyping/" rel="tag">prototyping</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pub/" rel="tag">pub</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pubdev/" rel="tag">pubdev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/range-slider/" rel="tag">range-slider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/realm/" rel="tag">realm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/recaps/" rel="tag">recaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/release-notes/" rel="tag">release-notes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/releases/" rel="tag">releases</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/roadmaps/" rel="tag">roadmaps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shaders/" rel="tag">shaders</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/slider/" rel="tag">slider</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/software-development/" rel="tag">software-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/software-testing/" rel="tag">software-testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/surveys/" rel="tag">surveys</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tablets/" rel="tag">tablets</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technology/" rel="tag">technology</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technology-news/" rel="tag">technology-news</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/testing/" rel="tag">testing</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/typography/" rel="tag">typography</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui/" rel="tag">ui</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui-design/" rel="tag">ui-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/updates/" rel="tag">updates</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-experience/" rel="tag">user-experience</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-interface/" rel="tag">user-interface</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/user-research/" rel="tag">user-research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux/" rel="tag">ux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux-design/" rel="tag">ux-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ux-research/" rel="tag">ux-research</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wasm/" rel="tag">wasm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/" rel="tag">web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-design/" rel="tag">web-design</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web-development/" rel="tag">web-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webassembly/" rel="tag">webassembly</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows/" rel="tag">windows</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/windows-development/" rel="tag">windows-development</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xcode/" rel="tag">xcode</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/17daysofflutter/" style="font-size: 10px;">17daysofflutter</a> <a href="/tags/2d-animation/" style="font-size: 10px;">2d-animation</a> <a href="/tags/3d/" style="font-size: 10px;">3d</a> <a href="/tags/Android/" style="font-size: 10px;">Android</a> <a href="/tags/Flutter/" style="font-size: 10.67px;">Flutter</a> <a href="/tags/a11y/" style="font-size: 10px;">a11y</a> <a href="/tags/accessibility/" style="font-size: 10.67px;">accessibility</a> <a href="/tags/adaptive-ui/" style="font-size: 10px;">adaptive-ui</a> <a href="/tags/adobe/" style="font-size: 10px;">adobe</a> <a href="/tags/adobe-xd/" style="font-size: 10.67px;">adobe-xd</a> <a href="/tags/ads/" style="font-size: 10.67px;">ads</a> <a href="/tags/ai/" style="font-size: 10.67px;">ai</a> <a href="/tags/android/" style="font-size: 13.33px;">android</a> <a href="/tags/android-app-development/" style="font-size: 14px;">android-app-development</a> <a href="/tags/android-development/" style="font-size: 10px;">android-development</a> <a href="/tags/animation-and-design/" style="font-size: 10px;">animation-and-design</a> <a href="/tags/announcements/" style="font-size: 19.33px;">announcements</a> <a href="/tags/announcment/" style="font-size: 10px;">announcment</a> <a href="/tags/app-development/" style="font-size: 13.33px;">app-development</a> <a href="/tags/apple/" style="font-size: 10.67px;">apple</a> <a href="/tags/apps/" style="font-size: 10.67px;">apps</a> <a href="/tags/breaking-changes/" style="font-size: 10px;">breaking-changes</a> <a href="/tags/casual-games/" style="font-size: 10px;">casual-games</a> <a href="/tags/challenge/" style="font-size: 10px;">challenge</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/cloud-firestore/" style="font-size: 10px;">cloud-firestore</a> <a href="/tags/code-samples/" style="font-size: 10px;">code-samples</a> <a href="/tags/codepen/" style="font-size: 10px;">codepen</a> <a href="/tags/coding/" style="font-size: 10px;">coding</a> <a href="/tags/contests/" style="font-size: 10.67px;">contests</a> <a href="/tags/continuous-integration/" style="font-size: 10px;">continuous-integration</a> <a href="/tags/course/" style="font-size: 10px;">course</a> <a href="/tags/crashlytics/" style="font-size: 10px;">crashlytics</a> <a href="/tags/cross-platform/" style="font-size: 10.67px;">cross-platform</a> <a href="/tags/cross-platform-apps/" style="font-size: 10px;">cross-platform-apps</a> <a href="/tags/dark-theme/" style="font-size: 10px;">dark-theme</a> <a href="/tags/dart/" style="font-size: 18px;">dart</a> <a href="/tags/dartlang/" style="font-size: 14px;">dartlang</a> <a href="/tags/dependency-injection/" style="font-size: 10px;">dependency-injection</a> <a href="/tags/deprecated/" style="font-size: 10px;">deprecated</a> <a href="/tags/design/" style="font-size: 11.33px;">design</a> <a href="/tags/design-process/" style="font-size: 10px;">design-process</a> <a href="/tags/designer/" style="font-size: 10px;">designer</a> <a href="/tags/desktop/" style="font-size: 11.33px;">desktop</a> <a href="/tags/developer-experience/" style="font-size: 14.67px;">developer-experience</a> <a href="/tags/developer-tools/" style="font-size: 10.67px;">developer-tools</a> <a href="/tags/development/" style="font-size: 12px;">development</a> <a href="/tags/devtools/" style="font-size: 10.67px;">devtools</a> <a href="/tags/education-technology/" style="font-size: 10px;">education-technology</a> <a href="/tags/enterprise-technology/" style="font-size: 10px;">enterprise-technology</a> <a href="/tags/events/" style="font-size: 10px;">events</a> <a href="/tags/extension-development/" style="font-size: 10px;">extension-development</a> <a href="/tags/firebase/" style="font-size: 12.67px;">firebase</a> <a href="/tags/flutter/" style="font-size: 20px;">flutter</a> <a href="/tags/flutter-animation/" style="font-size: 11.33px;">flutter-animation</a> <a href="/tags/flutter-app-development/" style="font-size: 18.67px;">flutter-app-development</a> <a href="/tags/flutter-desktop/" style="font-size: 11.33px;">flutter-desktop</a> <a href="/tags/flutter-development/" style="font-size: 10.67px;">flutter-development</a> <a href="/tags/flutter-forward/" style="font-size: 10px;">flutter-forward</a> <a href="/tags/flutter-game/" style="font-size: 10.67px;">flutter-game</a> <a href="/tags/flutter-game-development/" style="font-size: 10px;">flutter-game-development</a> <a href="/tags/flutter-navigator/" style="font-size: 10px;">flutter-navigator</a> <a href="/tags/flutter-on-the-web/" style="font-size: 10px;">flutter-on-the-web</a> <a href="/tags/flutter-package/" style="font-size: 10.67px;">flutter-package</a> <a href="/tags/flutter-plugin/" style="font-size: 12px;">flutter-plugin</a> <a href="/tags/flutter-routing/" style="font-size: 10px;">flutter-routing</a> <a href="/tags/flutter-web/" style="font-size: 14px;">flutter-web</a> <a href="/tags/flutter-web-development/" style="font-size: 10px;">flutter-web-development</a> <a href="/tags/flutter-widget/" style="font-size: 10.67px;">flutter-widget</a> <a href="/tags/flutter-windows/" style="font-size: 10px;">flutter-windows</a> <a href="/tags/functional-programming/" style="font-size: 10px;">functional-programming</a> <a href="/tags/game-development/" style="font-size: 12.67px;">game-development</a> <a href="/tags/games/" style="font-size: 14px;">games</a> <a href="/tags/gemini/" style="font-size: 10px;">gemini</a> <a href="/tags/gestures/" style="font-size: 10px;">gestures</a> <a href="/tags/global-citizen/" style="font-size: 10px;">global-citizen</a> <a href="/tags/google/" style="font-size: 15.33px;">google</a> <a href="/tags/google-ads/" style="font-size: 10.67px;">google-ads</a> <a href="/tags/google-earth/" style="font-size: 10px;">google-earth</a> <a href="/tags/google-fonts/" style="font-size: 10px;">google-fonts</a> <a href="/tags/google-io-2024/" style="font-size: 10px;">google-io-2024</a> <a href="/tags/google-news-initiative/" style="font-size: 10px;">google-news-initiative</a> <a href="/tags/google-summer-of-code/" style="font-size: 10px;">google-summer-of-code</a> <a href="/tags/graphics/" style="font-size: 10px;">graphics</a> <a href="/tags/graphics-programming/" style="font-size: 10px;">graphics-programming</a> <a href="/tags/guides-and-tutorials/" style="font-size: 10px;">guides-and-tutorials</a> <a href="/tags/hamilton/" style="font-size: 10px;">hamilton</a> <a href="/tags/hot-reload/" style="font-size: 10px;">hot-reload</a> <a href="/tags/iOS/" style="font-size: 10px;">iOS</a> <a href="/tags/ibm/" style="font-size: 10px;">ibm</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/integrated-development/" style="font-size: 10px;">integrated-development</a> <a href="/tags/integration-testing/" style="font-size: 10px;">integration-testing</a> <a href="/tags/interoperability/" style="font-size: 10px;">interoperability</a> <a href="/tags/ios/" style="font-size: 14.67px;">ios</a> <a href="/tags/ios-app-development/" style="font-size: 14px;">ios-app-development</a> <a href="/tags/ios-development/" style="font-size: 10.67px;">ios-development</a> <a href="/tags/keyboard/" style="font-size: 10px;">keyboard</a> <a href="/tags/learning/" style="font-size: 10.67px;">learning</a> <a href="/tags/learning-and-development/" style="font-size: 10px;">learning-and-development</a> <a href="/tags/learning-to-code/" style="font-size: 10px;">learning-to-code</a> <a href="/tags/linux/" style="font-size: 10.67px;">linux</a> <a href="/tags/material-design/" style="font-size: 12.67px;">material-design</a> <a href="/tags/material-you/" style="font-size: 10px;">material-you</a> <a href="/tags/meetup/" style="font-size: 10px;">meetup</a> <a href="/tags/mobile/" style="font-size: 11.33px;">mobile</a> <a href="/tags/mobile-ads/" style="font-size: 10px;">mobile-ads</a> <a href="/tags/mobile-app-development/" style="font-size: 17.33px;">mobile-app-development</a> <a href="/tags/mobile-apps/" style="font-size: 10.67px;">mobile-apps</a> <a href="/tags/mobile-development/" style="font-size: 10.67px;">mobile-development</a> <a href="/tags/mobile-programming/" style="font-size: 10px;">mobile-programming</a> <a href="/tags/monetization/" style="font-size: 10px;">monetization</a> <a href="/tags/multiplatform/" style="font-size: 10.67px;">multiplatform</a> <a href="/tags/news/" style="font-size: 10.67px;">news</a> <a href="/tags/nullpointerexception/" style="font-size: 10px;">nullpointerexception</a> <a href="/tags/open-source/" style="font-size: 11.33px;">open-source</a> <a href="/tags/payments/" style="font-size: 10px;">payments</a> <a href="/tags/performance/" style="font-size: 12.67px;">performance</a> <a href="/tags/performance-testing/" style="font-size: 10px;">performance-testing</a> <a href="/tags/policy/" style="font-size: 10px;">policy</a> <a href="/tags/programming/" style="font-size: 14.67px;">programming</a> <a href="/tags/prototyping/" style="font-size: 10px;">prototyping</a> <a href="/tags/pub/" style="font-size: 10px;">pub</a> <a href="/tags/pubdev/" style="font-size: 10px;">pubdev</a> <a href="/tags/range-slider/" style="font-size: 10px;">range-slider</a> <a href="/tags/realm/" style="font-size: 10px;">realm</a> <a href="/tags/recaps/" style="font-size: 10px;">recaps</a> <a href="/tags/release-notes/" style="font-size: 13.33px;">release-notes</a> <a href="/tags/releases/" style="font-size: 14.67px;">releases</a> <a href="/tags/roadmaps/" style="font-size: 10px;">roadmaps</a> <a href="/tags/shaders/" style="font-size: 10px;">shaders</a> <a href="/tags/slider/" style="font-size: 10px;">slider</a> <a href="/tags/software-development/" style="font-size: 10px;">software-development</a> <a href="/tags/software-testing/" style="font-size: 10px;">software-testing</a> <a href="/tags/surveys/" style="font-size: 16px;">surveys</a> <a href="/tags/tablets/" style="font-size: 10.67px;">tablets</a> <a href="/tags/technology/" style="font-size: 10px;">technology</a> <a href="/tags/technology-news/" style="font-size: 10px;">technology-news</a> <a href="/tags/testing/" style="font-size: 12.67px;">testing</a> <a href="/tags/typography/" style="font-size: 10.67px;">typography</a> <a href="/tags/ui/" style="font-size: 10.67px;">ui</a> <a href="/tags/ui-design/" style="font-size: 10.67px;">ui-design</a> <a href="/tags/updates/" style="font-size: 10px;">updates</a> <a href="/tags/user-experience/" style="font-size: 11.33px;">user-experience</a> <a href="/tags/user-interface/" style="font-size: 10px;">user-interface</a> <a href="/tags/user-research/" style="font-size: 10px;">user-research</a> <a href="/tags/ux/" style="font-size: 10.67px;">ux</a> <a href="/tags/ux-design/" style="font-size: 10.67px;">ux-design</a> <a href="/tags/ux-research/" style="font-size: 11.33px;">ux-research</a> <a href="/tags/wasm/" style="font-size: 10px;">wasm</a> <a href="/tags/web/" style="font-size: 12px;">web</a> <a href="/tags/web-design/" style="font-size: 10px;">web-design</a> <a href="/tags/web-development/" style="font-size: 16.67px;">web-development</a> <a href="/tags/webassembly/" style="font-size: 10px;">webassembly</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/windows-development/" style="font-size: 10px;">windows-development</a> <a href="/tags/xcode/" style="font-size: 10px;">xcode</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">八月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">五月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/04/">四月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/03/">三月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">二月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">一月 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">五月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">四月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">一月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">十二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">十一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">九月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">五月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">一月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">十一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">九月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">六月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">十一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">六月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">五月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/archives/14c13b13.html">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
+          </li>
+        
+          <li>
+            <a href="/archives/8ddf18fb.html">【文章翻譯】Getting started with Flutter GPU</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+          </li>
+        
+          <li>
+            <a href="/archives/6243ded4.html">【文章翻譯】What’s new in Flutter 3.24</a>
+          </li>
+        
+          <li>
+            <a href="/archives/3378cc1.html">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2024 Rainvisitor<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FZZFH3T2TV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FZZFH3T2TV');
+</script>
+  </div>
+</body>
+</html>
