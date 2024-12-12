@@ -146,6 +146,463 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/ee34d180.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/ee34d180.html" class="post-title-link" itemprop="url">【文章翻譯】What’s new in Flutter 3.27</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-11 20:19:53" itemprop="dateCreated datePublished" datetime="2024-12-11T20:19:53+08:00">2024-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:37" itemprop="dateModified" datetime="2024-12-12T11:08:37+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-Impeller、Cupertino-更新等提升應用程式開發"><a href="#使用-Impeller、Cupertino-更新等提升應用程式開發" class="headerlink" title="使用 Impeller、Cupertino 更新等提升應用程式開發"></a>使用 Impeller、Cupertino 更新等提升應用程式開發</h2><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><p>讓我們深入了解 Flutter 3.27！此版本充滿了增強功能和特性，著重於改進您的開發體驗並提升應用程式的效能。</p>
+<p>我們在架構、引擎和生態系統方面都進行了更新，包括 Impeller 的進展和 Cupertino widget 的改進。此外，我們還在 DevTools 中引入了令人興奮的新功能，讓管理 Flutter 專案比以往任何時候都更容易。Flutter 3.27 包含來自 187 位貢獻者（包括 <strong>49 位首次貢獻者</strong>！）的超過 1,400 個提交，證明了 Flutter 社群令人難以置信的活力和合作。讓我們一起探索新功能吧！</p>
+<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><h4 id="Cupertino-更新"><a href="#Cupertino-更新" class="headerlink" title="Cupertino 更新"></a>Cupertino 更新</h4><p>此版本包含對 <code>CupertinoCheckbox</code> 和 <code>CupertinoRadio</code> 的高保真度更新，其中包括對大小、顏色、筆劃寬度和按下時的行為的更新。<code>CupertinoRadio</code>、<code>CupertinoCheckbox</code> 和 <code>CupertinoSwitch</code> 也進行了大量的可自訂性更新，加入了滑鼠游標、語義標籤、縮圖和填充顏色等屬性。某些屬性（例如 <code>CupertinoCheckbox</code> 的非活動顏色）已被棄用，而其他屬性（例如 <code>CupertinoSwitch</code> 的軌跡顏色）則已重新命名。這些變更使這些 widget 與其 Material 對應項的功能齊平。</p>
+<p><code>CupertinoSlidingSegmentedControl</code> 的拇指半徑、分隔線高度、填充、陰影和拇指縮放對齊方式也進行了一些保真度更新。它現在還支援停用個別區段，以及根據區段內容進行比例佈局。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/454/0*Nr0WuNhNxjlI1Pqg" />
+</figure>
+
+<p>感謝社群成員 <a href="https://github.com/veloce">@veloce</a> 的出色貢獻，<code>CupertinoNavigationBar</code> 和 <code>CupertinoSliverNavigationBar</code> 的背景現在是透明的，直到內容在其下方捲動。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*dngArPlUvp4pVA-R" />
+</figure>
+
+<p>這使得 sliver 導航欄在其展開狀態下可以擁有与其背景相同的顏色，但在其摺疊狀態下可以擁有不同的可自訂顏色（並且能夠在捲動時在這兩種顏色之間進行插值）。</p>
+<p>感謝社群成員 <a href="http://github.com/kerberjg">@kerberjg</a> 的出色貢獻，您現在可以使用 <code>CupertinoButton</code> 中新的 <code>sizeStyle</code> 屬性，透過新的 <code>CupertinoButtonSize</code> 列舉來應用 iOS 15+ 按鈕樣式。使用新的 <code>CupertinoButton.tinted</code> 建構函式來製作具有半透明背景的按鈕。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*vdSn5c7uavWstNO5" />
+</figure>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ZPrThBB6ZN8DEtUq" />
+</figure>
+
+<p><code>CupertinoButton</code> 還有一個新的 <code>onLongPress</code> 處理程式，並且允許透過鍵盤快捷鍵執行操作。</p>
+<p><code>CupertinoPicker</code> 和 <code>CupertinoDatePicker</code> 現在將捲動到點擊的項目。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*XUtBHK9h0zbWrKUF" />
+</figure>
+
+<p><code>CupertinoAlertDialog</code> 現在支援點擊滑動手勢。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*JYBUuzXHcYTCD4i5" />
+</figure>
+
+<p><code>CupertinoActionSheet</code> 進行了一些高保真度更新，包括在所有系統文字大小設定中調整填充和字體大小，以及在滑過按鈕時支援觸覺回饋。</p>
+<p>其他變更包括：<code>CupertinoContextMenu</code> 現在支援捲動（如果其動作超出螢幕範圍），<code>CupertinoDatePicker</code> 不再裁剪其欄中的長內容，以及 <code>CupertinoMagnifier</code> 透過提供放大比例來支援縮放效果。</p>
+<h4 id="標準化-Material-主題"><a href="#標準化-Material-主題" class="headerlink" title="標準化 Material 主題"></a>標準化 Material 主題</h4><p>在此版本中，<code>CardTheme</code>、<code>DialogTheme</code> 和 <code>TabBarTheme</code> 已經過重構，以使其符合 Flutter 的元件主題規範。加入了 <code>CardThemeData</code>、<code>DialogThemeData</code> 和 <code>TabBarThemeData</code> 來定義元件視覺屬性預設值的覆蓋。未來的版本將繼續標準化像這樣的元件主題，以便在 Material 函式庫中提供更一致的主題體驗。</p>
+<h4 id="CarouselView-的更多功能"><a href="#CarouselView-的更多功能" class="headerlink" title="CarouselView 的更多功能"></a>CarouselView 的更多功能</h4><p>此版本引入了 <code>CarouselView.weighted</code>，可以在 Carousel 中啟用更動態的佈局。透過調整建構函式中的 <code>flexWeights</code> 參數，您可以實現各種項目佈局。例如，<code>[3, 2, 1]</code> 建立 <a href="https://m3.material.io/components/carousel/specs#3c9dc903-2f88-4b27-84e3-213c50674632">多瀏覽</a> 佈局，<code>[7, 1]</code> 建立 <a href="https://m3.material.io/components/carousel/specs#66eb8746-70f0-4bad-b940-8e1028268d65">英雄</a> 佈局，而 <code>[1, 7, 1]</code> 建立 <a href="https://m3.material.io/components/carousel/specs#92c779ce-de8b-4dee-8201-95d3e429204f">居中英雄</a> 佈局。這些值表示每個項目在 Carousel 視圖中佔據的相對權重，並且可以自訂以滿足使用者的特定需求。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*EUjz8K6BQZX2uumi" />
+</figure>
+
+<h4 id="Material-中的更多內容"><a href="#Material-中的更多內容" class="headerlink" title="Material 中的更多內容"></a>Material 中的更多內容</h4><p>此版本包含許多小的功能增強和錯誤修復。一些增強功能範例：</p>
+<ul>
+<li><code>SegmentedButton</code> 現在有一個 <code>direction</code> 屬性，因此項目可以垂直對齊。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/186/0*ECVkEydB6YuBSGs_" />
+</figure>
+
+<ul>
+<li><code>ButtonStyleButton</code> 類別（<code>ElevatedButton</code>、<code>FilledButton</code>、<code>OutlinedButton</code>、<code>TextButton</code>、<code>MenuItemButton</code> 和 <code>SubmenuButton</code>）的 <code>styleFrom</code> 方法中加入了更多與圖示相關的屬性，以允許更多自訂。</li>
+</ul>
+<p>一些錯誤修復範例：</p>
+<ul>
+<li><code>ButtonStyleButton</code> 類別的圖示大小和顏色預設值與 Material 3 規範一致。</li>
+<li><code>AppBar</code> 的捲動下行為現在可以在導航抽屜打開時正確保留，與原生 Android 體驗相符。</li>
+<li><code>MenuAnchor</code> 透過焦點修復得到了進一步改進，並且解決了幾個 <code>DropdownMenu</code> 問題，包括巢狀捲動元件中的捲動問題和過濾機制行為。</li>
+</ul>
+<h4 id="混合路由轉場"><a href="#混合路由轉場" class="headerlink" title="混合路由轉場"></a>混合路由轉場</h4><p>當先前的路由和新的路由具有不同的頁面轉場時，<a href="https://api.flutter.dev/flutter/widgets/ModalRoute-class.html">ModalRoutes</a> 現在更加靈活。當新的路由進入螢幕時，有時它們需要先前的現有路由播放特定轉場以與新路由的進入轉場同步。現在，<code>ModalRoutes</code> 可以互相提供退出轉場建構函式，以便進入和退出轉場始終同步。這允許頁面使用 Flutter 的 <code>Navigator</code> 和 <code>Router</code> 在一個頁面上具有多個路由轉場選項。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/231/0*vyFYrAWVig8f8WGl" />
+</figure>
+
+
+<h4 id="文字選取改進"><a href="#文字選取改進" class="headerlink" title="文字選取改進"></a>文字選取改進</h4><p>Flutter 的 <code>SelectionArea</code> 現在支援在 Linux、macOS 和 Windows 上使用 Shift + 點擊手勢將選取範圍的末尾移動到點擊位置。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/824/0*QwWCiz-DAHklZZAi" />
+</figure>
+
+
+<p>您現在還可以透過 <a href="https://api.flutter.dev/flutter/widgets/SelectableRegionState-class.html">SelectableRegionState</a> 上的 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionState/clearSelection.html"><code>clearSelection</code></a> 方法清除 <code>SelectionArea</code> 和 <code>SelectableRegion</code> 下的選取範圍。現在還可以透過提供 <code>GlobalKey</code> 並存取其 <a href="https://main-api.flutter.dev/flutter/material/SelectionAreaState/selectableRegion.html">SelectionAreaState.selectableRegion</a> 來透過 <code>SelectionArea</code> 存取 <code>SelectableRegionState</code>。</p>
+<p>我們還解決了 <code>RenderParagraph</code> 的一些問題，因此在調整 <a href="https://github.com/flutter/flutter/pull/155719">視窗大小</a> 後，以及在點擊或 <a href="https://github.com/flutter/flutter/pull/155892">點擊</a>實際文字 [之外] 時，在 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 下選取文字仍然可以按預期工作。</p>
+<h4 id="Row-和-Column-間距"><a href="#Row-和-Column-間距" class="headerlink" title="Row 和 Column 間距"></a>Row 和 Column 間距</h4><p>此版本還提供了一個使用 <code>Row</code> 和 <code>Column</code> 的新便利方法：<code>spacing</code>！此雙精度參數將應用固定數量的像素來偏移 <code>Row</code> 和 <code>Column</code> 的子項之間的距離，從而減少先前執行此操作所需的程式碼量。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*85CZePbMbJ99B5-hPvwpKQ.png" />
+</figure>
+
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><h4 id="Android-上的-Impeller"><a href="#Android-上的-Impeller" class="headerlink" title="Android 上的 Impeller"></a>Android 上的 Impeller</h4><p>我們很高興地宣布，Impeller 現在是現代 Android 設備上的預設渲染引擎。雖然自 Flutter 3.16 穩定版本於 2023 年 11 月發佈以來，這些設備上的 Impeller 一直處於預覽階段，但從那時起，我們根據使用者回饋對效能和保真度都進行了重大改進。</p>
+<p>在較舊的 Android 設備和不支援 Vulkan 的設備上，仍然會像以前一樣使用 Skia 渲染引擎。雖然我們相信 Impeller 的效能和保真度都非常高，但使用者可以選擇退出並返回到傳統的 Skia 渲染器，方法是將 <code>--no-enable-impeller</code> 傳遞給 <code>flutter</code> 命令列工具，或者將以下內容放入您的 <code>AndroidManifest.xml</code> 檔案中：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta-data</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:name</span>=<span class="string">&quot;io.flutter.embedding.android.EnableImpeller&quot;</span></span></span><br><span class="line"><span class="tag">  <span class="attr">android:value</span>=<span class="string">&quot;false&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接下來，我們將繼續改進 Impeller 在 Android 上的效能和保真度。此外，我們打算讓 Impeller 的 OpenGL 後端做好生產準備，以移除 Skia 後備。</p>
+<p>如同在預覽期間一樣，我們請求 Flutter 開發人員升級到最新的穩定版本，並提交在啟用 Impeller 時發現的任何缺點的錯誤。回饋對於確保 Impeller 在 Android 上取得成功仍然至關重要。Android 硬體生態系統比 iOS 生態系統更加多元。因此，關於 Impeller 最有用的回饋應包括有關發生問題的特定設備和 Android 版本的詳細資訊。</p>
+<h3 id="iOS-設備的改進"><a href="#iOS-設備的改進" class="headerlink" title="iOS 設備的改進"></a>iOS 設備的改進</h3><p>在以前的 Flutter 版本中，使用者可能會遇到 <a href="https://github.com/flutter/flutter/issues/134959">一個問題</a>，即 iOS 設備上的應用程式在合成器反壓下每幀等待幾毫秒。這種反壓將被視為柵格工作負載開始時的延遲。在許多情況下，這種延遲會導致畫面丟失和卡頓。這種效應在具有較小畫面時間預算的高畫面播放速率設備上尤為明顯。</p>
+<p>在此版本中，開源貢獻者 <a href="https://github.com/knopp">@knopp</a> 加入了一個 <a href="https://github.com/flutter/engine/pull/48226">新的實作</a> Metal 渲染表面，允許柵格工作負載在 UI 工作負載完成後更一致地開始。這意味著使用者將觀察到整體畫面時間更加穩定，因為在 iOS 系統合成器上的等待時間更少。特別是，Flutter 現在將在高畫面播放速率設備上更一致地達到 120Hz。在我們的基準測試中，我們觀察到在許多情況下平均畫面柵格化時間都大幅減少了。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*wsAPbKV2yW8tLXNb" />
+<figcaption><em>此圖表顯示在 iPhone 11 設備上運行的許多不同基準測試中，平均畫面柵格化時間（以毫秒為單位）全面下降。</em></figcaption>
+</figure>
+
+<h4 id="架構廣色域顏色"><a href="#架構廣色域顏色" class="headerlink" title="架構廣色域顏色"></a>架構廣色域顏色</h4><p>Flutter 現在支援使用 DisplayP3 色彩空間中的顏色來定義 UI，以充分利用 iOS 設備上的顯示器。它還具有更寬的位元深度，以支援 sRGB 和 DisplayP3 色彩空間中的更多顏色。此變更導致一些 <code>Color</code> 方法被棄用；更多資訊可以在 <a href="https://docs.flutter.dev/release/breaking-changes/wide-gamut-framework">重大變更通知</a> 中找到。</p>
+<h3 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h3><h4 id="Web-改進"><a href="#Web-改進" class="headerlink" title="Web 改進"></a>Web 改進</h4><p>此版本為 Flutter Web 帶來各種改進，著重於效能、效率和輔助功能：</p>
+<ul>
+<li>現在，Safari 和 Firefox 中的圖像解碼使用 <code>&lt;img&gt;</code> 元素完成，而不是對所有靜態圖像使用 WebAssembly 編解碼器。這消除了與圖像解碼相關的卡頓，並減少了 WASM 記憶體使用量。</li>
+<li>平台視圖經過優化，以減少畫布覆蓋層的數量，從而提高渲染效率。</li>
+<li>Flutter 團隊開發的所有插件和套件現在都與 WebAssembly 相容。</li>
+<li>對標題、對話框、密碼、iOS 鍵盤、連結和捲動元件實作了多項輔助功能修復。</li>
+<li>在 CanvasKit 和 Skwasm 渲染器中修復了許多渲染錯誤，包括圖像濾鏡、裁剪和 <code>Paint</code> 物件的記憶體使用量。</li>
+<li>改進了多視圖模式下的拖動捲動。</li>
+</ul>
+<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><h4 id="Swift-Package-Manager"><a href="#Swift-Package-Manager" class="headerlink" title="Swift Package Manager"></a>Swift Package Manager</h4><p>Flutter 正在遷移到 Swift Package Manager。這帶來了許多好處：</p>
+<ol>
+<li><strong>存取 Swift 套件生態系統</strong>。Flutter 插件將能夠利用不斷發展的 <a href="https://swiftpackageindex.com/">Swift 套件</a> 生態系統！</li>
+<li><strong>簡化 Flutter 安裝</strong>。Swift Package Manager 與 Xcode 捆綁在一起。未來，您將不再需要安裝 Ruby 和 CocoaPods 來為 Apple 平台使用 Flutter。</li>
+</ol>
+<p>以前，Swift Package Manager 支援僅在 Flutter 的「main」頻道上可用。我們很高興地宣布，Swift Package Manager 功能現在也在「beta」和「stable」頻道上可用！目前，Swift Package Manager 功能預設為關閉，因為我們正在解決一些問題。</p>
+<p>鼓勵插件作者將 <a href="https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-plugin-authors#how-to-add-swift-package-manager-support-to-an-existing-flutter-plugin">Swift Package Manager 支援加入到您的插件中</a>。許多流行的插件——包括 <a href="https://github.com/firebase/flutterfire/issues/13205">Firebase</a>、<a href="https://github.com/fluttercommunity/plus_plugins/issues/3152">plus 插件</a> 和 <a href="https://pub.dev/packages?q=is:swiftpm-plugin">更多</a>——已經遷移到 Swift Package Manager！</p>
+<p>Pub.dev 現在會檢查插件的 Swift Package Manager 相容性。未來，不相容的套件將不會獲得完整的套件評分。</p>
+<p>如果您對 Flutter 對 Swift Package Manager 的支援有任何回饋，請 <a href="https://github.com/flutter/flutter/issues/new/choose">提交問題</a>。</p>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><h4 id="邊緣到邊緣"><a href="#邊緣到邊緣" class="headerlink" title="邊緣到邊緣"></a>邊緣到邊緣</h4><p>在運行 Android 15+ 的設備上，您的應用程式預設將使用邊緣到邊緣模式並以全螢幕運行！有關此變更以及如何選擇退出此行為的詳細資訊，請參閱<a href="https://docs.flutter.dev/release/breaking-changes/default-systemuimode-edge-to-edge">指南</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/648/0*CNcQF3yqFwc0IGNc" />
+</figure>
+
+<h4 id="支援-Freeform"><a href="#支援-Freeform" class="headerlink" title="支援 Freeform"></a>支援 Freeform</h4><p><a href="https://android-developers.googleblog.com/2024/09/developer-preview-desktop-windowing-on-android-tablets.html">Android Freeform</a> 允許使用者調整應用程式視窗的大小，並且一直作為開發人員選項提供。Flutter 的 <code>SafeArea</code> 和 <code>MediaQuery</code> 已更新，以便在 freeform 視窗移動到硬體缺口時處理硬體缺口。</p>
+<h4 id="Kotlin-建置腳本支援和宣告式插件遷移"><a href="#Kotlin-建置腳本支援和宣告式插件遷移" class="headerlink" title="Kotlin 建置腳本支援和宣告式插件遷移"></a>Kotlin 建置腳本支援和宣告式插件遷移</h4><p>開發人員現在可以使用 <code>build.gradle.kts</code> 檔案。Flutter 工具現在支援 Kotlin 建置檔案。如果您遇到我們不支援 Kotlin 的地方，請<a href="https://github.com/flutter/flutter/issues/new/choose">提交錯誤</a>。Groovy 仍然是支援的 Gradle 語言。</p>
+<p>Flutter 3.27 是最後一個支援 <a href="https://docs.gradle.org/8.5/userguide/plugins.html#sec:script_plugins">Gradle 的傳統 <code>apply</code> 腳本方法</a> 的版本。請參閱<a href="https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply">遷移文件</a>。</p>
+<p><strong>注意：大多數應用程式需要手動遷移。新建立的應用程式將</strong> <a href="https://github.com/flutter/flutter/pull/157195">使用 kotlin 建置檔案</a>。</p>
+<p>遷移到 Flutter Gradle 插件的宣告式包含有助於 Flutter 遷移到 Kotlin 建置檔案，從而提高類型安全性，並更容易維護建置程式碼的單元測試。這也是在 Android 工具版本之間帶來更多穩定性的一項更廣泛工作的一部分。</p>
+<h3 id="生態系統"><a href="#生態系統" class="headerlink" title="生態系統"></a>生態系統</h3><h4 id="Flutter-和-Dart-套件生態系統峰會美國-2024"><a href="#Flutter-和-Dart-套件生態系統峰會美國-2024" class="headerlink" title="Flutter 和 Dart 套件生態系統峰會美國 2024"></a>Flutter 和 Dart 套件生態系統峰會美國 2024</h4><p>作為 2024 年 9 月 Fluttercon USA 的一部分，我們舉辦了 Flutter 和 Dart 套件生態系統峰會。這是我們的第二次現場峰會，繼 2024 年 7 月 Fluttercon Europe 的峰會和我們於 2023 年 8 月舉辦的第一屆虛擬峰會之後。請參閱此處的討論會重點摘要 <a href="https://docs.google.com/document/d/e/2PACX-1vRjPlBNo13I9P5UXpehKagVq8e8n7ppNz169HbKSgK4iTmCrbk5rzh-RN6ULpVJ3AkPnnCSI_VCMdYW/pub">連結</a>。</p>
+<p>峰會匯集了套件作者和維護者，進行了以下主題的非會議式會議：</p>
+<ul>
+<li>會議 1 - 加入對 Swift Package Manager 的支援</li>
+<li>會議 2 - 原生互操作的過去、現在和未來</li>
+<li>會議 3 - 可持續的套件維護模型</li>
+</ul>
+<p>我們期待與社群合作，在未來舉辦更多此類峰會。</p>
+<h4 id="pub-dev-上的套件下載次數"><a href="#pub-dev-上的套件下載次數" class="headerlink" title="pub.dev 上的套件下載次數"></a>pub.dev 上的套件下載次數</h4><p>我們在 pub.dev 上推出了下載次數指標！</p>
+<p>在 <a href="https://pub.dev/">pub.dev</a> 上提供更精確的受歡迎程度指標一直是該網站問題追蹤器中 <a href="https://github.com/dart-lang/pub-dev/issues/2714">請求最多的</a> 功能。</p>
+<p>現在，當您查看套件頁面時，您將看到一個 30 天下載次數，取代了以前的「受歡迎程度分數」。</p>
+<p>此外，我們還加入了一個互動式折線圖，顯示隨著時間推移的每週下載活動。此圖表可幫助開發人員和套件作者發現套件使用趨勢。例如，它可能表明新版本導致使用量激增，或者套件正在變得越來越流行或越來越不受歡迎。</p>
+<p>每次從 pub.dev 下載套件時都會註冊下載次數。例如，當您運行 <code>flutter pub get</code> 且套件尚未在您的 pub 快取中時。</p>
+<p>顯示的下載次數是原始下載次數，反映了來自 CI 系統、套件分析、人工 pub 用戶端使用者等的使用情況。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*tIfxBdBCHFzYhStI" />
+</figure>
+
+<h4 id="Pub-工作區"><a href="#Pub-工作區" class="headerlink" title="Pub 工作區"></a>Pub 工作區</h4><p>我們將在 Dart 3.6 中推出 <a href="https://dart.dev/go/pub-workspaces">Pub 工作區</a>，以支援在一個 monorepo 中開發多個相關套件。</p>
+<p>透過定義引用儲存庫中其他套件的根 pubspec，在儲存庫中的任何位置運行 <code>pub get</code> 將會為所有套件產生共用解析。這可確保所有套件都使用一組一致的相依開發。</p>
+<p>分析器也會選取共用解析，現在分析器只需追蹤整個工作區的單個分析上下文，從而可能在 IDE 中打開整個儲存庫時顯著減少記憶體使用量。</p>
+<h4 id="從-GitHub-自動發佈-Flutter-套件"><a href="#從-GitHub-自動發佈-Flutter-套件" class="headerlink" title="從 GitHub 自動發佈 Flutter 套件"></a>從 GitHub 自動發佈 Flutter 套件</h4><p>我們擴展了 <code>setup-dart</code> <a href="https://github.com/dart-lang/setup-dart/blob/main/.github/workflows/publish.yml">發佈</a> Github Actions 工作流程，還允許將 Flutter 套件 <a href="https://dart.dev/tools/pub/automated-publishing#configuring-automated-publishing-from-github-actions-on-pub-dev">自動發佈</a> 到 pub.dev，從而更容易以可驗證的方式為 Pub 生態系統做出貢獻。</p>
+<h4 id="推出互動式媒體廣告插件"><a href="#推出互動式媒體廣告插件" class="headerlink" title="推出互動式媒體廣告插件"></a>推出互動式媒體廣告插件</h4><p>我們推出了 <a href="https://pub.dev/packages/interactive_media_ads">互動式媒體廣告 (IMA) Flutter 插件</a>，可以輕鬆地將多媒體廣告整合到使用 Flutter 建置的 iOS 和 Android 應用程式中。IMA 插件可以從任何符合 VAST 標準的廣告伺服器請求廣告，並在您的應用程式中管理廣告播放。廣告在位於應用程式內容影片播放器頂部的單獨影片播放器中播放。目前支援的功能包括：</p>
+<ul>
+<li>線性串流影片廣告請求的用戶端 API</li>
+<li>VAST 和 VMAP</li>
+<li>單個和 Podded 請求</li>
+<li>可跳過廣告</li>
+</ul>
+<h4 id="應用程式內購買-iOS-和-macOS-插件更新"><a href="#應用程式內購買-iOS-和-macOS-插件更新" class="headerlink" title="應用程式內購買 iOS 和 macOS 插件更新"></a>應用程式內購買 iOS 和 macOS 插件更新</h4><p>我們已將 <a href="https://developer.apple.com/storekit/">StoreKit 2</a> 支援加入到 <code>in_app_purchase_storekit</code> 套件中，以從 iOS 18 中棄用的 StoreKit 1 API 遷移。這使我們能夠在未來加入新的 StoreKit 2 功能，例如更好的訂閱管理。敬請期待即將推出的遷移指南，以説明您轉換到新的 StoreKit 2 功能。這是一個非重大變更，因此您可以隨時遷移。</p>
+<h3 id="DevTools-和-IDE"><a href="#DevTools-和-IDE" class="headerlink" title="DevTools 和 IDE"></a>DevTools 和 IDE</h3><h4 id="Flutter-DevTools-更新"><a href="#Flutter-DevTools-更新" class="headerlink" title="Flutter DevTools 更新"></a>Flutter DevTools 更新</h4><p>此版本包含新功能、整體穩健性和完善性改進，以及一些令人興奮的新的實驗性功能，您可以從 DevTools 中啟用這些功能。有關這些功能的更多資訊，請參閱下面的「預覽和實驗性功能」部分。</p>
+<p>首先，我們在 Flutter Deep Links 工具中加入了對驗證 iOS 深度連結設定的支援。您現在可以驗證 Android 和 iOS 的深度連結。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*WO_tOgbNKHtMAJ4h" />
+<figcaption><em>DevTools Deep Links 工具中的 iOS 深度連結驗證。</em></figcaption>
+</figure>
+
+<p>接下來，我們對使用「離線」資料的工作流程進行了一些改進。有時需要將您在 DevTools 中查看的資料匯出以供將來使用或載入到其他工具中。此版本加入了將網路資料匯出為 .har 檔案的支援，以及將記憶體快照載入到 DevTools 中以便在 DevTools 未連線到正在運行的應用程式時查看的支援。</p>
+<p>此外，如果您曾經在使用 DevTools 除錯記憶體問題時因為應用程式崩潰（可能是由於您正在嘗試除錯的 OOM 問題）而丟失了記憶體工具資料，我們感同身受！我們已透過允許您即使在應用程式斷開連線後仍然可以在 DevTools 中繼續查看最新的記憶體工具資料來修復此使用者體驗痛點。</p>
+<p>這些只是此版本中的一些重點。若要進一步了解 Flutter 3.27 中包含的所有更新，請查看 DevTools 的發行說明 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.38.0">2.38.0</a>、<a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.39.0">2.39.0</a> 和 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.40.1">2.40.1</a>。</p>
+<h3 id="預覽和實驗性功能"><a href="#預覽和實驗性功能" class="headerlink" title="預覽和實驗性功能"></a>預覽和實驗性功能</h3><h4 id="Flutter-DevTools-新的-Flutter-Inspector"><a href="#Flutter-DevTools-新的-Flutter-Inspector" class="headerlink" title="Flutter DevTools - 新的 Flutter Inspector"></a>Flutter DevTools - 新的 Flutter Inspector</h4><p>Flutter Inspector 已經過一些重大變更，以提高可用性並增強您的 UI 除錯體驗。透過切換「新的 Inspector」設定來啟用新的 Inspector。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/914/0*DdHEiQ7FUmFVIMGz" />
+<figcaption><em>DevTools 中的新 Flutter Inspector。</em></figcaption>
+</figure>
+
+<p>一些變更包括：</p>
+<ul>
+<li>簡潔的 Widget 樹，可以更輕鬆地查看深度巢狀的 Flutter widget 樹。當從 IDE 中使用 Flutter Inspector 時，這尤其有用，因為水平螢幕空間有限。</li>
+<li>一個選項，用於切換是否應在 widget 樹中包含實作 widget。實作 widget 是您未在應用程式程式碼中包含的 widget，而是由 Flutter 架構或其他套件加入到 widget 樹中的。</li>
+<li>選定 widget 的詳細資訊視圖，顯示內聯佈局查看器、widget 和渲染物件屬性，以及 Flex widget 及其子項的 Flex 佈局資源管理器。</li>
+</ul>
+<p>新的 Inspector 很快就會有更多改進，但這些變更已經可以試用了！請提交您遇到的任何 <a href="https://github.com/flutter/devtools/issues">問題</a>，以便我們在預設啟用新的 Inspector 之前修復它們。</p>
+<h4 id="Flutter-DevTools-使用-WebAssembly-進行嘗試"><a href="#Flutter-DevTools-使用-WebAssembly-進行嘗試" class="headerlink" title="Flutter DevTools - 使用 WebAssembly 進行嘗試"></a>Flutter DevTools - 使用 WebAssembly 進行嘗試</h4><p>在 DevTools 設定中啟用 WebAssembly 功能，以載入 WASM 編譯的 DevTools Web 應用程式。</p>
+<p>這應該比預設的 JS 編譯版本的 DevTools 產生更好的效能。此功能是實驗性的，因此請提交您在 WASM 建置中遇到的任何 <a href="https://github.com/flutter/devtools/issues">問題</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/565/0*J2ur0Z_wJsdbAUt8" />
+<figcaption><em>DevTools 設定，用於使用 WebAssembly 建置而不是 Javascript 建置。</em></figcaption>
+</figure>
+
+<h3 id="重大變更和棄用"><a href="#重大變更和棄用" class="headerlink" title="重大變更和棄用"></a>重大變更和棄用</h3><h4 id="Material-Design-3-標記"><a href="#Material-Design-3-標記" class="headerlink" title="Material Design 3 標記"></a>Material Design 3 標記</h4><p>最新的 Material Design 3 標記 (v6.1) 已應用於 Flutter Material 函式庫。Material Design 標記更新了僅在亮模式下 4 種顏色角色的映射，以在保持可存取對比度的同時更具視覺吸引力。我們在測試此變更時沒有發現任何損壞，此變更應用於以下顏色屬性：</p>
+<ul>
+<li>主要容器上（Primary10 到 Primary30）</li>
+<li>次要容器上（Secondary10 到 Secondary30）</li>
+<li>三級容器上（Tertiary10 到 Tertiary30）</li>
+<li>錯誤容器上（Error10 到 Error30）</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/266/0*_uQf9sIr4M1EC34y" />
+</figure>
+
+<p>這會影響使用這些角色作為其預設值的 Widget。</p>
+<p>晶片（<code>Chip</code>、<code>ActionChip</code>、<code>ChoiceChip</code>、<code>FilterChip</code> 和 <code>InputChip</code>）的邊框顏色已從 <code>ColorScheme.outline</code> 更新為 <code>ColorScheme.outlineVariant</code>。這改善了晶片和按鈕之間的視覺層次結構。</p>
+<h4 id="Objective-C-iOS-專案"><a href="#Objective-C-iOS-專案" class="headerlink" title="Objective-C iOS 專案"></a>Objective-C iOS 專案</h4><p>自 2019 年 Flutter 1.9.1 發佈以來，新的 iOS 專案預設使用 Swift。建立 <a href="https://github.com/flutter/flutter/issues/148586">新的 Objective-C iOS 專案現在已被棄用</a>，並且 <code>flutter create --ios-language objc</code> 標誌將在 Flutter 的未來版本中移除。您仍然可以打開 Xcode 專案並加入 Objective-C 檔案，包括插件的檔案。Java 繼續透過 <code>flutter create --android-language java</code> 標誌支援 Android 應用程式。</p>
+<h4 id="深度連結預設標誌"><a href="#深度連結預設標誌" class="headerlink" title="深度連結預設標誌"></a>深度連結預設標誌</h4><p>Flutter 的深度連結標誌的預設值已從 <strong>false</strong> 變更為 <strong>true</strong>，這意味著深度連結現在預設為選擇加入。如果您使用 Flutter 的預設深度連結設定，則不再需要手動將標誌設定為 <strong>true</strong>。</p>
+<p>但是，如果您使用協力廠商插件進行深度連結，例如：</p>
+<ul>
+<li><a href="https://firebase.google.com/docs/dynamic-links">firebase 動態連結</a></li>
+<li><a href="https://pub.dev/packages/uni_links">uni_link</a></li>
+<li><a href="https://pub.dev/packages/app_links">app_links</a></li>
+</ul>
+<p>此更新將引入重大變更。在這種情況下，您需要手動將 Flutter 深度連結標誌重置為 <strong>false</strong>。</p>
+<p>有關更多詳細資訊，請參閱設計文件：<a href="http://flutter.dev/go/deep-link-flag-migration">flutter.dev&#x2F;go&#x2F;deep-link-flag-migration</a></p>
+<h4 id="在-IDE-中棄用對較舊-SDK-的支援"><a href="#在-IDE-中棄用對較舊-SDK-的支援" class="headerlink" title="在 IDE 中棄用對較舊 SDK 的支援"></a>在 IDE 中棄用對較舊 SDK 的支援</h4><p>為了確保我們能夠繼續提供高品質的開發人員體驗，我們正在對 IDE 插件支援進行變更。隨著 VS Code 和 IntelliJ 的 Dart 和 Flutter 插件的發展，支援較舊的 Dart SDK 版本變得越來越具有挑戰性。</p>
+<p>從 Dart 3.6 發佈開始，我們將棄用對早於 3.0（於 2023 年 5 月發佈）的 Dart SDK 版本的支援。這意味著雖然這些工具可能仍然可以使用較舊的 SDK，但我們將不再為特定於這些版本的問題提供官方支援或修復。</p>
+<p>隨著 Dart 3.7（預計在 2025 年第一季度）的發佈，我們將完全移除對這些較舊 SDK 版本的支援。這些插件的未來版本可能與這些版本不相容。</p>
+<p><strong>這對您意味著什麼？</strong></p>
+<ul>
+<li>如果您使用的是較舊的 Dart SDK，我們鼓勵您升級到 3.0 或更高版本，以繼續接收支援和更新。</li>
+<li>此變更影響不到我們 1% 的使用者，它將使我們能夠專注於為絕大多數開發人員提供最佳的體驗。</li>
+</ul>
+<h4 id="結束語"><a href="#結束語" class="headerlink" title="結束語"></a>結束語</h4><p>有關此版本中的所有重大變更，請參閱 <a href="https://docs.flutter.dev/release/breaking-changes">重大變更頁面</a> 上的完整遷移指南列表。</p>
+<p>與往常一樣，非常感謝社群為 <a href="https://github.com/flutter/tests/blob/master/README.md">貢獻測試</a>——這些測試幫助我們識別重大變更。若要進一步了解，請查看 <a href="https://github.com/flutter/flutter/wiki/Tree-hygiene#handling-breaking-changes">Flutter 的重大變更政策</a>。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>非常感謝整個 Flutter 社群使此版本成為可能！您的貢獻、回饋和熱情是推動 Flutter 向前發展的動力。我們對 Flutter 的未來感到無比興奮，並迫不及待地想看到您使用 Flutter 3.27 建置的出色應用程式。</p>
+<p>有關所有變更的完整概要，請查看詳細的 <a href="https://docs.flutter.dev/release/release-notes">發行說明和變更日誌</a>。準備好體驗最新最好的功能了嗎？只需運行 <code>flutter upgrade</code> 並開始建置！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=28341129570c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-27-28341129570c">Flutter 3.27 的新功能</a> 最初發佈在 Medium 上的 <a href="https://medium.com/flutter">Flutter</a> 中，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6a2d80d6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/6a2d80d6.html" class="post-title-link" itemprop="url">【文章翻譯】Tune in for #FlutterInProduction — coming soon to a screen near you!</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-03 19:01:01" itemprop="dateCreated datePublished" datetime="2024-12-03T19:01:01+08:00">2024-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:56" itemprop="dateModified" datetime="2024-12-12T11:08:56+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="收看-FlutterInProduction-即將在您附近的螢幕上播出！"><a href="#收看-FlutterInProduction-即將在您附近的螢幕上播出！" class="headerlink" title="收看 #FlutterInProduction - 即將在您附近的螢幕上播出！"></a>收看 #FlutterInProduction - 即將在您附近的螢幕上播出！</h2><p>在您的日曆上標記，並務必在 <strong>2024 年 12 月 17 日</strong> 太平洋時間上午 11:00 &#x2F; 東部時間下午 2:00 &#x2F; 中歐時間晚上 8:00 收看 <strong>#FlutterInProduction</strong>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*SSIgDyW3jMaOF5nxH5D9lw.gif" />
+</figure>
+
+<p>這個在 <a href="https://www.youtube.com/@flutterdev">Flutter YouTube 頻道</a> 上舉辦的線上活動與我們之前的活動略有不同。我們不僅會深入探討最新版本（儘管我們一定會這樣做！）：#FlutterInProduction 還將慶祝我們作為一個社群共同走過的不可思議的旅程，使 Flutter 成為今天這個強大的、可投入生產的框架。</p>
+<h3 id="預期內容"><a href="#預期內容" class="headerlink" title="預期內容"></a>預期內容</h3><ul>
+<li><strong>#FlutterInProduction：</strong>無論您是經驗豐富的專業人士還是剛剛起步，您都將從 Flutter 使用者故事中獲得新的見解和靈感，從 Flutter 技術負責人那裡了解更多關於最新功能的資訊，並在此多環節線上活動中了解 Flutter 應用程式開發的未來。</li>
+<li><strong>#AskFlutter 線上問答：</strong>從 Flutter 團隊負責人那裡獲得您的問題的解答。請持續關注我們在社群媒體上的徵集問題！</li>
+<li><strong>Observable Flutter：</strong>對在企業開發環境中使用 Flutter 構建有什麼疑問嗎？從在生產中使用 Flutter 的公司的技術負責人那裡獲得這些問題的解答。</li>
+</ul>
+<h3 id="保持關注"><a href="#保持關注" class="headerlink" title="保持關注"></a>保持關注</h3><p>我們將會有一些驚喜和公告，因此請務必採取以下步驟以保持了解最新資訊。</p>
+<ol>
+<li>在您的日曆上或在 <a href="https://www.youtube.com/@flutterdev">YouTube</a> 上 <a href="https://calndr.link/event/jqZQr0d7nH">設定提醒</a>，了解活動時間。</li>
+<li>在 <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqbkRYNDVxWGRFUUZYNVdmMlg4QTB4akhOeXNVd3xBQ3Jtc0trWWpSSHo0Tnh3QjlKdF81Z0lsSkQzQWdxVEpBNVdOSVE5Q01tUUltMUFvV2k5Z1RfUzVtc0JET0pFejVRLTl1UUdPNG9DMHk3ZWpUcGtRVGVtUk1yUzA3SEx4STVpM09Kd0dSczVxOGhyQkxRb1EwNA&q=https://twitter.com/FlutterDev">Twitter</a>，<a href="https://www.linkedin.com/showcase/flutterdevofficial/">LinkedIn</a> 或此處的 Medium 上關注我們！</li>
+</ol>
+<p>我們迫不及待地想與您分享 #<strong>FlutterinProduction</strong>！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6bb9820d1506" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/tune-in-for-flutterinproduction-coming-soon-to-a-screen-near-you-6bb9820d1506">收看 #FlutterInProduction - 即將在您附近的螢幕上播出！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bf2dc4e6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/bf2dc4e6.html" class="post-title-link" itemprop="url">【文章翻譯】Prospera: using Flutter to bring AI to the frontline of sales</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-21 17:32:03" itemprop="dateCreated datePublished" datetime="2024-11-21T17:32:03+08:00">2024-11-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:57" itemprop="dateModified" datetime="2024-12-12T11:08:57+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<p>undefined</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/14c13b13.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -571,6 +1028,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/807a2f46.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/807a2f46.html" class="post-title-link" itemprop="url">【文章翻譯】Getting started with Flutter GPU</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-06 18:02:39" itemprop="dateCreated datePublished" datetime="2024-08-06T18:02:39+08:00">2024-08-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:57" itemprop="dateModified" datetime="2024-12-12T11:08:57+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<p>undefined</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6243ded4.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -666,6 +1198,81 @@
 <h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>以上只是這些版本中 Flutter 和 Dart 的許多新功能和更新中的一小部分，您可以在 <a href="https://medium.com/p/6c040f87d1e4/edit">Flutter 3.24 技術部落格</a> 文章和 <a href="https://medium.com/dartlang/dart-3.5-6ca36259fa2f">Dart 3.5 部落格文章</a> 中了解更多資訊。</p>
 <p>展望未來，我們對 Flutter 的未來充滿期待。我們仍然致力於我們的使命，並且感謝您——無論是貢獻者、社群成員還是 Flutter 開發人員——成為這段非凡旅程的一部分。我們迫不及待想看看您接下來會建立什麼！</p>
 <p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=204b7d20c45d" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/flutter-3-24-dart-3-5-204b7d20c45d">宣布 Flutter 3.24 和 Dart 3.5</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6129811c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/6129811c.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Flutter 3.24 and Dart 3.5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-08-06 18:00:29" itemprop="dateCreated datePublished" datetime="2024-08-06T18:00:29+08:00">2024-08-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:58" itemprop="dateModified" datetime="2024-12-12T11:08:58+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<p>undefined</p>
 
       
     </div>
@@ -935,7 +1542,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6975f342.html">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/773d803a.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -949,7 +1556,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/archives/6975f342.html" class="post-title-link" itemprop="url">【文章翻譯】How we built it: Creating the I/O Crossword puzzle, powered by AI</a>
+            <a href="/archives/773d803a.html" class="post-title-link" itemprop="url">【文章翻譯】What’s new in Flutter 3.24</a>
         </h2>
 
         <div class="post-meta">
@@ -959,14 +1566,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2024-06-26 17:01:39" itemprop="dateCreated datePublished" datetime="2024-06-26T17:01:39+08:00">2024-06-26</time>
+              <time title="Created: 2024-08-06 18:00:07" itemprop="dateCreated datePublished" datetime="2024-08-06T18:00:07+08:00">2024-08-06</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 20:17:11" itemprop="dateModified" datetime="2024-09-30T20:17:11+08:00">2024-09-30</time>
+                <time title="Modified: 2024-12-12 11:08:59" itemprop="dateModified" datetime="2024-12-12T11:08:59+08:00">2024-12-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -989,808 +1596,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="使用-Flutter、Firebase-Genkit-和-Gemini-API-為經典文字遊戲添加趣味和實用性"><a href="#使用-Flutter、Firebase-Genkit-和-Gemini-API-為經典文字遊戲添加趣味和實用性" class="headerlink" title="使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性"></a>使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*4ylubp836_tc4Nni" />
-</figure>
-
-<p>今年的 I&#x2F;O，Very Good Ventures 與 Google 的 Flutter 和 Firebase 團隊合作，創造了一種獨特的數位體驗，以展示 Gemini API 的強大功能。</p>
-<p>填字遊戲的趣味（和挑戰）在於解決線索以完成棋盤。我們今年在 I&#x2F;O 上討論過的所有內容，自然成為字詞和線索的起點。為了生成遊戲內容，我們向 <a href="https://gemini.google.com/">Gemini Advanced</a> 提供了主題演講的影片，並要求它建立一個與科技相關的熱門字詞和線索列表，使玩遊戲成為了解今年 I&#x2F;O 公布的所有內容的有趣方式。</p>
-<p>請繼續閱讀，了解我們如何使用 Flutter 建立 UI，並查看遊戲的開源程式碼，您可以在 <a href="https://github.com/VGVentures/io_crossword">GitHub</a> 上存取。</p>
-<p><strong>如何玩</strong></p>
-<p>當您登入拼圖時，會提示您選擇您的隊伍。當您正確回答一個線索時，單詞將填入，並且格子的顏色會變為您的隊伍顏色。您的隊伍將為您解決的每個單詞獲得積分，如果您連續解決單詞而不請求提示，則您將獲得額外積分。</p>
-<p>需要提示嗎？點擊 <strong>提示</strong> 按鈕，然後提出不超過十個關於隱藏單詞的是非題。<a href="https://ai.google.dev/">Gemini API</a> 會私下回答您的問題，以便您可以填寫更多單詞，並幫助您的隊伍取得勝利！</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*1aAyHb71XpChgH6R" />
-</figure>
-
-<p><em>提示</em> 功能的設計是一個很好的例子，說明不同的技術如何協同工作來解決問題。提示由 <a href="https://firebase.google.com/docs/genkit">Firebase Genkit</a> 提供支援，Genkit 是一個在 I&#x2F;O 上宣布的用於 AI 開發的新框架，並且被部署為 Firebase 函式。</p>
-<p>對 API 的網路請求包括線索的答案，因此為了將回應隱藏在訊息資料中，我們使用 <a href="https://pub.dev/packages/dart_frog">Dart Frog 套件</a> 建立了一個簡單的 Dart 後端，以使體驗更加健壯。Frog 後端呼叫 Genkit 以獲得提示，並從資料庫中擷取答案。這樣，玩家就不能簡單地檢查網路呼叫來找出遊戲的答案。</p>
-<p>您可以在 <a href="https://firebase.blog/posts/2024/06/ai-powered-crossword-genkit">Firebase 深入探討部落格</a> 中閱讀更多關於 Genkit 流程的建構方式。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*5i_oBZnXJonFcLc5" />
-</figure>
-
-<p><strong>使用 Flutter 渲染高效能的填字遊戲棋盤</strong></p>
-<p>棋盤是遊戲的核心部分之一。我們優化了玩家在拼圖上的移動，以確保良好的效能，並為玩家提供最佳的使用者體驗。</p>
-<p>我們考慮了兩種建立棋盤的選項：直接使用 Flutter 或使用 <a href="https://flame-engine.org/">Flame</a> 遊戲引擎。Flame 對此遊戲最引人注目的功能是其攝影機 API，它允許吉祥物輕鬆移動並支援縮放控制。但是，由於這幾乎是我們將使用的 Flame 的唯一功能，因此我們最終決定，對此場景而言，使用像 Flame 這樣的完整遊戲引擎有點過度。</p>
-<p>尋找替代解決方案，我們探索了 <a href="https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html">InteractiveViewer</a> Widget，它允許在自訂大小的畫布中渲染單詞，並使用矩陣轉換自由地移動吉祥物。InteractiveViewer 對我們的需求而言是一個更簡單的解決方案，具有較少的相依性和負載，這讓我們能夠更好地展示 Flutter 的靈活性與效能。</p>
-<p><strong>InteractiveViewer 的功能和靈活性</strong></p>
-<p>InteractiveViewer 內建了縮放手勢，但我們想要為桌面體驗添加更多直觀的按鈕。利用矩陣轉換，我們透過首先計算縮放比例的變化，並使用中心作為常數參考點來更新新的視窗，從而實作了縮放控制：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*D0vBnIvT4TKXnRnG" />
-</figure>
-
-<p>獲得新的暫時視窗後，我們必須確保它適合棋盤的邊界。我們必須允許兩種情況：當視窗比棋盤大時，或者當視窗的位置超出邊界時。我們透過調整縮放級別或視窗的位置來更新縮放比例變化的程度和視窗的轉換，以確保它適合邊界，如下面的程式碼所示：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*wpfH-WuFnd984LEW" />
-</figure>
-
-<p>最後，計算轉換並將其應用到 InteractiveViewer 控制項：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Sf93caUyyPq4OKKa" />
-</figure>
-
-<p>透過這段程式碼，我們擴展了 InteractiveViewer 的縮放控制，並根據我們的需求轉換了視窗。</p>
-<p><strong>使用 Flutter 中的 WebAssembly 提升效能</strong></p>
-<p>Flutter Web 應用程式的 WebAssembly 支援是今年 I&#x2F;O 對 Flutter 社群的重要宣布之一。隨著全球玩家同時玩遊戲，效能是一個關鍵因素。我們利用了 <a href="https://docs.flutter.dev/platform-integration/web/wasm">WebAssembly (Wasm)</a>，它建構在 Flutter 中，以減少效能瓶頸並維持流暢的畫面更新率，特別是在遊戲中的角色和棋盤動畫方面。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/719/0*Nyoq1GrKd0eFce-M" />
-</figure>
-
-<p><strong>Dart 後端和 Cloud Run：後端和前端之間的無縫程式碼共享</strong></p>
-<p>為了確保所有使用者都能享受流暢的遊戲體驗，我們的 Dart 後端使用 <a href="https://pub.dev/packages/dart_frog">Dart Frog 套件</a> 建構，並託管在 <a href="https://dartfrog.vgv.dev/docs/deploy/google-cloud-run">Google Cloud Run</a> 上，以利用自動調整功能。這有助於維持最佳效能，無論活躍玩家數如何，因為遊戲會進行多次呼叫，例如每次建立使用者時，或者當玩家提交單詞或請求提示時。</p>
-<p>使用後端來確認每個線索的答案，還可以讓我們保護填字遊戲，防止作弊。具體而言，應用程式使用 Flutter Firestore SDK 讀取資訊，但資料庫 <em>僅</em> 允許 Dart 後端進行更改。這還有助於加快開發速度，因為我們可以在前端和後端使用相同的語言（Dart）。</p>
-<p>例如，我們可以在 Player 資料模型中看到這種模式，它使用 Dart Frog API 建立一個玩家。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*s1G59HNBAWqoq0xt" />
-</figure>
-
-<p>應用程式直接存取玩家排行榜，重複使用相同的模型，避免重複和不同步：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*538Moipv7JTPricT" />
-</figure>
-
-<p><strong>開始玩：解開 I&#x2F;O 填字遊戲！</strong></p>
-<p>在您自己的所有橫向和縱向的輝煌中開始玩 <a href="https://crossword.withgoogle.com/">填字遊戲</a>。對於那些想要深入了解細節的人，請查看它的 <a href="https://github.com/VGVentures/io_crossword">開源程式碼</a> 和 <a href="https://developers.google.com/learn/pathways/solution-crossword">開發者學習路徑</a>，以展示我們如何建立它。觀看 <a href="https://www.youtube.com/watch?v=xKmEOXZsU_0">Google I&#x2F;O 回顧</a>，以了解有關今年宣布的所有內容的更多資訊！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=2210e39b04b9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/how-we-built-it-creating-the-i-o-crossword-puzzle-powered-by-ai-2210e39b04b9">我們是如何建構它的：使用 AI 製作 I&#x2F;O 填字遊戲</a> 最初發佈在 Medium 上的 Flutter，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/3378cc1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/3378cc1.html" class="post-title-link" itemprop="url">【文章翻譯】All the Flutter news from a busy Google I/O 2024</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-30 15:37:07" itemprop="dateCreated datePublished" datetime="2024-05-30T15:37:07+08:00">2024-05-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:36:02" itemprop="dateModified" datetime="2024-09-30T01:36:02+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="回顧-Google-I-O-2024-中的所有重大產品更新、新資源和成功案例"><a href="#回顧-Google-I-O-2024-中的所有重大產品更新、新資源和成功案例" class="headerlink" title="回顧 Google I&#x2F;O 2024 中的所有重大產品更新、新資源和成功案例"></a>回顧 Google I&#x2F;O 2024 中的所有重大產品更新、新資源和成功案例</h2><p>很難相信 <a href="https://io.google/2024/">Google I&#x2F;O 2024</a> 已經過去兩週了。我們對 Flutter 社群的支持表示衷心的感謝 - 這種能量令人振奮！</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/549/1*--DvqdXSA38rPuqMK5c0tQ.png" />
-<figcaption>Flutter logo illustration</figcaption>
-</figure>
-
-<p>我們在幾個部落格、影片和活動中分享了許多產品更新、資源、開發人員故事、技術會議和工作坊 - 我們知道要跟蹤所有這些內容可能很困難。</p>
-<p>在下面，您將找到我們在 Google I&#x2F;O 2024 中分享的所有內容的概述，以及關於您可以在夏季的柏林、班加羅爾、北京的 I&#x2F;O Connect 和 I&#x2F;O Extended 活動中與我們和其他 Flutter 社群成員聯繫的活動地點和日期的更新。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fx2WOHonEwqM&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dx2WOHonEwqM&amp;image=http%3A%2F%2Fi.ytimg.com%2Fvi%2Fx2WOHonEwqM%2Fhqdefault.jpg&amp;key=d04bfffea46d4aeda930ec88cc64b87c&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/712779b5030e3328a07a329d72a40505/href">https://medium.com/media/712779b5030e3328a07a329d72a40505/href</a></iframe>
-
-<h3 id="部落格文章"><a href="#部落格文章" class="headerlink" title="部落格文章"></a>部落格文章</h3><p>我們在 Dart 和 Medium 部落格中發布了 <strong>四篇新的部落格文章</strong>：</p>
-<ul>
-<li><a href="https://medium.com/flutter/io24-5e211f708a37">Google I&#x2F;O 2024 上發佈 Flutter 3.22 和 Dart 3.4</a></li>
-<li><a href="https://medium.com/flutter/fbde6c164fe3">Flutter 3.22 的新功能</a></li>
-<li><a href="https://medium.com/flutter/announcing-the-winners-of-the-global-gamers-challenge-1ccf4d271226">宣布全球遊戲挑戰賽的獲獎者</a></li>
-<li><a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">宣布 Dart 3.4</a></li>
-</ul>
-<p>我們還與 Android 團隊合作撰寫了一篇部落格文章，提供有關 <strong>如何為您的專案選擇正確的框架</strong> 的一些指南：Flutter、Jetpack Compose 和 Kotlin 多平台：</p>
-<ul>
-<li><a href="https://developers.googleblog.com/en/making-development-across-platforms-easier-for-developers/">讓跨平台開發對開發人員更容易</a></li>
-</ul>
-<h3 id="Google-I-O-演講、Codelabs-和工作坊"><a href="#Google-I-O-演講、Codelabs-和工作坊" class="headerlink" title="Google I&#x2F;O 演講、Codelabs 和工作坊"></a>Google I&#x2F;O 演講、Codelabs 和工作坊</h3><p>主要的 Google I&#x2F;O 活動特色是關於 Dart 和 Flutter 的一系列精彩演講。我們建議從 <a href="https://www.youtube.com/watch?v=lpnKWK-KEYs">Flutter 的新功能</a> <strong>主旨演講</strong> 開始，然後繼續我們的 <a href="https://io.google/2024/explore/?q=technical-session,flutter">五個技術會議</a>，這些會議涵蓋了 CameraX、自適應 UI、AI 代理、Gemini 和應用程式深層連結等主題。</p>
-<p>我們還有 <a href="https://io.google/2024/explore/?q=codelab,flutter">三個新的 Codelabs</a>，全部集中在使用 Flutter 建立 <a href="https://flutter.dev/games">休閒遊戲</a> 上。它們可以幫助您開始使用 2D 物理以及添加聲音和音樂。若要了解更多詳細資訊，請查看新的 <a href="https://io.google/2024/explore/?q=workshop,flutter">2D 物理遊戲工作坊</a>。</p>
-<h3 id="新的-Flutter-展示故事"><a href="#新的-Flutter-展示故事" class="headerlink" title="新的 Flutter 展示故事"></a>新的 Flutter 展示故事</h3><p><a href="https://flutter.dev/showcase">Flutter 展示</a> 展示了一系列 Flutter 應用程式，這些應用程式展示了您可以使用 Flutter 在行動、網頁和桌面端創建引人入勝的使用者體驗。我們為 Google I&#x2F;O 2024 添加了 <strong>四個新的展示故事</strong>：</p>
-<ul>
-<li><a href="https://flutter.dev/showcase/universal-studios">環球影城</a>：<em>環球影城使用 Flutter 打造下一代體驗</em></li>
-<li><a href="https://flutter.dev/showcase/supercell">Supercell</a>：<em>Flutter 幫助 Supercell 將 Supercell ID 核心程式碼大小縮減 45%</em></li>
-<li><a href="https://flutter.dev/showcase/etermax">Etermax</a>：<em>Etermax 透過 Flutter 提高開發人員效率</em></li>
-<li><a href="https://flutter.dev/showcase/virgin-money">維珍理財</a>：<em>維珍理財透過 Flutter 整合應用程式開發</em></li>
-</ul>
-<h3 id="I-O-Connect-活動"><a href="#I-O-Connect-活動" class="headerlink" title="I&#x2F;O Connect 活動"></a>I&#x2F;O Connect 活動</h3><p>Google I&#x2F;O 並未結束於美國加州山景城的 <a href="https://io.google/2024/">主要活動</a>。在全球各地有許多 <a href="https://gdg.community.dev/ioextended/">Google I&#x2F;O 社群活動</a>，以及在三個地點規劃的 <a href="https://developers.google.com/events">Google I&#x2F;O Connect</a> 活動：</p>
-<ul>
-<li>2024 年 6 月 27 日，德國柏林的 I&#x2F;O Connect</li>
-<li>2024 年 7 月 17 日，印度班加羅爾的 I&#x2F;O Connect</li>
-<li>2024 年 8 月 7-8 日，中國北京的 I&#x2F;O Connect</li>
-</ul>
-<p>Dart 和 Flutter 團隊將參加所有三個 I&#x2F;O Connect 活動，我們希望與你們中的許多人聯繫！如果您想參加活動，請務必 <a href="https://developers.google.com/events">註冊</a>。我們期待與您聯繫！<br><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7c963c064f8d" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/all-the-flutter-news-from-a-busy-google-i-o-2024-7c963c064f8d">來自繁忙的 Google I&#x2F;O 2024 的所有 Flutter 新聞</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
 <p>undefined</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/d685d4ac.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/d685d4ac.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing the winners of the Global Gamers Challenge</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-14 20:36:19" itemprop="dateCreated datePublished" datetime="2024-05-14T20:36:19+08:00">2024-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:35:55" itemprop="dateModified" datetime="2024-09-30T01:35:55+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布全球遊戲挑戰賽的獲獎者"><a href="#宣布全球遊戲挑戰賽的獲獎者" class="headerlink" title="宣布全球遊戲挑戰賽的獲獎者"></a>宣布全球遊戲挑戰賽的獲獎者</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*S_bBN0WiR_Q5F08J" />
-</figure>
-
-<p>我們邀請 Flutter 和 Global Citizen 社群共同打造以幫助地球為目標的史詩級 Flutter 遊戲。來自超過 50 個國家的數千名熱情開發人員提交了數百個創新的遊戲專案。</p>
-<p>每個專案都旨在賦予玩家知識和行動，以保護我們的星球。從資源節約到抗擊污染，這些遊戲提升了我們對迫切環境問題的整體意識，同時也真正好玩！我們深受參賽作品中令人難以置信的想法和熱情的啟發。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F_GgqdB9md1w&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D_GgqdB9md1w&amp;image=http%3A%2F%2Fi.ytimg.com%2Fvi%2F_GgqdB9md1w%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href">https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href</a></iframe>
-
-<h3 id="為我們的十強作品最後一次隆重揭曉"><a href="#為我們的十強作品最後一次隆重揭曉" class="headerlink" title="為我們的十強作品最後一次隆重揭曉"></a>為我們的十強作品最後一次隆重揭曉</h3><p>在 103 天的時間裡，這些專案團隊不斷地構思、開發、尋求意見和改進他們的專案。結果——誕生了令人興奮的遊戲，鼓勵我們都更深入地思考我們如何可以更可持續地生活。以下是它們，按字母順序排列！</p>
-<h4 id="Better-World"><a href="#Better-World" class="headerlink" title="Better World"></a><a href="https://devpost.com/software/wip-au-flutter-game">Better World</a></h4><p>各種環境主題，豐富多彩的視覺效果和音樂，以及與組織合作促進積極行動的想法。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/1*tC1QJGzd_UQhSNuapBbFlA.gif" />
-</figure>
-
-<h4 id="Craftown"><a href="#Craftown" class="headerlink" title="Craftown"></a><a href="https://devpost.com/software/craftown">Craftown</a></h4><p>將經典的即時策略和資源管理遊戲玩法獨特地融合在一起，重點關注可持續性主題。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*5-BTF74D9iY2W-eg" />
-</figure>
-
-<h4 id="EcoShift-Chronicles"><a href="#EcoShift-Chronicles" class="headerlink" title="EcoShift Chronicles"></a><a href="https://devpost.com/software/ecoshift-chronicles">EcoShift Chronicles</a></h4><p>以迷人的視覺效果和聲音設計鼓勵積極行動，讓玩家面對相關的選擇及其環境後果。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*2tKU55OoZoT6H8Df" />
-</figure>
-
-<h4 id="Gomiland"><a href="#Gomiland" class="headerlink" title="Gomiland"></a><a href="https://devpost.com/software/gomiland">Gomiland</a></h4><p>視覺上引人入勝、教育性、垃圾管理遊戲，靈感來自日本文化。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*9PUEQpgttn8Oib0e" />
-</figure>
-
-<h4 id="Last-Bottle"><a href="#Last-Bottle" class="headerlink" title="Last Bottle"></a><a href="https://devpost.com/software/last-bottle">Last Bottle</a></h4><p>迷人的設計和可收藏的元素，有效地傳達了它關於回收限制和批判性思考環境問題的核心訊息。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*W8ns7jNJ3jZ0SXbd" />
-</figure>
-
-<h4 id="MGame-A-waste-management-game"><a href="#MGame-A-waste-management-game" class="headerlink" title="MGame - A waste management game"></a><a href="https://devpost.com/software/mgame-a-waste-management-game">MGame - A waste management game</a></h4><p>雄心勃勃的模擬遊戲，以引人入勝的方式呈現複雜的垃圾管理系統，讓人想起經典的城市建造遊戲。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*jof-AXtEcUz1_WFL" />
-</figure>
-
-<h4 id="Ocean-Rangers"><a href="#Ocean-Rangers" class="headerlink" title="Ocean Rangers"></a><a href="https://devpost.com/software/projectocean">Ocean Rangers</a></h4><p>引人入勝的敘事、迷人的角色和策略性遊戲玩法元素，以獨特的視角呈現環境主題的熟悉類型。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*P1nBcfMDFwveciQu" />
-</figure>
-
-<h4 id="PlasticPunk"><a href="#PlasticPunk" class="headerlink" title="PlasticPunk"></a><a href="https://devpost.com/software/plasticpunk">PlasticPunk</a></h4><p>城市建造風格的遊戲，以引人入勝的遊戲玩法和迷人的視覺效果，呈現出複雜的環境挑戰。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*9lzHmRWHxSyGI8pl" />
-</figure>
-
-<h4 id="Waste-Wise"><a href="#Waste-Wise" class="headerlink" title="Waste Wise"></a><a href="https://devpost.com/software/waste-wise">Waste Wise</a></h4><p>垃圾分類遊戲，具有直觀的遊戲玩法，並有效地向玩家傳授正確的垃圾處理知識。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*m_Lo2d9Tfr1eqyUw" />
-</figure>
-
-<h4 id="Whaley’s-Bins-Waste-Sorting"><a href="#Whaley’s-Bins-Waste-Sorting" class="headerlink" title="Whaley’s Bins Waste Sorting"></a><a href="https://devpost.com/software/whaley-s-bins-waste-sorting">Whaley’s Bins Waste Sorting</a></h4><p>垃圾分類遊戲，以創造性的方式進行回收教育，採用獨特的像素藝術視覺效果。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/0*4TtFim6qaLkM0-rj" />
-</figure>
-
-<p>我們期待在紐約市與這些團隊共度一天，在 Google 辦公室舉辦研討會等等，並與 6 萬名 Global Citizen 在 2024 年 Global Citizen Festival 上慶祝！</p>
-<p>但這些只是 30 多個在 Global Gamers Challenge 中獲得獎項的團隊中的 10 個，包括 Top 20 中的其他成員，您將在榮譽提名列表中看到它們。前往 <a href="http://flutter.dev/global-gamers/#winners">flutter.dev&#x2F;global-gamers&#x2F;#winners</a> 查看所有團隊！</p>
-<p>恭喜所有獲獎者！</p>
-<h3 id="這還沒有結束"><a href="#這還沒有結束" class="headerlink" title="這還沒有結束"></a>這還沒有結束</h3><p><em>作者：Lisa Pak，Playing 4 the Planet Alliance 運營主管</em></p>
-<p>全球遊戲挑戰賽可能即將結束，但可持續遊戲運動不會就此結束。在此挑戰賽期間開發的遊戲以及類似的挑戰（如 <a href="https://globalgamejam.org/">Global Game Jam</a>）有可能接觸到數百萬玩家，在全球範圍內產生積極的環境變革漣漪效應。</p>
-<p>若要與這個蓬勃發展的運動保持聯繫：</p>
-<ul>
-<li>加入社群：考慮加入專注於環保遊戲設計的線上社群和論壇。這些空間為分享您的作品並與其他開發人員交換想法提供了寶貴的機會。</li>
-<li>繼續玩可持續遊戲：關注 <a href="https://globalgamejam.org/">熱門遊戲</a>，其中包含以時間限制的事件、挑戰和新關卡形式呈現的綠色啟用，讓玩家參與這個重要議題。我們的目標是接觸到盡可能多的人群，而這些遊戲可能是很好的靈感來源。</li>
-<li>讓您的聲音被聽到：撰寫您在可持續遊戲開發方面的經驗，指導有抱負的開發人員，或自行組織倡議。在分享您的知識和專業知識（無論是技術還是環境）時，您不僅支持社群的成長，而且也鼓勵其他人創造對地球產生積極影響的遊戲。</li>
-</ul>
-<h3 id="繼續打造"><a href="#繼續打造" class="headerlink" title="繼續打造"></a>繼續打造</h3><p><em>作者：Clayton Whittle，氣候 SIG 聯席主席</em></p>
-<p>遊戲中的可持續性包括促進運動本身，將氣候和可持續性問題優先考慮到您團隊的遊戲設計實務中，並作為可持續遊戲產業的代言人堅持下去。</p>
-<p>綠色遊戲設計是一個不斷發展的領域，在創造出產生切實可衡量影響的遊戲方面，不斷發展出更精密的實務。雖然沒有通用的綠色遊戲設計規則，但遵守標準指南可以顯著有利於任何遊戲設計團隊。</p>
-<ul>
-<li>了解您的受眾：有效的可持續遊戲始於了解您的受眾的需求和能力。由於可持續遊戲旨在以某種方式轉變玩家，因此了解受眾對於指導這種轉變至關重要。如果不了解受眾最初的立場，就難以引導他們到達期望的終點。</li>
-<li>具体化：集中您的訊息以提高其有效性。試圖用一款遊戲改變玩家的整個世界觀是不切實際的。相反，找出有意義的改變領域。</li>
-<li>推廣有效的行動：為玩家提供可操作的知識。向他們傳授可以採取的具有影響力的行動，以做出改變。如果玩家看到他們的行動如何在大規模上影響生態系統或社會，他們更有可能參與其中。</li>
-<li>小心 <a href="https://en.wikipedia.org/wiki/Greenwashing">漂綠</a>：避免表面上的可持續性努力。漂綠是指那些沒有真正整合可持續性問題的表面上的可持續性元素。雖然添加綠色藝術作品或將角色命名為「回收隊長」似乎很有吸引力，但如果遊戲玩法或敘事缺乏有意義的可持續性行動，玩家就能看穿這些表面上的聯繫。</li>
-</ul>
-<p>請記住，開發具有影響力的綠色遊戲有无数种方式。您的想法和設計可能會超出這些指導方針，進入未知領域。適合您團隊的方法取決於您的使命和受眾。但是，將這些原則納入您的設計討論中有助於確保您的團隊始終专注于其影響使命。</p>
-<h3 id="Flutter-如何幫助您"><a href="#Flutter-如何幫助您" class="headerlink" title="Flutter 如何幫助您"></a>Flutter 如何幫助您</h3><p>以下是一些 Flutter 可以幫助您減少對遊戲運行位置的擔憂，並將更多時間花在為您的使命和受眾設計具有影響力的体验的方式。</p>
-<ul>
-<li>Flutter 效率高： Flutter 的單一程式碼庫開發意味著您只需要撰寫您的遊戲一次，就可以部署到所有平台。像「狀態熱重載」等功能可以幫助您快速迭代，加速您的開發流程。</li>
-<li>Flutter 容易學習：即使您不是專業的遊戲開發人員，從 Flutter 入门也比使用傳統的遊戲開發工具更容易。我們還提供了一些資源，例如 <a href="http://flutter.dev/games">Flutter 休閒遊戲工具組</a> 中的遊戲模板，可以為您提供一個起點，幫助您提升您的遊戲開發技能。</li>
-</ul>
-<p>感謝所有參與了我們旅程的人！我們迫不及待地想看看您接下來會打造什麼！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=1ccf4d271226" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-the-winners-of-the-global-gamers-challenge-1ccf4d271226">宣布全球遊戲挑戰賽的獲獎者</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/851f90eb.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/851f90eb.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 3.4</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-14 20:36:15" itemprop="dateCreated datePublished" datetime="2024-05-14T20:36:15+08:00">2024-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:41:48" itemprop="dateModified" datetime="2024-09-30T01:41:48+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布-Dart-3-4"><a href="#宣布-Dart-3-4" class="headerlink" title="宣布 Dart 3.4"></a>宣布 Dart 3.4</h2><p>Dart 3.4 今天正式發布！此版本展示了 Dart 和 Flutter 在 <a href="https://medium.com/flutter/io24-5e211f708a37">Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24</a> 文章中的共同努力，因此請務必在那裏獲得完整的資訊。這篇文章介紹了我們對 WebAssembly 的支援，並詳細說明了今年 Dart 語言的幾個主要路線圖項目之一：_宏_。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hAcsCFLU0Ze7pej6" />
-</figure>
-
-<h3 id="WebAssembly-更新"><a href="#WebAssembly-更新" class="headerlink" title="WebAssembly 更新"></a>WebAssembly 更新</h3><p>今天，我們很興奮地宣布，在最新的 Flutter 3.22 穩定版本中，<a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Web 應用</a> 已經完全支援 WebAssembly (Wasm)！</p>
-<p>這項投資橫跨 Dart 和 Flutter 多年。如果您一直在關注這些發展，您會看到我們的漸進式改進：</p>
-<ul>
-<li>將 <a href="https://developer.chrome.com/blog/wasmgc/">WasmGC</a> 提案標準化，</li>
-<li>加入了一個全新的 Dart 編譯器後端，用於生成 WasmGC 程式碼，以及</li>
-<li><a href="https://dart.dev/interop/js-interop">重新設計</a> 我們的 Web 和 JavaScript 互操作產品，以最佳支援 Wasm。</li>
-</ul>
-<p>我們將繼續投資 WebAssembly。我們的下一個努力將在純粹的 Dart 應用程式中啟用對 Wasm 的完全支援，並完成一些缺失的功能（例如延遲載入）。Dart 中 Wasm 編譯的端到端工具仍在開發中，但您可以 <a href="http://dart.dev/web/wasm">嘗試預覽</a> 在 stable 版本中使用一些臨時步驟。之後，我們還希望在 <a href="https://github.com/dart-lang/sdk/issues/53884">JS 環境之外</a> 的 Dart 中支援 Wasm，例如標準 Wasm 執行時間，例如 wasmtime 和 wasmer。</p>
-<h3 id="Dart-宏：提升開發抽象層級"><a href="#Dart-宏：提升開發抽象層級" class="headerlink" title="Dart 宏：提升開發抽象層級"></a>Dart 宏：提升開發抽象層級</h3><p>我們投入了多年時間設計 Dart 宏系統。為了改善 Dart 的開發體驗，宏提供了元程式設計解決方案，例如程式碼生成。此解決方案內建到 Dart 語言中，為開發人員提供最大的效能、效率和生產力。現在，我們準備提供此體驗的預覽！</p>
-<p>Dart 開發人員長期以來的一個痛點是，JSON 資料的序列化和反序列化既瑣碎又乏味。在 Dart 中，製作一個可重複使用且功能強大的解決方案是一個挑戰，因為它出於效能原因不支持運行時反射。作為替代方案，我們依賴於程式碼生成解決方案，例如 <a href="https://docs.flutter.dev/data-and-backend/serialization/json#serializing-json-using-code-generation-libraries">JsonSerializable</a>。這些依賴於在程式碼本身之前運行的外部工具，使開發人員的體驗變得複雜。</p>
-<p>今天，我們宣布了一種用於 JSON 序列化和反序列化的全新方法的預覽：<a href="https://dart.dev/go/json-codable">JsonCodable</a> 宏。</p>
-<p>宏是一種透過在編譯時內省其他程式碼來生成更多程式碼的程式碼類型。例如，以下是一個帶有新的 JsonCodable 宏的 Dart 類別 Vehicle：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonCodable</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> description;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> wheels;</span><br><span class="line">  Vehicle(<span class="keyword">this</span>.description, <span class="keyword">this</span>.wheels);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> jsonString = Vehicle(<span class="string">&#x27;bicycle&#x27;</span>, <span class="number">2</span>).toJson();</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Vehicle serialized: <span class="subst">$jsonString</span>&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>那麼，它是如何運作的呢？<code>toJson()</code> 方法（以及配套的 <code>fromJson()</code> 建構函數）從哪裡來呢？這是一個用於簡化開發人員體驗的新宏系統的實驗性實作。當 Dart 編譯器看到 <code>@JsonCodable()</code> 註解時，它會立即實時找到 JsonCodable 宏的定義，並開始執行它。這會導致宏：</p>
-<ol>
-<li>建立一個新的「<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">增強類別</a> 」；一種新的語言結構，允許為現有類別新增新的宣告。</li>
-<li>讀取開發人員對 Vehicle 類別的定義，以確定它具有兩個欄位，<code>description</code> 和 <code>wheels</code>。</li>
-<li>在增強類別中新增一個新的 <code>toJson</code> 方法簽章。</li>
-<li>填寫 <code>toJson</code> 方法的主體，以處理 <code>description</code> 和 <code>wheels</code> 欄位的序列化。</li>
-</ol>
-<p>所有這些都在沒有延遲的情況下完成。整合的體驗支援我們現有的開發人員工作流程，例如熱重載，正如此螢幕錄影所示：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/896/0*aOAKYwKdjXURuZN9" />
-<figcaption>Screencast showing the experience of using a macro: Initially no toJson code completion exists, but after adding <a href="http://twitter.com/JsonCodable">@JsonCodable</a> to the class, the toJson code completion shows up immediately.</figcaption>
-</figure>
-
-<h3 id="長期宏目標"><a href="#長期宏目標" class="headerlink" title="長期宏目標"></a>長期宏目標</h3><p>最終目標是讓社群能夠建立自己的宏。這提高了 Dart 程式設計的抽象層級。以資料類別為例，這是 <a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">投票數最高</a> 的 Dart 語言功能。我們考慮過在 Dart 中新增對資料類別的內建支援，但了解到人們對此類結構應該支援哪些內容意見分歧很大，以至於我們無法自己設定標準。欄位是否應該不可變？它是否應該支援相等？那 <code>hashCode</code> 呢？也許還有 <code>toString</code> ？我們得出結論，支援宏系統會是更好的方法。社群可以建立自己的抽象類型，允許更多可擴展的實驗和多樣性。</p>
-<p>設計和實作如此強大的宏系統是一項艱鉅的任務。我們決心以一種不會對核心 Dart 開發人員用例（例如程式碼輔助和完成、程式碼分析和熱重載）產生不利效能影響的方式來進行。考慮到這一點，我們採取了分階段的方法：</p>
-<ul>
-<li>在今天的版本中，我們提供了一個單一宏 JsonCodable 的預覽，以便使用者可以開始熟悉使用宏的開發體驗。</li>
-<li>如果這個宏的推出順利，我們希望在後續版本中將 JSON 宏升級到穩定版本。</li>
-<li>與此同時，我們正在努力完成底層宏系統的設計和實作。一旦我們對其效能和穩定性有信心，最終的目標將是讓 Dart 開發人員社群能夠定義自己的宏。</li>
-</ul>
-<p>完成這些階段還有很多工作要做。同時，您可以閱讀文件以了解更多關於 <a href="https://dart.dev/go/macros">Dart 宏系統</a> 的資訊，並立即嘗試 <a href="https://dart.dev/go/json-codable">JsonCodable 宏</a> 的預覽。</p>
-<h3 id="其他改進"><a href="#其他改進" class="headerlink" title="其他改進"></a>其他改進</h3><p>與往常一樣，此版本包含所有用於提供最佳 Dart 版本的持續開發。在此版本中，我們做出了以下改進：</p>
-<ul>
-<li>解決了超過 50% 的分析器程式碼完成錯誤。（請繼續提交 <a href="https://github.com/dart-lang/sdk/labels/analyzer-completion-correctness">議題</a>！）</li>
-<li>改進了條件運算式、if-null 運算式和 switch 運運算式的類型分析與語言規範的對齊（<a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#language-1">變更日誌</a>）。</li>
-<li>從 <code>dart:cli</code> 函式庫中移除不完整且不一致的工具，以償還 Dart VM 中的技术债务。</li>
-<li>解决了几个不足之处，以改进新的 <code>dart:js_interop</code> 函式庫。</li>
-</ul>
-<p>查看 <a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#340">變更日誌</a> 以獲取完整的故事！不要忘記閱讀此版本中關於我們共同努力的 <a href="https://medium.com/flutter/io24-5e211f708a37">Dart 和 Flutter 聯合部落格文章</a> 以獲取完整的故事！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bd8d23b4462a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">宣布 Dart 3.4</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p>undefined</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9e5e250f.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/9e5e250f.html" class="post-title-link" itemprop="url">【文章翻譯】What’s new in Flutter 3.22</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-14 20:34:31" itemprop="dateCreated datePublished" datetime="2024-05-14T20:34:31+08:00">2024-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:38:59" itemprop="dateModified" datetime="2024-09-30T01:38:59+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布-Flutter-3-22：WebAssembly、圖形渲染增強功能和更多-AI-整合選項"><a href="#宣布-Flutter-3-22：WebAssembly、圖形渲染增強功能和更多-AI-整合選項" class="headerlink" title="宣布 Flutter 3.22：WebAssembly、圖形渲染增強功能和更多 AI 整合選項"></a>宣布 Flutter 3.22：WebAssembly、圖形渲染增強功能和更多 AI 整合選項</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*hf9CEzGh0uhxnzVZi2Kk4g.png" />
-</figure>
-
-<p>歡迎回來，一起迎接另一個令人興奮的 Flutter 穩定版本！這次，我們很高興推出 Flutter 3.22。我們將 WebAssembly 帶到穩定通道，為 Android 上的 Impeller 提供功能齊全的 Vulkan 後端，有望帶來更流暢的圖形和大幅提升效能。我們還推出了精簡的工作流程，其中包含新的 Widget 狀態屬性、動態視圖大小調整和改進的表單驗證功能。但這還不是全部——您將發現風味條件的資產捆綁、Firebase 上 Vertex AI 的預覽版本（使用 Dart），以及更新的 DevTools，讓您的生活更輕鬆。</p>
-<p>自上次更新以來，僅僅幾個月，我們就從 Flutter 社群合併了令人印象深刻的 1595 個拉取請求，其中有 37 位新社群成員首次為 Flutter 貢獻！</p>
-<p>因此，深入了解 Flutter 社群帶給這個最新版本的最新功能和增強功能吧！</p>
-<h3 id="WebAssembly"><a href="#WebAssembly" class="headerlink" title="WebAssembly"></a>WebAssembly</h3><p>隨著 Flutter 3.22 的發佈，Wasm 現在可以在穩定通道上使用，提供顯著的效能提升。在我們在 M1 MacBook 上使用 Chrome 進行的內部基準測試中，Wonderous 應用程式的畫面渲染時間平均提高了 2 倍，在最壞的情況下提高了 3 倍。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/719/0*x6HEkml8cFGc96hg" />
-</figure>
-
-<p>這些增強功能對於具有動畫和豐富轉場的應用程式至關重要，在這些應用程式中，保持流暢的畫面速率至關重要。Wasm 透過減少效能瓶頸來幫助實現這一點，從而帶來更流暢的動畫和轉場。若要開始在您的 Flutter 網頁應用程式中使用 Wasm，請查看我們的 <a href="https://dart.dev/web/wasm">Dart Wasm 文件</a> 和 <a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Wasm 文件</a>。如需完整的公告，請訪問 <a href="https://medium.com/flutter/io24-5e211f708a37">Google I&#x2F;O 部落格文章中的 Flutter</a>。</p>
-<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><p>Flutter 3.22 為 Impeller 引入了重大更新，Impeller 是驅動 Flutter 應用程式的渲染引擎。主要亮點包括完成 Android 上的 Vulkan 後端，以實現更流暢的圖形和改進的效能，為模糊效果和複雜路徑渲染進行持續優化，以及一個新的實驗性 API，用於使用 Impeller 進行測試。根據我們的<a href="https://github.com/flutter/flutter/wiki/Roadmap#core-framework--engine">路線圖</a>，我們致力於提升 Impeller 的品質和效能，包括完成 iOS 到 Impeller 的遷移和擴展 Android 支援。</p>
-<h4 id="Impeller"><a href="#Impeller" class="headerlink" title="Impeller"></a>Impeller</h4><h4 id="Android-上的-Vulkan-後端功能完整"><a href="#Android-上的-Vulkan-後端功能完整" class="headerlink" title="Android 上的 Vulkan 後端功能完整"></a><strong>Android 上的 Vulkan 後端功能完整</strong></h4><p>在此版本中，Impeller 的 Android Vulkan 後端已具備完整的功能。特別是在過去的幾個月裡，團隊一直在努力完成 <a href="https://github.com/flutter/engine/pull/50154">快速進階混合</a> 的實作，支援使用 <a href="https://github.com/flutter/engine/pull/49543">FragmentProgram API</a> 的自訂片段著色器，<a href="https://github.com/flutter/engine/pull/50730">PlatformView</a> 支援（儘管它需要 <a href="https://docs.flutter.dev/release/breaking-changes/android-surface-plugins">少量 API 遷移</a>），以及完全實作 <a href="https://github.com/flutter/flutter/issues/134178">所有模糊樣式</a>。</p>
-<h4 id="Android-預覽"><a href="#Android-預覽" class="headerlink" title="Android 預覽"></a>Android 預覽</h4><p>在 3.19 穩定版本中，在發佈 Impeller 的 OpenGL 後端的改進之後，我們邀請使用者在支援和不支援 Vulkan 的 Android 設備上試用 Impeller。在過去的幾個月裡，在評估 OpenGL 後端的效能並估計 Vulkan 後端的剩餘工作量之後，我們決定將精力集中在首先讓 Vulkan 後端做好生產準備。</p>
-<p>Impeller 解決了著色器編譯卡頓的問題。此外，在我們的基準測試中，它在平均值、第 90 個百分位數和第 99 個百分位數的畫面時間方面優於傳統渲染器。因此，我們認為 Vulkan 後端在 Android 上的效能是可以接受的。在此版本（3.22）中，選擇加入 Impeller 的應用程式將在有 Vulkan 支援的地方使用 Vulkan 後端。在將來的版本中，這將成為預設值。當選擇加入 Impeller 的應用程式在不支援 Vulkan 的設備上運行時，Flutter 將會自動無縫切換為使用 OpenGL ES 和 Skia。您無需採取任何措施。在未來，當我們認為 OpenGL ES Impeller 後端已做好生產準備時，這種回退也會使用 Impeller。</p>
-<p>隨著 Android 上的 Impeller 預覽繼續在 3.22 穩定版本週期中進行，我們請求 Flutter 開發人員升級到最新的穩定版本，並在 <a href="https://docs.flutter.dev/perf/impeller#android">啟用 Impeller</a> 時提交有關任何發現的不足的錯誤。在此階段的回饋對確保 Impeller 在 Android 上取得成功以及我們能夠在今年晚些時候的版本中自信地將其設為預設渲染器至關重要。Android 硬體生態系統非常多元。因此，關於 Impeller 最有用的回饋應包括有關發生問題的特定設備和 Android 版本的詳細資訊。</p>
-<h4 id="模糊效能改進"><a href="#模糊效能改進" class="headerlink" title="模糊效能改進"></a>模糊效能改進</h4><p>模糊已在 iOS 和 Android 上的 Impeller 中 <a href="https://github.com/flutter/engine/pull/47576">重新實作</a>。特別是，這種新方法類似於 Skia 的方法，在 <a href="https://flutter-flutter-perf.skia.org/e/?begin=1699468487&amp;end=1710262311&amp;keys=X01fc3d52ebd6fbf38afef91d82ab8d2b&amp;requestType=0&amp;selected=commit=38815&name=%252Carch%253Dintel%252Cbranch%253Dmaster%252Cconfig%253Ddefault%252Cdevice_type%253DiPhone_11%252Cdevice_version%253Dnone%252Chost_type%253Dmac%252Csub_result%253Daverage_frame_rasterizer_time_millis%252Ctest%253Dbackdrop_filter_perf_ios__timeline_summary%252C&amp;xbaroffset=38815">基準測試</a> 中將模糊的 CPU 和 GPU 時間減少了近一半。</p>
-<p>下圖顯示了在 iPhone 11 設備上進行的病態基準測試中的最壞情況、第 99 個百分位數、第 90 個百分位數和平均畫面柵格化時間以及 GPU 畫面時間（以毫秒為單位），旨在突出顯示模糊效能。在重寫 Impeller 的模糊之後，背景濾鏡模糊的 CPU 和 GPU 成本都幾乎減少了一半。這種改進的規模也適用於非病態情況，正如典型應用程式中所出現的那樣。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*mtFyiLoIUSqk_zRB" />
-<figcaption>在 iPhone 11 設備上進行的病態基準測試中的第 99 個百分位數、第 90 個百分位數和平均畫面柵格化時間以及 GPU 畫面時間（以毫秒為單位），旨在突出顯示模糊效能</figcaption>
-</figure>
-
-<h4 id="Stencil-then-Cover"><a href="#Stencil-then-Cover" class="headerlink" title="Stencil-then-Cover"></a>Stencil-then-Cover</h4><p>iOS 和 Android 上的 Impeller 都已 <a href="https://github.com/flutter/engine/pull/51219">轉移到新的渲染策略</a>，該策略基於 <a href="http://www.opengl-redbook.com/">OpenGL Redbook</a> 中“使用模板緩衝區繪製填充的凹多邊形”章節中描述的 Stencil-then-Cover 方法。團隊成員在 GitHub 問題 <a href="https://github.com/flutter/flutter/issues/123671">＃123671</a> 中討論了這種技術在 Flutter 中的應用。</p>
-<p>這種方法解決了柵格執行緒在 CPU 上為複雜路徑（例如，SVG 和 <a href="https://github.com/flutter/flutter/issues/141961">Lottie 動畫</a>）計算細分時花費過多時間的問題。更改之後，包含複雜路徑的畫面的總畫面時間（CPU 上的 UI 執行緒 + CPU 上的柵格執行緒 + GPU 工作）要低得多。使用者會注意到 Lottie 動畫和其他複雜路徑渲染得更加流暢，CPU 利用率更低，而 GPU 利用率略微更高。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*1lCd7dBwJ0ab_sieDlQNFw.gif" />
-<figcaption>(左) Lottie 動畫。以前，Impeller 在最近的 iPhone 上需要 64ms/畫面 的柵格執行緒 CPU 時間才能渲染它。(右) 在我們實施 Stencil-then-Cover 優化之後，在相同設備上渲染的相同動畫。柵格時間幾乎快了 10 倍。</figcaption>
-</figure>
-
-<p>雖然對這些改進感到滿意，但我們還有更多工作要做。除了其他機會之外，我們意識到折線生成在 CPU 配置檔案中仍然很突出，我們打算調查將此工作也轉移到 GPU 上。</p>
-<h4 id="新的-API"><a href="#新的-API" class="headerlink" title="新的 API"></a>新的 API</h4><p>雖然仍處於實驗階段，但 flutter test 現在接受 <code>--enable-impeller</code> 標誌，它使用 Vulkan 後端來執行 Impeller。</p>
-<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><h4 id="Widget-狀態屬性"><a href="#Widget-狀態屬性" class="headerlink" title="Widget 狀態屬性"></a>Widget 狀態屬性</h4><p>MaterialState 已被移動到 Material 函式庫之外，並被重新命名為 WidgetState，以便於 Cupertino、基本 Flutter 框架和套件作者使用。如需有關遷移到新的 WidgetState 的更多資訊，請查看 <a href="https://docs.flutter.dev/release/breaking-changes/material-state">遷移指南</a>。</p>
-<h4 id="動態視圖大小調整"><a href="#動態視圖大小調整" class="headerlink" title="動態視圖大小調整"></a>動態視圖大小調整</h4><p>對動態視圖大小調整的 <a href="https://github.com/flutter/flutter/pull/140918">增強功能</a> 有利於構建響應式佈局的開發人員，確保在各種設備螢幕上具有更好的 UI 自適應性。</p>
-<h4 id="改進的表單驗證"><a href="#改進的表單驗證" class="headerlink" title="改進的表單驗證"></a>改進的表單驗證</h4><p>感謝 Flutter 社群成員 <a href="https://github.com/SharbelOkzan">SharbelOkzan</a> 的 <a href="https://github.com/flutter/flutter/pull/135578">貢獻</a>，Flutter 3.22 帶來了更靈活的表單驗證方法，使開發人員能夠建立更健壯的使用者輸入處理，從而提升可用性和安全性。</p>
-<h4 id="2D-API-中的協變"><a href="#2D-API-中的協變" class="headerlink" title="2D API 中的協變"></a>2D API 中的協變</h4><p>減少在 2D 圖形 API 中進行類型轉換的需要，簡化了開發工作流程並提高了效能，這對於遊戲和複雜動畫非常重要。</p>
-<h4 id="風味條件的資產捆綁"><a href="#風味條件的資產捆綁" class="headerlink" title="風味條件的資產捆綁"></a>風味條件的資產捆綁</h4><p>使用 <a href="https://docs.flutter.dev/deployment/flavors">風味</a> 功能的開發人員現在可以將個別資產配置為僅在為特定風味構建時進行捆綁。如需更多資訊，請查看 <a href="https://docs.flutter.dev/deployment/flavors#conditionally-bundling-assets-based-on-flavor">根據風味有條件地捆綁資產</a>。</p>
-<h4 id="使用-Dart-套件變換資產"><a href="#使用-Dart-套件變換資產" class="headerlink" title="使用 Dart 套件變換資產"></a>使用 Dart 套件變換資產</h4><p>使用者現在可以將 Dart 套件配置為在捆綁時變換應用程式的資產。如需更多資訊，請查看 <a href="http://docs.flutter.dev/ui/assets/asset-transformation">在構建時變換資產</a>。</p>
-<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><h4 id="深度連結"><a href="#深度連結" class="headerlink" title="深度連結"></a>深度連結</h4><p>深度連結可以顯著提高 Flutter 應用程式中的使用者體驗，充當將使用者無縫引導到應用程式中特定內容的捷徑，從而提升參與度和推動銷售。雖然 iOS 的通用連結和 Android 的應用程式連結因其安全性及其使用者友好的特性而受到高度推薦，但設定它們可能有點棘手。</p>
-<p>在上次 Flutter 穩定版本中，我們在 DevTools 中引入了一個深度連結驗證工具，該工具支援為 Android 應用程式檢查網頁配置。在此版本中，我們添加了一組新的功能來幫助驗證 Android 清單檔案中的設定。</p>
-<p>如需有關使用此工具的更多資訊，請查看 <a href="https://docs.flutter.dev/tools/devtools/deep-links">驗證深度連結</a>。</p>
-<h4 id="預測返回手勢"><a href="#預測返回手勢" class="headerlink" title="預測返回手勢"></a>預測返回手勢</h4><p>Flutter 現在為 Android 的即將推出的預測返回功能提供了更多支援，使用者可以在返回手勢期間預覽上一個路由，甚至預覽上一個應用程式。這仍然是 Android 設備上的功能標誌，但您可以在 <a href="https://github.com/flutter/flutter/issues/132504#issuecomment-2025776552">GitHub</a> 上找到有關如何自行嘗試它的詳細資訊。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/400/0*8b6DxQuMXAyYVu-w" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/400/0*hr_OF9DsfUcsLNHv" />
-</figure>
-
-<h4 id="Flutter-工具強制執行-Gradle、AGP、Java-和-Kotlin-上的版本要求"><a href="#Flutter-工具強制執行-Gradle、AGP、Java-和-Kotlin-上的版本要求" class="headerlink" title="Flutter 工具強制執行 Gradle、AGP、Java 和 Kotlin 上的版本要求"></a>Flutter 工具強制執行 Gradle、AGP、Java 和 Kotlin 上的版本要求</h4><p>在此版本中，Flutter 工具強制執行有關它支援的 Gradle、Android Gradle Plugin (AGP)、Java 和 Kotlin 版本的策略。最初，該工具只提供警告。</p>
-<p>目前，支援的版本範圍如下：</p>
-<ul>
-<li>Gradle - 完全支援 7.0.2 到最新版本，否則警告</li>
-<li>AGP - 完全支援 7.0.0 到最新版本，否則警告</li>
-<li>Java - 完全支援 Java 11 到最新版本，否則警告</li>
-<li>Kotlin - 完全支援 1.5.0 到最新版本，否則警告</li>
-</ul>
-<p>在下次主要版本更新中，這些警告將變為錯誤，可以使用 <code>--android-skip-build-dependency-validation</code> 標誌覆蓋。更一般而言，該工具會在完全放棄對這些相依項目的給定版本的支援（生成錯誤）之前，至少提供一個版本的警告。</p>
-<p>這項策略在 <a href="https://docs.google.com/document/d/1qeeM5QG-jiafttSgvc7yvC19IDRggFFZQTktBVxL6sI/edit?resourcekey=0-HLEAiBOMxAlQxDs-mEeffw">相關的設計規範</a> 中有討論。歡迎隨時發表意見和回饋。</p>
-<h4 id="支援在-Android-上的-Gradle-組建指令碼中使用-Gradle-Kotlin-DSL"><a href="#支援在-Android-上的-Gradle-組建指令碼中使用-Gradle-Kotlin-DSL" class="headerlink" title="支援在 Android 上的 Gradle 組建指令碼中使用 Gradle Kotlin DSL"></a>支援在 Android 上的 Gradle 組建指令碼中使用 Gradle Kotlin DSL</h4><p>Gradle Kotlin DSL 現在在 Flutter 中得到支援，為傳統的 Gradle Groovy DSL 提供了一個替代方案。這種支援允許提供更好的程式碼編輯體驗，其中包含自動完成、快速存取文件、原始碼導航以及上下文感知重構。</p>
-<p>此初始支援由 GitHub 使用者 <a href="https://github.com/bartekpacia">bartekpacia</a> 貢獻。開發人員現在可以选择使用 Kotlin 重寫他們的 Gradle 組建指令碼，以利用這些優點，儘管 Flutter 工具目前還不允許在使用 flutter create 時選擇 Kotlin 而不是 Groovy。 </p>
-<p>如需更多詳細資訊，請查看 <a href="https://github.com/bartekpacia">bartekpacia</a> 的 <a href="https://github.com/flutter/flutter/pull/140744">PR 140744</a>。</p>
-<h4 id="平台視圖改進"><a href="#平台視圖改進" class="headerlink" title="平台視圖改進"></a>平台視圖改進</h4><p><strong>給所有 Flutter 應用程式開發人員的提醒！</strong>如果您使用 Flutter 構建依賴原生 Android 組件（如地圖、網頁視圖或某些 UI 元素）的應用程式，我們有一些重要資訊。</p>
-<p>由於 Android 14 中的一個錯誤，使用舊版 Flutter 構建的應用程式可能無法在運行此新 Android 版本的設備上正常工作。</p>
-<p>Flutter 3.22 修複了這個問題，並改進了 Android 應用程式中這些原生組件的整體效能。因此，為了確保您的應用程式在所有 Android 設備上順暢運行，請確保使用 Flutter 3.22 重新構建和發佈您的應用程式。</p>
-<p>此更新還包括幕後改進，以使 Android 上的平台視圖更加可靠和高效。</p>
-<h4 id="KitKat-支援結束"><a href="#KitKat-支援結束" class="headerlink" title="KitKat 支援結束"></a>KitKat 支援結束</h4><p>Flutter 的最低支援 Android 版本現在是 Lollipop (API 21)。從 Flutter 的 3.22 穩定版本開始，Flutter 將不再在運行 Android KitKat (API 19) 的設備上工作。如需更多詳細資訊，請查看我們的 <a href="https://docs.flutter.dev/release/breaking-changes/android-kitkat-deprecation">棄用指南</a>。</p>
-<h3 id="iOS"><a href="#iOS" class="headerlink" title="iOS"></a>iOS</h3><h4 id="平台視圖效能"><a href="#平台視圖效能" class="headerlink" title="平台視圖效能"></a>平台視圖效能</h4><p>我們理解 iOS 上的平台視圖效能一直是許多 Flutter 開發人員的痛點。這在使用平台視圖時，特別是在捲軸視圖中很明顯。</p>
-<p>最近的更新直接解決了這些問題，在嵌入文章中的多個內聯廣告等場景中取得了顯著的改進。以下是一些 <a href="https://github.com/flutter/flutter/pull/144745">基準測試</a> 中的一些關鍵改進：</p>
-<ul>
-<li><strong>降低 GPU 使用率：</strong> GPU 使用率降低了 50%，從而減少了功耗，並可能帶來更流暢的使用者體驗。</li>
-<li><strong>改進畫面渲染：</strong> 平均畫面渲染時間減少了 1.66ms（33%）。</li>
-<li><strong>最小化卡頓：</strong> 最壞情況下的畫面渲染時間減少了 3.8ms（21%）。</li>
-</ul>
-<p>如果您以前在捲軸視圖中使用多個平台視圖（如廣告、地圖等）時遇到效能挑戰，這些優化可能有助於提供更流暢、響應更靈敏的捲軸體驗。請試用一下，並告訴我們您的想法。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*uk0URkHcImHdTq2M" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*-KX8Ubw77KpdGnPI" />
-</figure>
-
-<h3 id="生態系統"><a href="#生態系統" class="headerlink" title="生態系統"></a>生態系統</h3><h4 id="Vertex-AI-for-Firebase-Dart-SDK-預覽版本發佈"><a href="#Vertex-AI-for-Firebase-Dart-SDK-預覽版本發佈" class="headerlink" title="Vertex AI for Firebase Dart SDK 預覽版本發佈"></a>Vertex AI for Firebase Dart SDK 預覽版本發佈</h4><p>Vertex AI for Firebase 產品已發佈到公開預覽版，其中包含 Dart SDK。這使您可以使用 Gemini API 為您的 Dart 或 Flutter 應用程式構建生成式 AI 功能，並考慮到生產、效能和企業規模。該 SDK 集成了 <a href="https://firebase.google.com/docs/app-check">Firebase 應用程式檢查</a>，這可以保護您的 API 調用，並保護您的後端基礎設施免受嚴重的威脅，例如計費欺詐、釣魚和應用程式偽裝。跳入 <a href="https://firebase.google.com/docs/vertex-ai/get-started?platform=flutter">Dart 入門</a>，並使用促銷代碼免費開始使用。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*KmIhzrfoyskNW7r8" />
-</figure>
-
-<p><a href="https://ai.google.dev/gemini-api/docs/get-started/dart">Google AI Dart SDK</a> 仍然可用，建議僅用於原型設計。Google AI 具有免費使用權限（在限制範圍內，以及在有提供的地方），並提供按使用付費定價。如果您一直在使用 Google AI Dart SDK 進行原型設計，並且已準備好遷移到 Firebase 上的 Vertex AI，請查看 <a href="https://firebase.google.com/docs/vertex-ai/migrate-to-vertex-ai?platform=flutter">遷移指南</a>。</p>
-<h4 id="DevTools-更新"><a href="#DevTools-更新" class="headerlink" title="DevTools 更新"></a>DevTools 更新</h4><p>我們繼續改進 DevTools，這是 Dart 和 Flutter 的效能和除錯工具套件。此版本包含效能改進、通用潤色以及新的功能，例如在時間軸中包含 CPU 樣本、進階過濾以及支援匯入和匯出記憶體快照。</p>
-<p>其他值得注意的改進與 devtools_extensions 和 devtools_app_shared 套件一起發佈，這些套件支援 DevTools 擴展作者。我們添加了對將擴展連接到新的 Dart Tooling Daemon (DTD) 的支援，這使 DevTools 擴展可以存取由其他 DTD 客戶端（例如 IDE）註冊的公開方法，以及允許存取用於與開發專案進行互動的最小檔案系統 API。</p>
-<p>若要進一步了解 Flutter 3.22 中包含的所有更新，請查看 DevTools 的發行備註 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.32.0">2.32.0</a>，<a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.33.0">2.33.0</a> 和 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.34.1">2.34.1</a>。</p>
-<h4 id="Flutter-的-Google-行動廣告-SDK"><a href="#Flutter-的-Google-行動廣告-SDK" class="headerlink" title="Flutter 的 Google 行動廣告 SDK"></a>Flutter 的 Google 行動廣告 SDK</h4><p>對於那些使用廣告為 Flutter 應用程式獲利的人來說，我們有一些好消息：Flutter 的 Google 行動廣告剛剛發佈了 5.0.1 版本的重大更新！</p>
-<p><strong>增強對使用者訊息平台 (UMP) SDK 的支援：</strong> 此更新添加了對 Android UMP SDK 版本 2.2.0 和 iOS UMP SDK 版本 2.4.0 中的最新 API 的支援。UMP SDK 對遵守隱私法規至關重要，讓您更容易獲得使用者對個人化廣告的同意。此新版本引入了幾個新的 API，以簡化同意收集過程。</p>
-<p><strong>擴展的中介合作夥伴：</strong> 我們透過提供與熱門廣告合作夥伴的整合，擴展了您的廣告變現範圍，這些合作夥伴包括 <a href="https://pub.dev/packages/gma_mediation_unity">Unity</a>，<a href="https://pub.dev/packages/gma_mediation_meta">Meta</a>，<a href="https://pub.dev/packages/gma_mediation_applovin">AppLovin</a>，<a href="https://pub.dev/packages/gma_mediation_ironsource">Iron Source</a>，<a href="https://pub.dev/packages/gma_mediation_mintegral">Mintegral</a>，<a href="https://pub.dev/packages/gma_mediation_pangle">Pangle</a>，<a href="https://pub.dev/packages/gma_mediation_dtexchange">DT Exchange</a>，<a href="https://pub.dev/packages/gma_mediation_inmobi">InMobi</a> 以及 <a href="https://pub.dev/packages/gma_mediation_liftoffmonetize">Liftoff</a>。您現在可以使用擴展的中介選項和簡化的實作，最大限度地提高應用程式的收入。</p>
-<p>我們鼓勵您在 Flutter 應用程式中試用這些新功能，並告訴我們您希望我們支援哪些其他中介合作夥伴。您的回饋對我們持續改進 Flutter 的 Google 行動廣告 SDK 至關重要。</p>
-<h3 id="重大變更和棄用"><a href="#重大變更和棄用" class="headerlink" title="重大變更和棄用"></a>重大變更和棄用</h3><h4 id="移除-v1-Android-嵌入"><a href="#移除-v1-Android-嵌入" class="headerlink" title="移除 v1 Android 嵌入"></a>移除 v1 Android 嵌入</h4><p>版本一 Android 嵌入的刪除正在進行中。這可能對大多數應用程式沒有影響，因為</p>
-<ol>
-<li>版本二已成為預設版本多年。</li>
-<li>Flutter 工具會阻止構建版本一應用程式，除非使用 <code>--ignore-deprecation</code> 標誌特別覆蓋。</li>
-</ol>
-<p>此版本完全中斷了 Flutter 工具對 v1 應用程式的支援。<strong>不再可以用此方法覆蓋。</strong></p>
-<p><strong>插件作者，請注意：</strong> 當 v1 android 嵌入最初被棄用時，為插件作者撰寫了一個遷移文檔：<a href="https://docs.flutter.dev/release/breaking-changes/plugin-api-migration">https://docs.flutter.dev/release/breaking-changes/plugin-api-migration</a>。作為此遷移的一部分，建議插件作者透過在其 <em>Plugin.java</em> 中包含具有以下簽章的方法，來保持對使用 v1 嵌入的應用程式的支援：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">registerWith</span><span class="params">(<span class="meta">@NonNull</span> io.flutter.plugin.common.PluginRegistry.Registrar registrar)</span> </span><br></pre></td></tr></table></figure>
-
-<p>我們計劃在下一個版本中完全刪除 v1 Android 嵌入，<strong>屆時包含具有此簽章的方法的插件將無法編譯</strong>（因為它會引用 v1 android 嵌入中的類型）。</p>
-<p>它目前沒有任何作用，因為此版本中斷了使用 v1 嵌入的應用程式。我們建議插件作者儘快發佈已移除 v1 程式碼的插件更新版本，以避免在將來的 Flutter 版本中出現中斷。例如，請查看 <a href="https://github.com/flutter/packages/pull/6494">PR 6494</a>，該 PR 移除 Flutter 團隊維護的插件。</p>
-<h4 id="在-3-22-中移除的棄用"><a href="#在-3-22-中移除的棄用" class="headerlink" title="在 3.22 中移除的棄用"></a>在 3.22 中移除的棄用</h4><p>此版本中的 <a href="https://docs.flutter.dev/release/breaking-changes">重大變更</a> 包括在 v3.19 發佈後過期的棄用 API。若要查看所有受影響的 API，以及其他內容和遷移指南，請查看 <a href="https://docs.flutter.dev/release/breaking-changes/3-19-deprecations">此版本的棄用指南</a>。這些 API 中的許多都由 <a href="https://docs.flutter.dev/development/tools/flutter-fix">Flutter fix</a> 支援，包括 IDE 中的快速修復。可以使用 dart fix 命令列工具評估和應用批量修復。</p>
-<p>與往常一樣，非常感謝社群為 <a href="https://github.com/flutter/tests/blob/master/README.md">貢獻測試</a> - 這些測試幫助我們識別出這些重大變更。若要進一步了解，請查看 <a href="https://github.com/flutter/flutter/wiki/Tree-hygiene#handling-breaking-changes">Flutter 的重大變更政策</a>。</p>
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>Flutter 成功背後的核心是您 - 我們非凡的社群。沒有您無數的貢獻和堅定的熱情，這個版本是不可能實現的。我們衷心感謝您。</p>
-<p>準備探索 Flutter 3.22 嗎？深入了解完整的發行備註和變更日誌，啟動您的終端機，然後運行 <code>flutter upgrade</code>。我們迫不及待想看看您會建立什麼！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=fbde6c164fe3" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-22-fbde6c164fe3">Flutter 3.22 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/20788461.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/20788461.html" class="post-title-link" itemprop="url">【文章翻譯】Landing Flutter 3.22 and Dart 3.4 at Google I/O 2024</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-05-14 20:33:38" itemprop="dateCreated datePublished" datetime="2024-05-14T20:33:38+08:00">2024-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:38:53" itemprop="dateModified" datetime="2024-09-30T01:38:53+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="在-Google-I-O-2024-上推出-Flutter-3-22-和-Dart-3-4"><a href="#在-Google-I-O-2024-上推出-Flutter-3-22-和-Dart-3-4" class="headerlink" title="在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4"></a>在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4</h2><p>過去幾個月，Dart 和 Flutter 的空中交通管制特別繁忙，但我們很高興宣布 Flutter 3.22 和 Dart 3.4 已於今天順利推出，並可供使用，恰逢今年的 <a href="https://io.google/2024/">Google I&#x2F;O</a>！</p>
-<p>我們始終致力於提供強大的語言和框架配對，讓您能夠從單個共用程式碼庫構建精美、豐富且快速的應用程式，以便您可以將應用程式交付給行動、網頁和桌面上的使用者，而無需分散您的產品路線圖。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Mq-Uj8c8l7rrpPxYQ6Gemw.gif" />
-</figure>
-
-<p>Flutter 3.22 和 Dart 3.4 提供了效能改進和平台特定的細化，使我們更接近這個願景。我們特別興奮地分享我們在 Wasm 方面的旅程，但您還會發現更多內容，包括改進的 Impeller 渲染引擎、iOS 上更流暢的視覺效果和更低的 CPU 使用率、使用 Android 的預測性返回手勢增強的平台導航、使用 Google Mobile Ads SDK 擴展的變現選項，以及 DevTools 中一個全新的強大深度鏈接驗證器。Dart 開發人員將享受使用 IDE 中的 <code>dart fix</code> 簡化 API 遷移以及用於進階分析的新 DevTools 功能。此外，您現在可以預覽用於 Firebase Dart SDK 的 Vertex AI，將 AI 驅動的功能與強大的安全措施相結合。</p>
-<p>今天，我們還將重點介紹頂尖公司如何使用 Flutter 來提高生產力並構建高效能的體驗。我們將重點介紹一些特別令人興奮的功能，這些功能讓我們更接近我們的目標，即在所有平台上提供類似原生的效能，並包括我們對生產力、開發人員體驗和遊戲的投資的最新更新。</p>
-<p>如果您想詳細了解版本中包含的所有內容，請查看專門的 <a href="https://medium.com/flutter/fbde6c164fe3">Flutter</a> 和 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart</a> 文章。是時候放手一搏了！</p>
-<h3 id="Flutter-在行動中"><a href="#Flutter-在行動中" class="headerlink" title="Flutter 在行動中"></a>Flutter 在行動中</h3><p>Flutter 開發人員正在忙碌地將大型新應用程式發佈到應用程式商店。讓我們看看其中幾個。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*cF6UE3y05YTyMBQn" />
-</figure>
-
-<h4 id="幫助大型企業級應用程式在行動端和網頁端交付"><a href="#幫助大型企業級應用程式在行動端和網頁端交付" class="headerlink" title="幫助大型企業級應用程式在行動端和網頁端交付"></a>幫助大型企業級應用程式在行動端和網頁端交付</h4><ul>
-<li>在英國，金融機構 <a href="https://uk.virginmoney.com/">維珍金融</a> 在其行動銀行和信用卡應用程式套件中使用 <a href="http://flutter.dev/showcase/virgin-money">Flutter</a>，以統一應用程式開發流程，加快變更速度，並提供行業領先的使用者體驗。</li>
-<li>美國保險公司 <a href="https://www.geico.com/about/corporate/at-a-glance/">GEICO</a> 最近 <a href="https://www.geico.com/techblog/flutter-as-the-multi-channel-ux-framework/">分享</a>了 Flutter 如何幫助他們改進 iOS、Android 和網頁上的品牌使用者體驗，減小程式碼庫的大小，並提高開發效率，所有這些都在規模上實現。</li>
-<li><a href="https://corporate.universaldestinationsandexperiences.com/">環球影城目的地與體驗</a> 發佈了他們好萊塢、大阪和奧蘭多公園的新 Flutter 行動應用程式。觀看下面的影片，了解他們為什麼選擇 Flutter 以及 Flutter 的表現如何。</li>
-</ul>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FJTk2Exr7FO4%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DJTk2Exr7FO4&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJTk2Exr7FO4%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/721111dda3bc3595ada438b543af64a4/href">https://medium.com/media/721111dda3bc3595ada438b543af64a4/href</a></iframe>
-
-<h4 id="超越行動端和網頁端"><a href="#超越行動端和網頁端" class="headerlink" title="超越行動端和網頁端"></a>超越行動端和網頁端</h4><ul>
-<li><a href="https://canonical.com/">Canonical</a> 團隊一直在與 Flutter <a href="https://ubuntu.com/blog/flutter-and-ubuntu-so-far">合作自 2021 年起</a> 為 Ubuntu 提供 Flutter <a href="https://pub.dev/publishers/canonical.com/packages">生態系統</a> 的支援。在過去的一年中，Canonical 團隊使用 Flutter 從頭開始重建了 Ubuntu 安裝程式。</li>
-<li><a href="https://www.lg.com/us">LG</a> 選擇 Flutter 來增強他們的智慧電視作業系統 webOS。Flutter 的效能、生產力和強大的生態系統讓 LG 可以快速開發和部署 webOS 系統應用程式，這些應用程式可以順暢運行。到 2025 年，Flutter 將為全球數千萬台 LG 電視提供系統應用程式。</li>
-</ul>
-<p>這些成功案例鼓舞著我們，我們致力於讓 Flutter 變得更好。讓我們深入了解最新的產品更新，展示我們正在做些什麼來讓您能夠構建更加驚豔的應用程式、遊戲和體驗。</p>
-<h3 id="WebAssembly：在網頁上追逐原生效能"><a href="#WebAssembly：在網頁上追逐原生效能" class="headerlink" title="WebAssembly：在網頁上追逐原生效能"></a>WebAssembly：在網頁上追逐原生效能</h3><p>今天，我們宣布在我們的穩定版本中支援將 Flutter 網頁應用程式 <a href="https://docs.flutter.dev/platform-integration/web/wasm">編譯</a> 為 WebAssembly (Wasm)。這是一種用於網頁瀏覽器的令人興奮的新指令格式，它提供了一種可移植的、平台中立的二進制程式碼格式。</p>
-<p>我們對 Wasm 的支援是一項深入的、多年來的投資。首先，我們與 Chrome 團隊合作，在 WebAssembly 中為像 Dart 這樣的高級管理語言定義支援，這些語言通常使用垃圾回收。這導致了 <a href="https://developer.chrome.com/blog/wasmgc/">WasmGC</a> <a href="https://github.com/WebAssembly/gc/blob/main/proposals/gc/Overview.md">提案</a>，該提案現在已成為一個完整的標準，並在 Chrome（Chromium 119 及更高版本）和 Firefox（120 及更高版本）中提供了運行時實施，預計其他瀏覽器供應商將會效仿。接下來，我們添加了一個全新的 Dart 編譯器後端以生成 WasmGC 程式碼，而 Dart 和 Flutter 團隊合作執行編譯後的應用程式程式碼和 Flutter 渲染引擎作為 Wasm 模組，並提供有效的 Wasm 到 Wasm 的互操作性。</p>
-<p>那麼最終結果是什麼？我們看到了效能的大幅提高，接近我們在運行機器程式碼的行動和桌面設備上的效能。在我們的內部基準測試中（在 M1 MacBook 上使用 Chrome），<a href="https://flutter.gskinner.com/wonderous/">Wonderous</a> 的畫面渲染時間在一般情況下提高了 2 倍，在 99% 的最差情況效能下提高了 3 倍。改進的渲染效能對於具有動畫和豐富轉場的需要大量資源的應用程式至關重要，在這些應用程式中，超出畫面預算（分配給渲染下一畫面的時間）會導致非常明顯的卡頓。Wasm 可能會消除這種卡頓，如下圖所示，Wonderous 應用程式使用傳統的 JS 編譯和 Wasm 編譯進行比較。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/719/0*ebpdPSPlak3EwoAU" />
-<figcaption><em>比較</em><a href="https://flutter.gskinner.com/wonderous/"><em>Wonderous</em></a><em> 範例應用程式中 Javascript 和 Wasm 的渲染速度。</em></figcaption>
-</figure>
-
-<p>Flutter 網頁應用程式的 Wasm 編譯今天在穩定版本中可用。若要開始使用，請查看我們的 <a href="https://dart.dev/web/wasm">Dart Wasm 文檔</a> 和 <a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Wasm 文檔</a>。</p>
-<h3 id="Dart-macros：提高開發抽象級別"><a href="#Dart-macros：提高開發抽象級別" class="headerlink" title="Dart macros：提高開發抽象級別"></a>Dart macros：提高開發抽象級別</h3><p>我們致力於提供一流的開發人員體驗。這意味著要解決 Dart 開發人員長期存在的痛點，例如序列化 JSON 資料。</p>
-<p>這是一種普遍的模式，既簡單又乏味。目前的解決方案意味著要麼手動地完成編碼和解碼樣板，要麼在程式碼生成解決方案（例如 <a href="https://docs.flutter.dev/data-and-backend/serialization/json#serializing-json-using-code-generation-libraries">JsonSerializable</a> 套件）的形式中添加額外的工具。</p>
-<p>今天，我們宣布了一個用於 JSON 的更好選項的預覽版本：<code>JsonCodable</code> macro。</p>
-<p>macros 是創建更多程式碼的程式碼。它們就像程式碼生成，只是 macro 系統 <em>內建於 Dart 中</em> 並在您編輯和運行程式碼時 <em>實時發生</em>。這是一種整合的體驗，沒有延遲，完全支援我們現有的開發工作流程，例如熱重載，如這個螢幕截圖所示：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/896/0*rWeEWxzBvcmOFNM4" />
-<figcaption><em>螢幕截圖展示了使用 macro 的體驗：最初沒有 `toJson` 程式碼完成，但在為類別添加 `@JsonCodable` 之後，`toJson` 程式碼完成立即顯示。</em></figcaption>
-</figure>
-
-<p>我們很興奮地看到 macros 為我們的開發人員解決各種問題。例如，資料類別，是 <a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">票數最高的</a> Dart 語言功能。除了特定應用之外，我們的最終目標是在 Dart 中擁有一個 macro 系統，允許使用者創建自己的 macros 並提高 Dart 程式設計的抽象級別。</p>
-<p>設計和實作這樣一個強大的 macro 系統是一項巨大的任務，因此目前沒有設定穩定版本的時間 - 有關更多詳細資訊，請查看 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 文章</a>。同時，今天就嘗試一下 <code>JsonCodable</code> macro 的預覽版本。有關更多資訊，請查看 <a href="http://dart.dev/go/json-codable">macros 文檔</a>。</p>
-<h3 id="Flutter-遊戲開發的新資源"><a href="#Flutter-遊戲開發的新資源" class="headerlink" title="Flutter 遊戲開發的新資源"></a>Flutter 遊戲開發的新資源</h3><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*F19xflZ4BfoCekFQ" />
-</figure>
-
-<p>我們在遊戲方面的早期投資取得了令人鼓舞的成果，包括來自行業領導者（如 <a href="http://flutter.dev/showcase/etermax">Etermax</a> 和 <a href="http://flutter.dev/showcase/supercell">Supercell</a>）的成功案例，他們都在利用 Flutter 的功能和靈活性來有效地提供愉悅的使用者體驗並擴展其覆蓋範圍。</p>
-<p>今天，我們很興奮地使用這些 Flutter 遊戲開發人員的新資源來延續這種勢頭：</p>
-<ul>
-<li><a href="https://pub.dev/packages/flutter_soloud">SoLoud 音頻引擎</a> 現在可用：我們與 Flutter 社群 (@<a href="https://github.com/alnitak">Marco Bavagnoli</a>) 合作創建了一個免費且可移植的音頻引擎，它提供低延遲、高性能的音效，這對於許多遊戲來說至關重要。我們還創建了一個新的 <a href="https://codelabs.developers.google.com/codelabs/flutter-codelab-soloud#0">聲音和音樂 codelab</a>，它使用 SoLoud。</li>
-<li>了解如何 <a href="https://codelabs.developers.google.com/codelabs/flutter-word-puzzle#0">生成包含相互交織的單詞的廣泛縱橫字謎網格</a>，而不會損害使用者體驗，以及 <a href="https://codelabs.developers.google.com/codelabs/flutter-flame-forge2d#0">使用類似 Box2D 的 2D 物理模擬在 Flutter 和 Flame 遊戲中製作遊戲機制</a>，稱為 <a href="https://pub.dev/packages/forge2d">Forge2D</a>。</li>
-<li>一個關於 <a href="https://medium.com/flutter/best-practices-for-optimizing-flutter-web-loading-speed-7cc0df14ce5c">優化基於 Flutter 的網頁遊戲加載速度的全新指南</a>：漫長的加載時間是基於網頁的遊戲的主要阻礙。請按照此指南（由 <a href="https://twitter.com/chenglinlim">程林</a> 撰寫）優化您的加載速度，以便玩家不會因為加載速度慢而放棄您的遊戲。</li>
-</ul>
-<h3 id="賦能可持續的遊戲開發"><a href="#賦能可持續的遊戲開發" class="headerlink" title="賦能可持續的遊戲開發"></a>賦能可持續的遊戲開發</h3><p>在 2024 年 1 月，在受到他們使用 Flutter 的 <a href="https://www.youtube.com/watch?v=qgOlg173gcI&amp;pp=ygUWR2xvYmFsIENpdGl6ZW4gRmx1dHRlcg==">故事</a> 的啟發下，我們與全球公民合作，挑戰我們的社群使用 Flutter 設計、構建和發佈可持續性遊戲。這些遊戲旨在激勵和賦能玩家，讓他們為環境採取一些微不足道但有意義的行動。今天，我們宣布 <a href="https://medium.com/flutter/announcing-the-winners-of-the-global-gamers-challenge-1ccf4d271226">10 位獲獎者</a>。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F_GgqdB9md1w&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D_GgqdB9md1w&amp;image=http%3A%2F%2Fi.ytimg.com%2Fvi%2F_GgqdB9md1w%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href">https://medium.com/media/f79ed19f8ef6235e83b919df5506662f/href</a></iframe>
-
-<p>恭喜所有獲獎者！</p>
-<h3 id="更多探索"><a href="#更多探索" class="headerlink" title="更多探索"></a>更多探索</h3><p>今天我們只有時間重點介紹這些內容，但還有許多其他我們沒有涉及的令人興奮的改進。以下是一些需要注意的其他事項：</p>
-<ul>
-<li>您可以 <a href="https://firebase.google.com/docs/vertex-ai/get-started?platform=flutter">預覽用於 Firebase Dart SDK 的 Vertex AI</a>，在 Dart 或 Flutter 應用程式中使用 Gemini API 來實現 AI 驅動的功能。SDK 與 Firebase 應用程式檢查相結合，保護您的 API 調用，並保護您的後端基礎架構免受嚴重的威脅，例如計費欺詐、釣魚和應用程式偽造。有關詳細資訊，請查看我們的 <a href="http://flutter.dev/ai">AI 頁面</a>。</li>
-<li><a href="https://docs.flutter.dev/perf/impeller">Impeller</a>，我們的 <a href="https://docs.flutter.dev/perf/impeller">下一代渲染引擎</a>，現在在 Android 上功能齊全。</li>
-<li><a href="https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture">Android 的預測性返回手勢</a> 現在支援在 Flutter 應用程式中導航時，以及導航到其他應用程式或主畫面時。</li>
-<li>iOS 上的 <a href="https://docs.flutter.dev/platform-integration/ios/platform-views">平台視圖</a> 已進行效能優化，將 CPU 使用率降低了高達 50%。</li>
-<li><a href="https://developers.google.com/admob/android/quick-start">Google Mobile Ads SDK</a> 已擴展以支援更多廣告合作夥伴和調解選項。</li>
-<li>DevTools 有一個新的 <a href="https://docs.flutter.dev/development/platform-integration/android/deep-linking">深度鏈接驗證器</a>，它可以幫助您識別和解決 Android 深度鏈接配置中的錯誤，以便您可以更輕鬆地將網頁體驗與 Flutter 應用程式連接起來。</li>
-<li><code>dart fix</code>，我們的 API 遷移工具，現在可以直接從 IDE 中調用。</li>
-<li>DevTools 現在支援時間線上進階篩選和 CPU 樣本。</li>
-</ul>
-<p>前往 <a href="https://medium.com/flutter/fbde6c164fe3">Flutter 技術文章</a> 和 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 文章</a> 獲取有關這些內容以及更多內容的更多詳細資訊。</p>
-<p>與往常一樣，我們非常感謝您的持續支援、熱情、熱忱和回饋。沒有您，這個專案是不可能實現的，我們迫不及待地想看看您將如何繼續推動 Flutter 向前發展。</p>
-<p>Flutter 完畢。我們希望很快再見到您！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5e211f708a37" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/io24-5e211f708a37">在 Google I&#x2F;O 2024 上推出 Flutter 3.22 和 Dart 3.4</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
 
       
     </div>
@@ -1809,7 +1616,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1875,7 +1682,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">160</span>
+          <span class="site-state-item-count">170</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1884,7 +1691,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">181</span>
+        <span class="site-state-item-count">184</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 收看 #FlutterInProduction - 即將在您附近的螢幕上播出！在您的日曆上標記，並務必在 2024 年 12 月 17 日 太平洋時間上午 11:00 &#x2F; 東部時間下午 2:00 &#x2F; 中歐時間晚上 8:00 收看 #FlutterInProduction。     這個在 Flutter YouTub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Tune in for #FlutterInProduction — coming soon to a screen near you!">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/6a2d80d6.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 收看 #FlutterInProduction - 即將在您附近的螢幕上播出！在您的日曆上標記，並務必在 2024 年 12 月 17 日 太平洋時間上午 11:00 &#x2F; 東部時間下午 2:00 &#x2F; 中歐時間晚上 8:00 收看 #FlutterInProduction。     這個在 Flutter YouTub">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*SSIgDyW3jMaOF5nxH5D9lw.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6bb9820d1506">
+<meta property="article:published_time" content="2024-12-03T11:01:01.000Z">
+<meta property="article:modified_time" content="2024-12-12T03:08:56.456Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="flutter-app-development">
+<meta property="article:tag" content="flutter-release">
+<meta property="article:tag" content="flutter-event">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/960/1*SSIgDyW3jMaOF5nxH5D9lw.gif">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/6a2d80d6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Tune in for #FlutterInProduction — coming soon to a screen near you! | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6a2d80d6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Tune in for #FlutterInProduction — coming soon to a screen near you!
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-03 19:01:01" itemprop="dateCreated datePublished" datetime="2024-12-03T19:01:01+08:00">2024-12-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-12 11:08:56" itemprop="dateModified" datetime="2024-12-12T11:08:56+08:00">2024-12-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="收看-FlutterInProduction-即將在您附近的螢幕上播出！"><a href="#收看-FlutterInProduction-即將在您附近的螢幕上播出！" class="headerlink" title="收看 #FlutterInProduction - 即將在您附近的螢幕上播出！"></a>收看 #FlutterInProduction - 即將在您附近的螢幕上播出！</h2><p>在您的日曆上標記，並務必在 <strong>2024 年 12 月 17 日</strong> 太平洋時間上午 11:00 &#x2F; 東部時間下午 2:00 &#x2F; 中歐時間晚上 8:00 收看 <strong>#FlutterInProduction</strong>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*SSIgDyW3jMaOF5nxH5D9lw.gif" />
+</figure>
+
+<p>這個在 <a href="https://www.youtube.com/@flutterdev">Flutter YouTube 頻道</a> 上舉辦的線上活動與我們之前的活動略有不同。我們不僅會深入探討最新版本（儘管我們一定會這樣做！）：#FlutterInProduction 還將慶祝我們作為一個社群共同走過的不可思議的旅程，使 Flutter 成為今天這個強大的、可投入生產的框架。</p>
+<h3 id="預期內容"><a href="#預期內容" class="headerlink" title="預期內容"></a>預期內容</h3><ul>
+<li><strong>#FlutterInProduction：</strong>無論您是經驗豐富的專業人士還是剛剛起步，您都將從 Flutter 使用者故事中獲得新的見解和靈感，從 Flutter 技術負責人那裡了解更多關於最新功能的資訊，並在此多環節線上活動中了解 Flutter 應用程式開發的未來。</li>
+<li><strong>#AskFlutter 線上問答：</strong>從 Flutter 團隊負責人那裡獲得您的問題的解答。請持續關注我們在社群媒體上的徵集問題！</li>
+<li><strong>Observable Flutter：</strong>對在企業開發環境中使用 Flutter 構建有什麼疑問嗎？從在生產中使用 Flutter 的公司的技術負責人那裡獲得這些問題的解答。</li>
+</ul>
+<h3 id="保持關注"><a href="#保持關注" class="headerlink" title="保持關注"></a>保持關注</h3><p>我們將會有一些驚喜和公告，因此請務必採取以下步驟以保持了解最新資訊。</p>
+<ol>
+<li>在您的日曆上或在 <a href="https://www.youtube.com/@flutterdev">YouTube</a> 上 <a href="https://calndr.link/event/jqZQr0d7nH">設定提醒</a>，了解活動時間。</li>
+<li>在 <a href="https://www.youtube.com/redirect?event=channel_description&redir_token=QUFFLUhqbkRYNDVxWGRFUUZYNVdmMlg4QTB4akhOeXNVd3xBQ3Jtc0trWWpSSHo0Tnh3QjlKdF81Z0lsSkQzQWdxVEpBNVdOSVE5Q01tUUltMUFvV2k5Z1RfUzVtc0JET0pFejVRLTl1UUdPNG9DMHk3ZWpUcGtRVGVtUk1yUzA3SEx4STVpM09Kd0dSczVxOGhyQkxRb1EwNA&q=https://twitter.com/FlutterDev">Twitter</a>，<a href="https://www.linkedin.com/showcase/flutterdevofficial/">LinkedIn</a> 或此處的 Medium 上關注我們！</li>
+</ol>
+<p>我們迫不及待地想與您分享 #<strong>FlutterinProduction</strong>！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6bb9820d1506" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/tune-in-for-flutterinproduction-coming-soon-to-a-screen-near-you-6bb9820d1506">收看 #FlutterInProduction - 即將在您附近的螢幕上播出！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/flutter-app-development/" rel="tag"># flutter-app-development</a>
+              <a href="/tags/flutter-release/" rel="tag"># flutter-release</a>
+              <a href="/tags/flutter-event/" rel="tag"># flutter-event</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/bf2dc4e6.html" rel="prev" title="【文章翻譯】Prospera: using Flutter to bring AI to the frontline of sales">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Prospera: using Flutter to bring AI to the frontline of sales
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/ee34d180.html" rel="next" title="【文章翻譯】What’s new in Flutter 3.27">
+      【文章翻譯】What’s new in Flutter 3.27 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B6%E7%9C%8B-FlutterInProduction-%E5%8D%B3%E5%B0%87%E5%9C%A8%E6%82%A8%E9%99%84%E8%BF%91%E7%9A%84%E8%9E%A2%E5%B9%95%E4%B8%8A%E6%92%AD%E5%87%BA%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">收看 #FlutterInProduction - 即將在您附近的螢幕上播出！</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E6%9C%9F%E5%85%A7%E5%AE%B9"><span class="nav-number">1.1.</span> <span class="nav-text">預期內容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%9D%E6%8C%81%E9%97%9C%E6%B3%A8"><span class="nav-number">1.2.</span> <span class="nav-text">保持關注</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">184</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
