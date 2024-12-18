@@ -146,489 +146,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9e979e21.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/9e979e21.html" class="post-title-link" itemprop="url">【文章翻譯】What we learned from the Flutter Q3 2022 survey</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-12-08 19:07:05" itemprop="dateCreated datePublished" datetime="2022-12-08T19:07:05+08:00">2022-12-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="關於-Firebase-SDK、快速修復和重構，以及目標平台"><a href="#關於-Firebase-SDK、快速修復和重構，以及目標平台" class="headerlink" title="關於 Firebase SDK、快速修復和重構，以及目標平台"></a>關於 Firebase SDK、快速修復和重構，以及目標平台</h2><p>在過去的幾年中，超過 10,000 名 Flutter 開發人員參與了每季度的使用者調查，以提供回饋給 Flutter 團隊。最近一季也不例外——Flutter 團隊希望收集開發人員關於四個主題的回饋：1）Firebase SDK，2）快速修復和重構，3）目標平台，以及 4）桌面支援。在這些主題中，調查向每位受訪者展示了兩個隨機主題。感謝所有回覆的開發人員！</p>
-<p>本文將涵蓋前三個主題的結果。我們將在另一篇文章中涵蓋最後一個主題（桌面開發）。</p>
-<p>在深入探討前三個特殊主題的結果之前，我們想報告一下 Flutter 開發人員仍然非常喜歡這個框架。在調查的受訪者中，55% 的人對 Flutter <em>非常滿意</em>，另外 38% 的人對 Flutter <em>有點滿意</em>。這使得滿意的開發人員總數達到 93%。這個數字在過去三個季度一直很穩定。<em>非常滿意</em> 的開發人員比例略微下降至 55%。我們計畫追蹤這個指標，並研究是什麼可能導致開發人員的滿意度從 <em>非常滿意</em> 降至 <em>有點滿意</em>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*jYeqpOHh1OgqKmqW" />
-<figcaption>圖 1. 對 Flutter 的滿意度隨時間推移</figcaption>
-</figure>
-
-<p>如 <strong>圖 2</strong> 所示，我們的受訪者非常喜歡核心框架、Android 支援和 Material Widgets。我們最大的機會在於 Cupertino Widgets 和 Web 支援。我們將繼續研究改善這些領域的開發人員體驗所需做的事情，並進一步投資以推動其進步。如果您想參與未來的使用者研究，可以在 <a href="https://flutter.dev/research-signup">flutter.dev&#x2F;research-signup</a> 上註冊。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*XaZXV1SPtqbuZhFc" />
-<figcaption>圖 2. 對子系統的滿意度</figcaption>
-</figure>
-
-<h3 id="Flutter-的-Firebase-SDK"><a href="#Flutter-的-Firebase-SDK" class="headerlink" title="Flutter 的 Firebase SDK"></a>Flutter 的 Firebase SDK</h3><p>Flutter 開發人員使用 <a href="https://pub.dev/publishers/firebase.google.com/packages">Flutter 的 Firebase SDK</a>（又名 FlutterFire）來使用 Firebase 提供的工具和服務。這些包括驗證、資料庫、分析和訊息。目前，在 pub.dev 上有十五個穩定的 <a href="https://firebase.google.com/docs/flutter/setup?platform=ios#available-plugins">Firebase Plugin 套件</a> 可用。由於這些套件被廣泛採用，我們想探討一下什麼樣的學習材料能夠提高其可用性。</p>
-<p>我們學到的最有用的資訊是開發人員在嘗試使用各種 Firebase 套件時遇到的問題。如 <strong>圖 3</strong> 所示，開發人員指出「缺乏實際範例」是他們在嘗試使用新的 Firebase 套件時遇到的最常見問題（14.2%）。這對於具有許多活動部件的複雜套件來說尤其成問題，例如 firebase_messaging 或 firebase_dynamic_links。為了解決這個問題，我們將在 <a href="https://firebase.google.com/docs/samples">Firebase 文件</a> 中加入更多範例應用程式。我們將加入兩種類型的範例應用程式。第一種，「快速入門範例」將涵蓋特定 Firebase 套件的使用。第二種將提供更複雜的實際範例應用程式，這些應用程式使用多個 Firebase 套件。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hdD0EJyfncwlgAtW" />
-<figcaption>圖 3. 採用 Flutter 的新 Firebase SDK 時遇到的問題</figcaption>
-</figure>
-
-<p>在調查中，一些開發人員還選擇了「API 設計過於複雜或不方便」。這個結果在許多套件中都一致，例如 firebase_database、firebase_in_app_messaging，包括前一節中提到的套件。我們發現這個結果值得注意。雖然一些 API 很簡單且很小，但它們涵蓋的概念，例如異步資料，並不像那樣簡單。有鑒於此，我們將努力簡化學習材料。此外，我們還將努力使新舊 API（用於工具和服務）盡可能易於理解。</p>
-<p>「總體而言，文件品質很低」是前三個問題中的最後一個。為了回應這個需求，我們計畫改善 Flutter 開發人員的 Firebase 文件。我們將在 Firebase 文件中為 Firebase UI 套件（例如 Firebase UI for Auth）新增新章節，並在整個文件中新增更多程式碼範例。這些改進將在未來幾個季度陸續推出。</p>
-<h3 id="快速修復和重構"><a href="#快速修復和重構" class="headerlink" title="快速修復和重構"></a>快速修復和重構</h3><p>在 <a href="https://medium.com/flutter/does-flutter-boost-developer-productivity-475f713724b3">2022 年的第一個調查</a> 中，開發人員指出，快速修復和重構是我們 IDE 中最缺乏的或支援不足的功能。如 <strong>圖 4</strong> 所示，我們在 IDE 中支援快速修復和重構，但我們想了解開發人員為什麼認為 IDE 缺少或沒有支援這些功能。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/718/0*8Ewc1lTs1hnn1Y0w" />
-<figcaption>圖 4. VS Code 中的快速修復和重構</figcaption>
-</figure>
-
-<p>首先，我們了解到超過一半的受訪者認為快速修復和重構運作良好（53.1%），如 <strong>圖 5</strong> 所示。然而，34.6% 的人表示需要新增更多功能。這個數字幾乎是要求我們修復錯誤的開發人員人數的三倍（12.4%）。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*CfG7t7ePTA-LlwyZ" />
-<figcaption>圖 5. 快速修復和重構的當前狀態</figcaption>
-</figure>
-
-<p>然後，我們詢問那些想要新增功能的人，他們需要哪種類型的快速修復或重構功能。在設計這個問題之前，我們審查了所有相關的 GitHub 議題，並進行了一項簡短的 <a href="https://twitter.com/craig_labenz/status/1547650452023435%20267?s=20&amp;t=hOjRR_RImDoyIP38CqsjLA">Twitter 調查</a>，將各種功能請求分組。您可以在 <strong>圖 6</strong> 中看到這些組別的列表。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*rbSxslPyUG71IB-Y" />
-<figcaption>圖 6. 快速修復和各種重構功能的重要性</figcaption>
-</figure>
-
-<p>從這個問題中，我們了解到受訪者認為新增更多快速修復以「修復編譯錯誤、警告或 lint」比其他修復更重要（76.4% 「非常重要」），儘管這並沒有降低其他功能的重要性。我們還了解到，受訪者認為「提取或移動 Widget」比其他重構更重要（69.2% 「非常重要」）。我們現在知道，儘管我們支援提取和移動 Widget，但開發人員想要更多選項，例如將 Widget 提取到一個新檔案中。這與提交的許多 GitHub 議題相符：<a href="https://github.com/flutter/flutter-intellij/issues/5591">flutter&#x2F;flutter-intellij&#x2F;issues&#x2F;5591</a>，<a href="https://github.com/Dart-Code/Dart-Code/issues/1831">Dart-Code&#x2F;Dart-Code&#x2F;issues&#x2F;1831</a>，<a href="https://github.com/flutter/flutter-intellij/issues/4540">flutter-intellij&#x2F;issues&#x2F;4540</a>，<a href="https://github.com/dart-lang/sdk/issues/35767">dart-lang&#x2F;sdk&#x2F;issues&#x2F;35767</a> 等等。此外，開發人員還想要更多用於重構函式庫、類別或方法（61.9% 「非常重要」）以及管理匯入（59.7% 「非常重要」）的功能。</p>
-<p>所有這些資訊對 Dart Analyzer 團隊非常有價值，他們將審查診斷資訊，以找出更多修復的機會。該團隊已經開始為診斷資訊新增一些新的修復（將與 Dart 2.19 一起發佈），並計畫在未來版本中新增更多修復。</p>
-<h3 id="目標平台"><a href="#目標平台" class="headerlink" title="目標平台"></a>目標平台</h3><p>Flutter 開發人員可以為六個平台建立可生產的應用程式：Android、iOS、Web、Windows、macOS 和 Linux。在調查的這一部分中，我們想知道開發人員針對了這六個平台中的哪幾個平台，以及他們是否在團隊層級使用 Flutter 進行跨平台開發。我們的問題首先詢問開發人員在哪些平台上編寫程式碼，然後詢問他們的團隊針對了哪些額外的平台。</p>
-<p>如 <strong>圖 7</strong> 所示，大多數開發人員針對的是 Android (91.7%)、iOS (61.3%) 和 Web (35.5%)。由於這個問題允許多選，因此有一些重疊。統計選取的平台數量，只有 24% 的開發人員在上個月只針對了一個平台。在受訪者中，76% 的人針對了兩個或更多平台，其中 32% 的人針對了三個或更多平台。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*WHlC27Td3vNoiDFc" />
-<figcaption>圖 7. 開發人員正在積極建立和應用程式的目標平台</figcaption>
-</figure>
-
-<p>此外，我們想知道有多少開發人員屬於開發團隊，團隊成員針對的平台與他們自己不同。例如，開發人員 A 針對 Android，而開發人員 B 針對 iOS。如 <strong>圖 8</strong> 所示，40% 的開發人員表示他們有同事正在針對與他們不同的平台工作。當我們篩選出那些表示他們自己只針對一個平台的開發人員時，這個數字上升到 61%。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*DWsq2C8LftK67nYq" />
-<figcaption>圖 8. 針對額外平台的團隊成員</figcaption>
-</figure>
-
-<p>合併起來，我們可以計算出 91% 的 Flutter 團隊是活躍的跨平台開發團隊（24%*0.61 + 76%）。至少有 72% 的受訪者為 Android 和 iOS 開發了應用程式。在所有受訪者中，34% 的人針對了 iOS、Android 和 Web，12% 的人針對了 iOS、Android、Web 和 Windows。</p>
-<h3 id="接下來要做什麼？"><a href="#接下來要做什麼？" class="headerlink" title="接下來要做什麼？"></a>接下來要做什麼？</h3><p>我們希望提供一個很好的開發體驗，最大限度地提高生產力。我們從這項調查和其他調查中獲得的見解非常有價值。我們將利用這些結果來優先處理工程任務和對 Flutter 開發人員有用的教育內容。</p>
-<p>我們將在 2023 年回來，帶來更多調查結果。在那之前，我們將發表一篇獨立的文章，介紹我們從桌面支援研究中學到的東西。下一篇文章見！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9b78803accd2" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/what-we-learned-from-the-flutter-q3-2022-survey-9b78803accd2">我們從 Flutter 2022 年第三季度調查中學到了什麼</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/40b97bb2.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/40b97bb2.html" class="post-title-link" itemprop="url">【文章翻譯】Supporting six platforms with two keyboards</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-12-06 23:52:58" itemprop="dateCreated datePublished" datetime="2022-12-06T23:52:58+08:00">2022-12-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="使用兩個鍵盤支援六個平台"><a href="#使用兩個鍵盤支援六個平台" class="headerlink" title="使用兩個鍵盤支援六個平台"></a>使用兩個鍵盤支援六個平台</h2><figure>
-<img alt="A beautiful sunrise on an idyllic beach. Waves calmly lapping at your toes." src="https://cdn-images-1.medium.com/max/1024/1*RQs5hWCyE30nkyfsVqDb0A.jpeg" />
-</figure>
-
-<p>Flutter 的魅力在於輕鬆地為六個平台開發應用程式。痛苦之處在於在六個平台上驗證你的應用程式。</p>
-<p>我正在撰寫一個程式碼實驗室，使用 Dart 的外部函式介面 (FFI) 整合來自 iOS、Android、macOS、Linux 和 Windows 的 C 程式碼。這個故事描述了如何在不淹沒我的書桌在裝置的情況下，為 Flutter 支援的所有平台開發。</p>
-<p>接受你需要不止一台機器。當你計劃至少在六個平台的子集中建立你的應用程式時，請考慮這並沒有聽起來那麼糟糕。</p>
-<p>我可以用兩台機器在六個平台上開發應用程式：一台 macOS 筆記型電腦和一台 Windows 11 桌機。此外，我還有兩個鍵盤、一隻滑鼠和一個魔法觸控板。</p>
-<p>以下說明為什麼你需要這兩個平台。</p>
-<p>從顯而易見的開始：你需要一台 macOS 機器來為 macOS 和 iOS 開發。蘋果是這麼說的。在 Windows 上為 Windows 開發。這是 Flutter for Windows 預設支援的，因此它是鋪好的道路。Flutter 支援在 macOS 或 Win11 或兩者上進行 Web 和 Android 開發。出於鍵盤熟悉度的原因（我在 macOS 上已經超過十年了），我使用 macOS。</p>
-<p>Windows 11 上的 Windows Subsystem for Linux 版本 2 或 WSL2 避免了我需要三個完整的鍵盤。當你在 Ubuntu Summit 上向滿屋子 Linux 狂熱者發表關於 WSL2 的主題演講時，你開始理解過去二十年世界發生了多大的變化。</p>
-<p>WSL2 中的 Linux 支援超越了運行圖形化 Linux 應用程式。Visual Studio Code 為 WSL2 主機開發提供了出色的支援。WSL2 在其 Linux 環境內運行 VS Code 的無頭版本，並從 Windows VS Code 實例控制它。這使得 Windows 和 Linux 開發可以在一台機器上進行，使用相同的鍵盤快捷鍵，即使檔案系統佈局不同。</p>
-<p>話雖如此，不要嘗試從一個共用的檔案區域運行 Flutter Windows 和 Linux 開發。是的，WSL2 允許你從 Linux 查看 Windows 檔案系統，以及從 Windows 查看 Linux 檔案系統。但是，Dart 將不知道使用哪個二進制檔。另一個小問題是你的原始碼檔案中的行尾也會被混淆。使用 Git 將程式碼傳輸到 Linux 和 Windows 之間，並配置 <a href="https://docs.github.com/en/get-started/getting-started-with-git/configuring-git-to-handle-line-endings">適當的行尾對映</a>。你的理智會感謝你。</p>
-<p>如果你想在 Flutter 支援的所有平台上開發 Flutter，請幫自己一個忙，同時取得一台 macOS 機器和一台 Windows 11 機器。你的編譯時間會感謝你的。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3cb3eb46d763" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/supporting-six-platforms-with-two-keyboards-3cb3eb46d763">使用兩個鍵盤支援六個平台</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/7e2fa666.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/7e2fa666.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Flutter Forward</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-15 19:02:00" itemprop="dateCreated datePublished" datetime="2022-11-15T19:02:00+08:00">2022-11-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布-Flutter-Forward"><a href="#宣布-Flutter-Forward" class="headerlink" title="宣布 Flutter Forward"></a>宣布 Flutter Forward</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*2u_pjVJlgpQw4XHy" />
-</figure>
-
-<p>鎖定 <strong>Flutter Forward</strong>，下一場全球 Flutter 活動，將於 2023 年 1 月 25 日從肯亞奈洛比現場直播。</p>
-<p><a href="https://rsvp.withgoogle.com/events/flutter-forward-2022-virtual/forms/registration">現在可以註冊！</a></p>
-<p>隨著今年在 Google I&#x2F;O 上發佈 Flutter 3，我們完成了 <a href="https://www.youtube.com/watch?v=kpcjBD1XDwU&amp;t=108s">四年前在 Flutter Live 上首次規劃的旅程</a>：為行動裝置、桌面裝置、嵌入式系統和網頁裝置提供一個強大的開源 UI 工具組，用於建立令人驚豔的體驗。</p>
-<p>現在，我們準備分享我們正在進行的一些新的投資，這些投資展示了我們計劃在未來一年左右的時間內帶領 Flutter 走的方向。</p>
-<p>我們迫不及待地想像我們在 Flutter Live 和 Flutter Interact 中所做的那樣，將我們的全球社群虛擬地聚集在一起。在一個正在經歷快速數位轉型的世界地區，有什麼比談論未來的科技更好的地方呢？</p>
-<p>我們很興奮能在非洲舉辦我們的下一場全球活動。不僅 Google 在該地區投入大量資金，包括在奈洛比開設我們的第一個 <a href="https://techcrunch.com/2022/04/19/google-opens-product-development-center-in-nairobi-the-first-in-africa/?guccounter=1&amp;guce_referrer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8&amp;guce_referrer_sig=AQAAAKYdxE7OdnBWrzyv5kgve4Wb_0sT7guGi_DeKOZ2_sFPBEmeJ_wsHSh077n6xrk83OtPuikdhfQ0zPKU1H3cXhqeZQcMY9U54t3eB4otQyCj3-C_xP_JzbwQMDCCRF5wi9xqDcCverqQE0l2gNazZIsKqGuT1oA5Hmwd9zd-5zJ0">非洲工程中心</a>，而且 <a href="https://thebigdeal.substack.com/p/rain-always-falls-where-its-wet">新創事業蓬勃發展</a>，<a href="https://nextbillionusers.google/research/africa-developer-community-2021/">數十萬開發人員在非洲互聯網經濟中工作</a>。這是為您提供 Flutter 未來一瞥的完美場所。</p>
-<p>以下是可以從活動中期待的事項：</p>
-<h3 id="主旨演講"><a href="#主旨演講" class="headerlink" title="主旨演講"></a>主旨演講</h3><p>在我們現場直播的主旨演講中，我們將展示我們正在進行的工作 - 並展示更廣泛的社群中其他人在使用 Flutter 時所做的事情 - 以推動 UI 開發的進步。</p>
-<h3 id="AskFlutter-直播"><a href="#AskFlutter-直播" class="headerlink" title="#AskFlutter 直播"></a>#AskFlutter 直播</h3><p>#AskFlutter 將回歸，回答您渴望提出的所有問題，從平台特定的詢問到為何 Dash 總要擁有銳利的喙，從不彎曲。</p>
-<h3 id="技術演講"><a href="#技術演講" class="headerlink" title="技術演講"></a>技術演講</h3><p>與往常一樣，我們將透過一系列技術演講來擴展主旨演講，涵蓋最新消息、熱門話題，以及使用 Flutter 建立驚豔體驗的秘訣和技巧。</p>
-<h3 id="觀看派對"><a href="#觀看派對" class="headerlink" title="觀看派對"></a>觀看派對</h3><p>如果您想與其他人一起觀看 Flutter Forward，請參加全球 300 多個城市中其中一個的當地觀看派對。如果您的附近有派對，請務必參加，以便與當地 Flutter 開發人員建立人脈並向他們學習。</p>
-<h3 id="敬請期待"><a href="#敬請期待" class="headerlink" title="敬請期待"></a>敬請期待</h3><p>自我們上次活動以來，社群規模已大幅擴大，但它仍然是 Flutter 的生命線，也是 Flutter 不斷發展的故事背後的動力。我們非常感謝能再次將全球 Flutter 社群聚集在一起。</p>
-<p>在 1 月 25 日之前，我們還有很多計劃，所以 <a href="https://rsvp.withgoogle.com/events/flutter-forward-2022-virtual/forms/registration">立即註冊</a>，確保您不會錯過議程公告，在您附近找到觀看派對的機會，以及我們為您準備的幾個驚喜。</p>
-<p>註冊後，請關注我們的 <a href="https://twitter.com/FlutterDev">Twitter</a>，<a href="https://www.linkedin.com/showcase/flutterdevofficial/">LinkedIn</a>，並訂閱 Flutter <a href="https://www.youtube.com/c/flutterdev">YouTube</a> 頻道，以確保您不會錯過 Dash 的任何多元宇宙冒險。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=666f9a506cc6" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-flutter-forward-666f9a506cc6">宣布 Flutter Forward</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2aa7ffb9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/2aa7ffb9.html" class="post-title-link" itemprop="url">【文章翻譯】Introducing the Flutter News Toolkit — now accepting applications</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2022-11-10 16:54:40" itemprop="dateCreated datePublished" datetime="2022-11-10T16:54:40+08:00">2022-11-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h3>Introducing the Flutter News Toolkit - 現在接受申請</h3>
-
-<h4>成為首批使用 Flutter News Toolkit 推出新聞行動應用程式的先驅</h4>
-
-<p>過去二十年來，我們獲取新聞的方式發生了巨大的變化。市場研究表明，<a href="https://www.insiderintelligence.com/content/the-majority-of-americans-mobile-time-spent-takes-place-in-apps">美國智慧型手機使用者中有 88% 的時間花費在應用程式上，而不是行動網頁瀏覽器上</a>。然而，對於通常資源有限的新聞出版商來說，行動應用程式可能很困難且成本高昂。 </p>
-
-<p>建立一個高品質的行動新聞應用程式是一項重大工作：您需要包含豐富的閱讀體驗、出色的導航和搜尋、驗證、廣告整合、通知、個人資料和訂閱，以及量身打造的設計體驗。此外，您還必須針對多個平台（例如 iOS 和 Android）完成所有這些工作，並持續使用最新功能更新您的應用程式，並保持多個產品同步。這對於擁有品牌組合的大型新聞機構來說是一項巨大的努力，<em>以及</em>對於負擔不起專門為每個平台組建大型應用程式開發團隊的小型出版商來說也是如此。</p> 
-
-<p>我們投入了資源來幫助新聞機構解決這個問題，利用業界最佳實務和 Google 的強大新工具組。</p>
-
-<h4>Introducing the Flutter News Toolkit</h4>
-
-<p>我們很高興地宣布 Google 的 Flutter 團隊正在與 <a href="https://newsinitiative.withgoogle.com/">Google 新聞倡議 (GNI)</a> 合作，推出<a href="https://forms.gle/J6t3Auz4QoZTunBJ7"> 一個免費的工具組</a>，該工具組允許出版商透過將應用程式開發時間縮短高達 80% 來更快地為 iOS 和 Android 建立行動應用程式。 </p>
-
-<p>Flutter News Toolkit 是一個易於使用的範本，新聞機構可以在其基礎上建構應用程式，並且包含針對常見使用者介面和應用程式功能的範例程式碼區塊。 </p>
-
-<p>我們與世界各地的產業專家和新聞出版商密切合作，了解新聞應用程式的最關鍵功能和使用者工作流程，並整合了 <a href="https://news-consumer-insights.appspot.com/">News Consumer Insights </a>的最佳實務，以幫助您透過 Flutter News Toolkit 達成更高的讀者參與度並實現財務目標。</p>
-
-<p>Flutter News Toolkit 包含關鍵功能，例如：</p>
-<ul>
-<li>使用者入學</li>
-<li>帳戶建立/登入</li>
-<li>內容供應源和內容頁面</li>
-<li>分析</li>
-<li>通知</li>
-<li>社交分享</li>
-<li>訂閱</li>
-<li>廣告</li>
-</ul>
-
-<p>您可以直接使用這些預先整合的功能，或者輕鬆地修改和替換您喜歡的其他功能。 </p>
-
-<figure>
-<img alt="這張圖片顯示了 Flutter News Toolkit 中提供的一些功能範例" src="https://cdn-images-1.medium.com/max/1024/1*eQsCJ1lXurwLVnD5wIDxkg.png" />
-<figcaption><em>Flutter News Toolkit 中提供的範例功能</em></figcaption>
-</figure>
-
-<h4>Flutter News Toolkit 的早期採用者</h4>
-
-<p>Flutter News Toolkit 的早期採用者之一是 Hespress，它是摩洛哥最大的新聞網站之一。Hespress 一直希望透過建立一個針對英語使用者的行動應用程式來接觸更多受眾，但沒有足夠的資源來開始。透過 Flutter News Toolkit，Hespress 能够在 6 週內完成完整的應用程式開發，並且最近推出了他們的應用程式 <a href="https://apps.apple.com/us/app/hespress-english/id1609463589">Hespress</a>  <a href="https://play.google.com/store/apps/details?id=com.hespress.english&amp;hl=en_US&amp;gl=US">English</a>。</p>
-
-<p>“Flutter News Toolkit 使用起來很直觀，並且可以自訂，使其看起來和感覺起來像一個真正的 Hespress 應用程式，”Hespress 總經理 El Guennouni Hassane 表示。“它包含我們所需的所有核心功能、區段和佈局。它幫助我們節省了幾個月的開發時間，並優化了重新設計我們的英文應用程式的整個流程，同時維護一個程式碼庫而不是兩個。”</p>
-
-<figure>
-<img alt="Hespress 英文應用程式的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/0*TC5XvMCLwYWLzFhG" />
-<figcaption><em>Hespress 英文應用程式的螢幕截圖</em></figcaption>
-</figure>
-
-<h4>立即申請以存取 Flutter News Toolkit</h4>
-
-<p>隨著我們推出 Flutter News Toolkit，我們將為有興趣在未來 3-6 個月內推出新聞行動應用程式的出版商提供有限的名額。此計畫開放向世界各地的所有出版商和任何語言申請。我們將隨著時間推移擴展我們的計畫，但以下是一些您現在加入可以獲得的優點：</p>
-
-<ul>
-<li>免費存取 Flutter News Toolkit 的所有原始碼和分步指南</li>
-<li>能夠按照您的意願修改、刪除或新增新功能</li>
-<li>Google 在 Play 商店和 Apple 商店推出自訂應用程式的協助</li>
-<li>在 Google 的行銷材料中展出的機會</li>
-</ul>
-
-<p>請填寫<a href="https://forms.gle/J6t3Auz4QoZTunBJ7">申請</a>。隨著我們在未來幾個月內推出一般可用性之前改進產品，我們將分批吸納新的出版商。我們期待幫助更多新聞機構擴展其數位影響力、建立受眾關係，並透過多元的收入來源打造可持續的商業模式。 </p>
-
-<h3>常見問題解答</h3>
-
-<h4>什麼是 Flutter？</h4>
-
-<p>Flutter 是 Google 的開源 UI 工具組，用於從單一程式碼庫建立適用於行動、網頁和桌面的精美應用程式。Flutter 大大縮短了建立和發佈應用程式所需的時間。今天，Flutter 是 <a href="https://www.statista.com/statistics/869224/worldwide-software-developer-working-hours/">最流行的跨平台</a> 開發框架，在全球擁有超過 300 萬名開發人員。有超過 50 萬個 Flutter 應用程式，包括阿里巴巴、BMW、Google Pay、PUBG、Shein 和微信。 </p>
-
-<h4>Flutter 容易學習嗎？</h4>
-
-<p>是的，對於懂其他程式語言（如 Java）的開發人員來說，學習 Flutter 很快。此外，我們還提供了大量的 <a href="https://flutter.dev/learn">學習資源</a> 供您開始使用。 </p>
-
-<h4><strong>我可以在應用程式中使用其他非 Google 服務，例如廣告、分析和訂閱嗎？</strong></h4>
-
-<p>當然可以！Flutter News Toolkit 僅旨在提供範例。您不需要使用任何您不想要使用的服務。事實上，可以輕鬆地移除或替換現有的整合，使用其他服務。例如，如果您想使用非 Google 廣告服務，您可以在 `pub.dev` 上找到其他 <a href="https://pub.dev/packages?q=platform%3Aandroid+platform%3Aios+ads">套件</a>。 </p>
-
-<h4>我需要做多少工作才能推出應用程式？</h4>
-
-<p>雖然新聞範本可以降低建立新聞行動應用程式的進入門檻，但這個解決方案仍然需要 Flutter 開發工作。範本不支持无代码或所见即所得的功能或工具（例如仪表板），以便非技术用户修改应用程序品牌和样式。 </p>
-
-<p>我們已經規劃了部署流程，並假設有 2-3 位 Flutter 工程師參與此專案。舉例來說，Hespress 等早期採用者在 6 週內完成了他們的應用程式開發。 </p>
-
-<figure>
-<img alt="這張圖片以高階方式規劃了部署流程" src="https://cdn-images-1.medium.com/max/1024/0*NfASfTMOVQde8r-K" />
-<figcaption><em>高階部署流程</em></figcaption>
-</figure>
-
-<h4>如果我沒有內部開發團隊，如何使用範本？</h4>
-
-<p>我們可以推薦 Flutter 機構，協助您將範本完成。聲明免責聲明，Google 與這些機構無關，我們也不會從他們那裡獲得任何利潤分攤。 </p>
-
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9e926db55f6d" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/introducing-the-flutter-news-toolkit-now-accepting-applications-9e926db55f6d">Introducing the Flutter News Toolkit - 現在接受申請</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/200c707b.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1488,6 +1005,650 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/448309c3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/448309c3.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing the Flutter Casual Games Toolkit</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-12 17:02:47" itemprop="dateCreated datePublished" datetime="2022-05-12T17:02:47+08:00">2022-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Flutter-休閒遊戲工具包"><a href="#宣布-Flutter-休閒遊戲工具包" class="headerlink" title="宣布 Flutter 休閒遊戲工具包"></a>宣布 Flutter 休閒遊戲工具包</h2><p>對大多數開發人員來說，Flutter 是一個應用程式框架。但圍繞著休閒遊戲開發也有一個不斷發展的社群，他們利用 Flutter 提供的硬體加速圖形支援。</p>
+
+<p>在過去的一年中，成千上萬的 Flutter 遊戲已發佈。例如，Lotum，開發史上最受歡迎的文字拼圖遊戲 [4 Pics 1 Word](https://flutter.dev/showcase/lotum) 的遊戲公司，用 Flutter 重寫了整個遊戲。[Flame](https://flame-engine.org/)，一個建立在 Flutter 之上的社群驅動的開源遊戲引擎，其貢獻者和使用者一直在穩定地增長。</p>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*rIXhQTkBae35i5YkSN8soQ.png" />
+<figcaption>在 Flutter 中開發的手機遊戲</figcaption>
+</figure>
+
+<p>為了了解我們如何提供更好的支援，我們 [採訪了幾位開發人員](https://medium.com/flutter/perspectives-from-early-adopters-of-flutter-as-a-game-development-tool-f95fb3406d51)，他們已成功構建並發佈了 Flutter 手機遊戲。我們詢問他們使用 Flutter 建立遊戲的感受，他們的回答揭示了幾個主題： </p>
+
+<ul>
+<li>Flutter 簡單易學，易於用於構建 UI 和休閒遊戲</li>
+<li>Flutter 允許他們查看框架原始碼（沒有「黑盒子」）並完全控制畫布</li>
+<li>Flutter 擁有一個開放的生態系統，您可以在其中找到（並利用）許多有用的套件、外掛和函式庫</li>
+<li>Flutter 可移植 - 您只需編寫一次程式碼，遊戲就會預設編譯為多平台</li>
+</ul>
+
+<p>同時，研究參與者提到，建立 Flutter 遊戲的最大挑戰是找到資源和學習材料，以便開始使用並整合到平台遊戲服務中。為了滿足這些需求，我們正在發佈一個新的入門工具包，以加速您的遊戲開發。</p>
+
+<p>全新的 [Flutter 休閒遊戲工具包](http://flutter.dev/games) 提供了一個專用的範本（由 [Filip Hracek](https://github.com/filiph) 開發），您可以使用它來構建自己的遊戲。這個入門專案提供了預先構建的「鈴鐺和哨子」，例如主選單、設定頁面、聲音支援等等，但有趣的部份留給您：構建遊戲！</p>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*NwJbJ1BD7MvehPAA" />
+<figcaption>在手機上運行的井字遊戲</figcaption>
+</figure>
+
+<h4 id="影片教學"><a href="#影片教學" class="headerlink" title="影片教學"></a>影片教學</h4><p>若要開始使用，請查看有關如何使用遊戲範本的 [影片教學](https://youtu.be/zGgeBNiRy-8)。它提供了有關構建 [井字遊戲](https://github.com/filiph/tictactoe) 的逐步指南（也可以從 [iOS](https://apps.apple.com/us/app/tic-tac-toe-puzzle-game/id1611729977) / [Android](https://play.google.com/store/apps/details?id=dev.flutter.tictactoe) 商店下載）。若要查看 Filip 在開發遊戲時遇到的所有細節，請查看他的 [原始開發日誌](https://docs.google.com/document/d/e/2PACX-1vRM-pZYVNOcJhCh5-ZHt8jGwWpNvx4KtpJZECHmaUPn9PIOgdTThK5OBRblCM6PQC4skqDRdW0lJnyM/pub)。</p>
+
+<h4 id="預先整合的服務"><a href="#預先整合的服務" class="headerlink" title="預先整合的服務"></a>預先整合的服務</h4><p>除了遊戲可能需要的常見 UI 和功能元素外，您還獲得了遊戲開發所需的關鍵服務的預先整合模組和範例程式碼。例如，遊戲範本整合了 Apple Game Center 和 Google Play Games Services，以便您可以輕鬆地顯示排行榜和成就等功能。</p>
+
+<p>如果您打算讓您的遊戲盈利，範本使用 [Google 行動廣告 SDK](https://pub.dev/packages/google_mobile_ads)，並向您展示如何實作範例廣告。範本還使用 [應用程式內購買](https://pub.dev/packages/in_app_purchase) 套件，讓您可以在遊戲中為玩家提供額外的內容，例如高級體驗、數位商品和訂閱。</p>
+
+<p>最後，遊戲範本包含 [Firebase Crashlytics](https://pub.dev/packages/firebase_crashlytics)，因此您可以深入了解遊戲中可能發生的任何崩潰或錯誤。所有遊戲範本的原始碼都可以在 GitHub 上的這個 [Flutter 範例儲存庫](https://github.com/flutter/samples/tree/master/game_template#readme) 中找到。</p>
+
+<h4 id="Flutter-遊戲-Discord-頻道"><a href="#Flutter-遊戲-Discord-頻道" class="headerlink" title="Flutter 遊戲 Discord 頻道"></a>Flutter 遊戲 Discord 頻道</h4><p>Flutter 的優勢之一是其樂於助人且熱情的社群。若要與其他 Flutter 遊戲開發人員聊天、提出問題和分享最佳實務，請考慮加入 r/FlutterDev Discord 伺服器上的 [專用遊戲頻道](https://discord.gg/WY5NwwjBQz)！非常感謝 Flutter 社群成員 @Miyoyo 幫助建立這個社群空間來支援 Flutter 遊戲開發人員！（順便說一下，如果您已經是 r/FlutterDev 社群的成員，以下是一個 [直接連結](https://discord.com/channels/420324994703163402/964110538986651658)。） </p>
+
+<h4 id="Google-Ads-和-Cloud-信用額度"><a href="#Google-Ads-和-Cloud-信用額度" class="headerlink" title="Google Ads 和 Cloud 信用額度"></a>Google Ads 和 Cloud 信用額度</h4><p>如果您的遊戲需要 Cloud 或 Firebase 服務，或者您想透過廣告將您的遊戲推廣給更多使用者，您可以獲得 [Google Ads](https://ads.google.com/intl/en_us/home/flutter/#!/) 和 [Cloud](https://cloud.google.com/free?utm_source=flutter&utm_medium=display&utm_campaign=FY22-Q2-flutter-games_get-started&utm_content=-&utm_term=-) 團隊提供的最高 900 美元的信用額度（適用條款和限制）！</p>
+
+<h4 id="從手機開始，但超越它"><a href="#從手機開始，但超越它" class="headerlink" title="從手機開始，但超越它"></a>從手機開始，但超越它</h4><p>我們從過去的研究中了解到，如今大多數 Flutter 遊戲都是休閒手機遊戲，因此我们在設計 Flutter 休閒遊戲工具包時優先考慮了手機場景。</p>
+
+<p>這並不意味著您的創造力應該局限於手機平台。事實上，範例 [井字遊戲](https://github.com/filiph/tictactoe) 可以在 [網頁](https://filiph.github.io/tictactoe/) 和桌面上運行！</p>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*sTD5PMhST3_73n4vnVcWBQ.png" />
+<figcaption>在網頁和桌面上運行的井字遊戲</figcaption>
+</figure>
+
+<p>同時，我們最近在 DartPad 上加入了對社群驅動的遊戲引擎 Flame 的支援，因此您可以在 DartPad 上探索 [使用 Flame 構建遊戲](https://dartpad.dev/?id=3e52ca7b51ba15f989ad880b8b3314a2)，而無需下載 SDK。更重要的是，由 Very Good Ventures (VGV) 撰寫並在 Google I/O 上推出的基於網頁的 [彈珠遊戲](https://pinball.flutter.dev/)，是用 Flutter 使用 Flame 引擎構建的！若要了解彈珠遊戲是如何建立的，請查看 VGV 團隊的 [彈珠文章](https://medium.com/flutter/i-o-pinball-powered-by-flutter-and-firebase-d22423f3f5d) 或 [查看程式碼](https://github.com/flutter/pinball)。</p>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*zJekiBgTaE-VTXfa" />
+<figcaption>基於網頁的彈珠遊戲</figcaption>
+</figure>
+
+<p>遊戲開發是 Flutter 正在發展的一個令人興奮的新場景！展望未來，我們希望加入更多 codelab 和其他資源，幫助您開發遊戲。這是我們第一次嘗試讓您更容易使用，我們充分意識到可能存在許多改進的空間。我們最近開始與社群成員 [wolfenrain](https://github.com/wolfenrain) 合作，對遊戲相關的議題進行分類。如果您需要希望 Flutter SDK 能更好地支援的產品功能，請在 GitHub 上提交議題（或為現有的議題投票）。</p>
+
+<h4 id="flutter-dev-games"><a href="#flutter-dev-games" class="headerlink" title="flutter.dev&#x2F;games"></a>flutter.dev&#x2F;games</h4><p>請查看專用的 [遊戲開發](http://flutter.dev/games) 頁面，您可以在此了解上面提到的資源，還可以找到指向 [文件](http://docs.flutter.dev/resources/games-toolkit) 的連結，以及 Flutter 社群遊戲開發專家推薦的函式庫、套件和工具的參考。</p>
+
+<p>自 Flutter 1.0 發佈以來，您不斷以出色的應用程式讓我們驚嘆不已，現在我們迫不及待地想看看您將使用 Flutter 推出什麼令人興奮的遊戲！</p>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c22e401d8fee" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-the-flutter-casual-games-toolkit-c22e401d8fee">宣布 Flutter 休閒遊戲工具包</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/73458861.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/73458861.html" class="post-title-link" itemprop="url">【文章翻譯】Perspectives from early adopters of Flutter as a game development tool</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-12 16:02:39" itemprop="dateCreated datePublished" datetime="2022-05-12T16:02:39+08:00">2022-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="來自-Flutter-遊戲開發工具早期採用者的觀點"><a href="#來自-Flutter-遊戲開發工具早期採用者的觀點" class="headerlink" title="來自 Flutter 遊戲開發工具早期採用者的觀點"></a>來自 Flutter 遊戲開發工具早期採用者的觀點</h2><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><p>在今年的 Google I&#x2F;O 上，我們推出了 <a href="http://flutter.dev/games">Flutter 休閒遊戲工具包</a>，這個工具包是一套資源，用於支援 Flutter 社群中的遊戲開發者。在此之前，Flutter 並未將遊戲開發作為官方支援的用例，儘管我們對一些成功案例印象深刻，例如流行的文字解謎遊戲 <a href="https://apps.apple.com/app/4-pics-1-word/id595558452">4 圖 1 字</a> 以及 <a href="https://flame-engine.org/">Flame</a> 引擎等社群努力。<em>那麼，為什麼我們決定正式支持遊戲開發，以及我們如何決定工具包的初始版本應該包含哪些內容呢？</em> 在這篇文章中，我們將分享與 Flutter 遊戲開發工具的早期採用者進行的兩項使用者研究，並解釋他們的觀點如何塑造我們的策略和工具包的設計。</p>
+<p>我們從一項訪談研究開始，在研究中，我們分別與 6 位成功開發和發佈了 Flutter 遊戲的開發者（稱為 P01 到 P06）進行了會面。我們對這項研究有兩個目標。第一是了解哪些類型的資源對於開始進行 Flutter 遊戲開發最有用。第二是更好地了解 Flutter 開發者在遊戲開發中的動機、需求和痛點，並利用這種理解來戰略性地規劃我們對該領域的長期投資。為了補充訪談的定性研究結果，我們還在廣泛的 Flutter 使用者社群中針對這個主題進行了一項調查。</p>
+<p>在本文的其餘部分，我們首先總結了訪談和調查研究的主要發現，然後我們分享關於市場定位、文件和學習資源以及潛在的長期投資以支援 Flutter 遊戲開發者的建議。</p>
+<h3 id="開發者訪談的發現"><a href="#開發者訪談的發現" class="headerlink" title="開發者訪談的發現"></a>開發者訪談的發現</h3><h4 id="Flutter-遊戲開發者的背景"><a href="#Flutter-遊戲開發者的背景" class="headerlink" title="Flutter 遊戲開發者的背景"></a>Flutter 遊戲開發者的背景</h4><p>總體而言，我們發現了當今存在的兩種 Flutter 遊戲開發者原型：</p>
+<ul>
+<li><strong>應用程式 - 遊戲混合開發者：</strong> 他們是 Flutter 應用程式開發者，但他們也利用 Flutter 開發相對簡單的遊戲，而不需要使用其他工具。（P02、P04 和 P05）</li>
+<li><strong>計算機藝術家和圖形愛好者：</strong> 他們主要被 Flutter 提供的對圖形的控制程度所吸引，但他們可能不會將 Flutter 用於應用程式開發。（P01 和 P03）</li>
+</ul>
+<p>下表提供了有關我們在本次研究中所訪談的開發者背景的更多資訊。有幾位是由 Flame 團隊推薦給我們的。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/454630070af4bb296b7d344fad767d01/href">https://medium.com/media/454630070af4bb296b7d344fad767d01/href</a></iframe>
+
+<h4 id="使用-Flutter-開發遊戲的感知益處"><a href="#使用-Flutter-開發遊戲的感知益處" class="headerlink" title="使用 Flutter 開發遊戲的感知益處"></a>使用 Flutter 開發遊戲的感知益處</h4><p>參與者列出了使用 Flutter 開發遊戲的許多益處。我們列出了下面由多位參與者提到的那些益處：</p>
+<ul>
+<li><strong>簡單性：</strong> 參與者認為，與 Unity 和 Unreal 等大型遊戲引擎相比，使用 Flutter 開發 2D 休閒遊戲更容易上手，也更不複雜。（P03、P04）</li>
+<li><strong>控制：</strong> 參與者欣賞能夠在 IDE 中看到 Flutter 的原始碼，並完全直接地控制畫布。（P01、P02、P04）</li>
+<li><strong>生態系統：</strong> 開發者可以利用 Flutter 生態系統中的套件，例如資料持久性和音訊播放。（P01、P02、P03、P04）具體而言，P01 認為 Flutter 的音訊功能優於其他跨平台 UI 工具包。</li>
+<li><strong>跨平台：</strong> 參與者欣賞輕鬆部署到 iOS 和 Android 的便利性，並認為它提供了「真正的單一程式碼庫」。 (P01) 但是，由於遊戲引擎通常是跨平台的，所以這並不常被提及。</li>
+<li><strong>輕鬆建立 UI：</strong> Flutter 遊戲可以在其 UI 中輕鬆利用任何 Flutter Widget。（P04、P05）這對於更類似於應用程式的遊戲特別有用，這些遊戲不需要使用遊戲引擎（例如，P05 和 P06 開發的文字解謎遊戲）。</li>
+<li><strong>學習機會：</strong> Flutter 和 Flame 的開源性質提供了一個機會，透過開發遊戲來深入了解遊戲引擎和圖形管線。（P03）</li>
+<li><strong>Flame 遊戲引擎：</strong> 使用 Flame 的參與者普遍對該專案及其功能以及 Flame 提供的支持表示肯定。P04 特別是在 Flutter 上開發了一款遊戲，因為他發現了 Flame。</li>
+</ul>
+<h4 id="使用-Flutter-開發遊戲的感知挑戰"><a href="#使用-Flutter-開發遊戲的感知挑戰" class="headerlink" title="使用 Flutter 開發遊戲的感知挑戰"></a>使用 Flutter 開發遊戲的感知挑戰</h4><p>作為一個新興用例，在 Flutter 上開發遊戲並非沒有挑戰。參與者強調了他們在各自專案中遇到的以下問題：</p>
+<ul>
+<li><p>整合和生態系統：</p>
+<ul>
+<li>难以與 Play 遊戲服務整合。（P01、P03）</li>
+<li>缺少用於離線優先資料庫的良好選項，這些資料庫具有衝突管理功能。（P05）</li>
+<li>需要指導以選擇最佳的音訊外掛，該外掛可以同時在前景和背景中播放音訊。（P05）</li>
+<li>資產：尋找和建立高品質的遊戲資產非常耗時。（P02、P03、P04）</li>
+</ul>
+<blockquote>
+<ul>
+<li>這可能是最耗時的過程。如果我找不到彼此相符的資產，遊戲看起來就不會完全是我想要的樣子。而且由於我不太擅長製作藝術品，所以找到合適的資產對我來說是最具挑戰性的任務。 (P03) *</li>
+</ul>
+</blockquote>
+</li>
+<li><p>Flame 特定的挑戰：</p>
+<ul>
+<li>參與者指出，Flame 的文件對初學者不友好。特別是，<a href="https://github.com/flame-engine/forge2d">Forge2D</a>（Flame 的一部分）需要更好的文件。（P03、P04）</li>
+<li>參與者指出，Flame 中的碰撞檢測過於基礎。在兩個物體碰撞後，它不會處理物理效果，除非您使用 Forge2D。（P03）</li>
+</ul>
+</li>
+<li><p>Flutter SDK 和工具中缺少的功能：</p>
+<ul>
+<li>缺乏 3D 支援。（P02、P03）但是，這對這些參與者來說似乎並不重要。</li>
+<li>沒有用於濾鏡、效果、層或合成圖的直接著色器訪問權。（P01、P02）這對熱衷於電腦圖形的參與者來說比較重要。</li>
+<li>缺少用於控制更新率（例如 120hz）的使用者空間 API。（P01、P02）</li>
+<li>不確定 Flutter 是否擁有提供對畫面緩衝區可見性的著色器除錯工具。Xcode 有很棒的 OpenGL 除錯工具。（P01）</li>
+</ul>
+</li>
+<li><p>效能和套件大小：</p>
+<ul>
+<li>DevTools 在診斷具有遊戲迴圈的遊戲的效能問題時並不總是很有用。（P02）</li>
+<li>在低階 iOS 設備上存在動畫卡頓。著色器預熱解決方案很有用，但非常耗費人力。 (P05) 也沒有關於如何做到的視訊教學。(P03)</li>
+<li>缺乏對根據設備的效能特性調整應用程式渲染品質的支持。 (P05)</li>
+<li>Web 套件大小對於 Facebook Instant Game 等網頁遊戲平台來說太大。 (P05)</li>
+</ul>
+</li>
+</ul>
+<h4 id="將-Flutter-與其他遊戲開發工具進行比較"><a href="#將-Flutter-與其他遊戲開發工具進行比較" class="headerlink" title="將 Flutter 與其他遊戲開發工具進行比較"></a>將 Flutter 與其他遊戲開發工具進行比較</h4><p>由於本研究的選擇標準，所有參與者對其他遊戲引擎的經驗都非常有限。但是，他們就入門、控制感和套件生態系統提供了他們的印象。</p>
+<p>首先，參與者認為 Flutter&#x2F;Flame 比 Unity 和 Unreal 等大型遊戲引擎更容易上手和理解。（P01、P02、P03、P04）參與者發現，Unity 或 Unreal 中的許多功能與他們正在開發的遊戲類型無關。</p>
+<p>其次，由於我們的參與者是經驗豐富的程式設計師，他們發現很難從 Unity 或 Unreal 的低程式碼開發環境中獲得他們需要的控制權。</p>
+<blockquote>
+<p><em>我真的很喜歡深入研究並完全控制所有細節。因此，使用 Flutter，Flame 引擎非常開放。我覺得我真的擁有完全的控制權，而在 Unity 中，一切都隱藏起來了。他們試圖為休閒使用者自動化某些操作。 (P01)</em></p>
+</blockquote>
+<p>最後但並非最不重要的是，Flutter 的生態系統被認為優於其他輕量級遊戲引擎，例如 <a href="https://godotengine.org/">Godot</a>（P02、P03）。例如，P03 表示，使用 <code>package:hive</code>，在原生平台上進行資料持久化非常容易。他懷疑使用 Godot 可能需要原生程式碼。</p>
+<h3 id="對第一次使用-Flutter-開發遊戲的開發者有用的資源"><a href="#對第一次使用-Flutter-開發遊戲的開發者有用的資源" class="headerlink" title="對第一次使用 Flutter 開發遊戲的開發者有用的資源"></a>對第一次使用 Flutter 開發遊戲的開發者有用的資源</h3><p>所有參與者都提到，在開始使用 Flutter 開發遊戲時，他們需要更好的文件和學習資源。為了確定優先順序，我們要求參與者透過將不同類型的資源分類到三個桶中來評估它們對遊戲開發的重要性：<em>必須擁有</em>、<em>應該擁有</em> 和 <em>可以擁有</em>。以下清單顯示了所得的桶：</p>
+<p>「必須擁有」的資源包括：</p>
+<ul>
+<li><p>一個 <strong>範例遊戲</strong>，其中預先整合了常見的遊戲特定技術（例如音訊支援）和平台遊戲服務（例如 Google Play 服務）。</p>
+</li>
+<li><p><strong>一個專用的網站</strong>，其中包含所有遊戲開發資源以及有關第三方服務（例如套件、資產市場）的推薦。</p>
+</li>
+<li><p><strong>操作指南視訊</strong>，涵蓋基本的遊戲開發概念（例如遊戲迴圈）、與後端的整合、遊戲支援和變現服務。P03 也對像 <a href="https://www.youtube.com/playlist?list=PLjxrf2q8roU3ahJVrSgAnPjzkpGmL9Czl">無聊的表演</a> 等長篇視訊感興趣，這些視訊涵蓋了整個遊戲開發過程，包括疑難排解：</p>
+<blockquote>
+<ul>
+<li>我覺得兩種不同的 [視訊] 內容會更好。一種是類似於「本週 Widget」的非常短的內容，然後是類似於「無聊的 Flutter 表演」的內容，其中您會深入了解整個過程，並逐步完成建立該遊戲的所有步驟。 (P03)*</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>「應該擁有」的資源包括：</p>
+<ul>
+<li>一個專門針對 Flutter 遊戲的 Discord 頻道，這個頻道比 Flame 團隊的 Discord 更通用。</li>
+</ul>
+<p>「可以擁有」的資源包括：</p>
+<ul>
+<li>Codelabs</li>
+<li>教師指導的研討會</li>
+<li>Google 服務的信用額度（例如 GCP、廣告、Firebase）</li>
+<li>直接存取專用支援</li>
+</ul>
+<p>根據參與者的寶貴意見，我們在休閒遊戲工具包的初始版本中優先考慮了「必須擁有」的資源。</p>
+<h3 id="調查的發現"><a href="#調查的發現" class="headerlink" title="調查的發現"></a>調查的發現</h3><p>如前所述，我們進行了一項補充調查，以更廣泛地了解 Flutter 社群中的遊戲開發情況。以下圖表顯示了高階結果：</p>
+<h4 id="Flutter-使用者有興趣使用-Flutter-開發遊戲"><a href="#Flutter-使用者有興趣使用-Flutter-開發遊戲" class="headerlink" title="Flutter 使用者有興趣使用 Flutter 開發遊戲"></a>Flutter 使用者有興趣使用 Flutter 開發遊戲</h4><p>許多 Flutter 使用者（62.4%）不知道他們可以使用 Flutter 開發遊戲，這並不奇怪。然而，39.2% 的人有興趣了解更多。</p>
+<figure>
+<img alt="Results for the survey question “Did you know that you can use Flutter to build games?” 39.3% — “No, and I’m interested in learning more.” 37.6% — “Yes.” 23.2% — “No, I’m not interested in the topic.”" src="https://cdn-images-1.medium.com/max/1024/0*n0cpV0PkueLSiSYx" />
+</figure>
+
+<p>許多 Flutter 使用者對使用 Flutter 開發遊戲的廣泛興趣也反映在許多 Flutter 使用者對遊戲開發並不陌生這一事實中。在 936 位受訪者中，有 500 多人有使用 Unity 的經驗，130 多人有使用 Unreal 的經驗，120 多人有使用 <a href="https://docs.flame-engine.org/1.0.0/#">Flame</a> 的經驗，80 多人有使用 Godot 的經驗。看到這麼多開發者已經具備遊戲開發技能，這令人鼓舞。</p>
+<h4 id="許多-Flutter-遊戲開發者才剛起步"><a href="#許多-Flutter-遊戲開發者才剛起步" class="headerlink" title="許多 Flutter 遊戲開發者才剛起步"></a>許多 Flutter 遊戲開發者才剛起步</h4><p>然後，我們詢問那些了解或對 Flutter 開發遊戲的能力感興趣的人，他們在遊戲開發過程中處於什麼階段。在這個群體中，43.2% 尚未開始具體的遊戲專案，這表明需要入門支持。</p>
+<figure>
+<img alt="Summarized responses to the question: “which of the following statements best describe your experience using Flutter to build games?”" src="https://cdn-images-1.medium.com/max/1024/0*ZrpkIfhAQ0MW1RYp" />
+</figure>
+
+<h4 id="比我們想像的更多-Flutter-遊戲已經出現"><a href="#比我們想像的更多-Flutter-遊戲已經出現" class="headerlink" title="比我們想像的更多 Flutter 遊戲已經出現"></a>比我們想像的更多 Flutter 遊戲已經出現</h4><p>我們要求受訪者向我們指出他們使用 Flutter 開發的任何遊戲。令我們驚訝的是，我們收到了 148 個回覆。其中許多遊戲是 2D 解謎遊戲或 <a href="https://www.google.com/search?q=platformers+definition&amp;oq=platform&amp;aqs=chrome.0.69i59j46i67i433j69i64l3j69i65j69i60j69i61.2458j0j7&amp;sourceid=chrome&amp;ie=UTF-8">平台遊戲</a>，而其中一小部分嘗試使用 Flutter 創造擬 3D 效果。</p>
+<p>使用 Flutter 開發非常成功的行動遊戲似乎是完全可能的。例如，我們透過這項調查了解的 Flutter 遊戲 <a href="https://play.google.com/store/apps/details?id=com.he2apps.kelimelik&amp;hl=en_US&amp;gl=US">Kelimelik</a> 在撰寫本文時在 Google Play 上獲得了 4.5 星的評分，有 356,000 多條評論和 500 萬次安裝！</p>
+<figure>
+<img alt="The kelimelik game’s listing on the Google Play store." src="https://cdn-images-1.medium.com/max/1024/1*gq-r9Mn1BzgKL8XYLnFsEQ.png" />
+</figure>
+
+<h4 id="Flutter-使用者希望更多關於遊戲開發的文件"><a href="#Flutter-使用者希望更多關於遊戲開發的文件" class="headerlink" title="Flutter 使用者希望更多關於遊戲開發的文件"></a>Flutter 使用者希望更多關於遊戲開發的文件</h4><p>當我們詢問受訪者什麼因素阻礙了他們在遊戲專案中的進展時，我們收到了 31 個回覆。其中許多與缺乏文件有關：</p>
+<ul>
+<li>「沒有足夠的教學，我沒有理解透徹。」</li>
+<li>「沒有足夠的資源&#x2F;教學&#x2F;文件 (flutter flame)。」</li>
+<li>「文件對初學者遊戲開發者並不友好。在教學或案例研究演練中，還有很多工作要做，才能為 Flame 元件建立一個非常清晰的入門介紹，並提供常見的場景，以幫助新入門者。」</li>
+</ul>
+<p>這個回饋呼應了我們從訪談研究中了解到的內容。調查受訪者還提到了缺少 3D 支援、使用著色器遇到困難以及特定硬體和視覺效果（例如陰影）的效能問題。</p>
+<h3 id="建議"><a href="#建議" class="headerlink" title="建議"></a>建議</h3><p>我們的研究結果顯示了在 Flutter 上開發 2D 休閒遊戲的潛力。一些 Flutter 使用者嘗試過並成功發佈了高評分的遊戲，還有更多使用者有興趣在未來的幾個月裡開始嘗試。</p>
+<p>為了讓這些新的遊戲開發者取得成功，我們必須適當地定位 Flutter 在市場上其他遊戲開發工具中的位置，並利用 Flutter 開放和參與的性質來完善其對遊戲開發的支持。</p>
+<p>基於此，我們想提出一些建議，這些建議不僅針對 Google 的 Flutter 團隊，也針對 Flutter 社群的套件作者、工具開發者和內容創作者。</p>
+<h3 id="市場定位"><a href="#市場定位" class="headerlink" title="市場定位"></a>市場定位</h3><p>研究結果表明了我們在遊戲開發工具市場中定位 Flutter 時需要考慮的三个维度：</p>
+<p><strong>遊戲類型：</strong></p>
+<ul>
+<li>以 2D 休閒遊戲為目標是一個良好的起點。</li>
+<li>解謎遊戲和平台遊戲是在 Flutter 中開發的成功子類別。</li>
+</ul>
+<p><strong>開發者類型：</strong></p>
+<ul>
+<li>希望利用 Flutter 的休閒遊戲開發能力的 Flutter 應用程式開發者（例如 P02、P04 和 P05）。</li>
+<li>被 Flutter 提供的高度控制和開放性所吸引的計算機藝術家和圖形愛好者（例如 P01 和 P03）。</li>
+</ul>
+<p><strong>遊戲開發團隊類型：</strong></p>
+<ul>
+<li>我們可以專注於獨立遊戲開發者和混合遊戲&#x2F;應用程式代理商，這些代理商的專業角色較少，可以從 Flutter 的跨平台功能中獲益更多。</li>
+</ul>
+<h4 id="文件和學習資源"><a href="#文件和學習資源" class="headerlink" title="文件和學習資源"></a>文件和學習資源</h4><p>根據訪談研究的使用者意見，我們認為 Flutter 社群中的創作者和教育工作者可以透過專注於建立開源範例遊戲、操作指南視訊和為遊戲開發策劃資源列表來發揮最大作用。我們在 I&#x2F;O 上發佈的 Flutter 休閒遊戲工具包是我們沿著這些方向組織資源並提高它們在 Flutter 使用者中的可見度的第一次嘗試。</p>
+<h4 id="對-Flutter-API-和功能的潛在投資"><a href="#對-Flutter-API-和功能的潛在投資" class="headerlink" title="對 Flutter API 和功能的潛在投資"></a>對 Flutter API 和功能的潛在投資</h4><p>在研究過程中，參與者指出了他們希望 Flutter SDK 在未來更好地支援的一些主要產品功能：</p>
+<ul>
+<li>著色器的可用性和支援（<a href="https://github.com/flutter/flutter/issues/93800">GitHub 議題</a>）。或者，如果函式庫維護者（例如 Flame）直接使用著色器 API，可能就足夠了（例如，P03 希望遊戲引擎中有一個更高階的抽象）。</li>
+<li>Web 應用程式套件大小。一位參與者指出了將遊戲擴展到基於網頁的遊戲平台（例如 Facebook Instant Game）的問題。由於 Web 套件大小過大，他們最終選擇了 HTML 渲染後端，而不是速度更快但更大的 Canvas Kit 後端。（P05）</li>
+<li>Windows&#x2F;Steam 支援。多位參與者表達了對嘗試使用他們的遊戲的全新 Windows 支援的濃厚興趣。其中一人提到，Windows 是最需要支持的平台，特別是如果您打算在 Steam 上發佈您的遊戲。（P03）但是，鑑於沒有參與者或我們的團隊成員在 Windows 上測試過遊戲開發或整合 Steam，所以這種情況仍然不明確。</li>
+</ul>
+<p>除了這三個改進領域之外，我們最近開始與社群成員合作，對與遊戲相關的議題進行分類，並將它們標記為 <a href="https://github.com/flutter/flutter/labels/a%3A%20gamedev">a: gamedev</a>。</p>
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>我們從這兩項研究中了解到，包括 Flutter 使用者對遊戲開發的廣泛興趣，以及現有 Flutter 遊戲開發者所欣賞的 Flutter 的簡單性和高度控制，讓團隊對追求遊戲開發作為可行的用例充滿信心。休閒遊戲工具包是我們在這個領域的第一項投資，我們期待在後續研究中了解我們的社群成員如何利用它。</p>
+<h3 id="致謝"><a href="#致謝" class="headerlink" title="致謝"></a>致謝</h3><p><a href="https://medium.com/@zoeyfan_43394">Zoey Fan</a>、<a href="https://twitter.com/chrisfujino">Christopher Fujino</a> 和 <a href="https://medium.com/@jayoung.lee">JaYoung Lee</a> 參與了這項研究，<a href="https://medium.com/@shaza">Shams Zakhour</a> 編輯了這篇文章。我們要感謝參與這項研究的使用者，以及 Flame 團隊在參與者招募方面的支持。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f95fb3406d51" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/perspectives-from-early-adopters-of-flutter-as-a-game-development-tool-f95fb3406d51">來自 Flutter 遊戲開發工具早期採用者的觀點</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/7e790f7c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/7e790f7c.html" class="post-title-link" itemprop="url">【文章翻譯】Introducing Flutter 3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-11 19:49:05" itemprop="dateCreated datePublished" datetime="2022-05-11T19:49:05+08:00">2022-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="邁向多平台-UI-開發的旅程：手機、桌面和網頁"><a href="#邁向多平台-UI-開發的旅程：手機、桌面和網頁" class="headerlink" title="邁向多平台 UI 開發的旅程：手機、桌面和網頁"></a>邁向多平台 UI 開發的旅程：手機、桌面和網頁</h2><p><em>我們很興奮地宣布，作為 Google I&#x2F;O 主題演講的一部分，Flutter 3 正式推出。Flutter 3 完成了我們從以行動為中心的框架到多平台框架的路線圖，其中包含 macOS 和 Linux 桌面應用程式支援的可用性，以及 Firebase 整合的改進、新的生產力與效能功能，以及對 Apple Silicon 的支援。</em></p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ZQ9Xa7CINFVMA95w" />
+</figure>
+
+<h3 id="Flutter-3-的旅程"><a href="#Flutter-3-的旅程" class="headerlink" title="Flutter 3 的旅程"></a>Flutter 3 的旅程</h3><p>我們最初開發 Flutter 的目標是徹底改變應用程式開發：將網頁的迭代開發模式與硬體加速的圖形渲染和像素級別控制（以前是遊戲的專利）結合起來。在 Flutter 1.0 beta 發佈後的過去四年裡，我們在這些基礎之上不斷發展，新增了新的框架功能和 Widget、與底層平台更深層次的整合、豐富的套件函式庫，以及許多效能和工具方面的改進。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*pL2z2iYzWPrMu5hw" />
+</figure>
+
+<p>隨著產品的成熟，越來越多的人開始使用 Flutter 構建應用程式。如今，使用 Flutter 構建的應用程式超過 500,000 個。來自 data.ai 等研究機構的分析，以及公開的見證表明，Flutter 被許多領域的 <a href="https://flutter.dev/showcase">廣泛客戶群</a> 使用：從像 <a href="https://play.google.com/store/apps/details?id=com.tencent.mm&amp;hl=en_US&amp;gl=US">微信</a> 這樣的社交應用程式，到像 <a href="https://apps.apple.com/us/app/betterment-investing-saving/id393156562">Betterment</a> 和 <a href="https://play.google.com/store/apps/details?id=com.nu.production&amp;hl=en_US&amp;gl=US">Nubank</a> 這樣的金融和銀行應用程式；從像 <a href="https://play.google.com/store/apps/details?id=com.zzkko&amp;hl=en_US&amp;gl=US">SHEIN</a> 和 <a href="https://apps.apple.com/us/app/trip-com-hotels-flights-trains/id681752345">trip.com</a> 這樣的電商應用程式，到像 <a href="https://fastic.com/">Fastic</a> 和 <a href="https://auspreneur.com.au/tabcorp-adopts-googles-flutter-platform/">Tabcorp</a> 這樣的休閒應用程式；從像 <a href="https://www.press.bmwgroup.com/global/article/detail/T0328610EN/the-my-bmw-app:-new-features-and-tech-insights-for-march-2021?language=en">My BMW</a> 這樣的伴侶應用程式，到像 <a href="https://apps.apple.com/app/id1506827551">巴西政府</a> 這樣的公共機構。</p>
+<blockquote>如今，使用 Flutter 構建的應用程式超過 500,000 個。</blockquote>
+
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2F8RmsstcNE1Y%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3D8RmsstcNE1Y&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2F8RmsstcNE1Y%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/2abf9b2ad16ba8d94fa7f54c5768ebdc/href">https://medium.com/media/2abf9b2ad16ba8d94fa7f54c5768ebdc/href</a></iframe>
+
+<p>開發人員告訴我們，Flutter 有助於更快速地為更多平台構建更精美的應用程式。在我們最近的使用者研究中：</p>
+<ul>
+<li>91% 的開發人員同意 Flutter 縮短了構建和發佈應用程式所需的時間。</li>
+<li>85% 的開發人員同意 Flutter 使他們的應用程式比以前更精美。</li>
+<li>85% 的開發人員同意它使他們能夠為比以前更多的平台發佈應用程式。</li>
+</ul>
+<p>在 <a href="https://tech-blog.sonos.com/posts/renovating-setup-with-flutter/">Sonos 最近的一篇部落格文章</a> 中，他們討論了他們改進的設定體驗，並強調了其中第二點：</p>
+<blockquote>「毫不誇張地說，[Flutter] 解鎖了我們團隊以前從未實現的「*高級*」程度。對我們的設計師來說，最重要的是，可以輕鬆構建新的 UI，意味著我們的團隊花在對規格說「不」上的時間更少，花在迭代上的時間更多。如果這聽起來很划算，我們建議您試試 Flutter - 我們很慶幸我們嘗試了。」</blockquote>
+
+<h3 id="介紹-Flutter-3"><a href="#介紹-Flutter-3" class="headerlink" title="介紹 Flutter 3"></a>介紹 Flutter 3</h3><p>今天，我們推出 Flutter 3，這是我們完成 Flutter 支援平台的旅程的成果。使用 Flutter 3，您可以從單個程式碼庫中為六個平台構建精美的體驗，為開發人員提供無與倫比的生產力，並讓新創公司能夠從第一天起就將新想法推向整個可服務市場。</p>
+<p>在之前的版本中，我們在 iOS 和 Android 的基礎上補充了 <a href="https://medium.com/flutter/flutter-web-support-hits-the-stable-milestone-d6b84e83b425">網頁</a> 和 <a href="https://medium.com/flutter/announcing-flutter-for-windows-6979d0d01fed">Windows 支援</a>，現在 <strong>Flutter 3 新增了對 macOS 和 Linux 應用程式的穩定支援</strong>。新增平台支援需要的更多是渲染像素：它還包括新的輸入和互動模型、編譯和構建支援、無障礙性和國際化，以及平台特定的整合。我們的目標是讓您能夠靈活地充分利用底層作業系統，同時根據需要分享盡可能多的 UI 和邏輯。</p>
+<p>在 macOS 上，我們在支援 Intel 和 Apple Silicon 上投資了，並提供了 <a href="https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary">通用二進位檔</a> 支援，允許應用程式封裝在兩種架構上都能原生執行的可執行檔。在 Linux 上，Canonical 和 Google 合作提供了高度整合的、最優的開發選項。</p>
+<p><a href="https://superlist.com/">Superlist</a> 是 Flutter 如何實現精美的桌面體驗的一個很好的範例，它今天以 beta 版推出。Superlist 提供超級加強的協作功能，透過一個新的應用程式將清單、任務和自由格式內容結合在一起，重新詮釋待辦事項清單和個人規劃。Superlist 團隊選擇 Flutter 是因為它能夠提供快速且高度品牌化的桌面體驗，我們認為他們迄今為止的進展證明了為什麼這是一個非常棒的選擇。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FYRuQj7mlH2I%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DYRuQj7mlH2I&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FYRuQj7mlH2I%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/e55485a40119915c1ee67f6e9bd45938/href">https://medium.com/media/e55485a40119915c1ee67f6e9bd45938/href</a></iframe>
+
+<p>Flutter 3 還改進了許多基礎功能，包括改進的效能、Material You 支援和生產力更新。</p>
+<p>除了上面提到的工作之外，透過這個版本，Flutter 在 <em>開發</em> 上完全原生於 <a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a>。雖然 Flutter 自從推出以來就一直與搭載 M1 的 Apple 設備相容，但 Flutter 現在充分利用了 <a href="https://medium.com/dartlang/announcing-dart-2-14-b48b9bb2fb67">Dart 對 Apple Silicon 的支援</a>，使搭載 M1 的設備上的編譯速度更快，並支援 <a href="https://developer.apple.com/documentation/apple-silicon/building-a-universal-macos-binary">通用二進位檔</a> <strong>用於 macOS 應用程式。</strong></p>
+<p>我們對 <a href="https://m3.material.io/">Material Design 3</a> 的工作在這個版本中已基本完成，讓開發人員能夠利用自適應的跨平台設計系統，該系統提供動態色彩方案和更新的視覺組件：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LM_w2DE9aM-_9J0Z" />
+</figure>
+
+<p>我們詳細的技術部落格文章將深入探討這些功能以及 Flutter 3 中的許多其他新功能。</p>
+<p>Flutter 由 Dart 提供支援，Dart 是一種高生產力、可移植的語言，適用於多平台開發。我們在此週期的 Dart 工作包括新的語言功能，這些功能可以減少樣板程式碼並幫助提高可讀性、實驗性的 RISC-V 支援、升級的 linter 和新的文件。若要進一步了解 Dart 2.17 中的所有新改進，請查看 <a href="https://medium.com/dartlang">專門的部落格文章</a>。</p>
+<h3 id="Firebase-和-Flutter"><a href="#Firebase-和-Flutter" class="headerlink" title="Firebase 和 Flutter"></a>Firebase 和 Flutter</h3><p>當然，構建應用程式需要的不仅仅是 UI 框架。應用程式發行商需要一套完整的工具來幫助您構建、發佈和運行應用程式，包括身份驗證、資料儲存、雲端函數和裝置測試等服務。有多種服務支援 Flutter，包括 <a href="https://docs.sentry.io/platforms/flutter/">Sentry</a>、<a href="https://appwrite.io/docs/getting-started-for-flutter">AppWrite</a> 和 <a href="https://docs.amplify.aws/start/q/integration/flutter/">AWS Amplify</a>。</p>
+<p>Google 的應用程式服務產品是 Firebase，<a href="https://www.slashdata.co/developer-program-benchmarking/">SlashData 開發者基准研究</a> 表明 62% 的 Flutter 開發人員在他們的應用程式中使用 Firebase。因此，在過去的幾個版本中，我們一直在與 Firebase 合作，將 Flutter 作為一級整合擴展和改進整合。這包括將 Flutter 的 Firebase Plugin 提升至 1.0 版本，新增更好的文件和工具，以及像 <a href="https://pub.dev/packages/flutterfire_ui">FlutterFire UI</a> 這樣的新的 Widget，為開發人員提供可重複使用的 UI 用於身份驗證和檔案螢幕。</p>
+<p>今天，我們宣布將 Flutter&#x2F;Firebase 整合升級為 Firebase 提供的全功能核心部分。我們將原始碼和文件移至 Firebase 的主要存取庫和網站，您可以信賴我們會讓 Flutter 的 Firebase 支援與 Android 和 iOS 同步發展。</p>
+<p>此外，我們對支援使用 Crashlytics（Firebase 受歡迎的即時崩潰報告服務）的 Flutter 應用程式進行了重大改進。透過 <a href="https://firebase.google.com/docs/crashlytics">Flutter Crashlytics Plugin</a> 的更新，您可以即時追蹤致命錯誤，為您提供與其他 iOS 和 Android 開發人員相同的功能集。這包括重要的警報和指標，例如「無崩潰使用者」，可以幫助您掌握應用程式的穩定性。Crashlytics 分析管道已升級，以改進 Flutter 崩潰的聚類，讓您可以更快地對問題進行分類、優先排序和修復。最後，我們簡化了 Plugin 安裝過程，因此您只需幾個步驟即可從 Dart 程式碼中啟動並運行 Crashlytics。</p>
+<h3 id="Flutter-休閒遊戲工具包"><a href="#Flutter-休閒遊戲工具包" class="headerlink" title="Flutter 休閒遊戲工具包"></a>Flutter 休閒遊戲工具包</h3><p>對於大多數開發人員來說，Flutter 是一個應用程式框架。但是，圍繞休閒遊戲開發的社群也在不斷增長，他們利用了 Flutter 提供的硬體加速圖形支援，以及像 <a href="https://flame-engine.org/">Flame</a> 這樣的開源遊戲引擎。我們希望讓休閒遊戲開發人員更容易入門，因此，在今天的 I&#x2F;O 上，我們宣布 <a href="https://flutter.dev/games">休閒遊戲工具包</a>，它提供了一套包含範例和最佳實務的入門套件，以及廣告和雲端服務的信用額度。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*wK4YI3N-Hh2vtDQ2" />
+</figure>
+
+<p>雖然 Flutter 不是為高強度 3D 動作遊戲而設計的，但甚至一些這樣的遊戲也開始使用 Flutter 來處理非遊戲 UI，包括像 <a href="https://play.google.com/store/apps/details?id=com.tencent.ig">PUBG Mobile</a> 這樣的熱門遊戲，該遊戲擁有數億使用者。為了讓 I&#x2F;O 更上一層樓，我們想看看我們可以將技術推到什麼程度，因此我們製作了一個有趣的彈珠台遊戲，該遊戲由 Firebase 和 Flutter 的 Web 支援提供支援。I&#x2F;O 彈珠台提供了一個自訂的桌子，設計圍繞著 Google 的四個最喜歡的吉祥物：Flutter 的 Dash、Firebase 的 Sparky、Android 機器人和 Chrome 恐龍，讓您可以與其他人競爭高分。我們認為這是一個展示 Flutter 多功能性的有趣方式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*87xQ1AYdEF2YrmQ1" />
+</figure>
+
+<h3 id="由-Google-贊助，社群提供支援"><a href="#由-Google-贊助，社群提供支援" class="headerlink" title="由 Google 贊助，社群提供支援"></a>由 Google 贊助，社群提供支援</h3><p>我們喜歡 Flutter 的一點是，它不仅仅是 Google 的產品，它是「大家的」產品。開源意味著我們都可以參與其中，並在它的成功中發揮作用，無論是貢獻新的程式碼還是文件，建立賦予核心框架新能力的套件，撰寫書籍和培訓課程來教導他人，還是幫助組織活動和使用者群組。</p>
+<p>為了展示社群的最佳一面，我們最近與 DevPost 合作，贊助了一項拼圖黑客挑戰賽，讓開發人員有机会透過重新構思經典的滑動拼圖來展示他們的技能。這證明了 Web、桌面和行動如何整合在一起：現在我們都可以透過網路或商店玩這些遊戲。</p>
+<p>我們製作了這個影片來展示一些我們最喜歡的投稿和獲獎作品；我們認為您會喜歡的：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fl6hw4o6_Wcs%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dl6hw4o6_Wcs&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fl6hw4o6_Wcs%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/14a9a66c075fa562dfcae0239f446826/href">https://medium.com/media/14a9a66c075fa562dfcae0239f446826/href</a></iframe>
+
+<p>感謝您對 Flutter 的支援，歡迎來到 Flutter 3！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*mt5JTb-02GrFFtCnW20Tqg.png" />
+</figure>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5eb69151622f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/introducing-flutter-3-5eb69151622f">Introducing Flutter 3</a> was originally published in <a href="https://medium.com/flutter">Flutter</a> on Medium, where people are continuing the conversation by highlighting and responding to this story.</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/a17d9997.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/a17d9997.html" class="post-title-link" itemprop="url">【文章翻譯】What’s new in Flutter 3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-11 19:48:56" itemprop="dateCreated datePublished" datetime="2022-05-11T19:48:56+08:00">2022-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="深入了解最新版本，包括-macOS-和-Linux-穩定版本、效能提升等等！"><a href="#深入了解最新版本，包括-macOS-和-Linux-穩定版本、效能提升等等！" class="headerlink" title="深入了解最新版本，包括 macOS 和 Linux 穩定版本、效能提升等等！"></a>深入了解最新版本，包括 macOS 和 Linux 穩定版本、效能提升等等！</h2><p>是時候再次發佈 Flutter 穩定版本了——我們非常自豪地宣布 <strong>Flutter 3</strong>！僅僅三個月前，我們宣布了 Flutter 對 Windows 的支援。今天，我們很高興地宣布，除了 Windows 之外，Flutter 現在也穩定支援 macOS 和 Linux！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*K1Ru7PVkH74N56hgjBTjjQ.png" />
+</figure>
+
+<p>感謝 Flutter 貢獻者的辛勤工作，我們已合併了 5248 個 Pull Request！</p>
+<p>我們在此版本中有一些令人興奮的消息要宣布，包括 Flutter 對 macOS 和 Linux 的支援更新、重大的效能提升、行動和 Web 更新——以及更多！此外，我們還有一些關於減少對舊版 Windows 支援的資訊，以及一小部分重大變更。好了，讓我們開始吧！</p>
+<h3 id="隨時準備好在所有桌面平台上投入生產"><a href="#隨時準備好在所有桌面平台上投入生產" class="headerlink" title="隨時準備好在所有桌面平台上投入生產"></a>隨時準備好在所有桌面平台上投入生產</h3><p>Linux 和 macOS 已達到穩定狀態，並包含以下功能：</p>
+<h4 id="階層式選單和對-macOS-系統選單列的支援"><a href="#階層式選單和對-macOS-系統選單列的支援" class="headerlink" title="階層式選單和對 macOS 系統選單列的支援"></a>階層式選單和對 macOS 系統選單列的支援</h4><p>您現在可以使用 PlatformMenuBar Widget 在 macOS 上建立平台渲染的選單列，它支援插入僅平台選單，以及控制 macOS 應用程式選單中顯示的內容。</p>
+<figure>
+<img alt="A user clicks a menu which shows submenus on Mac" src="https://cdn-images-1.medium.com/max/1024/1*kS32jfapJAvSyspT3aOH5A.gif" />
+<figcaption>階層式選單示範</figcaption>
+</figure>
+
+<h4 id="在所有桌面平台上完全支援國際文字輸入"><a href="#在所有桌面平台上完全支援國際文字輸入" class="headerlink" title="在所有桌面平台上完全支援國際文字輸入"></a>在所有桌面平台上完全支援國際文字輸入</h4><p>國際文字輸入，包括對使用文字輸入法編輯器 (IME)（例如中文、日語和韓語）的語言的支援，在所有三個桌面平台上都得到完全支援，包括 Sogou 和 Google 日語輸入等第三方輸入法。</p>
+<h4 id="所有桌面平台上的無障礙功能"><a href="#所有桌面平台上的無障礙功能" class="headerlink" title="所有桌面平台上的無障礙功能"></a>所有桌面平台上的無障礙功能</h4><p>Windows、macOS 和 Linux 的 Flutter 支援無障礙服務，例如螢幕閱讀器、無障礙導航和反色。</p>
+<h4 id="macOS-上預設為通用二進制檔案"><a href="#macOS-上預設為通用二進制檔案" class="headerlink" title="macOS 上預設為通用二進制檔案"></a>macOS 上預設為通用二進制檔案</h4><p>從 Flutter 3 開始，Flutter macOS 桌面應用程式被建構為通用二進制檔案，原生支援現有的基於 Intel 的 Mac 和 Apple 最新推出的 Apple Silicon 設備。</p>
+<h4 id="棄用-Windows-7-8-開發"><a href="#棄用-Windows-7-8-開發" class="headerlink" title="棄用 Windows 7&#x2F;8 開發"></a>棄用 Windows 7&#x2F;8 開發</h4><p>在此版本中，我們將推薦的 Windows 開發版本提升到 Windows 10。雖然我們沒有阻止在舊版本（Windows 7、Windows 8、Windows 8.1）上進行開發，但這些版本 <a href="https://docs.microsoft.com/en-us/lifecycle/faq/windows">不再受 Microsoft 支援</a>，而且我們對這些版本的測試有限。雖然我們將繼續為舊版本提供「盡力而為」的支援，但我們鼓勵您升級。</p>
+<blockquote>**注意：**我們繼續提供對在 Windows 7 和 Windows 8 上 *運行* 的 Flutter 應用程式的支援；此更改僅影響推薦的開發環境。</blockquote>
+
+<h3 id="行動更新"><a href="#行動更新" class="headerlink" title="行動更新"></a>行動更新</h3><p>我們對行動平台的更新包括以下內容：</p>
+<h4 id="可折疊手機支援"><a href="#可折疊手機支援" class="headerlink" title="可折疊手機支援"></a>可折疊手機支援</h4><p>Flutter 3 版本支援可折疊行動設備。在由 Microsoft 帶頭合作的過程中，新功能和 Widget 讓您可以在可折疊設備上建立動態且令人愉悅的體驗。</p>
+<p>作為此工作的一部分，<a href="https://master-api.flutter.dev/flutter/widgets/MediaQuery-class.html">MediaQuery</a> 現在包含一個 <a href="https://master-api.flutter.dev/flutter/dart-ui/DisplayFeature-class.html">DisplayFeatures</a> 清單，描述設備元素（如鉸鏈、摺疊和切口）的邊界和狀態。此外，<a href="https://master-api.flutter.dev/flutter/widgets/DisplayFeatureSubScreen-class.html">DisplayFeatureSubScreen</a> Widget 現在會將其子 Widget 定位在不與 DisplayFeatures 的邊界重疊的位置，並且已經與框架的預設對話方塊和彈出視窗整合在一起，使 Flutter <strong>開箱即用</strong> 地感知和對這些元素做出響應。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*z8pzEtJOPFv-xzw2" />
+</figure>
+
+<p>非常感謝 Microsoft 團隊，尤其是 <a href="https://github.com/andreidiaconu">@andreidiaconu</a>，他們的貢獻！</p>
+<p>嘗試 <a href="https://docs.microsoft.com/en-us/dual-screen/flutter/samples">Surface Duo 模擬器範例</a>，其中包括一個帶有 Flutter 圖庫的特殊分支，以查看 Flutter 的雙顯示器在實際情況下的運行情況。</p>
+<h4 id="iOS-可變更新率支援"><a href="#iOS-可變更新率支援" class="headerlink" title="iOS 可變更新率支援"></a>iOS 可變更新率支援</h4><p>Flutter 現在支援具有 ProMotion 顯示器的 iOS 設備（包括 iPhone 13 Pro 和 iPad Pro）上的可變更新率。在這些設備上，Flutter 應用程式可以以高達 120 赫茲的更新率渲染，而之前限制為 60 赫茲。這在快速動畫（例如捲軸）期間產生更流暢的體驗。查看 <a href="http://flutter.dev/go/variable-refresh-rate">flutter.dev&#x2F;go&#x2F;variable-refresh-rate</a> 以獲取更多詳細資訊。</p>
+<h4 id="簡化的-iOS-發佈"><a href="#簡化的-iOS-發佈" class="headerlink" title="簡化的 iOS 發佈"></a>簡化的 iOS 發佈</h4><p>我們已在 <a href="https://github.com/flutter/flutter/pull/97672">flutter build ipa 命令</a> 中加入了新選項，以簡化 iOS 應用程式的發佈。當您準備好發佈到 TestFlight 或 App Store 時，運行 flutter build ipa 以建立 Xcode 檔案 (.xcarchive 檔案) 和應用程式捆綁 (.ipa 檔案)。您可以選擇性地加入 —-export-method ad-hoc、—-export-method development 或 —-export-method enterprise。建立應用程式捆綁後，透過 <a href="https://apps.apple.com/us/app/transporter/id1450874784">Apple Transport macOS 應用程式</a> 或在命令列上使用 xcrun altool 將其上傳到 Apple（運行 man altool 以獲取 App Store Connect API 金鑰驗證指示）。上傳後，您的應用程式即可發佈到 <a href="https://docs.flutter.dev/deployment/ios#release-your-app-to-the-app-store">TestFlight 或 App Store</a>。在設定初始 <a href="https://docs.flutter.dev/deployment/ios#review-xcode-project-settings">Xcode 專案設定</a>（如顯示名稱和應用程式圖標）後，您不再需要打開 Xcode 來發佈應用程式。</p>
+<h4 id="Gradle-版本更新"><a href="#Gradle-版本更新" class="headerlink" title="Gradle 版本更新"></a>Gradle 版本更新</h4><p>如果您使用 Flutter 工具建立新的專案，您可能會注意到，產生的檔案現在使用 Gradle 和 Android Gradle Plugin 的最新版本。對於現有的專案，您需要手動將 Gradle 的版本提升到 7.4，將 Android Gradle Plugin 的版本提升到 7.1.2。</p>
+<h4 id="停止支援-32-位-iOS-iOS-9-iOS-10"><a href="#停止支援-32-位-iOS-iOS-9-iOS-10" class="headerlink" title="停止支援 32 位 iOS&#x2F;iOS 9&#x2F;iOS 10"></a>停止支援 32 位 iOS&#x2F;iOS 9&#x2F;iOS 10</h4><p>正如我們在 2022 年 2 月的 2.10 穩定版本中所宣布的那樣，Flutter 對 32 位 iOS 設備和 iOS 版本 9 和 10 的支援即將結束。此更改影響 iPhone 4S、iPhone 5、iPhone 5C，以及第 2 代、第 3 代和第 4 代 iPad 設備。Flutter 3 是最後一個支援這些 iOS 版本和設備的穩定版本。</p>
+<p>若要進一步了解此更改，請查看 <a href="http://flutter.dev/go/rfc-32-bit-ios-unsupported">RFC：停止支援 32 位 iOS 設備</a>。</p>
+<h3 id="Web-更新"><a href="#Web-更新" class="headerlink" title="Web 更新"></a>Web 更新</h3><p>我們對 Web 應用程式的更新包括以下內容：</p>
+<h4 id="圖片解碼"><a href="#圖片解碼" class="headerlink" title="圖片解碼"></a>圖片解碼</h4><p>Flutter 網頁現在會自動檢測並在支援它的瀏覽器中使用 ImageDecoder API。截至今天，大多數基於 Chromium 的瀏覽器（Chrome、Edge、Opera、Samsung Browser 等等）都加入了這個 API。</p>
+<p>新的 API 使用瀏覽器的內建圖片編解碼器，在主執行緒之外異步地解碼圖片。這將圖片解碼速度提高了 2 倍，而且它永遠不會阻塞主執行緒，消除了之前由圖片引起的任何卡頓。</p>
+<h4 id="Web-應用程式生命週期"><a href="#Web-應用程式生命週期" class="headerlink" title="Web 應用程式生命週期"></a>Web 應用程式生命週期</h4><p>Flutter Web 應用程式的新生命週期 API 讓您能夠從託管的 HTML 頁面控制 Flutter 應用的引導過程，並幫助 Lighthouse 分析應用的效能。這適用於許多用例，包括以下常用的場景：</p>
+<ul>
+<li>啟動畫面。</li>
+<li>載入指示器。</li>
+<li>在 Flutter 應用之前顯示的純 HTML 互動式登陸頁面。</li>
+</ul>
+<p>如需更多資訊，請查看 docs.flutter.dev 上的 <a href="https://docs.flutter.dev/development/platform-integration/web/initialization">自訂 Web 應用程式初始化</a>。</p>
+<h3 id="工具更新"><a href="#工具更新" class="headerlink" title="工具更新"></a>工具更新</h3><p>我們對 Flutter 和 Dart 工具的更新包括：</p>
+<h4 id="更新的-lint-套件"><a href="#更新的-lint-套件" class="headerlink" title="更新的 lint 套件"></a>更新的 lint 套件</h4><p>lint 套件的 2.0 版本已發佈：</p>
+<ul>
+<li>Flutter：<a href="https://pub.dev/packages/flutter_lints/versions/2.0.0">https://pub.dev/packages/flutter_lints&#x2F;versions&#x2F;2.0.0</a></li>
+<li>Dart：<a href="https://pub.dev/packages/lints/versions/2.0.0">https://pub.dev/packages/lints/versions/2.0.0</a></li>
+</ul>
+<p>使用 flutter create 在 Flutter 3 中生成的應用程式會自動啟用 v2.0 的 lint 集合。鼓勵現有的應用程式、套件和 Plugin 透過運行 flutter pub upgrade –major-versions flutter_lints 遷移到 v2.0，以遵循 Flutter 世界中的最新最佳實務。</p>
+<p>v2 中新增的大多數 lint 警告都帶有自動修復。因此，在將應用程式 <code>pubspec.yaml</code> 檔案中的套件升級到最新版本之後，您可以在程式碼庫上運行 <code>dart fix --apply</code> 以自動修復大多數 lint 警告（一些警告仍然需要手動操作）。尚未使用 package:flutter_lints 的應用程式、套件或 Plugin 可以透過遵循 <a href="https://docs.flutter.dev/release/breaking-changes/flutter-lints-package#migration-guide">遷移指南</a> 來遷移。</p>
+<h4 id="效能提升"><a href="#效能提升" class="headerlink" title="效能提升"></a>效能提升</h4><p>感謝開源貢獻者 <a href="https://github.com/knopp">@knopp</a>，部分重新繪製已在支援它的 Android 設備上 <a href="https://github.com/flutter/engine/pull/29591">啟用</a>。在我們的本地測試中，此更改將 Pixel 4 XL 設備上 <code>backdrop_filter_perf</code> 基準測試的平均、第 90 個百分位數和第 99 個百分位數畫面柵格化時間減少了 5 倍。當存在單個矩形髒區域時，部分重新繪製現在已在 iOS 和更新的 Android 設備上啟用。</p>
+<p>我們已 <a href="https://github.com/flutter/engine/pull/30957">進一步改進</a> 了簡單情況下不透明度動畫的效能。特別是，當 Opacity Widget 僅包含單個渲染原語時，Opacity 通常會調用的 <code>saveLayer</code> 方法被省略。在一項用於衡量此優化效益的基準測試中，這種情況下的柵格化時間 <a href="https://flutter-flutter-perf.skia.org/e/?begin=1643063115&end=1644004520&keys=X32827d8819e8271e025f50e77bf2bec0&amp;requestType=0&amp;xbaroffset=27447">提高了一個數量級</a>。在未來的版本中，我們計劃將此優化應用於更多場景。</p>
+<p>感謝開源貢獻者 <a href="https://github.com/JsouLiang">@JsouLiang</a>，引擎的柵格化和 UI 執行緒現在在 Android 和 iOS 上比其他執行緒（例如 Dart VM 後台垃圾回收執行緒）擁有更高的優先級。在我們的基準測試中，這導致 <a href="https://flutter-flutter-perf.skia.org/e/?begin=1644581114&end=1644647407&keys=X3999dc0a0c89054eaa9f66bcff27d882&amp;num_commits=50&amp;request_type=1&amp;xbaroffset=27549">平均畫面構建時間快了約 20%</a>。</p>
+<p>在 3 版本之前，柵格快取的准入政策只查看圖片中的繪製操作數量，假設任何超過幾個操作的圖片都是快取的良好候選者。不幸的是，這導致引擎浪費記憶體來快取實際上渲染速度非常快的圖片。此版本 <a href="https://github.com/flutter/engine/pull/31417">引入了一種機制</a>，它根據圖片中包含的繪製操作的成本來估計圖片的渲染複雜度。使用此作為柵格快取准入政策，<a href="https://flutter-flutter-perf.skia.org/e/?begin=1644790212&end=1646044276&keys=X4c7dd4e4903a38523816c00b31d4d787&amp;requestType=0&amp;xbaroffset=27636">減少了記憶體使用量</a>，而在我們的基準測試中沒有降低效能。</p>
+<p>感謝開源貢獻者 <a href="https://github.com/ColdPaleLight">@ColdPaleLight</a>，他 <a href="https://github.com/flutter/engine/pull/31513">修復了畫面排程中的錯誤</a>，該錯誤導致 iOS 上有少量動畫畫面被丟棄。感謝每一位報告此問題並提供重現步驟和丟棄畫面的影片的人。</p>
+<h4 id="Impeller"><a href="#Impeller" class="headerlink" title="Impeller"></a>Impeller</h4><p>團隊一直在努力尋找解決 iOS 和其他平台上早期卡頓的方法。在 Flutter 3 版本中，您可以在 iOS 上預覽一個名為 <a href="https://github.com/flutter/engine/tree/main/impeller">Impeller</a> 的實驗性渲染後端。Impeller 在引擎構建時預編譯了 <a href="https://github.com/flutter/flutter/issues/77412">更小、更簡單的著色器集合</a>，以便它們不會在應用程式運行時編譯；這是 Flutter 中卡頓的主要來源。Impeller 尚未準備好投入生產，而且還遠未完成。目前還未實作所有 Flutter 功能，但我們對其在 <a href="https://github.com/flutter/gallery">flutter&#x2F;gallery</a> 應用程式中的保真度和效能感到滿意，因此我們分享了我們的進展。特別是，圖庫應用程式轉場動畫中最差的畫面 <a href="https://flutter-flutter-perf.skia.org/e/?begin=1650297849&end=1651261748&amp;queries=sub_result=worst_frame_rasterizer_time_millis&test=new_gallery_impeller_ios__transition_perf&test=new_gallery_ios__transition_perf&amp;requestType=0">快了約 20 倍</a>。</p>
+<p>Impeller 在 iOS 上可以使用標記。您可以將 —-enable-impeller 傳遞給 flutter run，或者將 Info.plist 檔案中的 FLTEnableImpeller 標記設定為 true，以嘗試使用 Impeller。Impeller 的開發工作仍在 Flutter 的 master channel 上繼續進行，我們希望在未來的版本中提供更多更新。</p>
+<h4 id="Android-上的內嵌廣告"><a href="#Android-上的內嵌廣告" class="headerlink" title="Android 上的內嵌廣告"></a>Android 上的內嵌廣告</h4><p>當您使用 <a href="https://pub.dev/packages/google_mobile_ads">google_mobile_ads 套件</a> 時，您應該會在使用者關鍵互動（例如捲軸和頁面之間的轉場）中看到更好的效能。這在新興市場中流行的設備上尤其明顯。最棒的是，不需要進行任何程式碼更改！</p>
+<p>在幕後，Flutter 現在會異步地組合 Android 視圖，通常稱為 <a href="https://docs.flutter.dev/development/platform-integration/platform-views">平台視圖</a>。這意味著 Flutter 柵格化執行緒不需要等待 Android 視圖渲染。相反，Flutter 引擎會使用它管理的 OpenGL 紋理將視圖放置在螢幕上。</p>
+<h3 id="更多令人興奮的更新"><a href="#更多令人興奮的更新" class="headerlink" title="更多令人興奮的更新"></a>更多令人興奮的更新</h3><p>Flutter 生態系統的其他更新包括以下內容：</p>
+<h4 id="Material-3"><a href="#Material-3" class="headerlink" title="Material 3"></a>Material 3</h4><p>Flutter 3 支援 <a href="https://m3.material.io/">Material Design 3</a>，這是 Material Design 的下一代版本。Flutter 3 為 Material 3 提供了選擇性支援；這包括 Material You 功能，如動態色彩、更新的色彩系統和字體排版、對許多組件的更新，以及 Android 12 中引入的新的視覺效果，如新的觸控漣漪設計和拉伸過捲效果。在 <em>新的</em> <a href="https://codelabs.developers.google.com/codelabs/flutter-boring-to-beautiful">將您的 Flutter 應用程式從無聊變成漂亮</a> 程式碼實驗室中嘗試 Material 3 功能。查看 <a href="https://api.flutter.dev/flutter/material/ThemeData/useMaterial3.html">API 文件</a> 以了解如何選擇性使用這些新功能以及哪些組件支援 Material 3。透過 <a href="https://github.com/flutter/flutter/issues/91605">Material 3 總體議題</a> 關注正在進行的工作。</p>
+<h4 id="主題擴展"><a href="#主題擴展" class="headerlink" title="主題擴展"></a>主題擴展</h4><p>Flutter 現在可以使用名為 <em>主題擴展</em> 的概念將 <em>任何</em> 內容加入到 material 函式庫的 ThemeData 中。您可以指定 ThemeData.extensions，而不是（在 Dart 中的意義上）擴展 ThemeData 並重新實作其 copyWith、lerp 和其他方法。此外，作為套件開發人員，您可以提供 ThemeExtension。查看 <a href="https://flutter.dev/go/custom-colors-m3">flutter.dev&#x2F;go&#x2F;theme-extensions</a> 以獲取更多詳細資訊，並查看 <a href="https://github.com/guidezpl/flutter/blob/master/examples/api/lib/material/theme/theme_extension.1.dart">GitHub 上的這個範例</a>。</p>
+<h4 id="廣告"><a href="#廣告" class="headerlink" title="廣告"></a>廣告</h4><p>我們知道，發佈者向使用者要求個人化廣告的同意並處理 Apple 的 App 追蹤透明度 (ATT) 要求非常重要。</p>
+<p>為了支援這些要求，Google 提供了使用者訊息平台 (UMP) SDK，它取代了之前的開源 <a href="https://github.com/googleads/googleads-consent-sdk-ios">同意 SDK</a>。在即將發佈的 Flutter 版 GMA SDK 中，我們將加入對 UMP SDK 的支援，以允許發佈者獲得使用者同意。如需更多詳細資訊，請查看 pub.dev 上的 <a href="https://pub.dev/packages/google_mobile_ads">google_mobile_ads</a> 頁面。</p>
+<h3 id="重大變更"><a href="#重大變更" class="headerlink" title="重大變更"></a>重大變更</h3><p>隨著 Flutter 的不斷成長和改進，我們旨在將重大變更的數量降至最低。在 Flutter 3 發佈時，我們有以下重大變更：</p>
+<ul>
+<li><a href="https://docs.flutter.dev/release/breaking-changes/2-10-deprecations">v2.10 之後移除的棄用 API</a></li>
+<li><a href="https://docs.flutter.dev/release/breaking-changes/page-transition-replaced-by-ZoomPageTransitionBuilder">頁面轉場被 ZoomPageTransitionsBuilder 取代</a></li>
+<li><a href="https://docs.flutter.dev/release/breaking-changes/chip-usedeletebuttontooltip-migration">將 useDeleteButtonTooltip 遷移到 Chips 的 deleteButtonTooltipMessage</a></li>
+</ul>
+<p>如果您正在使用任何這些 API，請參閱 <a href="https://docs.flutter.dev/release/breaking-changes">Flutter.dev 上的遷移指南</a>。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>來自 Google 的 Flutter 團隊向您表示感謝，感謝社群做出的出色工作，幫助 Flutter 保持其作為最受歡迎的跨平台 UI 工具包的地位，正如 Statista 和 SlashData 等分析師所衡量的那樣。我們期待以社群為驅動的工具一起努力，繼續為開發人員和使用者提供令人愉悅的體驗！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=8c74a5bc32d0" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-8c74a5bc32d0">Flutter 3 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1557,7 +1718,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1566,7 +1727,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">184</span>
+        <span class="site-state-item-count">188</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

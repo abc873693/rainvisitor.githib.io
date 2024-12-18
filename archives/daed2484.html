@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Flutter AI 工具包Flutter AI 開發者們，歡呼吧！將 AI 支援的聊天體驗新增到您的應用程式中變得更加容易。隆重推出 Flutter AI 工具包，這是一組隨時可用的 AI 聊天 Widget，旨在無縫整合到您的 Flutter 專案中。無需再從頭開始構建複雜的聊天介面 - Flutter AI 工具包提供了快速">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Flutter AI Toolkit">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/daed2484.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Flutter AI 工具包Flutter AI 開發者們，歡呼吧！將 AI 支援的聊天體驗新增到您的應用程式中變得更加容易。隆重推出 Flutter AI 工具包，這是一組隨時可用的 AI 聊天 Widget，旨在無縫整合到您的 Flutter 專案中。無需再從頭開始構建複雜的聊天介面 - Flutter AI 工具包提供了快速">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/418/0*8PFN57i3DaWcEBvk">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/904/1*u_atZ9LOO85MJMWdLFvxow.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/920/1*m5BA-Jaa7l9uPr9NHoWjKA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/768/0*KgA9lHvHX_FF3r50">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/922/1*HxICVJ2oeINpsTb4DDdnqg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/924/1*j-2lxsZJ-WEREg7X4O7Cog.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/722/1*ctMwVabsBVXa-ppooNwGsw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*gAt7fwWLXUWX_nHPwzYzxg.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e36b16a840d2">
+<meta property="article:published_time" content="2024-12-17T11:02:26.000Z">
+<meta property="article:modified_time" content="2024-12-18T03:59:40.415Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="gemini">
+<meta property="article:tag" content="ai">
+<meta property="article:tag" content="vertex-ai">
+<meta property="article:tag" content="chatgpt">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/418/0*8PFN57i3DaWcEBvk">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/daed2484.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Flutter AI Toolkit | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/daed2484.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Flutter AI Toolkit
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-17 19:02:26" itemprop="dateCreated datePublished" datetime="2024-12-17T19:02:26+08:00">2024-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 11:59:40" itemprop="dateModified" datetime="2024-12-18T11:59:40+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Flutter-AI-工具包"><a href="#宣佈-Flutter-AI-工具包" class="headerlink" title="宣佈 Flutter AI 工具包"></a>宣佈 Flutter AI 工具包</h2><p>Flutter AI 開發者們，歡呼吧！將 AI 支援的聊天體驗新增到您的應用程式中變得更加容易。隆重推出 <a href="https://pub.dev/packages/flutter_ai_toolkit">Flutter AI 工具包</a>，這是一組隨時可用的 AI 聊天 Widget，旨在無縫整合到您的 Flutter 專案中。無需再從頭開始構建複雜的聊天介面 - Flutter AI 工具包提供了快速輕鬆地將精密的 AI 聊天視窗新增到您的應用程式所需的一切。準備好提升跨多個平台的客戶參與度和滿意度了嗎？您已經準備好了！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/418/0*8PFN57i3DaWcEBvk" />
+<figcaption><a href="https://idx.google.com/new?template=https%3A%2F%2Fgithub.com%2Fflutter%2Fai">在 Project IDX 中試用 Flutter AI 工具包！</a></figcaption>
+</figure>
+
+<h3 id="多輪聊天"><a href="#多輪聊天" class="headerlink" title="多輪聊天"></a>多輪聊天</h3><p>透過多輪聊天，您可以在同一個會話中的多個互動之間維持上下文。</p>
+<p>想像一下您正在與朋友交談。他們問您是否有寵物，您告訴他們您有一個名叫 Rocky 的寵物石頭。過了一會兒，在與您聊了其他事情之後，您的朋友問：「您養 Rocky 多久了？」朋友記得您之前談話中提到的寵物石頭，即使您沒有再次提及它。</p>
+<p>這基本上就是多輪聊天的作用！它可以幫助大型語言模型 (LLM) 記住正在談論的內容。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/904/1*u_atZ9LOO85MJMWdLFvxow.png" />
+<figcaption>Flutter AI 工具包中的多輪聊天</figcaption>
+</figure>
+
+<h3 id="富文本顯示"><a href="#富文本顯示" class="headerlink" title="富文本顯示"></a>富文本顯示</h3><p>LLM 生成的回應支援富文本格式。LLM 不僅可以生成純文字，還可以將文字格式化，使其更有趣。例如，回應可以包含粗體文字、圖片、項目符號等等。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/920/1*m5BA-Jaa7l9uPr9NHoWjKA.png" />
+<figcaption>Flutter AI 工具包中的富文本格式支援</figcaption>
+</figure>
+
+<h3 id="語音輸入"><a href="#語音輸入" class="headerlink" title="語音輸入"></a>語音輸入</h3><p>語音輸入可用於將訊息轉換為文字。此免持選項非常適合那些不喜歡打字或想要更快地撰寫訊息的人。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/768/0*KgA9lHvHX_FF3r50" />
+<figcaption>Flutter AI 工具包中的語音輸入支援</figcaption>
+</figure>
+
+<h3 id="多媒體附件"><a href="#多媒體附件" class="headerlink" title="多媒體附件"></a>多媒體附件</h3><p>圖片、影片、音訊、PDF 和其他檔案可以單獨或一起新增到對話中。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/922/1*HxICVJ2oeINpsTb4DDdnqg.png" />
+<figcaption>Flutter AI 工具包中的多媒體附件支援</figcaption>
+</figure>
+
+<h3 id="自訂回應-Widget"><a href="#自訂回應-Widget" class="headerlink" title="自訂回應 Widget"></a>自訂回應 Widget</h3><p>為回應設計專門的 UI 元件。例如，如果有人要求食譜，您可以顯示一個互動式食譜卡，並提供將食譜直接儲存到資料庫的選項。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/924/1*j-2lxsZJ-WEREg7X4O7Cog.png" />
+<figcaption>Flutter AI 工具包中的自訂 AI 回應 Widget 支援</figcaption>
+</figure>
+
+<h3 id="自訂樣式"><a href="#自訂樣式" class="headerlink" title="自訂樣式"></a>自訂樣式</h3><p>設定聊天外觀以符合您的應用程式。變更聊天氣泡的顏色、背景、UI 字體，甚至新增 UI 圖片或動畫以反映您的品牌識別。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/722/1*ctMwVabsBVXa-ppooNwGsw.png" />
+<figcaption>Flutter AI 工具包中的自訂樣式支援</figcaption>
+</figure>
+
+<h3 id="跨平台支援"><a href="#跨平台支援" class="headerlink" title="跨平台支援"></a>跨平台支援</h3><p>Flutter 支援許多平台，Flutter AI 工具包也支援。想要在 iOS、Android、Web 和 macOS 上部署使用 Flutter 製作的 AI 聊天應用程式嗎？沒問題！</p>
+<h3 id="可插拔的-LLM"><a href="#可插拔的-LLM" class="headerlink" title="可插拔的 LLM"></a>可插拔的 LLM</h3><p>無論您是想使用 Google 的 Gemini 或 Vertex AI，還是其他 LLM，Flutter AI 工具包都可以輕鬆地將 AI 新增到您的應用程式中。GeminiProvider 和 VertexProvider 可用於開箱即用的整合，分別使用 <a href="https://pub.dev/packages/google_generative_ai">Google AI Dart SDK</a> 和 <a href="https://pub.dev/packages/firebase_vertexai">Firebase 中的 Vertex AI SDK</a>。我們強烈建議您將 Firebase 中的 Vertex AI SDK 用於原型設計以外的生產使用案例。此外，您可以利用 Flutter AI 工具包的 LLM 提供者介面，使用您自己的自訂程式碼插入您選擇的 LLM。</p>
+<h3 id="具有多個對話的獨立聊天應用程式"><a href="#具有多個對話的獨立聊天應用程式" class="headerlink" title="具有多個對話的獨立聊天應用程式"></a>具有多個對話的獨立聊天應用程式</h3><p>構建一個功能齊全的聊天應用程式，可以儲存和管理多個對話。為了幫助您入門，Flutter AI 工具包附帶了一個範例專案，該專案利用了 <a href="https://firebase.google.com/docs/firestore">Cloud Firestore</a> 資料庫和 <a href="https://firebase.google.com/docs/vertex-ai">Firebase 中的 Vertex AI</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*gAt7fwWLXUWX_nHPwzYzxg.png" />
+<figcaption>Flutter AI 聊天應用程式</figcaption>
+</figure>
+
+<h3 id="立即試用-Flutter-AI-工具包"><a href="#立即試用-Flutter-AI-工具包" class="headerlink" title="立即試用 Flutter AI 工具包"></a>立即試用 Flutter AI 工具包</h3><p>要親自試用 Flutter AI 工具包，請查看 <a href="https://pub.dev/packages/flutter_ai_toolkit">pub.dev 上的 Flutter AI 工具包</a> 以及以下資源：</p>
+<ul>
+<li><a href="https://docs.flutter.dev/ai-toolkit/user-experience">Flutter AI 工具包文件</a></li>
+<li><a href="https://flutter-ai-toolkit-examp-60bad.web.app/">Flutter AI 工具包互動式示範</a> (<a href="https://github.com/flutter/ai/blob/main/example/lib/demo/demo.dart">GitHub</a>)</li>
+<li><a href="https://github.com/flutter/ai/tree/main/example/lib/recipes">食譜範例專案 (GitHub)</a></li>
+<li><a href="https://github.com/csells/flutter_ai_chat/blob/main/README.md">Flutter AI 聊天範例應用程式 (GitHub)</a></li>
+<li><a href="https://idx.google.com/new?template=https://github.com/flutter/ai">在瀏覽器中開始使用 (Project IDX)</a></li>
+</ul>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e36b16a840d2" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-flutter-ai-toolkit-e36b16a840d2">宣佈 Flutter AI 工具包</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/gemini/" rel="tag"># gemini</a>
+              <a href="/tags/ai/" rel="tag"># ai</a>
+              <a href="/tags/vertex-ai/" rel="tag"># vertex-ai</a>
+              <a href="/tags/chatgpt/" rel="tag"># chatgpt</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/fe672d55.html" rel="prev" title="【文章翻譯】Video & web ad support in Flutter">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Video & web ad support in Flutter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/6475a63d.html" rel="next" title="【文章翻譯】Celebrating Flutter’s “Production Era”">
+      【文章翻譯】Celebrating Flutter’s “Production Era” <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Flutter-AI-%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Flutter AI 工具包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E8%BC%AA%E8%81%8A%E5%A4%A9"><span class="nav-number">1.1.</span> <span class="nav-text">多輪聊天</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%8C%E6%96%87%E6%9C%AC%E9%A1%AF%E7%A4%BA"><span class="nav-number">1.2.</span> <span class="nav-text">富文本顯示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AA%9E%E9%9F%B3%E8%BC%B8%E5%85%A5"><span class="nav-number">1.3.</span> <span class="nav-text">語音輸入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AA%92%E9%AB%94%E9%99%84%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">多媒體附件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E8%A8%82%E5%9B%9E%E6%87%89-Widget"><span class="nav-number">1.5.</span> <span class="nav-text">自訂回應 Widget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E8%A8%82%E6%A8%A3%E5%BC%8F"><span class="nav-number">1.6.</span> <span class="nav-text">自訂樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0%E6%94%AF%E6%8F%B4"><span class="nav-number">1.7.</span> <span class="nav-text">跨平台支援</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E6%8F%92%E6%8B%94%E7%9A%84-LLM"><span class="nav-number">1.8.</span> <span class="nav-text">可插拔的 LLM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E6%9C%89%E5%A4%9A%E5%80%8B%E5%B0%8D%E8%A9%B1%E7%9A%84%E7%8D%A8%E7%AB%8B%E8%81%8A%E5%A4%A9%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.9.</span> <span class="nav-text">具有多個對話的獨立聊天應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E8%A9%A6%E7%94%A8-Flutter-AI-%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">1.10.</span> <span class="nav-text">立即試用 Flutter AI 工具包</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

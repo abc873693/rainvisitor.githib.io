@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 慶祝 Flutter 的「生產時代」就在六年前，我們推出了 Flutter 1.0。今天，在 #FlutterInProduction 上，我們正在慶祝我們取得的成就——從社群中 數千名貢獻者 的巨大支持，到 Flutter 作為用於建構跨平台應用程式體驗的生產級應用程式框架的 廣泛採用。 如果您還沒有體驗過 Flutter，我們邀請您">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Celebrating Flutter’s “Production Era”">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/6475a63d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 慶祝 Flutter 的「生產時代」就在六年前，我們推出了 Flutter 1.0。今天，在 #FlutterInProduction 上，我們正在慶祝我們取得的成就——從社群中 數千名貢獻者 的巨大支持，到 Flutter 作為用於建構跨平台應用程式體驗的生產級應用程式框架的 廣泛採用。 如果您還沒有體驗過 Flutter，我們邀請您">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*nlSy3ZCCbdUXFRH4Q1zstg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*3685YaIo_7soz-qF">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/765/0*Y65O6741pXOhM35S">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f9418261d8e1">
+<meta property="article:published_time" content="2024-12-17T12:13:46.000Z">
+<meta property="article:modified_time" content="2024-12-18T03:59:37.679Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="releases">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="flutter-development">
+<meta property="article:tag" content="future">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*nlSy3ZCCbdUXFRH4Q1zstg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/6475a63d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Celebrating Flutter’s “Production Era” | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6475a63d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Celebrating Flutter’s “Production Era”
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-12-17 20:13:46" itemprop="dateCreated datePublished" datetime="2024-12-17T20:13:46+08:00">2024-12-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 11:59:37" itemprop="dateModified" datetime="2024-12-18T11:59:37+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="慶祝-Flutter-的「生產時代」"><a href="#慶祝-Flutter-的「生產時代」" class="headerlink" title="慶祝 Flutter 的「生產時代」"></a>慶祝 Flutter 的「生產時代」</h2><p>就在六年前，我們推出了 Flutter 1.0。今天，在 <strong>#FlutterInProduction</strong> 上，我們正在慶祝我們取得的成就——從社群中 <strong>數千名貢獻者</strong> 的巨大支持，到 Flutter 作為用於建構跨平台應用程式體驗的生產級應用程式框架的 <strong>廣泛採用</strong>。</p>
+<p>如果您還沒有體驗過 Flutter，我們邀請您試用一下！正如我們今天分享的那樣，您將加入一個龐大的群體：Flutter 在全球擁有 <strong>超過 100 萬月活躍開發人員</strong>，並且 <strong>為近 30% 的所有新 iOS 應用程式提供支援</strong>。超過 9 萬名開發人員積極參與了 60 多個國家的 Flutter 聚會。如果您希望在設計或建構新的成功的 Flutter 應用程式方面獲得意見，我們有一個龐大且不斷增長的 <a href="https://flutter.dev/consultants">Flutter 顧問</a> 列表，隨時準備為您提供幫助。</p>
+<blockquote>
+<p>“Apptopia 追蹤 Apple AppStore 和 Google Play 商店中的數百萬個應用程式，並分析和檢測用於建立應用程式的開發人員 SDK。Flutter 是我們追蹤的最受歡迎的 SDK 之一：在 Apple AppStore 中，它的使用率從 2021 年所有追蹤的免費應用程式的約 10% 穩步增長到 2024 年所有追蹤的免費應用程式的近 30%！”</p>
+</blockquote>
+<blockquote>
+<p>— <a href="https://apptopia.com/">Apptopia Inc.</a></p>
+</blockquote>
+<h3 id="十年的創新，邁向生產時代"><a href="#十年的創新，邁向生產時代" class="headerlink" title="十年的創新，邁向生產時代"></a>十年的創新，邁向生產時代</h3><p>這是一段不可思議的旅程，始於 2014 年（也就是我們現在所說的實驗時代），當時它是 Google 的一個代號為「Sky」的實驗。</p>
+<p>在 Flutter 出現之前，妥協是不可避免的。許多開發人員已經開始懷疑，任何框架是否都能夠真正跨多個平台提供優質的體驗。</p>
+<p>隨著 2018 年 Flutter 1.0 的推出，我們有了一個明確的使命來解決這個技術困境：我們的目標是為開發人員提供終極應用程式框架，以便在所有平台上製作美觀、高效能的使用者介面。此外，還要讓開發人員能夠在客戶關心的所有平台上以高品質的應用程式接觸所有客戶，但 <em>成本更低</em>，<em>時間更短</em>。</p>
+<p>即使我們增加了對行動、網頁和桌面六大主要平台的支援，並且透過豐田將 Flutter 用於資訊娛樂系統等工作 <a href="https://flutter.dev/multi-platform/embedded">繼續拓展</a>，我們的重點在 Flutter 的增長期一直保持不變。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*nlSy3ZCCbdUXFRH4Q1zstg.png" />
+</figure>
+
+<p>我們現在正處於「生產時代」，我們正在用 <strong>#FlutterInProduction</strong> 慶祝這一點！此活動重點介紹了在實際應用程式中使用 Flutter 的開發人員所取得的成就。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FAEXIrThTgb0%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DAEXIrThTgb0&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FAEXIrThTgb0%2Fhqdefault.jpg&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/ce33468161bcfe4ed6cff82a7a7196cf/href">https://medium.com/media/ce33468161bcfe4ed6cff82a7a7196cf/href</a></iframe>
+
+<h3 id="與社群合作建構"><a href="#與社群合作建構" class="headerlink" title="與社群合作建構"></a>與社群合作建構</h3><p>沒有我們超過 1,400 名貢獻者、超過 10,000 名套件發佈者（編寫了超過 50,000 個套件）以及充滿熱情的 Flutter 內容創作者和愛好者的驚人社群，這一切都不可能實現。</p>
+<p>我們共同建構了一個 <a href="https://github.blog/news-insights/octoverse/octoverse-2024/#the-state-of-open-source">GitHub 貢獻排名前五的開源專案</a>！</p>
+<h3 id="令人驚嘆的使用者體驗"><a href="#令人驚嘆的使用者體驗" class="headerlink" title="令人驚嘆的使用者體驗"></a>令人驚嘆的使用者體驗</h3><p>這一切都始於對實現令人驚嘆的使用者體驗的關注。擺脫了典型的平台限制，Flutter 支援廣泛的設計語言——SDK 附帶了對 Material Design 和我們受 Apple 啟發的 Cupertino Widget 的支援。生態系統還提供了廣泛的設計函式庫選擇，例如 Windows 啟發的 <a href="https://pub.dev/packages/fluent_ui">fluent_ui</a>、macOS 啟發的 <a href="https://pub.dev/packages/macos_ui">macos_ui</a> 和 Ubuntu 啟發的 <a href="https://pub.dev/packages/yaru">yaru</a> Widget。</p>
+<h4 id="斯堪地那維亞航空公司設計獎"><a href="#斯堪地那維亞航空公司設計獎" class="headerlink" title="斯堪地那維亞航空公司設計獎"></a>斯堪地那維亞航空公司設計獎</h4><p>使用 Flutter，您擁有實現設計團隊預想的 <em>任何設計</em> 的靈活性和能力。斯堪地那維亞航空公司就是一個很好的例子，他們在使用 Flutter 建立了新的行動應用程式後，獲得了許多著名的設計獎項，例如紅點設計獎、威比人民之聲獎和 iF 設計金獎。SAS 的執行副總裁兼首席資訊長 Charlotte Svensson <a href="https://www.sasgroup.net/newsroom/press-releases/2023/sas-wins-webby-award-for-redesigned-app/">解釋說</a>：</p>
+<blockquote>
+<p>“我對這個獎項感到非常自豪，它不僅僅是一個行業獎項，而是一種全球認可。這證明了當我們超越自我，專注於改善客戶體驗，以及當我們與客戶互動和共同發展時，我們能夠做到什麼。SAS 一直處於航空業創新的前沿，這個獎項也驗證了我們致力於為客戶提供卓越的數位解決方案的承諾。”</p>
+</blockquote>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*3685YaIo_7soz-qF" />
+<figcaption>Scandinavian Airlines design awards</figcaption>
+</figure>
+
+
+
+<h3 id="出色的效能和可靠性"><a href="#出色的效能和可靠性" class="headerlink" title="出色的效能和可靠性"></a>出色的效能和可靠性</h3><p>效能和可靠性對於積極的使用者體驗和品牌認知至關重要。速度緩慢或容易崩潰的應用程式不僅會在短期內讓使用者感到沮喪，而且還會透過負面評論和口碑在長期內損害您的品牌聲譽。</p>
+<p>Flutter 從一開始就優先考慮效能和可靠性。透過選擇 Dart 程式語言，我們確保透過提前編譯為原生機器碼或 WebAssembly 來實現快速啟動時間。Dart 豐富的空安全類型系統有助於在開發過程中捕獲錯誤，從而進一步提高可靠性。此外，Flutter 的自訂 Impeller 渲染引擎專為跨平台 UI 設計，可提供流暢的動畫，並讓我們完全控制從 UI 原始碼到 GPU 的整個渲染堆疊。</p>
+<h4 id="環球影城的效能和可靠性"><a href="#環球影城的效能和可靠性" class="headerlink" title="環球影城的效能和可靠性"></a>環球影城的效能和可靠性</h4><p>例如，環球目的地與體驗最近報告說，透過採用 Flutter，他們不僅減小了應用程式的大小（這對於網路連線不可靠的使用者來說是一個很大的好處），而且還大幅減少了應用程式崩潰，幾乎為零，從而降低了他們的總擁有成本。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FJTk2Exr7FO4%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DJTk2Exr7FO4&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJTk2Exr7FO4%2Fhqdefault.jpg&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/721111dda3bc3595ada438b543af64a4/href">https://medium.com/media/721111dda3bc3595ada438b543af64a4/href</a></iframe>
+
+
+<h4 id="LG-電子的效能"><a href="#LG-電子的效能" class="headerlink" title="LG 電子的效能"></a>LG 電子的效能</h4><p>由於擔心傳統原生應用程式的高開發成本，LG 電子傳統上一直依賴 Web 應用程式來開發其 webOS 驅動的智慧電視。但是，他們發現 Web 應用程式的啟動速度比原生應用程式慢，而且佔用更多記憶體。透過 Flutter，LG 電子擁有一個結合了快速開發速度和出色效能的解決方案。因此，他們計劃從 2025 年開始在全球範圍內將 Flutter 用於 webOS 電視中的關鍵應用程式。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fl-J3Of7pLPw%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dl-J3Of7pLPw&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fl-J3Of7pLPw%2Fhqdefault.jpg&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/7bb10fd5172d78f3ceec7b18b842e913/href">https://medium.com/media/7bb10fd5172d78f3ceec7b18b842e913/href</a></iframe>
+
+
+<h3 id="一流的開發人員體驗和蓬勃發展的生態系統"><a href="#一流的開發人員體驗和蓬勃發展的生態系統" class="headerlink" title="一流的開發人員體驗和蓬勃發展的生態系統"></a>一流的開發人員體驗和蓬勃發展的生態系統</h3><p>Flutter 的成功深深植根於其對開發人員體驗的關注。我們使用 Stateful Hot Reload 開創了即時開發人員工作流程，並在我們的增長期增加了 Flutter <a href="https://docs.flutter.dev/tools/devtools">DevTools</a>，以顯著加快診斷和除錯工作流程。</p>
+<p>Flutter 的社群提供了一個由超過 10,000 名發佈者發佈的超過 50,000 個套件組成的蓬勃發展的開放生態系統，以及強大的第三方服務和技術。此外，如果您希望在設計或建構新的成功的 Flutter 應用程式方面獲得意見，我們有一個龐大的 <a href="https://flutter.dev/consultants">Flutter 顧問</a> 列表，隨時準備為您提供幫助。</p>
+<h4 id="MGM-和開發人員生產力"><a href="#MGM-和開發人員生產力" class="headerlink" title="MGM 和開發人員生產力"></a>MGM 和開發人員生產力</h4><p>應用程式代理商 <a href="https://www.superformula.com/services/flutter/">Superformula</a> 自 2020 年 8 月以來一直在使用 Flutter 進行建構。他們發現 Flutter 易於學習且文件齊全，使他們能夠讓新團隊成員快速上手並有效地做出貢獻。</p>
+<p>Superformula 還使用 Flutter 為 MGM Resorts 的 400 多家餐廳 <a href="https://www.superformula.com/work/revitalizing-the-digital-dining-experience-for-mgm-resorts-400-restaurants/">重振數位用餐體驗</a>。新的基於 Flutter 的 MGM Rewards 應用程式僅在 4 個月內就重建完成，程式碼總量減少了一半，交付速度提高了 4 倍。Superformula 生產力的一個核心推動因素是能夠在行動設備、基於平板電腦的資訊站和基於 Web 的工具之間共用程式碼。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FhuzVEL676lc%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DhuzVEL676lc&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FhuzVEL676lc%2Fhqdefault.jpg&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/0ef3a20b164d0ff5ac1a4bd02c687a83/href">https://medium.com/media/0ef3a20b164d0ff5ac1a4bd02c687a83/href</a></iframe>
+
+
+<h4 id="GEICO-和行動開發的民主化"><a href="#GEICO-和行動開發的民主化" class="headerlink" title="GEICO 和行動開發的民主化"></a>GEICO 和行動開發的民主化</h4><p>今年早些時候，美國汽車保險公司 GEICO <a href="https://www.geico.com/techblog/flutter-as-the-multi-channel-ux-framework/">發表了一篇部落格文章</a>，詳細介紹了他們使用 Flutter 的經驗以及 Flutter 如何提高他們的生產力。他們能夠改變其組織結構，以便 UX 團隊現在 <em>跨所有管道</em> 擁有整個體驗，減少了相同功能的不同實作之間的差異。他們還將 Flutter 的開發體驗描述為 <em>“成熟的，具有豐富的工具和對軟體開發生命週期 (SDLC) 的支援”</em>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/765/0*Y65O6741pXOhM35S" />
+<figcaption>GEICO user interface elements shared across web, iOS, and Android.</figcaption>
+</figure>
+
+
+<h3 id="未來搶先看"><a href="#未來搶先看" class="headerlink" title="未來搶先看"></a>未來搶先看</h3><p>正如我們所說，Flutter 團隊在未來幾年將承擔的一些最重要的工作是維持向全球數億使用者提供基於 Flutter 的體驗的企業所要求的支援的品質和深度。</p>
+<p>為了滿足這些不斷發展的需求，我們正專注於幾個關鍵領域：</p>
+<ul>
+<li><strong>更深層次的 iOS 保真度：</strong> 我們將繼續透過擴展 Cupertino Widget 來提供對 Apple 設計語言的更高保真度。我們正在擁抱現代 Apple 生態系統標準，例如 Swift Package Manager。</li>
+<li><strong>無縫平台整合：</strong> 我們正在研究一種新的互操作方法——直接原生互操作——我們相信這將簡化對 C、Java、Kotlin、ObjectiveC 或 Swift 中可用的平台特定 API 的存取。</li>
+<li><strong>開發人員生產力增強：</strong> 我們正在繼續發展我們的開發人員工具，透過探索潛在的新的 UI 設計功能，這些功能可能會提供實時 Widget 預覽器以及實時視覺屬性編輯。</li>
+<li><strong>簡潔易讀的程式碼：</strong> 為了提高開發人員的生產力，我們正在探索如何使 Flutter 程式碼更快地編寫和更容易閱讀。這包括潛在的新的語言功能，例如「主要建構函式」和「列舉簡寫」，並瀏覽 Flutter 框架以識別可能提供更簡潔的編寫常用程式碼方式的新 API。</li>
+</ul>
+<p>正如 Rivers 如此準確地說的那樣，事情確實 <em>“變得更流暢、更專業了一些”</em>，我們的目標是讓事情在未來繼續保持這種感覺。</p>
+<h3 id="準備好在生產中使用-FlutterInProduction-了嗎？"><a href="#準備好在生產中使用-FlutterInProduction-了嗎？" class="headerlink" title="準備好在生產中使用 #FlutterInProduction 了嗎？"></a>準備好在生產中使用 #FlutterInProduction 了嗎？</h3><p>如果您最近沒有嘗試過 Flutter，那麼現在就是最佳時機！</p>
+<p>想先了解別人的經驗嗎？</p>
+<ul>
+<li><strong>參加</strong> 2024 年 12 月 19 日的 <a href="https://flutter.dev/events/flutter-in-production#schedule">Observable Flutter 小組討論</a></li>
+<li><strong>加入 Flutter 社群：</strong> 找一個當地的聚會，加入論壇，或在 Slack 上聯繫：<a href="https://flutter.dev/community">https://flutter.dev/community</a></li>
+</ul>
+<p>我們致力於透過始終如一地關注品質和效能來贏得您的信任。我們繼續根據使用者的需求來推動我們的路線圖。在過去 6 年的增長期中，這也發生了變化，從實驗時代的個人和業餘愛好者，到如今利用 Flutter 處理業務關鍵功能的大型企業。</p>
+<p>與往常一樣，我們迫不及待地想看看您接下來會建構什麼。下次再見！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f9418261d8e1" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/flutter-in-production-f9418261d8e1">慶祝 Flutter 的「生產時代」</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/releases/" rel="tag"># releases</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/flutter-development/" rel="tag"># flutter-development</a>
+              <a href="/tags/future/" rel="tag"># future</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/daed2484.html" rel="prev" title="【文章翻譯】Announcing Flutter AI Toolkit">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Flutter AI Toolkit
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%85%B6%E7%A5%9D-Flutter-%E7%9A%84%E3%80%8C%E7%94%9F%E7%94%A2%E6%99%82%E4%BB%A3%E3%80%8D"><span class="nav-number">1.</span> <span class="nav-text">慶祝 Flutter 的「生產時代」</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%B9%B4%E7%9A%84%E5%89%B5%E6%96%B0%EF%BC%8C%E9%82%81%E5%90%91%E7%94%9F%E7%94%A2%E6%99%82%E4%BB%A3"><span class="nav-number">1.1.</span> <span class="nav-text">十年的創新，邁向生產時代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%88%87%E7%A4%BE%E7%BE%A4%E5%90%88%E4%BD%9C%E5%BB%BA%E6%A7%8B"><span class="nav-number">1.2.</span> <span class="nav-text">與社群合作建構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A4%E4%BA%BA%E9%A9%9A%E5%98%86%E7%9A%84%E4%BD%BF%E7%94%A8%E8%80%85%E9%AB%94%E9%A9%97"><span class="nav-number">1.3.</span> <span class="nav-text">令人驚嘆的使用者體驗</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%AF%E5%A0%AA%E5%9C%B0%E9%82%A3%E7%B6%AD%E4%BA%9E%E8%88%AA%E7%A9%BA%E5%85%AC%E5%8F%B8%E8%A8%AD%E8%A8%88%E7%8D%8E"><span class="nav-number">1.3.1.</span> <span class="nav-text">斯堪地那維亞航空公司設計獎</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BA%E8%89%B2%E7%9A%84%E6%95%88%E8%83%BD%E5%92%8C%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">出色的效能和可靠性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%92%B0%E7%90%83%E5%BD%B1%E5%9F%8E%E7%9A%84%E6%95%88%E8%83%BD%E5%92%8C%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">1.4.1.</span> <span class="nav-text">環球影城的效能和可靠性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LG-%E9%9B%BB%E5%AD%90%E7%9A%84%E6%95%88%E8%83%BD"><span class="nav-number">1.4.2.</span> <span class="nav-text">LG 電子的效能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E6%B5%81%E7%9A%84%E9%96%8B%E7%99%BC%E4%BA%BA%E5%93%A1%E9%AB%94%E9%A9%97%E5%92%8C%E8%93%AC%E5%8B%83%E7%99%BC%E5%B1%95%E7%9A%84%E7%94%9F%E6%85%8B%E7%B3%BB%E7%B5%B1"><span class="nav-number">1.5.</span> <span class="nav-text">一流的開發人員體驗和蓬勃發展的生態系統</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MGM-%E5%92%8C%E9%96%8B%E7%99%BC%E4%BA%BA%E5%93%A1%E7%94%9F%E7%94%A2%E5%8A%9B"><span class="nav-number">1.5.1.</span> <span class="nav-text">MGM 和開發人員生產力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GEICO-%E5%92%8C%E8%A1%8C%E5%8B%95%E9%96%8B%E7%99%BC%E7%9A%84%E6%B0%91%E4%B8%BB%E5%8C%96"><span class="nav-number">1.5.2.</span> <span class="nav-text">GEICO 和行動開發的民主化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E4%BE%86%E6%90%B6%E5%85%88%E7%9C%8B"><span class="nav-number">1.6.</span> <span class="nav-text">未來搶先看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%96%E5%82%99%E5%A5%BD%E5%9C%A8%E7%94%9F%E7%94%A2%E4%B8%AD%E4%BD%BF%E7%94%A8-FlutterInProduction-%E4%BA%86%E5%97%8E%EF%BC%9F"><span class="nav-number">1.7.</span> <span class="nav-text">準備好在生產中使用 #FlutterInProduction 了嗎？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -20,15 +20,25 @@
     var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 undefined">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性    今年的 I&#x2F;O，Very Good Ventures 與 Google 的 Flutter 和 Firebase 團隊合作，創造了一種獨特的數位體驗，以展示 Gemini API 的強大功能。 填字遊戲的趣味（和挑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【文章翻譯】How we built it: Creating the I&#x2F;O Crossword puzzle, powered by AI">
 <meta property="og:url" content="https://blog.rainvisitor.me/archives/6975f342.html">
 <meta property="og:site_name" content="RainVisitor Blog">
-<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 undefined">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性    今年的 I&#x2F;O，Very Good Ventures 與 Google 的 Flutter 和 Firebase 團隊合作，創造了一種獨特的數位體驗，以展示 Gemini API 的強大功能。 填字遊戲的趣味（和挑">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*4ylubp836_tc4Nni">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*1aAyHb71XpChgH6R">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*5i_oBZnXJonFcLc5">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*D0vBnIvT4TKXnRnG">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*wpfH-WuFnd984LEW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Sf93caUyyPq4OKKa">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/719/0*Nyoq1GrKd0eFce-M">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*s1G59HNBAWqoq0xt">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*538Moipv7JTPricT">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=2210e39b04b9">
 <meta property="article:published_time" content="2024-06-26T09:01:39.000Z">
-<meta property="article:modified_time" content="2024-12-12T03:13:06.083Z">
+<meta property="article:modified_time" content="2024-09-30T12:17:11.911Z">
 <meta property="article:author" content="Rainvisitor">
 <meta property="article:tag" content="flutter">
 <meta property="article:tag" content="flutter-app-development">
@@ -36,6 +46,7 @@
 <meta property="article:tag" content="flutter-game-development">
 <meta property="article:tag" content="crossword-puzzles">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*4ylubp836_tc4Nni">
 
 <link rel="canonical" href="https://blog.rainvisitor.me/archives/6975f342.html">
 
@@ -186,7 +197,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-12 11:13:06" itemprop="dateModified" datetime="2024-12-12T11:13:06+08:00">2024-12-12</time>
+                <time title="Modified: 2024-09-30 20:17:11" itemprop="dateModified" datetime="2024-09-30T20:17:11+08:00">2024-09-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,8 +220,71 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<p>undefined</p>
+        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="使用-Flutter、Firebase-Genkit-和-Gemini-API-為經典文字遊戲添加趣味和實用性"><a href="#使用-Flutter、Firebase-Genkit-和-Gemini-API-為經典文字遊戲添加趣味和實用性" class="headerlink" title="使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性"></a>使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*4ylubp836_tc4Nni" />
+</figure>
+
+<p>今年的 I&#x2F;O，Very Good Ventures 與 Google 的 Flutter 和 Firebase 團隊合作，創造了一種獨特的數位體驗，以展示 Gemini API 的強大功能。</p>
+<p>填字遊戲的趣味（和挑戰）在於解決線索以完成棋盤。我們今年在 I&#x2F;O 上討論過的所有內容，自然成為字詞和線索的起點。為了生成遊戲內容，我們向 <a href="https://gemini.google.com/">Gemini Advanced</a> 提供了主題演講的影片，並要求它建立一個與科技相關的熱門字詞和線索列表，使玩遊戲成為了解今年 I&#x2F;O 公布的所有內容的有趣方式。</p>
+<p>請繼續閱讀，了解我們如何使用 Flutter 建立 UI，並查看遊戲的開源程式碼，您可以在 <a href="https://github.com/VGVentures/io_crossword">GitHub</a> 上存取。</p>
+<p><strong>如何玩</strong></p>
+<p>當您登入拼圖時，會提示您選擇您的隊伍。當您正確回答一個線索時，單詞將填入，並且格子的顏色會變為您的隊伍顏色。您的隊伍將為您解決的每個單詞獲得積分，如果您連續解決單詞而不請求提示，則您將獲得額外積分。</p>
+<p>需要提示嗎？點擊 <strong>提示</strong> 按鈕，然後提出不超過十個關於隱藏單詞的是非題。<a href="https://ai.google.dev/">Gemini API</a> 會私下回答您的問題，以便您可以填寫更多單詞，並幫助您的隊伍取得勝利！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*1aAyHb71XpChgH6R" />
+</figure>
+
+<p><em>提示</em> 功能的設計是一個很好的例子，說明不同的技術如何協同工作來解決問題。提示由 <a href="https://firebase.google.com/docs/genkit">Firebase Genkit</a> 提供支援，Genkit 是一個在 I&#x2F;O 上宣布的用於 AI 開發的新框架，並且被部署為 Firebase 函式。</p>
+<p>對 API 的網路請求包括線索的答案，因此為了將回應隱藏在訊息資料中，我們使用 <a href="https://pub.dev/packages/dart_frog">Dart Frog 套件</a> 建立了一個簡單的 Dart 後端，以使體驗更加健壯。Frog 後端呼叫 Genkit 以獲得提示，並從資料庫中擷取答案。這樣，玩家就不能簡單地檢查網路呼叫來找出遊戲的答案。</p>
+<p>您可以在 <a href="https://firebase.blog/posts/2024/06/ai-powered-crossword-genkit">Firebase 深入探討部落格</a> 中閱讀更多關於 Genkit 流程的建構方式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*5i_oBZnXJonFcLc5" />
+</figure>
+
+<p><strong>使用 Flutter 渲染高效能的填字遊戲棋盤</strong></p>
+<p>棋盤是遊戲的核心部分之一。我們優化了玩家在拼圖上的移動，以確保良好的效能，並為玩家提供最佳的使用者體驗。</p>
+<p>我們考慮了兩種建立棋盤的選項：直接使用 Flutter 或使用 <a href="https://flame-engine.org/">Flame</a> 遊戲引擎。Flame 對此遊戲最引人注目的功能是其攝影機 API，它允許吉祥物輕鬆移動並支援縮放控制。但是，由於這幾乎是我們將使用的 Flame 的唯一功能，因此我們最終決定，對此場景而言，使用像 Flame 這樣的完整遊戲引擎有點過度。</p>
+<p>尋找替代解決方案，我們探索了 <a href="https://api.flutter.dev/flutter/widgets/InteractiveViewer-class.html">InteractiveViewer</a> Widget，它允許在自訂大小的畫布中渲染單詞，並使用矩陣轉換自由地移動吉祥物。InteractiveViewer 對我們的需求而言是一個更簡單的解決方案，具有較少的相依性和負載，這讓我們能夠更好地展示 Flutter 的靈活性與效能。</p>
+<p><strong>InteractiveViewer 的功能和靈活性</strong></p>
+<p>InteractiveViewer 內建了縮放手勢，但我們想要為桌面體驗添加更多直觀的按鈕。利用矩陣轉換，我們透過首先計算縮放比例的變化，並使用中心作為常數參考點來更新新的視窗，從而實作了縮放控制：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*D0vBnIvT4TKXnRnG" />
+</figure>
+
+<p>獲得新的暫時視窗後，我們必須確保它適合棋盤的邊界。我們必須允許兩種情況：當視窗比棋盤大時，或者當視窗的位置超出邊界時。我們透過調整縮放級別或視窗的位置來更新縮放比例變化的程度和視窗的轉換，以確保它適合邊界，如下面的程式碼所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*wpfH-WuFnd984LEW" />
+</figure>
+
+<p>最後，計算轉換並將其應用到 InteractiveViewer 控制項：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Sf93caUyyPq4OKKa" />
+</figure>
+
+<p>透過這段程式碼，我們擴展了 InteractiveViewer 的縮放控制，並根據我們的需求轉換了視窗。</p>
+<p><strong>使用 Flutter 中的 WebAssembly 提升效能</strong></p>
+<p>Flutter Web 應用程式的 WebAssembly 支援是今年 I&#x2F;O 對 Flutter 社群的重要宣布之一。隨著全球玩家同時玩遊戲，效能是一個關鍵因素。我們利用了 <a href="https://docs.flutter.dev/platform-integration/web/wasm">WebAssembly (Wasm)</a>，它建構在 Flutter 中，以減少效能瓶頸並維持流暢的畫面更新率，特別是在遊戲中的角色和棋盤動畫方面。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/719/0*Nyoq1GrKd0eFce-M" />
+</figure>
+
+<p><strong>Dart 後端和 Cloud Run：後端和前端之間的無縫程式碼共享</strong></p>
+<p>為了確保所有使用者都能享受流暢的遊戲體驗，我們的 Dart 後端使用 <a href="https://pub.dev/packages/dart_frog">Dart Frog 套件</a> 建構，並託管在 <a href="https://dartfrog.vgv.dev/docs/deploy/google-cloud-run">Google Cloud Run</a> 上，以利用自動調整功能。這有助於維持最佳效能，無論活躍玩家數如何，因為遊戲會進行多次呼叫，例如每次建立使用者時，或者當玩家提交單詞或請求提示時。</p>
+<p>使用後端來確認每個線索的答案，還可以讓我們保護填字遊戲，防止作弊。具體而言，應用程式使用 Flutter Firestore SDK 讀取資訊，但資料庫 <em>僅</em> 允許 Dart 後端進行更改。這還有助於加快開發速度，因為我們可以在前端和後端使用相同的語言（Dart）。</p>
+<p>例如，我們可以在 Player 資料模型中看到這種模式，它使用 Dart Frog API 建立一個玩家。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*s1G59HNBAWqoq0xt" />
+</figure>
+
+<p>應用程式直接存取玩家排行榜，重複使用相同的模型，避免重複和不同步：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*538Moipv7JTPricT" />
+</figure>
+
+<p><strong>開始玩：解開 I&#x2F;O 填字遊戲！</strong></p>
+<p>在您自己的所有橫向和縱向的輝煌中開始玩 <a href="https://crossword.withgoogle.com/">填字遊戲</a>。對於那些想要深入了解細節的人，請查看它的 <a href="https://github.com/VGVentures/io_crossword">開源程式碼</a> 和 <a href="https://developers.google.com/learn/pathways/solution-crossword">開發者學習路徑</a>，以展示我們如何建立它。觀看 <a href="https://www.youtube.com/watch?v=xKmEOXZsU_0">Google I&#x2F;O 回顧</a>，以了解有關今年宣布的所有內容的更多資訊！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=2210e39b04b9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/how-we-built-it-creating-the-i-o-crossword-puzzle-powered-by-ai-2210e39b04b9">我們是如何建構它的：使用 AI 製作 I&#x2F;O 填字遊戲</a> 最初發佈在 Medium 上的 Flutter，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
 
     </div>
 
@@ -237,8 +311,8 @@
       <i class="fa fa-chevron-left"></i> 【文章翻譯】All the Flutter news from a busy Google I/O 2024
     </a></div>
       <div class="post-nav-item">
-    <a href="/archives/6975f342.html" rel="next" title="【文章翻譯】How we built it: Creating the I/O Crossword puzzle, powered by AI">
-      【文章翻譯】How we built it: Creating the I/O Crossword puzzle, powered by AI <i class="fa fa-chevron-right"></i>
+    <a href="/archives/6243ded4.html" rel="next" title="【文章翻譯】What’s new in Flutter 3.24">
+      【文章翻譯】What’s new in Flutter 3.24 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -298,6 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Flutter%E3%80%81Firebase-Genkit-%E5%92%8C-Gemini-API-%E7%82%BA%E7%B6%93%E5%85%B8%E6%96%87%E5%AD%97%E9%81%8A%E6%88%B2%E6%B7%BB%E5%8A%A0%E8%B6%A3%E5%91%B3%E5%92%8C%E5%AF%A6%E7%94%A8%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">使用 Flutter、Firebase Genkit 和 Gemini API 為經典文字遊戲添加趣味和實用性</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -311,7 +386,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">166</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -320,7 +395,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">184</span>
+        <span class="site-state-item-count">188</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
