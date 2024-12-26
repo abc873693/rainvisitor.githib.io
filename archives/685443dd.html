@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 編輯的快速輔助您是否在編碼時花費太多時間執行重複性的任務？如果是這樣，那麼我有一些好消息要告訴您。許多重複性的任務可以使用我們稱為「快速輔助」的功能自動執行。 快速輔助 是一種自動編輯，旨在對程式碼進行常見的更改。與我們在針對分析問題的快速修復和批量應用修復中看到的快速修復不同，快速輔助的存在並不是建議您更改程式碼，它只是為了讓您的工作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Quick assists for editing">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/685443dd.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 編輯的快速輔助您是否在編碼時花費太多時間執行重複性的任務？如果是這樣，那麼我有一些好消息要告訴您。許多重複性的任務可以使用我們稱為「快速輔助」的功能自動執行。 快速輔助 是一種自動編輯，旨在對程式碼進行常見的更改。與我們在針對分析問題的快速修復和批量應用修復中看到的快速修復不同，快速輔助的存在並不是建議您更改程式碼，它只是為了讓您的工作">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/622/0*V2JRi49yUj_MkFjS">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/586/0*SH7NIMTeCdgyE2Uf">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/546/0*zkIBfG56juJk2AuT">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/532/0*jfAvjus6m7-TCP4S">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/974/0*hp1u0YSRQsoNMaJl">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/922/0*Ca5bRUzZ-Y4dHkw2">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/658/0*mU7Y97eTeCILB1sr">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/568/0*miez1wvKHge96Ggl">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/734/0*6C745jOIAaB-k0f-">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/698/0*9mRjNGVqm82qAeg0">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/740/0*PGLOLXQPGGTZFTCE">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/668/0*pfrf--11lE_B1oTf">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/484/0*Lr2HLGu31CqL5JLd">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/386/0*nHsQKP9Wtm1UZn6-">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=453f051fb28c">
+<meta property="article:published_time" content="2022-07-13T10:44:39.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:53:18.083Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="linter">
+<meta property="article:tag" content="analyzer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/622/0*V2JRi49yUj_MkFjS">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/685443dd.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Quick assists for editing | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/685443dd.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Quick assists for editing
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-07-13 18:44:39" itemprop="dateCreated datePublished" datetime="2022-07-13T18:44:39+08:00">2022-07-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:53:18" itemprop="dateModified" datetime="2024-12-18T22:53:18+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="編輯的快速輔助"><a href="#編輯的快速輔助" class="headerlink" title="編輯的快速輔助"></a>編輯的快速輔助</h2><p>您是否在編碼時花費太多時間執行重複性的任務？如果是這樣，那麼我有一些好消息要告訴您。許多重複性的任務可以使用我們稱為「快速輔助」的功能自動執行。</p>
+<p><em>快速輔助</em> 是一種自動編輯，旨在對程式碼進行常見的更改。與我們在<a href="https://medium.com/dartlang/quick-fixes-for-analysis-issues-c10df084971a">針對分析問題的快速修復</a>和<a href="https://medium.com/dartlang/bulk-application-of-fixes-e6add333c3c1">批量應用修復</a>中看到的快速修復不同，快速輔助的存在並不是建議您更改程式碼，它只是為了讓您的工作更輕鬆。</p>
+<p>讓我們來看幾個例子。</p>
+<h3 id="宣告局部變數"><a href="#宣告局部變數" class="headerlink" title="宣告局部變數"></a>宣告局部變數</h3><p>您可能會花費相當多的時間宣告和初始化局部變數。這些工具可以幫助您完成其中的一些工作。如果您輸入初始化運算式，則可以使用快速輔助來建立局部變數以擷取運算式的值。</p>
+<p>如果您從下面的程式碼開始，並將游標放在運算式中的任何位置，則燈泡圖示會出現在編輯器左側邊緣附近。如果您將滑鼠懸停在它上面，則可以點擊以打開包含可用快速輔助的選單。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/622/0*V2JRi49yUj_MkFjS" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/586/0*SH7NIMTeCdgyE2Uf" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>選擇輔助會插入變數宣告，使用運算式作為初始化運算式，並選取變數的名稱，以便您可以選擇建議的名稱之一或輸入您自己的名稱：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/546/0*zkIBfG56juJk2AuT" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/532/0*jfAvjus6m7-TCP4S" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>按下 Enter&#x2F;Return 鍵即可接受輸入的名稱。</p>
+<h3 id="函式主體樣式"><a href="#函式主體樣式" class="headerlink" title="函式主體樣式"></a>函式主體樣式</h3><p>如果您經常使用運算式主體函式，則您可能需要在某些時候將其轉換為程式碼塊主體函式。也有一個輔助可以做到這一點。例如，如果您有如下程式碼，並且您將游標放在箭頭內，您將看到以下選項：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/974/0*hp1u0YSRQsoNMaJl" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/922/0*Ca5bRUzZ-Y4dHkw2" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>選擇「轉換為程式碼塊主體」會將函式主體改寫為如下所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/658/0*mU7Y97eTeCILB1sr" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/568/0*miez1wvKHge96Ggl" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>是的，還有另一個輔助可以將程式碼塊主體轉換為運算式主體。</p>
+<h3 id="改寫-if-陳述式"><a href="#改寫-if-陳述式" class="headerlink" title="改寫 if 陳述式"></a>改寫 if 陳述式</h3><p>輔助還可以幫助進行更大的重構。如果您曾經編寫過如下結構的程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> f(<span class="built_in">int</span> a, <span class="built_in">int</span> b, <span class="built_in">int</span> c, <span class="built_in">int</span> d) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == b) &#123;</span><br><span class="line">    <span class="keyword">if</span> (a == c || a == d) &#123;</span><br><span class="line">      <span class="built_in">print</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>並且意識到您可以組合這兩個條件，則有一個輔助可以做到這一點。將游標放在內部的 <code>if</code> 上並打開選單：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/734/0*6C745jOIAaB-k0f-" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/698/0*9mRjNGVqm82qAeg0" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>選擇「將 ‘if’ 陳述式與外部 ‘if’ 陳述式合併」會將程式碼改寫為如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> f(<span class="built_in">int</span> a, <span class="built_in">int</span> b, <span class="built_in">int</span> c, <span class="built_in">int</span> d) &#123;</span><br><span class="line">  <span class="keyword">if</span> (a == b &amp;&amp; (a == c || a == d)) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果您將游標放在外部的 <code>if</code> 上，輔助也會顯示，但選單會顯示「將 ‘if’ 陳述式與內部 ‘if’ 陳述式合併」。</p>
+<h3 id="使用新的語言功能"><a href="#使用新的語言功能" class="headerlink" title="使用新的語言功能"></a>使用新的語言功能</h3><p>還有一些輔助可以幫助您轉換到新的語言功能。例如，如果您有一個如下所示的類別：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  A(&#123;<span class="built_in">int?</span> x, <span class="built_in">int?</span> y&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  B(&#123;<span class="built_in">int?</span> x, <span class="built_in">int?</span> y&#125;) : <span class="keyword">super</span>(x: x, y: y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中子類別中的建構函式將一些參數傳遞給父類別而不修改它們，則有一種更簡潔的程式碼編寫方式。將游標放在建構函式 <code>B</code> 的名稱上並打開選單：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/740/0*PGLOLXQPGGTZFTCE" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/668/0*pfrf--11lE_B1oTf" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>選擇「轉換為使用父類別參數」會將程式碼改寫為如下所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/484/0*Lr2HLGu31CqL5JLd" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/386/0*nHsQKP9Wtm1UZn6-" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>可用的輔助比我們在一篇文章中所能涵蓋的要多。下次您發現自己要執行經常執行的編輯時，請查看上下文操作，看看是否有輔助可以讓任務更輕鬆。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=453f051fb28c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/quick-assists-for-editing-453f051fb28c">用於編輯的快速輔助</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/linter/" rel="tag"># linter</a>
+              <a href="/tags/analyzer/" rel="tag"># analyzer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/d4c31813.html" rel="prev" title="【文章翻譯】Put Flutter to Work">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Put Flutter to Work
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9eff9ba0.html" rel="next" title="【文章翻譯】Firebase Crashlytics and the Flutter Casual Games Toolkit">
+      【文章翻譯】Firebase Crashlytics and the Flutter Casual Games Toolkit <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B7%A8%E8%BC%AF%E7%9A%84%E5%BF%AB%E9%80%9F%E8%BC%94%E5%8A%A9"><span class="nav-number">1.</span> <span class="nav-text">編輯的快速輔助</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A3%E5%91%8A%E5%B1%80%E9%83%A8%E8%AE%8A%E6%95%B8"><span class="nav-number">1.1.</span> <span class="nav-text">宣告局部變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E5%BC%8F%E4%B8%BB%E9%AB%94%E6%A8%A3%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">函式主體樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%AF%AB-if-%E9%99%B3%E8%BF%B0%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">改寫 if 陳述式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B0%E7%9A%84%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD"><span class="nav-number">1.4.</span> <span class="nav-text">使用新的語言功能</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

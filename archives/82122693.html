@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Future 與 Future，有什麼區別？在 Dart 2 的諸多升級中（除了更好的靜態檢查、運行時類型安全、可選的 new&#x2F;const、核心函式庫改進等等），一個值得一提的改進是 void 的正式化，使其更加實用且更不容易出錯。這在異步程式設計中尤其清晰，您可以為異步函數編寫 Future&lt;void&gt;，這些函數">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Future&lt;void&gt; vs Future&lt;Null&gt;, what’s the difference?">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/82122693.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Future 與 Future，有什麼區別？在 Dart 2 的諸多升級中（除了更好的靜態檢查、運行時類型安全、可選的 new&#x2F;const、核心函式庫改進等等），一個值得一提的改進是 void 的正式化，使其更加實用且更不容易出錯。這在異步程式設計中尤其清晰，您可以為異步函數編寫 Future&lt;void&gt;，這些函數">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/268/0*_2MNvj3It63IUFUH">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/0*1ZUU5fNh-kmpPzMU">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/0*TkwIX5BsrbSzHfLr">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/0*OyVAekp1iwSQyfur">
+<meta property="article:published_time" content="2018-10-30T09:26:22.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:53:01.651Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="programming-languages">
+<meta property="article:tag" content="design-patterns">
+<meta property="article:tag" content="type-theory">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/268/0*_2MNvj3It63IUFUH">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/82122693.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Future<void> vs Future<Null>, what’s the difference? | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/82122693.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Future<void> vs Future<Null>, what’s the difference?
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-30 17:26:22" itemprop="dateCreated datePublished" datetime="2018-10-30T17:26:22+08:00">2018-10-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:53:01" itemprop="dateModified" datetime="2024-12-18T15:53:01+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Future-與-Future，有什麼區別？"><a href="#Future-與-Future，有什麼區別？" class="headerlink" title="Future 與 Future，有什麼區別？"></a>Future<void> 與 Future<Null>，有什麼區別？</h2><p>在 Dart 2 的諸多升級中（除了更好的靜態檢查、運行時類型安全、可選的 new&#x2F;const、核心函式庫改進等等），一個值得一提的改進是 void 的正式化，使其更加實用且更不容易出錯。這在異步程式設計中尤其清晰，您可以為異步函數編寫 <code>Future&lt;void&gt;</code>，這些函數在工作完成時不返回結果。在此之前，您可能使用了 <code>Future&lt;Null&gt;</code>，所以我們經常被問到的問題是：<code>Future&lt;void&gt;</code> 和 <code>Future&lt;Null&gt;</code> 之間有什麼區別？我應該使用哪一個，以及何時使用？</p>
+<p>由於我的目標是提供有用的資訊，我將從 TLDR 開始。</p>
+<p>TL;DR：<strong>99.99% 的情況下，您應該使用 void 類型。</strong></p>
+<p>我還建議您現在就在您的專案中啟用兩個與 void 相關的<a href="https://www.dartlang.org/guides/language/analysis-options">lint 規則</a>：</p>
+<ul>
+<li><strong>prefer_void_to_null：</strong> 幫助您改掉輸入幾乎過時的 Null 的習慣。</li>
+<li><strong>void_checks：</strong> 為您提供可能更直觀的 void 語義，即使它們對於安全程式碼並非絕對必要。</li>
+</ul>
+<p>本文的其餘部分並非輕鬆閱讀。它結合了歷史、邊緣案例和類型理論。我接下來要寫的就像試圖解釋<a href="https://zh.wikipedia.org/wiki/%E5%8D%95%E5%AD%90_(%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B)">單子</a>，但我會盡力而為，希望您能跟上。</p>
+<h3 id="快速-Future-小知識"><a href="#快速-Future-小知識" class="headerlink" title="快速 Future  小知識"></a>快速 Future<Null>  小知識</h3><p>為了展示閱讀本文的價值，我為您提出了一個小知識問題。</p>
+<p>假設我們將自己限制在兩個 Future - 一個 <code>Future&lt;User&gt;</code> 和一個 <code>Future&lt;Null&gt;</code>。以下程式碼行會做什麼？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這段程式碼在您的編輯器中會失敗嗎？</span></span><br><span class="line">Future&lt;User&gt; f1 = Future&lt;<span class="built_in">Null</span>&gt;.value(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這段程式碼在運行時會失敗嗎？</span></span><br><span class="line">Future&lt;<span class="built_in">Null</span>&gt; f2 = Future&lt;User&gt;.value(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果我們改用 await 呢？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">User u = <span class="keyword">await</span> Future&lt;<span class="built_in">Null</span>&gt;.value(<span class="keyword">null</span>);</span><br><span class="line"><span class="built_in">Null</span> n = <span class="keyword">await</span> Future&lt;User&gt;.value(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><em>暫停以產生戲劇性效果</em></p>
+<p>答案是，除非您禁用了隱式向下轉型，否則這四行程式碼都不會在您的編輯器中顯示任何錯誤。沒錯，使用 <code>Future&lt;Null&gt;</code> 並假裝它是它不是的東西，例如 <code>Future&lt;User&gt;</code>，是 100% 合法的。<code>Future&lt;void&gt;</code> 就不是這樣！</p>
+<p>同樣不直觀的是，第二行和第四行在運行時會失敗（以這種方式丟棄 Future 的結果是不「安全」的），而其他行則靜默地成功。</p>
+<p>這些行為應該會讓您感到不安。但別擔心！您已經知道解決方案：使用 <code>Future&lt;void&gt;</code>。我將分析為什麼這種不直觀的行為會這樣工作。</p>
+<h3 id="void-現在是如何工作的"><a href="#void-現在是如何工作的" class="headerlink" title="void 現在是如何工作的"></a>void 現在是如何工作的</h3><p>我一直在思考本文的最佳順序。這裡有很多概念需要解釋。但是，我會盡量按照從最有用的資訊到最不有用的資訊的順序進行。因此，由於 void 在 Dart 2 中比 Null 更有用，因此從 Dart 2 void 語義開始是有意義的。</p>
+<p>Dart 中 void 背後的基本思想源於 void 值不應使用的目標。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> f() &#123;&#125;</span><br><span class="line"><span class="built_in">print</span>(f()); <span class="comment">// 錯誤！</span></span><br></pre></td></tr></table></figure>
+
+<p>希望這就是您期望發生的！到目前為止，一切都很好。</p>
+<p>值得注意的是，實現這個目標<em>並且</em>將 void 作為一個相當普通的類型公開會有點奇怪：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="keyword">void</span> argument) &#123;</span><br><span class="line">  <span class="built_in">print</span>(argument); <span class="comment">// 錯誤！</span></span><br><span class="line">  <span class="comment">// 我們可以接收參數，但我們不能使用它！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這就是 Dart 2 中我們新的「廣義 void」開始變得酷炫和強大的地方……儘管有時會讓人感到困惑。</p>
+<p>我向您提出一個問題……我們可以傳遞什麼類型的值作為 f 的參數？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="keyword">void</span> argument) &#123; … &#125;</span><br><span class="line">f(x); <span class="comment">// x 是什麼？</span></span><br></pre></td></tr></table></figure>
+
+<p>答案是……任何東西！因為我們不允許您在函數 f 中使用 x 的值，所以我們可以自信地說 x 可以取的任何值都不會導致任何運行時錯誤。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="number">1</span>); <span class="comment">// 與以下程式碼沒有區別</span></span><br><span class="line">f(<span class="string">&quot;foo&quot;</span>); <span class="comment">// 與以下程式碼沒有區別</span></span><br><span class="line">f([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 與以下程式碼沒有區別</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<p>如果我們根據 void 是一個不會被<em>使用</em>的值的思想推導出 void 的最佳語義，這就是我們得到的結果。這意味著，它是一個可以用任何東西<em>填充</em>的值。它就像一個真空：一個沒有輸出的輸入。</p>
+<p>現在，在某些情況下，某些東西在運行時總是沒有錯誤，但仍然應該導致靜態錯誤。這是一個 lint 的絕佳案例！事實上，這就是 void_checks lint 背後的思想。它會尋找您將 null 以外的任何東西傳遞到 void 位置的地方，我鼓勵團隊啟用它。它並非健全性所必需的，但是將 null 以外的任何東西傳遞到 void 位置仍然可能是一個意外，lint 會為您標記它。</p>
+<p>由於所有這些都基於基礎類型理論，因此 void 可以與 Dart 的每個部分都很好地配合使用，即使在利用類型推斷的 <code>Future&lt;void&gt;</code> 上下文中的延續也是如此：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt;().then((x) &#123;</span><br><span class="line">  <span class="built_in">print</span>(x); <span class="comment">// 錯誤！x 的類型為「void」，所以您不能列印它！</span></span><br><span class="line">  <span class="comment">// 這就是我們想要的！</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 是的，這也是一個錯誤：</span></span><br><span class="line">Foo f = <span class="keyword">await</span> voidFuture();</span><br></pre></td></tr></table></figure>
+
+<p>此時，普通開發人員可能已經了解了有效使用 void 所需知道的一切。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/268/0*_2MNvj3It63IUFUH" />
+</figure>
+
+<p>然而，如果您仍在繼續閱讀，還有一些更有趣的東西。</p>
+<p>即使啟用了 void_checks，也不能保證 void 位置包含 null。以下列覆寫為例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="keyword">void</span> f(<span class="built_in">Object</span> o) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">Object</span> f(<span class="built_in">Object</span> o) =&gt; o;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我們不想讓此覆寫非法，因為它是安全的、有用的，並且與 Dart 1 相比是一個重大變更。因此，我們不得不接受 void 位置可能包含任何值。我們也不能「優化掉」A.f() 返回的值，因為在運行時它可能是一個 B！</p>
+<p>相反，我們有一個聰明的選擇，即讓 void 成為 Object 的姊妹類型。畢竟，它可以包含任何值，並且所有值都是物件。這不是我們設計的東西，它只是現實。認識到現實，我們就可以利用它。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*1ZUU5fNh-kmpPzMU" />
+</figure>
+
+<p>透過使 void 成為 Object 的同級，我們沒有任何要求 void 值<em>完全</em>未使用。我們盡力讓 void 保持自身，但為了向後兼容性，我們特意在一些地方放鬆了這些限制：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dynamic</span> f() =&gt; voidFn(); <span class="comment">// 這是合法的</span></span><br><span class="line">voidFn() <span class="keyword">as</span> <span class="built_in">dynamic</span>; <span class="comment">// 這是合法的</span></span><br></pre></td></tr></table></figure>
+
+<p>這些是對於 Object 合法的特殊情況，為了使 Dart 2 更順利地推出，我們也讓它對 void 合法。</p>
+<p>使 void 成為 Object 的同級也意味著 void 可以用作類型參數，而不會使編譯後的輸出膨脹（對於 C++ 使用者來說，沒有「模板特化」）。這種減少有助於保持 Web 和 Flutter 應用程式的小巧，但代价是允許以下操作：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">void</span>&gt;[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].toString(); <span class="comment">// 這是合法的，並列印 [1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，將參數類型指定為 void 可能看起來沒有用，尤其是因為它是 Object 的一種形式。然而，void 值可以<em>傳遞到</em> void <em>位置</em>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="keyword">void</span> x) &#123; … &#125;</span><br><span class="line">f(voidFn()); <span class="comment">// 這是合法的</span></span><br></pre></td></tr></table></figure>
+
+<p>這對於<em>排序</em>很有用，例如在模擬返回 void 的方法時，Mockito 會使用它。（將上面的程式碼中的 f 替換為 when 以獲得更接近的近似值。）</p>
+<p>總而言之：</p>
+<ul>
+<li>void 類型是 Object 的同級。</li>
+<li>幾乎總是，void 物件不能被使用。</li>
+<li>標記為 void 的東西實際上可以是任何東西。</li>
+<li>任何東西都可以「丟棄」到標記為 void 的位置，而 lint void_checks 限制了這種行為。</li>
+<li>void 值可以傳遞到其他 void 位置。</li>
+</ul>
+<h3 id="底部類型"><a href="#底部類型" class="headerlink" title="底部類型"></a>底部類型</h3><p>在我開始討論 Null 之前，我們必須先討論「底部」類型。</p>
+<p>這是一個類型理論中自然發生的類型，它有一個簡短的學術定義和一些實際應用。</p>
+<p>如果您因為<em>它太奇怪了</em>而停止閱讀本節，那就是我最初 TLDR 的有力證據。除非您希望您的程式碼同樣奇怪，否則您可能需要 void。現在讓我們探索這個奇怪的兔子洞，看看它有多深，好嗎？</p>
+<p>底部類型是所有類型的子類型。用更簡單的面向對象術語來說，這意味著它是一個人。還是一輛車。還是一種動物。還有來自每個程式的所有其他類型。</p>
+<p>如果這聽起來很荒謬，那是因為它確實如此。我喜歡將它視為一個「佔位符」類型。但是「荒謬的」或「虛構的」類型也是一個合理的稱呼。然而，它被稱為<em>底部</em>類型，因為它是類型層次結構的底部，在電腦科學中，它是顛倒的。¯_(ツ)_&#x2F;¯。正式地，它可以用符號 ⊥ 表示，您可能也認識到它是「假」的符號。</p>
+<p>如果您試圖想像一個既是人<em>又是</em>車<em>又是</em>動物的值，您將無法想到任何東西。令人驚訝的是，這就是 ⊥ 的實際用途的來源！</p>
+<p>如果我編寫一個永不返回的函數會怎樣？有兩種簡單的方法可以做到這一點：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">loopForever() &#123;</span><br><span class="line">  <span class="keyword">while</span>(<span class="keyword">true</span>); <span class="comment">// 第一種方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alwaysThrow() &#123;</span><br><span class="line">  <span class="keyword">throw</span> Exception(); <span class="comment">// 第二種方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這兩個函數的最佳返回類型是什麼？</p>
+<p>這取決於情況。因為函數永不返回，所以返回類型並不重要。您可以使用任何類型 - 即使是荒謬的底部類型，它可以在各種語言中以各種方式使用。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*TkwIX5BsrbSzHfLr" />
+</figure>
+
+<p>C++ 將其稱為 noreturn。Rust 有 !，Scala 有 Nothing。但我最喜歡的例子來自 Haskell，它有一個非常常用的 undefined 函數，它會中止程式。它返回，您猜對了，底部類型。</p>
+<p>如果我們假設 Dart 中有一個 undefined 函數，就像 Haskell 中的那樣，它在被調用時只拋出一個異常並返回 ⊥，那麼它看起來像這樣：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Foo foo = cond ? val : undefined();</span><br></pre></td></tr></table></figure>
+
+<p>在示例用法行中，當 cond 為真時，程式可以安全地運行並儲存 val。而當 cond 為假時，程式將在 undefined() 期間拋出異常。將 undefined() 的結果「儲存」到 foo 中是安全的，無論 foo 的類型如何，因為該儲存永遠不會真正發生！</p>
+<p>undefined() 這裡沒有返回任何東西。但這裡的教訓不是我們可以讓 foo 為空……而是底部類型像一個空的承諾一樣是空的。它比空還空。它永遠不會發生。</p>
+<p>我必須小心地說明的一點是，您可以在實踐中從這些函數中返回 void，並且根據用法，通常應該返回 void。通常，像 <code>return loopForever()</code> 這樣的程式碼更有可能是一個錯誤，而不是一個有用的模式。然而，您可以自行選擇。</p>
+<p>底部類型也適用於唯讀空列表。在 Dart 中，List 是協變的，因此允許將 <code>List&lt;int&gt;</code> 用作 <code>List&lt;Object&gt;</code>。如果您試圖將 String 放入該 <code>List&lt;Object&gt;</code> 中，運行時檢查會為您捕獲該錯誤並拋出錯誤。</p>
+<p>這意味著，如果我們建立一個 ⊥ 列表，我們就無法在其中放入任何東西，但我們可以將其視為任何東西的列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt; intList = &lt;⊥&gt;[];</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i <span class="keyword">in</span> intList) &#123;</span><br><span class="line">  <span class="built_in">print</span>(i * <span class="number">2</span>); <span class="comment">// 有效，因為這永遠不會發生</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>當您查看所謂的底部類型的「逆變」位置時，還會有更多有趣的案例。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*OyVAekp1iwSQyfur" />
+</figure>
+
+<p>假設我們定義了一個具有 ⊥ 參數的函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> f(⊥ x) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這幾乎與 undefined() 示例相反。我們不是聲明了一個永不返回的函數，而是聲明了一個無法被調用的函數！沒有實際值可以賦值給該參數 x。您不能傳入 Person，因為它<em>也不是</em> Car，並且您不能傳入 Car，因為它也不是 Person。您唯一可以傳入的就是荒謬的類型本身：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(undefined());</span><br></pre></td></tr></table></figure>
+
+<p>但是正如我們之前所討論的，undefined() 永不返回，所以在這種情況下，f() 仍然永遠不會被實際調用！</p>
+<p>將參數類型指定為 ⊥ 可能看起來沒有用，但它具有深奧的價值，因為所有<em>可以</em>被調用的函數都是<em>不能</em>被調用的函數的子類型。（想一想：一個<em>可以</em>被調用的函數不<em>一定</em>要被調用。如果一個函數沒有被調用，它就不會產生運行時錯誤。）</p>
+<p>如果您還在繼續閱讀，請深呼吸，並拍拍自己的背。</p>
+<p>具體來說，將任何 <code>Function(X)</code> 轉換為 <code>Function(⊥)</code> 是安全的，對於任何 X 都是如此。這比使用 Dart 的包羅萬象的 Function 類型更好，因為它更具體。</p>
+<p>例如，您可以將任何一元函數儲存在一個欄位中，並動態調用它，以繞過靜態錯誤，如果您犯了錯誤，則用運行時錯誤代替它們：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>(⊥) f;</span><br><span class="line">f = (<span class="built_in">int</span> x) =&gt; x + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 123 作為 f 的參數的有效性在運行時檢查</span></span><br><span class="line">(f <span class="keyword">as</span> <span class="built_in">dynamic</span>)(<span class="number">123</span>);</span><br></pre></td></tr></table></figure>
+
+<p>這是一個在緊要關頭幫助您的小技巧。</p>
+<p>現在我們可以討論 Null 了。</p>
+<h3 id="Dart-2-中的-Null"><a href="#Dart-2-中的-Null" class="headerlink" title="Dart 2 中的 Null"></a>Dart 2 中的 Null</h3><p>概念上的「底部」類型（所有類型的子類型）存在於 Dart 中，但這並不是全部。這樣的值也存在於 Dart 2 中！在 Dart 中，我們稱它為 Null，而該值就是 - 您猜對了 - null。</p>
+<p>由於我可以使任何東西都為 null(&#x2F;Null)，所以在 Dart 中荒謬的類型並不那麼荒謬。這使得它有點複雜。</p>
+<p>注意：值 null 當然不是 Car，也不是 Person。我們確實收到了對 Dart 中非空類型的請求。因此，如果我們確實對 Dart 進行了這樣的更改，我們將需要一個新的底部類型，可能命名為 Nothing 之類的名稱，那時它將是一個更真實的底部類型。</p>
+<p>Null 不僅具有與底部類型相同的所有荒謬用法，而且還有一個逃生出口。如果您真的需要從一個不能返回的函數中返回，或者調用一個不能被調用的函數，我們會給您一個出路！您可以將 null 傳遞進去！老實說，如果您從整體上看，我們不這樣做會有點不公平。</p>
+<p>但是，對於一個原本簡單的聲明，它確實給出了很多警告：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Null</span> nothing() =&gt; <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Null 是 foo() 最特定的類型，所以它是一個合乎邏輯的選擇，也是一個良好的起點。如果您在其上調用不存在的方法，分析器也會善意地警告您：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nothing().x; <span class="comment">// 錯誤！Null 上沒有成員 x</span></span><br></pre></td></tr></table></figure>
+
+<p>但这可能会造成安全的假象。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nothing().toString(); <span class="comment">// 沒有錯誤：Null 定義了 toString()</span></span><br><span class="line">Foo foo = nothing(); <span class="comment">// 沒有錯誤：foo 將變為 null</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 對於 f(x) 中的所有參數類型都可接受，</span></span><br><span class="line"><span class="comment">// 如果 f(x) 需要非 null 值，則會出現運行時錯誤</span></span><br><span class="line">f(nothing());</span><br></pre></td></tr></table></figure>
+
+<p>如果您的目標是讓 nothing() 成為</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+              <a href="/tags/design-patterns/" rel="tag"># design-patterns</a>
+              <a href="/tags/type-theory/" rel="tag"># type-theory</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/7cf6f9eb.html" rel="prev" title="【文章翻譯】Improved discovery on the Dart package site">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Improved discovery on the Dart package site
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/1edb2c4a.html" rel="next" title="【文章翻譯】Announcing Dart 2.1: Improved performance & usability">
+      【文章翻譯】Announcing Dart 2.1: Improved performance & usability <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Future-%E8%88%87-Future%EF%BC%8C%E6%9C%89%E4%BB%80%E9%BA%BC%E5%8D%80%E5%88%A5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Future 與 Future，有什麼區別？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F-Future-%E5%B0%8F%E7%9F%A5%E8%AD%98"><span class="nav-number">1.1.</span> <span class="nav-text">快速 Future  小知識</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void-%E7%8F%BE%E5%9C%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">void 現在是如何工作的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%95%E9%83%A8%E9%A1%9E%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">底部類型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-%E4%B8%AD%E7%9A%84-Null"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2 中的 Null</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

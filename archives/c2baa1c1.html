@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 演進 Dart REPL 概念驗證    Dart REPL 允許您在 互動式 shell 中評估 Dart 表達式和語句。自從我 第一次發佈關於 Dart REPL 的文章 以來已經有一段時間了（您不需要閱讀它就能享受這篇文章），而且仍然缺少許多功能。特別是，動態導入和對頂級宣告的支援將非常有用，所以讓我們來看看如何支援它們。 免責聲">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Evolving the Dart REPL PoC">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/c2baa1c1.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 演進 Dart REPL 概念驗證    Dart REPL 允許您在 互動式 shell 中評估 Dart 表達式和語句。自從我 第一次發佈關於 Dart REPL 的文章 以來已經有一段時間了（您不需要閱讀它就能享受這篇文章），而且仍然缺少許多功能。特別是，動態導入和對頂級宣告的支援將非常有用，所以讓我們來看看如何支援它們。 免責聲">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/400/0*VisHHMp_ARvFA08w.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/500/0*pmcEIyli_y3CLPCi.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/505/1*3Zj7w3g1jNI_SXtkvM8-Lg.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/500/0*JRC_8ZBdApr8CNWF.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*jjpANyPKXUIge1JcUA3WSQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/480/0*lKzRhG-9uyW5eLvq.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/505/1*lR3fQGmW9Bjxtcxy-mJsjg.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=233440a35e1f">
+<meta property="article:published_time" content="2017-04-19T15:26:15.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:34:25.680Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="google">
+<meta property="article:tag" content="prototyping">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="software-development">
+<meta property="article:tag" content="javascript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/400/0*VisHHMp_ARvFA08w.jpg">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/c2baa1c1.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Evolving the Dart REPL PoC | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c2baa1c1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Evolving the Dart REPL PoC
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-19 23:26:15" itemprop="dateCreated datePublished" datetime="2017-04-19T23:26:15+08:00">2017-04-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:34:25" itemprop="dateModified" datetime="2024-12-18T15:34:25+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="演進-Dart-REPL-概念驗證"><a href="#演進-Dart-REPL-概念驗證" class="headerlink" title="演進 Dart REPL 概念驗證"></a>演進 Dart REPL 概念驗證</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/400/0*VisHHMp_ARvFA08w.jpg" />
+</figure>
+
+<p><a href="https://github.com/BlackHC/dart_repl">Dart REPL</a> 允許您在 <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">互動式 shell</a> 中評估 Dart 表達式和語句。自從我 <a href="https://medium.com/dartlang/dart-repl-poc-f327e3769b6f">第一次發佈關於 Dart REPL 的文章</a> 以來已經有一段時間了（您不需要閱讀它就能享受這篇文章），而且仍然缺少許多功能。特別是，動態導入和對頂級宣告的支援將非常有用，所以讓我們來看看如何支援它們。</p>
+<p><em>免責聲明：我的確在 Google 工作，但這篇文章是關於一個個人專案。我不在 Dart 團隊或相關團隊。本文僅包含我個人的淺見。</em></p>
+<p><strong>tl;dr</strong>：關於如何運行 Dart REPL 的程式碼和說明可以在 <a href="https://github.com/BlackHC/dart_repl">https://github.com/BlackHC/dart_repl</a> 找到。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/500/0*pmcEIyli_y3CLPCi.jpg" />
+</figure>
+
+<h3 id="熱重載"><a href="#熱重載" class="headerlink" title="熱重載"></a>熱重載</h3><p>對於 <a href="https://flutter.io/">Flutter</a>，Dart VM 中加入了一項很酷的新功能：<a href="https://github.com/flutter/flutter/wiki/Hot-Reload"><strong>熱重載</strong></a>。Dart DevSummit 上有一個有趣的 YouTube 影片，詳細解釋並展示了它：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FiPlPk43RbpA%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DiPlPk43RbpA&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FiPlPk43RbpA%2Fhqdefault.jpg&amp;key=d04bfffea46d4aeda930ec88cc64b87c&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/824f2944e1d202f35f9a5dde00aeb762/href">https://medium.com/media/824f2944e1d202f35f9a5dde00aeb762/href</a></iframe>
+
+<p>熱重載允許您在程式運行時更改程式碼。Dart VM 將擷取您所做的更改，並嘗試應用它們，同時保持一切正常運行。如果不能，它會告訴您原因。這非常酷！本著駭入 Dart 以做偉大的事情的精神，讓我們思考如何使用它來實作新功能。</p>
+<h4 id="為什麼我們不能在目前版本的-REPL-中導入新的函式庫？"><a href="#為什麼我們不能在目前版本的-REPL-中導入新的函式庫？" class="headerlink" title="為什麼我們不能在目前版本的 REPL 中導入新的函式庫？"></a>為什麼我們不能在目前版本的 REPL 中導入新的函式庫？</h4><p>REPL 使用 Dart 的 VM 服務來評估表達式。遺憾的是，導入函式庫在 Dart 中不是表達式，因此我們不能僅在該上下文中評估它。但是，我們可以在 REPL 的沙盒運行時更改其程式碼以導入新的函式庫，然後我們可以觸發熱重載來更新 REPL。這樣可行嗎？實際上可行 \o&#x2F;</p>
+<figure><a href="https://asciinema.org/a/114834"><img alt="" src="https://cdn-images-1.medium.com/max/505/1*3Zj7w3g1jNI_SXtkvM8-Lg.gif" /></a><figcaption>具有運行時導入的 Dart REPL</figcaption></figure>
+
+<p>但是等等：我們透過 VM 服務評估表達式無法做的另一件事是建立新的類別和函數。事實上，由於這個原因，Dart 的任何頂級宣告都不能透過評估表達式來執行。</p>
+<h3 id="我們如何允許頂級宣告？"><a href="#我們如何允許頂級宣告？" class="headerlink" title="我們如何允許頂級宣告？"></a>我們如何允許頂級宣告？</h3><p>當然，我們可以使用上面描述的相同想法來加入新的類別或全域函數。但是，任何使用過 IPython 或類似工具一段時間的人都知道，您往往會在迭代程式碼時經常重新宣告相同的類別或函數。在您試用程式碼時，您會一遍又一遍地重新執行略微修改過的相同程式碼版本。</p>
+<p>如果我們只是將這些宣告加入到我們的沙盒 Dart 函式庫中，則需要我們記錄在檔案中何時何地宣告了什麼，以便在您迭代它時更新宣告。這需要大量的邏輯和聰明的程式碼。遺憾的是，如果對類別的更改與舊程式碼或其他宣告不相容，它也容易損壞。這將阻止 REPL 熱重載，並迫使用戶重新啟動它 :( 這聽起來很複雜且脆弱：我認為這不是一個成功的組合！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/500/0*JRC_8ZBdApr8CNWF.jpg" />
+</figure>
+
+<h4 id="Spike-和鏈"><a href="#Spike-和鏈" class="headerlink" title="Spike 和鏈"></a>Spike 和鏈</h4><p>相反，如果我們可以多次重新定義相同的頂級宣告而不會發生重新宣告衝突怎麼辦？這在 Dart 中可能嗎？當然可以！但不是在同一個函式庫中 :) Dart 允許您導入一個函式庫，然後宣告一個遮蔽現有宣告的類別、函數或全局變數。</p>
+<p>在此範例中，b.dart 的 MyClass 遮蔽 a.dart 的版本不會有任何抱怨，因為它們位於不同的函式庫中，並且 b.dart 中的本地宣告優先於從 a.dart 導入的宣告。</p>
+<p>一般來說，當您宣告一個變數來隱藏來自外部作用域的另一個變數時，就會發生遮蔽。例如：</p>
+<p>我們可以使用這個嗎？為了研究它，我實作了一個快速 spike <a href="https://github.com/BlackHC/dart_repl/tree/master/spikes/import_spike">在這裡</a>。它不會產生任何程式碼。相反，這是一個非常愚蠢的範例，用於確保我們認為可行的方法實際上可行。如果花費大量時間使用程式碼生成來實作它，卻發現它永遠不可能工作，那將會令人沮喪！這是它的要點：</p>
+<p>這確實可行！我們可以建立一個相互導入的函式庫鏈（並且也相互匯出，因為否則符號將不會在任何地方都可用）。然後，用戶可以根據需要重新定義符號。顯然，這可能導致舊程式碼引用被遮蔽的符號，這可能會使事情稍微混亂，但至少它不會損壞。任何使用過 IPython 或類似工具的人也都學會了忍受它。它不可能那麼糟糕。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*jjpANyPKXUIge1JcUA3WSQ.png" />
+</figure>
+
+<p>上圖顯示了它是如何工作的：當我們加入新的頂級宣告時，會建立新的「單元格」（Dart 函式庫），這些單元格導入（並匯出）前一個單元格。最終單元格被導入到沙盒函式庫中，該函式庫用作普通 Dart 表達式和語句的執行環境。沙盒檔案被就地編輯，然後使用熱重載重新載入。</p>
+<h4 id="工作流程願景"><a href="#工作流程願景" class="headerlink" title="工作流程願景"></a>工作流程願景</h4><p>此外，如果您想在不遮蔽任何內容的情況下連續更新程式碼，這也是可能的：熱重載已經允許在普通 Dart 程式中使用此工作流程。您可以在 REPL 中執行相同的操作。您可以編輯您的神奇 Dart 函式庫 amazing_dart_library.dart 並將其導入 REPL，試用它，並且在您這樣做的同時，您可以在您選擇的編輯器中編輯程式碼，並讓 REPL 在您想要時透過調用 reload() 熱重載程式碼。兩全其美 \o&#x2F;</p>
+<h3 id="我們如何在實踐中實作它？"><a href="#我們如何在實踐中實作它？" class="headerlink" title="我們如何在實踐中實作它？"></a>我們如何在實踐中實作它？</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/480/0*lKzRhG-9uyW5eLvq.jpg" />
+</figure>
+
+<p>好吧，我們在這裡駭入 Dart，所以讓我們看看：熱重載尚未得到 <a href="https://pub.dartlang.org/packages/vm_service_client">vm_service_client</a> 的支援，因為它是一個如此新的功能，並且 <a href="https://github.com/dart-lang/sdk/blob/master/runtime/vm/service/service.md">服務規範</a> 尚未完全完成。我開始為 Natalie（維護者）撰寫 <a href="https://github.com/dart-lang/vm_service_client/pull/14">一個 pull request</a> 來加入對它的支援，但實際上，正如我的同事所知：生產品質的程式碼不是我的專長，尤其不是在我的業餘時間（對不起，Natalie！）。但是，這並不會阻止我們的駭客冒險。</p>
+<p><a href="https://pub.dartlang.org/">Pub</a>，Dart 的套件管理系統，不僅支援自動版本約束解析和套件的集中式儲存庫，還允許您 <a href="https://www.dartlang.org/tools/pub/dependencies">使用本地套件或直接依賴 GitHub</a>。通常不建議這樣做，因為您會失去許多使 pub 變得偉大的東西，但在這裡它可以工作：我只是將 vm_service_client fork 到我自己的 GitHub clone 中，並進行了必要的更改。您可以在 <a href="https://github.com/BlackHC/vm_service_client/tree/reload_sources_poc">https://github.com/BlackHC/vm_service_client&#x2F;tree&#x2F;reload_sources_poc</a> 找到程式碼。之後，我更改了 Dart REPL 的 pubspec.yaml 以連結到我的 GitHub clone，而不是官方版本：</p>
+<p>就是這樣！在終端機中簡單的 <code>pub get</code> 現在會更新 Dart REPL 以使用 fork 的版本。</p>
+<p>這使得試驗任何東西都非常容易：您可以 fork 其他套件來試用，並且輕鬆地依賴它們。而且很酷的是，我可以發佈它，當您使用 pub 為自己下載 REPL 時，它也會從 GitHub 獲取程式碼。非常容易駭入，但也可以分享！（即使通常不建議用於生產套件 :) )</p>
+<p>主要的一點是有趣的邏輯是單元格生成器，它實作了一個非常簡單的模板機制，與我們上面討論的一致：</p>
+<p>當需要新的導入時，會從 REPL 中調用熱重載功能：</p>
+<p>差不多就是這樣！您可以在 pull request 中查看所有更改：<a href="https://github.com/BlackHC/dart_repl/pull/2">https://github.com/BlackHC/dart_repl&#x2F;pull&#x2F;2</a>。<br>我承認程式碼有點駭客，而且不整潔。在 pull request 中，REPL 和沙盒之間的消息傳遞也有一些無關的包裝程式碼。遺憾的是，這有點掩蓋了主要的更改。我需要看看我們如何重構所有這些，讓它再次變得更整潔…但有時，快速讓事情運行起來比撰寫最好的程式碼和 pull request 更容易。對此感到抱歉！</p>
+<figure><a href="https://asciinema.org/a/114838"><img alt="" src="https://cdn-images-1.medium.com/max/505/1*lR3fQGmW9Bjxtcxy-mJsjg.gif" /></a><figcaption>帶有頂級宣告的 Dart REPL</figcaption></figure>
+
+<p>Dart REPL 的原始碼可以在 <a href="https://github.com/BlackHC/dart_repl">https://github.com/BlackHC/dart_repl</a> 找到。除了支援頂級宣告之外，我還加入了對內建 <code>import</code>、<code>loadPackage</code> 和 <code>reload</code> 命令的支援。（請注意：<code>loadPackage</code> 需要即將發佈的 Dart SDK 1.24 開發構建版本。否則它就是一個無操作。）這些內建命令都是使用熱重載的簡單擴展。最後，為了從您的本地 pub 快取中載入新的套件，我使用了優秀的 <a href="https://github.com/dart-lang/pub_cache">pub_cache</a> 套件。</p>
+<p>要試用它（並假設您已經安裝了 Dart SDK），只需運行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pub global activate dart_repl</span><br><span class="line">pub global run dart_repl</span><br></pre></td></tr></table></figure>
+
+<p>感謝您閱讀到本文的結尾！請告訴我您的想法 :)</p>
+<p>乾杯，<br>Andreas</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=233440a35e1f" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/evolving-dart-repl-poc-233440a35e1f">演進 Dart REPL 概念驗證</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/google/" rel="tag"># google</a>
+              <a href="/tags/prototyping/" rel="tag"># prototyping</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/software-development/" rel="tag"># software-development</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/bb02b5b4.html" rel="prev" title="【文章翻譯】Zero to One with Flutter, Part Two">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Zero to One with Flutter, Part Two
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/2d226dc5.html" rel="next" title="【文章翻譯】An intro to immutability with Dart">
+      【文章翻譯】An intro to immutability with Dart <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%94%E9%80%B2-Dart-REPL-%E6%A6%82%E5%BF%B5%E9%A9%97%E8%AD%89"><span class="nav-number">1.</span> <span class="nav-text">演進 Dart REPL 概念驗證</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%86%B1%E9%87%8D%E8%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">熱重載</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E6%88%91%E5%80%91%E4%B8%8D%E8%83%BD%E5%9C%A8%E7%9B%AE%E5%89%8D%E7%89%88%E6%9C%AC%E7%9A%84-REPL-%E4%B8%AD%E5%B0%8E%E5%85%A5%E6%96%B0%E7%9A%84%E5%87%BD%E5%BC%8F%E5%BA%AB%EF%BC%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">為什麼我們不能在目前版本的 REPL 中導入新的函式庫？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E5%80%91%E5%A6%82%E4%BD%95%E5%85%81%E8%A8%B1%E9%A0%82%E7%B4%9A%E5%AE%A3%E5%91%8A%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">我們如何允許頂級宣告？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Spike-%E5%92%8C%E9%8F%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">Spike 和鏈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E9%A1%98%E6%99%AF"><span class="nav-number">1.2.2.</span> <span class="nav-text">工作流程願景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E5%80%91%E5%A6%82%E4%BD%95%E5%9C%A8%E5%AF%A6%E8%B8%90%E4%B8%AD%E5%AF%A6%E4%BD%9C%E5%AE%83%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">我們如何在實踐中實作它？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

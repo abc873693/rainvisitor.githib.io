@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Flutter 從零到一2016 年夏末，我在丹麥奧胡斯 Google 辦公室的新工作是使用 Flutter 和 Dart 在 Android&#x2F;iOS 應用程式中實作動畫圖表。除了是「Noogler」之外，Flutter、Dart 和動畫對我來說都是全新的。事實上，我以前從未做過行動應用程式。我的第一支智慧型手機才用了幾">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Zero to One with Flutter">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/4f58b335.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Flutter 從零到一2016 年夏末，我在丹麥奧胡斯 Google 辦公室的新工作是使用 Flutter 和 Dart 在 Android&#x2F;iOS 應用程式中實作動畫圖表。除了是「Noogler」之外，Flutter、Dart 和動畫對我來說都是全新的。事實上，我以前從未做過行動應用程式。我的第一支智慧型手機才用了幾">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/164/1*2t8GffL0BcNoGLU-IgHT9w.jpeg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*OKV3RzTg89W3VxXnpAH3Eg.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*soCdZ19Qugtv1YJewMQZGg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/260/1*3KpUQjhZLrvwvjF0daKg9g.jpeg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/372/1*n76TpChNv8Q25WrfBiuWpw.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=43b13fd7b354">
+<meta property="article:published_time" content="2017-02-21T23:02:51.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:41:02.356Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="mobile-app-development">
+<meta property="article:tag" content="animation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/164/1*2t8GffL0BcNoGLU-IgHT9w.jpeg">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/4f58b335.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Zero to One with Flutter | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4f58b335.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Zero to One with Flutter
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-02-22 07:02:51" itemprop="dateCreated datePublished" datetime="2017-02-22T07:02:51+08:00">2017-02-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:41:02" itemprop="dateModified" datetime="2024-12-18T15:41:02+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-Flutter-從零到一"><a href="#使用-Flutter-從零到一" class="headerlink" title="使用 Flutter 從零到一"></a>使用 Flutter 從零到一</h2><p><em>2016 年夏末，我在丹麥奧胡斯 Google 辦公室的新工作是使用 <a href="https://flutter.io/">Flutter</a> 和 <a href="https://www.dartlang.org/">Dart</a> 在 Android&#x2F;iOS 應用程式中實作動畫圖表。除了是「Noogler」之外，Flutter、Dart 和動畫對我來說都是全新的。事實上，我以前從未做過行動應用程式。我的第一支智慧型手機才用了幾個月——因為擔心用我的舊 Nokia 接聽電話面試會失敗而驚慌失措地買的……</em></p>
+<p><em>我確實有一些來自桌面 Java 的圖表經驗，但那不是動畫的。我覺得……很奇怪。一部分像恐龍，一部分像重生。</em></p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/164/1*2t8GffL0BcNoGLU-IgHT9w.jpeg" />
+</figure>
+
+<p><strong>簡而言之：</strong> 透過為 Android&#x2F;iOS 應用程式編寫 Dart 圖表動畫，發現 Flutter 的 Widget 和 tween 概念的優勢。</p>
+<p>轉移到新的開發堆疊會讓您意識到自己的優先事項。在我的清單中，最重要的是以下三項：</p>
+<ul>
+<li><strong>強大的概念</strong> 透過提供簡單、相關的方式來組織想法、邏輯或資料，從而有效地處理複雜性。</li>
+<li><strong>清晰的程式碼</strong> 讓我們能夠清晰地表達這些概念，而不會被語言陷阱、過多的樣板或輔助細節所分心。</li>
+<li><strong>快速迭代</strong> 是實驗和學習的關鍵——軟體開發團隊以學習為生：真正的需求是什麼，以及如何用程式碼表達的概念來最好地實現這些需求。</li>
+</ul>
+<p>Flutter 是一個新的平台，可以使用 Dart 從單一程式碼庫開發 Android 和 iOS 應用程式。由於我們的需求是相當複雜的 UI，包括動畫圖表，因此只建構一次的想法似乎非常有吸引力。我的任務包括使用 Flutter 的 CLI 工具、一些預先建構的 Widget 和它的 2D 渲染引擎——除了編寫大量的純 Dart 程式碼來建模和製作圖表動畫之外。我將在下面分享我學習經驗中的一些概念重點，並為您自己評估 Flutter&#x2F;Dart 堆疊提供一個起點。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*OKV3RzTg89W3VxXnpAH3Eg.gif" />
+<figcaption>開發過程中從 iOS 模擬器擷取的簡單動畫長條圖</figcaption>
+</figure>
+
+<p>這是 Flutter 及其「Widget」和「tween」概念的 <a href="https://medium.com/dartlang/zero-to-one-with-flutter-part-two-5aa2f06655cb">兩部分</a> 介紹的第一部分。我將透過使用它們來顯示和製作如上所示的圖表動畫來說明這些概念的優勢。完整的程式碼範例應該可以讓您了解使用 Dart 可以達到的程式碼清晰度。而且我將包含足夠的細節，以便您可以在自己的筆記型電腦（以及模擬器或設備）上跟進，並體驗 Flutter 開發週期的長度。</p>
+<p>起點是全新 <a href="https://flutter.io/setup">安裝 Flutter</a>。執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br></pre></td></tr></table></figure>
+
+<p>以檢查設定：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br><span class="line">[✓] Flutter (on Mac OS, channel master)</span><br><span class="line">  • Flutter at /Users/mravn/flutter</span><br><span class="line">  • Framework revision 64bae978f1 (7 hours ago), 2017-02-18 21:00:27</span><br><span class="line">  • Engine revision ab09530927</span><br><span class="line">  • Tools Dart version 1.23.0-dev.0.0</span><br><span class="line">[✓] Android toolchain - develop for Android devices</span><br><span class="line">    (Android SDK 24.0.2)</span><br><span class="line">  • Android SDK at /Users/mravn/Library/Android/sdk</span><br><span class="line">  • Platform android-25, build-tools 24.0.2</span><br><span class="line">  • Java(TM) SE Runtime Environment (build 1.8.0_101-b13)</span><br><span class="line">[✓] iOS toolchain - develop for iOS devices (Xcode 8.2.1)</span><br><span class="line">  • Xcode at /Applications/Xcode.app/Contents/Developer</span><br><span class="line">  • Xcode 8.2.1, Build version 8C1002</span><br><span class="line">  • ios-deploy 1.9.1</span><br><span class="line">[✓] IntelliJ IDEA Community Edition (version 2016.3.4)</span><br><span class="line">  • Dart plugin version 163.13137</span><br><span class="line">  • Flutter plugin version 0.1.10</span><br><span class="line">[✓] Connected devices</span><br><span class="line">  • iPhone SE • 664A33B0-A060-4839-A933-7589EF46809B • ios •</span><br><span class="line">    iOS 10.2 (simulator)</span><br></pre></td></tr></table></figure>
+
+
+<p>如果有足夠的勾號，您就可以建立 Flutter 應用程式。讓我們將其稱為 <code>charts</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter create charts</span><br></pre></td></tr></table></figure>
+
+<p>這應該會產生一個同名目錄：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">charts</span><br><span class="line">  android</span><br><span class="line">  ios</span><br><span class="line">  lib</span><br><span class="line">    main.dart</span><br></pre></td></tr></table></figure>
+
+<p>已產生大約五十個檔案，組成一個完整的範例應用程式，可以安裝在 Android 和 iOS 上。我們將在 <code>main.dart</code> 和同級檔案中完成所有程式碼編寫，無需修改任何其他檔案或目錄。</p>
+<p>您應該驗證是否可以啟動範例應用程式。啟動模擬器或連接設備，然後在 <code>charts</code> 目錄中執行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter run</span><br></pre></td></tr></table></figure>
+
+<p>然後，您應該在模擬器或設備上看到一個簡單的計數應用程式。它使用了 Material Design Widget，這很好，但它是可選的。作為 Flutter 架構的最頂層，這些 Widget 是完全可以替換的。</p>
+<p>首先，讓我們用下面的程式碼替換 <code>main.dart</code> 的內容，這是一個簡單的起點，用於玩圖表動畫。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(<span class="keyword">new</span> ChartsApp());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartsApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Charts&#x27;</span>,</span><br><span class="line">      home: <span class="keyword">new</span> ChartPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ChartPageState createState() =&gt; <span class="keyword">new</span> ChartPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> dataSet = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      dataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">        child: <span class="keyword">new</span> Text(<span class="string">&#x27;Data set: <span class="subst">$dataSet</span>&#x27;</span>),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>儲存變更，然後重新啟動應用程式。您可以從終端機執行此操作，方法是按 R 鍵。此「完全重新啟動」操作會捨棄應用程式狀態，然後重建 UI。對於在程式碼變更後現有應用程式狀態仍然有效的情況，可以按 r 鍵進行「熱重載」，這只會重建 UI。IntelliJ IDEA 也有一個 Flutter 外掛，提供與 Dart 編輯器整合的相同功能：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*soCdZ19Qugtv1YJewMQZGg.png" />
+<figcaption>IntelliJ IDEA 中使用 Flutter 外掛的螢幕截圖，顯示右上角的重新載入和重新啟動按鈕。如果應用程式是從 IDE 中啟動的，則這些按鈕會啟用。</figcaption>
+</figure>
+
+<p>重新啟動後，應用程式會顯示一個置中的文字標籤，顯示「Data set: null」，以及一個用於重新整理資料的浮動動作按鈕。是的，萬事起頭難。</p>
+<p>要了解熱重載和完全重新啟動之間的區別，請嘗試以下操作：按下浮動動作按鈕幾次後，記下目前的資料集編號，然後在程式碼中將 <code>Icons.refresh</code> 替換為 <code>Icons.add</code>，儲存並執行熱重載。觀察按鈕的變化，但應用程式狀態會保留；我們仍然在隨機數字流中的同一個位置。現在撤消圖示變更，儲存並執行完全重新啟動。應用程式狀態已重設，我們回到了「Data set: null」。</p>
+<p>我們的簡單應用程式展示了 Flutter Widget 概念的兩個核心面向：</p>
+<ul>
+<li>使用者介面是由<strong>不可變 Widget</strong> 樹定義的，該樹是透過建構函數調用（您可以在其中設定 Widget）和建構方法（Widget 實作可以決定其子樹的外觀）的組合建構的。我們應用程式的結果樹狀結構如下所示，其中每個 Widget 的主要角色都在括弧中。如您所見，雖然 Widget 概念相當廣泛，但每個具體的 Widget 類型通常都有一個非常專注的職責。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MaterialApp                    (導航)</span><br><span class="line">  ChartPage                    (狀態管理)</span><br><span class="line">    Scaffold                   (佈局)</span><br><span class="line">      Center                   (佈局)</span><br><span class="line">        Text                   (文字)</span><br><span class="line">      FloatingActionButton     (使用者互動)</span><br><span class="line">        Icon                   (圖形) </span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>使用不可變 Widget 樹定義使用者介面後，變更該介面的唯一方法是重建樹。Flutter 會在下一幀到期時處理這件事。我們所要做的就是告訴 Flutter，子樹所依賴的某些狀態已變更。此類<strong>狀態相依子樹</strong>的根必須是 <code>StatefulWidget</code>。與任何正常的 Widget 一樣，<code>StatefulWidget</code> 不是可變的，但其子樹是由 <code>State</code> 物件建構的，<code>State</code> 物件是可變的。Flutter 會在樹重建過程中保留 <code>State</code> 物件，並在建構過程中將每個物件附加到新樹中各自的 Widget。然後，它們會決定如何建構該 Widget 的子樹。在我們的應用程式中，<code>ChartPage</code> 是一個 <code>StatefulWidget</code>，<code>ChartPageState</code> 作為其狀態。每當使用者按下按鈕時，我們都會執行一些程式碼來變更 <code>ChartPageState</code>。我們已使用 <code>setState</code> 標記了變更，以便 Flutter 可以執行其內務處理並排程 Widget 樹以進行重建。當這種情況發生時，<code>ChartPageState</code> 將建構一個以新的 <code>ChartPage</code> 實例為根的稍微不同的子樹。</li>
+</ul>
+<p>不可變 Widget 和狀態相依子樹是 Flutter 提供給我們的用於處理複雜 UI 中狀態管理複雜性的主要工具，這些 UI 會回應非同步事件，例如按鈕按下、計時器刻度或傳入資料。根據我的桌面經驗，我認為這種複雜性是非常真實的。評估 Flutter 方法的優勢是——也應該是——讀者的練習：在一些非平凡的事情上嘗試一下。</p>
+<p>我們的圖表應用程式在 Widget 結構方面將保持簡單，但我們將做一些動畫的自訂圖形。第一步是用一個非常簡單的圖表替換每個資料集的文字表示。由於資料集目前只涉及 0..100 區間內的一個數字，因此圖表將是一個只有一個長條的長條圖，其高度由該數字決定。我們將使用初始值 50 以避免空高度：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> dataSet = <span class="number">50</span>;  <span class="comment">// Initial value</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      dataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),    <span class="comment">// Adjust size as needed</span></span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(dataSet),</span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> dataSet;</span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.dataSet);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - dataSet.toDouble()),</span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.dataSet != dataSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>CustomPaint</code> 是一個將繪製委託給 <code>CustomPainter</code> 策略的 Widget。我們對該策略的實作會繪製單個長條。</p>
+<p>下一步是加入動畫。每當資料集變更時，我們希望長條平滑地而不是突然地變更高度。Flutter 有一個 <code>AnimationController</code> 概念來協調動畫，透過註冊一個監聽器，我們會在動畫值（從零到一的雙精度值）變更時收到通知。每當這種情況發生時，我們可以像以前一樣調用 <code>setState</code> 並更新 <code>ChartPageState</code>。</p>
+<p>出於說明原因，我們第一次嘗試會很醜陋：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>; <span class="comment">// Import animation library</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> startDataSet = <span class="number">50</span>;</span><br><span class="line">  <span class="built_in">int</span> currentDataSet = <span class="number">50</span>;</span><br><span class="line">  <span class="built_in">int</span> endDataSet = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;<span class="built_in">double</span>&gt; _animation;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line">    _animation = <span class="keyword">new</span> Tween(begin: <span class="number">0.0</span>, end: <span class="number">1.0</span>).animate(_controller)</span><br><span class="line">      ..addListener(() &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">          currentDataSet = (startDataSet + (endDataSet - startDataSet) * _animation.value).toInt();</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      startDataSet = currentDataSet;</span><br><span class="line">      endDataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(currentDataSet),</span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _controller.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... BarChartPainter remains the same</span></span><br></pre></td></tr></table></figure>
+
+
+<p>哎呦。複雜性已經開始顯現，而我們的資料集仍然只是一個數字！設定動畫控制所需的程式碼是一個小問題，因為當我們獲得更多圖表資料時，它不會產生分支。真正問題是變數 <code>startHeight</code>、<code>currentHeight</code> 和 <code>endHeight</code>，它們反映了對資料集和動畫值的變更，並且在三個不同的地方更新。</p>
+<p>我們需要一個概念來處理這個爛攤子。</p>
+<p>輸入 <strong>tweens</strong>。雖然遠非 Flutter 獨有，但它們是一個令人愉悅的簡單概念，用於組織動畫程式碼。它們的主要貢獻是用函數式方法取代了上面的命令式方法。tween 是一個_值_。它描述了在其他值的空間中兩個點之間的路徑，例如長條圖，因為動畫值從零到一。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/260/1*3KpUQjhZLrvwvjF0daKg9g.jpeg" />
+</figure>
+
+<p>Tweens 在這些其他值的類型中是通用的，並且可以用 Dart 表示為 <code>Tween&lt;T&gt;</code> 類型的物件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tween</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> T begin;</span><br><span class="line">  <span class="keyword">final</span> T end;</span><br><span class="line"></span><br><span class="line">  Tween(&#123; <span class="keyword">this</span>.begin, <span class="keyword">this</span>.end &#125;);</span><br><span class="line"></span><br><span class="line">  T lerp(<span class="built_in">double</span> t) =&amp;gt; T.lerp(begin, end, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>術語 <code>lerp</code> 來自電腦圖形領域，是 <em>線性插值</em>（作為名詞）和 <em>線性插值</em>（作為動詞）的縮寫。參數 <code>t</code> 是動畫值，因此 tween 應該從 <code>begin</code>（當 <code>t</code> 為零時）到 <code>end</code>（當 <code>t</code> 為一時）進行插值。</p>
+<p>Flutter SDK 的 <a href="https://docs.flutter.io/flutter/animation/Tween-class.html"><code>Tween&lt;T&gt;</code></a> 類別與上述非常相似，但它是一個支援變更 <code>begin</code> 和 <code>end</code> 的具體類別。我不完全確定為什麼做出這個選擇，但在 SDK 的動畫支援領域中，我還沒有探索過，可能有很好的理由。在接下來的文章中，我將使用 Flutter <code>Tween&lt;T&gt;</code>，但假設它是不可變的。</p>
+<p>我們可以使用單個 <code>Tween&lt;double&gt;</code> 來清理我們的長條高度程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  Tween&lt;<span class="built_in">double</span>&gt; _tween;</span><br><span class="line"></span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;<span class="built_in">double</span>&gt; _animation;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    _tween = <span class="keyword">new</span> Tween(begin: <span class="number">50.0</span>, end: <span class="number">50.0</span>);</span><br><span class="line">    _animation = _tween.animate(_controller);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      _tween = <span class="keyword">new</span> Tween(begin: _tween.end, end: <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>).toDouble());</span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(_animation.value), <span class="comment">// Use _animation.value directly</span></span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line"></span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// ... dispose method remains the same</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> dataSet;  <span class="comment">// Now takes a double</span></span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.dataSet);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - dataSet.toDouble()), <span class="comment">// Convert to double if needed</span></span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.dataSet != dataSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>我們使用 <code>Tween</code> 將長條高度動畫端點打包成單個值。它與 <code>AnimationController</code> 和 <code>CustomPainter</code> 整合得很好，避免了動畫過程中 Widget 樹重建，因為 Flutter 基礎結構現在標記了 <code>CustomPaint</code> 以便在每個動畫刻度重新繪製，而不是標記整個 <code>ChartPage</code> 子樹以進行重建、重新佈局和重新繪製。這些都是明確的改進。但 tween 概念還有更多內容；它提供了_結構_來組織我們的想法和程式碼，而我們還沒有真正認真对待這一點。tween 概念說，</p>
+<p><em>透過在所有 T 的空間中繪製路徑來製作 T 的動畫，因為動畫值從零到一。使用 Tween<T> 建模路徑。</em></p>
+<p>在上面的程式碼中，T 是一個雙精度值，但我們不希望對雙精度值進行動畫處理，我們希望對長條圖進行動畫處理！好吧，現在是單個長條，但這個概念很強大，如果我們允許的話，它可以擴展。</p>
+<p>（您可能會想知道為什麼我們不進一步爭論，堅持對資料集而不是它們作為長條圖的表示進行動畫處理。這是因為資料集（與作為圖形物件的長條圖相反）通常不在存在平滑路徑的空間中。長條圖的資料集通常涉及對應於離散資料類別的數值資料。但是，如果沒有作為長條圖的空間表示，則不同類別的兩個資料集之間沒有合理的平滑路徑概念。）</p>
+<p>回到我們的程式碼，我們將需要一個 <code>Bar</code> 類型和一個 <code>BarTween</code> 來對其進行動畫處理。接下來，讓我們將與長條相關的類別提取到它們自己的 <code>bar.dart</code> 檔案中，與 <code>main.dart</code> 並列：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:ui&#x27;</span> <span class="keyword">show</span> lerpDouble;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bar</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> height;</span><br><span class="line">  Bar(&#123;<span class="keyword">this</span>.height&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> Bar lerp(Bar begin, Bar end, <span class="built_in">double</span> t) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bar(height: lerpDouble(begin.height, end.height, t));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarTween</span> <span class="keyword">extends</span> <span class="title">Tween</span>&lt;<span class="title">Bar</span>&gt; </span>&#123;</span><br><span class="line">  BarTween(&#123;Bar begin, Bar end&#125;) : <span class="keyword">super</span>(begin: begin, end: end);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Bar lerp(<span class="built_in">double</span> t) =&gt; Bar.lerp(begin, end, t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我在這裡遵循 Flutter SDK 約定，根據 <code>Bar</code> 類別上的靜態方法定義 <code>BarTween.lerp</code>。這對於像 <code>Bar</code>、<code>Color</code>、<code>Rect</code> 和許多其他簡單類型來說效果很好，但我們需要重新考慮更複雜圖表類型的方法。Dart SDK 中沒有 <code>double.lerp</code>，因此我們使用 <code>dart:ui</code> 套件中的函數 <code>lerpDouble</code> 來達到相同的效果。</p>
+<p>我們的應用程式現在可以用長條表示，如下面的程式碼所示；我趁機取消了 <code>dataSet</code> 欄位。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;bar.dart&#x27;</span>; <span class="comment">// Import bar classes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(<span class="keyword">new</span> ChartsApp());</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... ChartsApp remains the same</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ChartPageState createState() =&gt; <span class="keyword">new</span> ChartPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  BarTween _barTween;</span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;Bar&gt; _animation;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">     _barTween = <span class="keyword">new</span> BarTween(begin: <span class="keyword">new</span> Bar(height:<span class="number">50.0</span>), end: <span class="keyword">new</span> Bar(height:<span class="number">50.0</span>));</span><br><span class="line">    _animation = _barTween.animate(_controller);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line"></span><br><span class="line">      _barTween = <span class="keyword">new</span> BarTween(</span><br><span class="line">          begin: _barTween.end, end: <span class="keyword">new</span> Bar(height: <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>).toDouble()));</span><br><span class="line"></span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(_animation.value), <span class="comment">// Pass the Bar object</span></span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _controller.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Bar bar;</span><br><span class="line"></span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.bar);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - bar.height),</span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.bar != bar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>新版本更長，額外的程式碼應該有其價值。在 <a href="https://medium.com/@mravn/zero-to-one-with-flutter-part-two-5aa2f06655cb">第二部分</a> 中，我們將處理增加的圖表複雜性時，它會發揮作用。我們的需求是彩色的長條、多個長條、部分資料、堆疊長條、分組長條、堆疊和分組長條，……所有這些都是動畫的。敬請期待。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/372/1*n76TpChNv8Q25WrfBiuWpw.gif" />
+<figcaption>我們將在第二部分中製作的動畫之一的預覽。</figcaption>
+</figure>
+
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=43b13fd7b354" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/zero-to-one-with-flutter-43b13fd7b354">使用 Flutter 從零到一</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/mobile-app-development/" rel="tag"># mobile-app-development</a>
+              <a href="/tags/animation/" rel="tag"># animation</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/2504fdf2.html" rel="prev" title="【文章翻譯】A Dart REPL PoC">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】A Dart REPL PoC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/60b7d9e0.html" rel="next" title="【文章翻譯】Google Maps with AngularDart">
+      【文章翻譯】Google Maps with AngularDart <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Flutter-%E5%BE%9E%E9%9B%B6%E5%88%B0%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">使用 Flutter 從零到一</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

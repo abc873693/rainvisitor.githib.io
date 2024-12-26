@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.12今天，我們宣佈推出 Dart 2.12，其中包含 完善的空安全 和 Dart FFI 的穩定版本。空安全是我們最新的主要生產力功能，旨在幫助您避免空錯誤，這是一類通常難以發現的錯誤，如此影片介紹 中所述。FFI 是一種互操作性機制，可讓您調用以 C 語言編寫的現有程式碼，例如調用 Windows Win32 AP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.12">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/e843094d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.12今天，我們宣佈推出 Dart 2.12，其中包含 完善的空安全 和 Dart FFI 的穩定版本。空安全是我們最新的主要生產力功能，旨在幫助您避免空錯誤，這是一類通常難以發現的錯誤，如此影片介紹 中所述。FFI 是一種互操作性機制，可讓您調用以 C 語言編寫的現有程式碼，例如調用 Windows Win32 AP">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Inj4APQIAA4gVCxK">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*msUXfhSNTNzP4wkf">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*jl-o2KmcMjj777Iu">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*U_WEQJAarjskU1k2">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*srLwqVUDeF49J_B9">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=499a6e689c87">
+<meta property="article:published_time" content="2021-03-03T10:31:28.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:46:55.558Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*Inj4APQIAA4gVCxK">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/e843094d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.12 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/e843094d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.12
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-03 18:31:28" itemprop="dateCreated datePublished" datetime="2021-03-03T18:31:28+08:00">2021-03-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:46:55" itemprop="dateModified" datetime="2024-12-18T22:46:55+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-12"><a href="#宣佈-Dart-2-12" class="headerlink" title="宣佈 Dart 2.12"></a>宣佈 Dart 2.12</h2><p>今天，我們宣佈推出 Dart 2.12，其中包含 <a href="https://dart.dev/null-safety">完善的空安全</a> 和 <a href="https://dart.dev/guides/libraries/c-interop">Dart FFI</a> 的穩定版本。空安全是我們最新的主要生產力功能，旨在幫助您避免空錯誤，這是一類通常難以發現的錯誤，如<a href="https://www.youtube.com/watch?v=iYhOU9AuaFs&feature=emb_logo">此影片介紹</a> 中所述。FFI 是一種互操作性機制，可讓您調用以 C 語言編寫的現有程式碼，例如調用 Windows <a href="https://pub.dev/packages/win32">Win32 API</a>。Dart 2.12 現已推出。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Inj4APQIAA4gVCxK" />
+</figure>
+
+<h3 id="Dart-平台的獨特功能"><a href="#Dart-平台的獨特功能" class="headerlink" title="Dart 平台的獨特功能"></a>Dart 平台的獨特功能</h3><p>在詳細探討完善的空安全和 FFI 之前，讓我們先討論一下它們如何符合我們對 Dart 平台的目標。程式語言往往具有許多共同的功能。例如，許多語言都支援物件導向程式設計或在網路上執行。真正讓語言與眾不同的是它們獨特的功能組合。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*msUXfhSNTNzP4wkf" />
+</figure>
+
+<p>Dart 的獨特功能涵蓋三個維度：</p>
+<ul>
+<li><strong>可攜性</strong>：高效的編譯器為設備生成 x86 和 ARM 機器碼，並為網路生成優化的 JavaScript。支援<a href="https://dart.dev/overview#platform">廣泛的目標平台</a> - 行動設備、桌上型電腦、應用程式後端等等。大量的函式庫和套件提供了可在所有平台上運作的一致 API，進一步降低了建立真正的跨平台應用程式的成本。</li>
+<li><strong>生產力</strong>：Dart 平台支援熱重載，可為原生設備和網路實現快速、迭代的開發。Dart 還提供豐富的結構，例如 isolates 和 async&#x2F;await，用於處理常見的並行和事件驅動的應用程式模式。</li>
+<li><strong>穩健性</strong>：Dart 完善的空安全類型系統可在開發過程中捕獲錯誤。整個平台具有高度的可擴展性和可靠性，大型應用程式（包括 Google Ads 和 Google Assistant 等業務關鍵型應用程式）已在生產環境中使用超過十年。</li>
+</ul>
+<p>完善的空安全使類型系統更加穩健，並提升效能。Dart FFI 可讓您使用現有的 C 函式庫以獲得更好的可攜性，並讓您可以選擇使用高度調整的 C 程式碼來執行效能關鍵型任務。</p>
+<h3 id="完善的空安全"><a href="#完善的空安全" class="headerlink" title="完善的空安全"></a>完善的空安全</h3><p>完善的空安全是自 Dart 2.0 中引入完善的類型系統以來，對 Dart 語言的最大補充。空安全進一步增強了類型系統，使您能夠捕獲空錯誤，這是應用程式崩潰的常見原因。透過選擇使用空安全，您可以在開發過程中捕獲空錯誤，從而防止生產環境中的崩潰。</p>
+<p>完善的空安全是圍繞<a href="https://dart.dev/null-safety#null-safety-principles">幾個核心原則</a>設計的。讓我們重新審視這些原則如何影響您作為開發人員。</p>
+<h3 id="預設不可为空：類型系統的根本性變化"><a href="#預設不可为空：類型系統的根本性變化" class="headerlink" title="預設不可为空：類型系統的根本性變化"></a>預設不可为空：類型系統的根本性變化</h3><p>在空安全之前，核心挑戰是您無法區分預期傳遞空值的程式碼和不適用於空值的程式碼。幾個月前，我們在 Flutter master channel 中發現了一個錯誤，其中各種 flutter tool 指令會在某些機器配置上因空錯誤而崩潰：在 null 上調用了方法 ‘&gt;&#x3D;’。根本原因是如下程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">int</span> major = version?.major;</span><br><span class="line"><span class="keyword">final</span> <span class="built_in">int</span> minor = version?.minor;</span><br><span class="line"><span class="keyword">if</span> (globals.platform.isMacOS) &#123;</span><br><span class="line">  <span class="comment">// Android Studio 的 plugin 路徑在 4.1 版後發生了變化。</span></span><br><span class="line">  <span class="keyword">if</span> (major &gt;= <span class="number">4</span> &amp;&amp; minor &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+
+<p>您能發現錯誤嗎？因為 version 可以為 null，所以 major 和 minor 也都可能為 null。這個錯誤在這裡單獨看來似乎很容易發現，但在實踐中，這樣的程式碼經常會被忽略，即使是像 Flutter 儲存庫中使用的嚴格程式碼審查流程也是如此。有了空安全，靜態分析可以立即捕獲此問題。（<a href="https://dartpad.dev/0e9797be7488d8ec6c3fca92b7f2740f?null_safety=true">在 DartPad 中即時試用</a>。）</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*jl-o2KmcMjj777Iu" />
+<figcaption>IDE 中分析輸出的螢幕截圖</figcaption>
+</figure>
+
+<p>這是一個非常簡單的錯誤。在 Google 內部早期使用空安全的程式碼中，我們發現了更多複雜的錯誤。其中一些錯誤已經存在多年了，但如果沒有空安全的額外靜態檢查，團隊就無法找到原因。以下是一些例子：</p>
+<ul>
+<li>一個內部團隊發現，他們經常檢查永遠不可能為 null 的表達式的空值。這個問題最常見於使用 <a href="https://developers.google.com/protocol-buffers">protobuf</a> 的程式碼中，其中可選欄位在未設定時返回預設值，而不是 null。因此，程式碼會因為混淆預設值和空值而錯誤地檢查預設條件。</li>
+<li>Google Pay 團隊在他們的 Flutter 程式碼中發現了錯誤，當他們嘗試在 Widget 上下文之外存取 Flutter State 物件時，這些程式碼會失敗。在空安全之前，這些物件會返回 null 並掩蓋錯誤；有了空安全，完善的分析確定這些屬性永遠不可能為 null，並拋出分析錯誤。</li>
+<li>Flutter 團隊發現了一個錯誤，如果將 null 傳遞給 <code>Window.render()</code> 中的 scene 參數，Flutter 引擎可能會崩潰。在空安全遷移過程中，他們加入了一個提示，將 <a href="https://github.com/cbracken/engine/blob/bad869e229a8a02cad6e63d12e80807b33b5c12f/lib/ui/window.dart#L1069">Scene 標記為不可为空</a>，然後就能夠輕鬆防止 null 可能觸發的潛在應用程式崩潰。</li>
+</ul>
+<h3 id="使用預設不可为空"><a href="#使用預設不可为空" class="headerlink" title="使用預設不可为空"></a>使用預設不可为空</h3><p>啟用<a href="https://dart.dev/null-safety#enable-null-safety">空安全</a>後，變數宣告的基礎知識會發生變化，因為預設類型是不可为空的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在空安全 Dart 中，這些都不可能為 null。</span></span><br><span class="line"><span class="keyword">var</span> i = <span class="number">42</span>; <span class="comment">// 推斷為 int。</span></span><br><span class="line"><span class="built_in">String</span> name = getFileName();</span><br><span class="line"><span class="keyword">final</span> b = Foo();</span><br></pre></td></tr></table></figure>
+
+<p>如果要建立一個可以包含值或 null 的變數，則需要透過在類型後面加上 <code>?</code> 後綴，在變數宣告中明確指出：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// aNullableInt 可以包含整數或 null。</span></span><br><span class="line"><span class="built_in">int?</span> aNullableInt = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>空安全的實作非常穩健，具有豐富的靜態流程分析，使使用可为空類型更加容易。例如，在檢查 null 後，Dart 將局部變數的類型從可为空提升為不可为空：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> definitelyInt(<span class="built_in">int?</span> aNullableInt) &#123;</span><br><span class="line">  <span class="keyword">if</span> (aNullableInt == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// aNullableInt 現在已提升為不可为空的 int。</span></span><br><span class="line">  <span class="keyword">return</span> aNullableInt; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我們還加入了一個新的關鍵字 <code>required</code>。當命名參數標記為 <code>required</code>（這在 Flutter Widget API 中經常發生）並且調用者忘記提供參數時，就會發生分析錯誤：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*U_WEQJAarjskU1k2" />
+</figure>
+
+<h3 id="逐步遷移至空安全"><a href="#逐步遷移至空安全" class="headerlink" title="逐步遷移至空安全"></a>逐步遷移至空安全</h3><p>由於空安全是對我們類型系統的根本性變更，如果我們堅持強制採用，將會造成極大的破壞。因此，<em>您</em> 可以決定何時是合適的時機，空安全是一項可選功能：您可以使用 Dart 2.12 而無需強制啟用空安全。您甚至可以依賴已啟用空安全的套件，無論您的應用程式或套件是否已啟用空安全。</p>
+<p>為了幫助您將現有程式碼遷移至空安全，我們提供了一個遷移工具和一個<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>。該工具首先分析您所有的現有程式碼。然後，您可以互動式地審查該工具推斷出的可空性屬性。如果您不同意該工具的任何結論，您可以加入可空性提示來更改推斷。加入一些遷移提示可以對遷移品質產生巨大影響。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*srLwqVUDeF49J_B9" />
+</figure>
+
+<p>目前，使用 <code>dart create</code> 和 <code>flutter create</code> 建立的新套件和應用程式不會啟用完善的空安全。我們預計在未來的穩定版本中更改這一點，屆時我們會看到大多數生態系統都已遷移。您可以使用 <code>dart migrate</code> 輕鬆地在新建的套件或應用程式中<a href="https://dart.dev/null-safety#create">啟用空安全</a>。</p>
+<h3 id="Dart-生態系統空安全遷移狀態"><a href="#Dart-生態系統空安全遷移狀態" class="headerlink" title="Dart 生態系統空安全遷移狀態"></a>Dart 生態系統空安全遷移狀態</h3><p>在過去的一年中，我們提供了幾個完善的空安全的預覽版和測試版，目的是在生態系統中播種支援空安全的套件。這項準備工作很重要，因為我們建議按順序<a href="https://dart.dev/null-safety/migration-guide#step1-wait">遷移至完善的空安全</a> - 在所有依賴項都已遷移之前，您不應遷移套件或應用程式。</p>
+<p>我們已經發佈了由 <a href="https://pub.dev/packages?q=publisher:dart.dev&sort=popularity&null-safe=1">Dart</a>、<a href="https://pub.dev/packages?q=publisher:flutter.dev&sort=popularity&null-safe=1">Flutter</a>、<a href="https://pub.dev/packages?q=publisher:firebase.google.com&sort=popularity&null-safe=1">Firebase</a> 和 <a href="https://pub.dev/packages?q=publisher:material.io&sort=popularity&null-safe=1">Material</a> 團隊提供的數百個套件的空安全版本。我們也看到了來自 Dart 和 Flutter 生態系統的大力支援，因此 pub.dev 現在有超過一千個套件支援空安全。重要的是，最受歡迎的套件率先遷移，因此在前 100 個最受歡迎的套件中，有 98% 支援空安全，前 250 個中有 78%，前 500 個中有 57% 在今天的發佈之前已經支援空安全。我們期待在未來幾周內看到更多具有空安全的套件出現在 pub.dev 上。我們的<a href="https://github.com/dart-lang/sdk/wiki/Null-safety-migration-status">分析</a>顯示，pub.dev 上的絕大多數套件已經沒有阻礙，可以<a href="https://dart.dev/null-safety/migration-guide">開始遷移</a>。</p>
+<h3 id="完善的空安全的好處"><a href="#完善的空安全的好處" class="headerlink" title="完善的空安全的好處"></a>完善的空安全的好處</h3><p>一旦您完全遷移，Dart 的空安全就是完善的。這意味著 Dart 可以 100% 確定具有不可为空類型的表達式不可能為 null。當 Dart 分析您的程式碼並確定變數為不可为空時，該變數<em>始終</em> 為不可为空。Dart 與 Swift 共享完善的空安全，但其他程式語言並不多。</p>
+<p>Dart 空安全的完善性還有另一個值得歡迎的含義：它意味著您的程式可以更小、更快。因為 Dart 確定不可为空變數永遠不會為 null，所以 Dart 可以<a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">優化</a>。例如，Dart ahead-of-time (AOT) 編譯器可以生成更小、更快的原生程式碼，因為它在知道變數不為 null 時不需要加入 null 檢查。</p>
+<h3 id="Dart-FFI，用於整合-Dart-與-C-函式庫"><a href="#Dart-FFI，用於整合-Dart-與-C-函式庫" class="headerlink" title="Dart FFI，用於整合 Dart 與 C 函式庫"></a>Dart FFI，用於整合 Dart 與 C 函式庫</h3><p>Dart FFI 可讓您利用 C 函式庫中的現有程式碼，以提高可攜性，並與高度調整的 C 程式碼整合，以執行效能關鍵型任務。從 Dart 2.12 開始，<a href="https://dart.dev/guides/libraries/c-interop">Dart FFI</a> 已脫離 <em>測試</em> 階段，現在被認為是穩定的，可供生產使用。我們還加入了一些新功能，包括巢狀結構體和按值傳遞結構體。</p>
+<h3 id="按值傳遞結構體"><a href="#按值傳遞結構體" class="headerlink" title="按值傳遞結構體"></a>按值傳遞結構體</h3><p>在 C 程式碼中，結構體可以透過引用和按值傳遞。FFI 以前只支援透過引用傳遞，但從 Dart 2.12 開始，您可以按值傳遞結構體。以下是一個透過引用和按值傳遞的兩個 C 函數的小例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Link</span> &#123;</span></span><br><span class="line">  <span class="type">double</span> value;</span><br><span class="line">  Link* next;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">MoveByReference</span><span class="params">(Link* link)</span> &#123;</span><br><span class="line">  link-&gt;value = link-&gt;value + <span class="number">10.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Coord <span class="title function_">MoveByValue</span><span class="params">(Link link)</span> &#123;</span><br><span class="line">  link.value = link.value + <span class="number">10.0</span>;</span><br><span class="line">  <span class="keyword">return</span> link;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="巢狀結構體"><a href="#巢狀結構體" class="headerlink" title="巢狀結構體"></a>巢狀結構體</h3><p>C API 經常使用巢狀結構體 - 本身包含結構體的結構體，例如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Wheel</span> &#123;</span></span><br><span class="line">  <span class="type">int</span> spokes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bike</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Wheel</span> <span class="title">front</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Wheel</span> <span class="title">rear</span>;</span></span><br><span class="line">  <span class="type">int</span> buildYear;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>從 Dart 2.12 開始，FFI 支援巢狀結構體。</p>
+<h3 id="API-變更"><a href="#API-變更" class="headerlink" title="API 變更"></a>API 變更</h3><p>作為宣佈 FFI 穩定的部分，以及為了支援上述功能，我們進行了一些較小的 API 變更。</p>
+<p>現在不允許建立空結構體（重大變更 <a href="https://github.com/dart-lang/sdk/issues/44622">#44622</a>），並會產生棄用警告。您可以使用新的類型 <code>Opaque</code> 來表示空結構體。<code>dart:ffi</code> 函數 <code>sizeOf</code>、<code>elementAt</code> 和 <code>ref</code> 現在需要編譯時類型參數（重大變更 <a href="https://github.com/dart-lang/sdk/issues/44621">#44621</a>）。由於 <code>package:ffi</code> 中加入了新的便捷函數，因此在常見情況下不需要額外的樣板程式碼來分配和釋放記憶體：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分配一個指向 Utf8 陣列的指標，從 Dart 字串填充它，</span></span><br><span class="line"><span class="comment">// 將其傳遞給 C 函數，轉換結果，並釋放參數。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">// API 變更前：</span></span><br><span class="line"><span class="keyword">final</span> pointer = allocate&lt;Int8&gt;(count: <span class="number">10</span>);</span><br><span class="line">free(pointer);</span><br><span class="line"><span class="keyword">final</span> arg = Utf8.toUtf8(<span class="string">&#x27;Michael&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> result = helloWorldInC(arg);</span><br><span class="line"><span class="built_in">print</span>(Utf8.fromUtf8(result);</span><br><span class="line">free(arg);</span><br><span class="line"></span><br><span class="line"><span class="comment">// API 變更後：</span></span><br><span class="line"><span class="keyword">final</span> pointer = calloc&lt;Int8&gt;(<span class="number">10</span>);</span><br><span class="line">calloc.free(pointer);</span><br><span class="line"><span class="keyword">final</span> arg = <span class="string">&#x27;Michael&#x27;</span>.toNativeUtf8();</span><br><span class="line"><span class="keyword">var</span> result = helloWorldInC(arg);</span><br><span class="line"><span class="built_in">print</span>(result.toDartString);</span><br><span class="line">calloc.free(arg);</span><br></pre></td></tr></table></figure>
+
+<h3 id="自動生成-FFI-繫結"><a href="#自動生成-FFI-繫結" class="headerlink" title="自動生成 FFI 繫結"></a>自動生成 FFI 繫結</h3><p>對於大型 API 表面，編寫與 C 程式碼整合的 Dart 繫結可能會非常耗時。為了減少這種負擔，我們建置了一個繫結產生器，用於從 C 標頭檔自動建立 FFI 包裝器。我們邀請您試用：<a href="https://pub.dev/packages/ffigen">package:ffigen</a>。</p>
+<h3 id="FFI-路線圖"><a href="#FFI-路線圖" class="headerlink" title="FFI 路線圖"></a>FFI 路線圖</h3><p>隨著核心 FFI 平台的完成，我們將把重點轉向透過在核心平台之上分層的功能來擴展 FFI 功能集。我們正在研究的一些功能包括：</p>
+<ul>
+<li>ABI 特定的資料類型，例如 <code>int</code>、<code>long</code>、<code>size_t</code>（<a href="https://github.com/dart-lang/sdk/issues/36140">#36140</a>）</li>
+<li>結構體中的內聯陣列（<a href="https://github.com/dart-lang/sdk/issues/35763">#35763</a>）</li>
+<li>封裝結構體（<a href="https://github.com/dart-lang/sdk/issues/38158">#38158</a>）</li>
+<li>聯集類型（<a href="https://github.com/dart-lang/sdk/issues/38491">#38491</a>）</li>
+<li>將終結器公開給 Dart（<a href="https://github.com/dart-lang/sdk/issues/35770">#35770</a>；但請注意，您已經可以<a href="https://github.com/dart-lang/sdk/issues/35770">從 C 中使用終結器</a>）</li>
+</ul>
+<h3 id="FFI-的應用範例"><a href="#FFI-的應用範例" class="headerlink" title="FFI 的應用範例"></a>FFI 的應用範例</h3><p>我們已經看到許多創造性地使用 Dart FFI 與各種基於 C 的 API 整合的例子。以下是一些例子：</p>
+<ul>
+<li><a href="https://pub.dev/packages/open_file">open_file</a> 是一個用於在多個平台上打開檔案的單一 API。它使用 FFI 在 Windows、macOS 和 Linux 上調用原生作業系統 API。</li>
+<li><a href="https://pub.dev/packages/win32">win32</a> 包裝了最常見的 Win32 API，可以直接從 Dart 調用各種 Windows API。</li>
+<li><a href="https://pub.dev/packages/objectbox">objectbox</a> 是一個由基於 C 的實作支援的快速資料庫。</li>
+<li><a href="https://pub.dev/packages/tflite_flutter">tflite_flutter</a> 使用 FFI 包裝 TensorFlow Lite API。</li>
+</ul>
+<h3 id="Dart-語言的下一步是什麼？"><a href="#Dart-語言的下一步是什麼？" class="headerlink" title="Dart 語言的下一步是什麼？"></a>Dart 語言的下一步是什麼？</h3><p>完善的空安全是我們多年來對 Dart 語言所做的最大變更。接下來，我們將在牢固的基礎上，對語言和平台進行更多漸進式變更。以下是我們在<a href="https://github.com/dart-lang/language/projects/1">語言設計漏斗</a>中正在試驗的一些內容的快速概覽：</p>
+<p><strong>類型別名</strong>（<a href="https://github.com/dart-lang/language/issues/65">#65</a>）：建立非函數類型類型別名的能力。例如，您可以建立一個類型定義並將其用作變數類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> IntList = <span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;;</span><br><span class="line">IntList il = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<p><strong>三移位運算子</strong>（<a href="https://github.com/dart-lang/language/issues/120">#120</a>）：加入一個新的、完全可覆蓋的 <code>&gt;&gt;&gt;</code> 運算子，用於對整數執行無符號位移。</p>
+<p><strong>泛型中繼資料註釋</strong>（<a href="https://github.com/dart-lang/language/issues/1297">#1297</a>）：擴展中繼資料註釋以支援包含類型參數的註釋。</p>
+<p><strong>靜態元程式設計</strong>（<a href="https://github.com/dart-lang/language/issues/1482">#1482</a>）：支援靜態元程式設計 - 在編譯期間產生新的 Dart 原始程式碼的 Dart 程式，類似於 Rust <a href="https://doc.rust-lang.org/book/ch19-06-macros.html">巨集</a> 和 Swift <a href="https://github.com/apple/swift-evolution/blob/9992cf3c11c2d5e0ea20bee98657d93902d5b174/proposals/XXXX-function-builders.md">函數建置器</a>。此功能仍處於早期探索階段，但我們認為它可以實現當前依賴程式碼生成的使用案例。</p>
+<h3 id="Dart-2-12-現已推出"><a href="#Dart-2-12-現已推出" class="headerlink" title="Dart 2.12 現已推出"></a>Dart 2.12 現已推出</h3><p>具有完善空安全和穩定 FFI 的 Dart 2.12 現已在 <a href="https://dart.dev/get-dart">Dart 2.12</a> 和 <a href="https://flutter.dev/docs/get-started/">Flutter 2.0</a> SDK 中提供。請花點時間查看<a href="https://dart.dev/null-safety#known-issues">Dart 的已知空安全問題</a> 和 <a href="https://flutter.dev/docs/null-safety#known-issues">Flutter 的已知空安全問題</a>。如果您發現任何其他問題，請在 <a href="https://github.com/dart-lang/sdk/issues">Dart 問題追蹤器</a> 中回報。</p>
+<p>如果您開發了在 pub.dev 上發佈的套件，請立即查看<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>，並了解如何遷移至完善的空安全。遷移您的套件可能有助於解除其他依賴它的套件和應用程式的阻礙。我們也要感謝那些已經遷移的人！</p>
+<p>我們很樂意聽到您對完善的空安全和 FFI 的體驗。請在下方留言或在 Twitter 上 <a href="https://twitter.com/dart_lang">dart_lang</a> 中提及我們。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=499a6e689c87" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">宣佈 Dart 2.12</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/75c5803e.html" rel="prev" title="【文章翻譯】Preparing the Dart and Flutter ecosystem for null safety">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Preparing the Dart and Flutter ecosystem for null safety
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/87506f38.html" rel="next" title="【文章翻譯】What’s New in Flutter 2.0">
+      【文章翻譯】What’s New in Flutter 2.0 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-12"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.12</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%B9%B3%E5%8F%B0%E7%9A%84%E7%8D%A8%E7%89%B9%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 平台的獨特功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">完善的空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A0%90%E8%A8%AD%E4%B8%8D%E5%8F%AF%E4%B8%BA%E7%A9%BA%EF%BC%9A%E9%A1%9E%E5%9E%8B%E7%B3%BB%E7%B5%B1%E7%9A%84%E6%A0%B9%E6%9C%AC%E6%80%A7%E8%AE%8A%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">預設不可为空：類型系統的根本性變化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E9%A0%90%E8%A8%AD%E4%B8%8D%E5%8F%AF%E4%B8%BA%E7%A9%BA"><span class="nav-number">1.4.</span> <span class="nav-text">使用預設不可为空</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%90%E6%AD%A5%E9%81%B7%E7%A7%BB%E8%87%B3%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.5.</span> <span class="nav-text">逐步遷移至空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E7%94%9F%E6%85%8B%E7%B3%BB%E7%B5%B1%E7%A9%BA%E5%AE%89%E5%85%A8%E9%81%B7%E7%A7%BB%E7%8B%80%E6%85%8B"><span class="nav-number">1.6.</span> <span class="nav-text">Dart 生態系統空安全遷移狀態</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%E7%9A%84%E5%A5%BD%E8%99%95"><span class="nav-number">1.7.</span> <span class="nav-text">完善的空安全的好處</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-FFI%EF%BC%8C%E7%94%A8%E6%96%BC%E6%95%B4%E5%90%88-Dart-%E8%88%87-C-%E5%87%BD%E5%BC%8F%E5%BA%AB"><span class="nav-number">1.8.</span> <span class="nav-text">Dart FFI，用於整合 Dart 與 C 函式庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%89%E5%80%BC%E5%82%B3%E9%81%9E%E7%B5%90%E6%A7%8B%E9%AB%94"><span class="nav-number">1.9.</span> <span class="nav-text">按值傳遞結構體</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A2%E7%8B%80%E7%B5%90%E6%A7%8B%E9%AB%94"><span class="nav-number">1.10.</span> <span class="nav-text">巢狀結構體</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.11.</span> <span class="nav-text">API 變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90-FFI-%E7%B9%AB%E7%B5%90"><span class="nav-number">1.12.</span> <span class="nav-text">自動生成 FFI 繫結</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FFI-%E8%B7%AF%E7%B7%9A%E5%9C%96"><span class="nav-number">1.13.</span> <span class="nav-text">FFI 路線圖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FFI-%E7%9A%84%E6%87%89%E7%94%A8%E7%AF%84%E4%BE%8B"><span class="nav-number">1.14.</span> <span class="nav-text">FFI 的應用範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E8%AA%9E%E8%A8%80%E7%9A%84%E4%B8%8B%E4%B8%80%E6%AD%A5%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.15.</span> <span class="nav-text">Dart 語言的下一步是什麼？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-12-%E7%8F%BE%E5%B7%B2%E6%8E%A8%E5%87%BA"><span class="nav-number">1.16.</span> <span class="nav-text">Dart 2.12 現已推出</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

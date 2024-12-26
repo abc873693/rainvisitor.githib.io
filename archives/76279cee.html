@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.15今天，我們發佈了 Dart SDK 的 2.15 版本，它具有使用 worker isolates 的快速併發、一個新的構造函數 tear-off 語言功能、dart:core 函式庫中改進的列舉支援、套件發佈者的新功能等等。     使用 worker isolates 的快速併發幾乎所有現代設備都具有多核心的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.15">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/76279cee.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.15今天，我們發佈了 Dart SDK 的 2.15 版本，它具有使用 worker isolates 的快速併發、一個新的構造函數 tear-off 語言功能、dart:core 函式庫中改進的列舉支援、套件發佈者的新功能等等。     使用 worker isolates 的快速併發幾乎所有現代設備都具有多核心的">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*96RfgLO4RYR2ReAs8t6x5w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*9KDYm1R4x6D4S-mzL-QE2g.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7e7a598e508a">
+<meta property="article:published_time" content="2021-12-08T10:00:39.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:41:06.673Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*96RfgLO4RYR2ReAs8t6x5w.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/76279cee.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.15 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/76279cee.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.15
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-08 18:00:39" itemprop="dateCreated datePublished" datetime="2021-12-08T18:00:39+08:00">2021-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:41:06" itemprop="dateModified" datetime="2024-12-19T10:41:06+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-15"><a href="#宣佈-Dart-2-15" class="headerlink" title="宣佈 Dart 2.15"></a>宣佈 Dart 2.15</h2><p>今天，我們發佈了 Dart SDK 的 2.15 版本，它具有使用 worker isolates 的快速併發、一個新的構造函數 tear-off 語言功能、dart:core 函式庫中改進的列舉支援、套件發佈者的新功能等等。</p>
+<figure>
+<img alt="Graphic listing new 2.15 features" src="https://cdn-images-1.medium.com/max/1024/1*96RfgLO4RYR2ReAs8t6x5w.png" />
+</figure>
+
+<h3 id="使用-worker-isolates-的快速併發"><a href="#使用-worker-isolates-的快速併發" class="headerlink" title="使用 worker isolates 的快速併發"></a>使用 worker isolates 的快速併發</h3><p>幾乎所有現代設備都具有多核心的 CPU，能夠並行運行多個任務。對於大多數 Dart 程式而言，這些核心的使用方式對開發人員來說是透明的：Dart 運行時系統預設在單核上運行所有 Dart 程式碼，但會使用其他核心來執行系統級任務，例如異步輸入&#x2F;輸出，例如寫入檔案或進行網路呼叫。</p>
+<p>但是您的 Dart 程式碼本身可能需要並行運行。例如，您可能有一個連續的動畫和一個長時間運行的任務，例如解析一個大型 JSON 檔案。如果額外任務花費的時間太長，則可能會導致 UI 中出現卡頓或延遲。透過將這些額外任務移動到單獨的核心，動畫可以繼續在主執行緒上運行，而不會中斷。</p>
+<p>Dart 的併發模型基於 <a href="https://dart.dev/guides/language/concurrency">isolates</a>——彼此隔離的獨立執行單元——以防止與共用記憶體相關的一大類併發程式設計錯誤，例如 <a href="https://zh.wikipedia.org/wiki/%E7%AB%B6%E4%BA%89%E6%A2%B3%E7%82%B9#%E5%9C%A8%E8%BD%AF%E4%BB%B6%E4%B8%AD">資料競爭等競爭條件</a>。Dart 透過不允許在 isolates 之間共用任何可變物件來防止這些錯誤，而是使用 isolates 使用 <a href="https://dart.dev/guides/language/concurrency#sending-multiple-messages-between-isolates">訊息傳遞</a> 交換狀態的模型。在 Dart 2.15 中，我們對 isolates 進行了許多重大增強。</p>
+<p>我們首先重新設計和重新實作了 isolates 的工作方式，引入了一個新概念：<em>isolate 群組</em>。isolate 群組中的 isolates 共用代表正在運行程式的各種內部資料結構。這使得群組中的個別 isolates 的成本要低得多。現在，在現有的 isolate 群組中啟動額外的 isolate 的速度要快 100 倍以上，因為我們不需要初始化程式結構，而且這些產生的 isolates 消耗的記憶體減少了 10-100 倍。</p>
+<p>雖然 isolate 群組仍然可以防止在 isolates 之間共用可變物件，但該群組是使用共用堆實作的，這解鎖了更多功能。我們可以將物件從一個 isolate 傳遞到另一個 isolate，這可以用於執行返回大量記憶體的任務的 worker isolates。例如，一個 worker isolate 進行網路呼叫以獲取資料，將該資料解析為一個大型 JSON 物件圖，然後將該 JSON 圖返回給主 isolate。在 Dart 2.15 之前，該結果需要進行深度複製，如果複製花費的時間超過畫面預算，則本身可能會導致 UI 卡頓。</p>
+<p>在 2.15 中，worker isolate 可以呼叫 <a href="https://api.dart.dev/stable/2.15.0/dart-isolate/Isolate/exit.html">Isolate.exit()</a>，將其結果作為參數傳遞。然後，Dart 運行時將包含結果的記憶體從 worker isolate 傳遞到主 isolate，而無需複製，並且主 isolate 可以在恆定時間內接收結果。我們在 <a href="https://medium.com/flutter/whats-new-in-flutter-2-8-d085b763d181">Flutter 2.8</a> 中更新了 <a href="https://api.flutter.dev/flutter/foundation/compute-constant.html">compute()</a> 工具函數，以利用 <code>Isolate.exit()</code>。如果您已經在使用 <code>compute()</code>，那麼在升級到 Flutter 2.8 後，您將自動獲得這些效能提升。</p>
+<p>最後，我們重新設計了 isolate 訊息傳遞機制，使傳遞中小型的訊息的速度提高了大約 8 倍。傳送速度明顯加快，接收訊息幾乎總是在恆定時間內完成。我們還擴展了 isolates 可以相互傳送的物件類型，加入了對函數類型、閉包和堆疊追蹤物件的支援。有關詳細資訊，請參閱 <a href="https://api.dart.dev/stable/2.15.0/dart-isolate/SendPort/send.html">SendPort.send()</a> 的 API 文件。</p>
+<p>要了解有關如何使用 isolates 的更多資訊，請參閱我們為 2.15 加入的新的 <a href="https://dart.dev/guides/language/concurrency">Dart 中的併發</a> 文件。我們還有一些 <a href="https://github.com/dart-lang/samples/tree/master/isolates">程式碼範例</a> 供您查看。</p>
+<h3 id="新的語言功能：構造函數-tear-offs"><a href="#新的語言功能：構造函數-tear-offs" class="headerlink" title="新的語言功能：構造函數 tear-offs"></a>新的語言功能：構造函數 tear-offs</h3><p>在 Dart 中，您可以透過使用函數的名稱來建立一個指向另一個物件上的函數的函數物件。在以下範例中，<code>main()</code> 方法的第二行說明了當它將 <code>g</code> 設定為 <code>m.greet</code> 時的語法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greeter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  Greeter(<span class="keyword">this</span>.name);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> greet(<span class="built_in">String</span> who) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;<span class="subst">$name</span> says: Hello <span class="subst">$who</span>!&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> m = Greeter(<span class="string">&#x27;Michael&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> g = m.greet; <span class="comment">// g 保存指向 m.greet 的函數指標。</span></span><br><span class="line">  g(<span class="string">&#x27;Leaf&#x27;</span>); <span class="comment">// 呼叫並列印 &quot;Michael says: Hello Leaf!&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這種函數指標——也稱為函數 <em>tear-offs</em> ——在使用 Dart 核心函式庫時經常出現。以下是一個透過傳遞函數指標來呼叫可迭代物件上的 <code>foreach()</code> 的範例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> m = Greeter(<span class="string">&#x27;Michael&#x27;</span>);</span><br><span class="line"></span><br><span class="line">[<span class="string">&#x27;Lasse&#x27;</span>, <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Erik&#x27;</span>].forEach(m.greet);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 列印 &quot;Michael says: Hello Lasse!&quot;, &quot;Michael says: Hello Bob!&quot;,</span></span><br><span class="line"><span class="comment">// &quot;Michael says: Hello Erik!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>從歷史上看，我們不支援從構造函數建立 tear-offs（語言問題 <a href="https://github.com/dart-lang/language/issues/216">#216</a>）。這很煩人，因為在許多情況下——例如，在構建 Flutter UI 時——構造函數 tear-off 正是您需要的。從 Dart 2.15 開始，現在支援此語法。以下是一個透過呼叫 <code>.map()</code> 並將其傳遞給 <code>Text</code> 的構造函數的 tear-off 來構建包含三個 <code>Text</code> widget 的 <code>Column</code> widget 的範例。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FruitWidget</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Column(</span><br><span class="line">        children: [<span class="string">&#x27;Apple&#x27;</span>, <span class="string">&#x27;Orange&#x27;</span>].map(Text.<span class="keyword">new</span>).toList());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Text.new</code> 指的是 <code>Text</code> 類別的預設構造函數。您也可以參考命名構造函數——例如，<code>.map(Text.rich)</code>。</p>
+<h3 id="相關的語言變更"><a href="#相關的語言變更" class="headerlink" title="相關的語言變更"></a>相關的語言變更</h3><p>在實作構造函數 tear-offs 的同時，我們藉此機會修復了對函數指標的現有支援中的一些不一致之處。您現在可以特化泛型方法來建立非泛型方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T id&lt;T&gt;(T value) =&gt; value;</span><br><span class="line"><span class="keyword">var</span> intId = id&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能。</span></span><br><span class="line"><span class="built_in">int</span> <span class="built_in">Function</span>(<span class="built_in">int</span>) intId = id; <span class="comment">// 2.15 之前的解決方法。</span></span><br></pre></td></tr></table></figure>
+
+<p>您甚至可以特化泛型函數物件來建立非泛型函數物件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fo = id; <span class="comment">// 撕掉 `id`，建立一個函數物件。</span></span><br><span class="line"><span class="keyword">const</span> c1 = fo&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能；之前是錯誤的。</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，我們清理了涉及泛型的類型文字：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> y = <span class="built_in">List</span>; <span class="comment">// 已經支援。</span></span><br><span class="line"><span class="keyword">var</span> z = <span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能。</span></span><br><span class="line"><span class="keyword">var</span> z = typeOf&lt;<span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;&gt;(); <span class="comment">// 2.15 之前的解決方法。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="改進-dart-core-函式庫中的列舉"><a href="#改進-dart-core-函式庫中的列舉" class="headerlink" title="改進 dart:core 函式庫中的列舉"></a>改進 dart:core 函式庫中的列舉</h3><p>我們對 dart:core 函式庫中的列舉 API 進行了一些便利的補充（語言問題 <a href="https://github.com/dart-lang/language/issues/1511">#1511</a>）。您現在可以使用 <code>.name</code> 獲取每個列舉值的字串值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> MyEnum &#123;</span><br><span class="line">  one, two, three</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(MyEnum.one.name);  <span class="comment">// 列印 &quot;one&quot;。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您也可以按名稱查詢列舉值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(MyEnum.values.byName(<span class="string">&#x27;two&#x27;</span>) == MyEnum.two);  <span class="comment">// 列印 &quot;true&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，您可以獲取所有名稱值對的映射：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> map = MyEnum.values.asNameMap();</span><br><span class="line"><span class="built_in">print</span>(map[<span class="string">&#x27;three&#x27;</span>] == MyEnum.three);  <span class="comment">// 列印 &quot;true&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>有關使用這些新 API 的範例，請參閱 <a href="https://github.com/flutter/flutter/pull/94496/files">此 Flutter PR</a>。</p>
+<h3 id="壓縮指標"><a href="#壓縮指標" class="headerlink" title="壓縮指標"></a>壓縮指標</h3><p>Dart 2.15 加入了對壓縮指標的支援，這是一種技術，如果只需要支援 32 位地址空間（最多 4 GB 記憶體），則 64 位 SDK 可以使用更節省空間的指標表示形式。壓縮指標會顯著減少記憶體；在我們使用 GPay 應用程式進行的內部測試中，我們發現 Dart 堆大小減少了大約 10%。</p>
+<p>由於壓縮指標意味著無法定址 4 GB 以上的任何可用 RAM，因此該功能位於 Dart SDK 中的一個設定選項之後，只有在構建 SDK 時，Dart SDK 的嵌入器才能切換該選項。Flutter SDK 版本 2.8 已為 Android 構建啟用此設定，Flutter 團隊正在考慮在未來的版本中 <a href="https://github.com/flutter/flutter/issues/94753">也為 iOS 構建啟用它</a>。</p>
+<h3 id="Dart-SDK-中包含的-Dart-DevTools"><a href="#Dart-SDK-中包含的-Dart-DevTools" class="headerlink" title="Dart SDK 中包含的 Dart DevTools"></a>Dart SDK 中包含的 Dart DevTools</h3><p><a href="https://dart.dev/tools/dart-devtools#">DevTools 套件</a> 的除錯和效能工具以前不在 Dart SDK 中；您必須單獨下載它。從 Dart 2.15 開始，您現在下載 Dart SDK 時就可以獲得 DevTools，而無需進一步的安裝步驟。有關將 DevTools 與 Dart 命令列應用程式一起使用的更多資訊，請參閱 <a href="https://dart.dev/tools/dart-devtools#using-devtools-with-a-command-line-app">DevTools 文件</a>。</p>
+<h3 id="套件發佈者的新-pub-功能"><a href="#套件發佈者的新-pub-功能" class="headerlink" title="套件發佈者的新 pub 功能"></a>套件發佈者的新 pub 功能</h3><p>Dart 2.15 SDK 在 dart pub 開發人員命令和 <a href="https://pub.dev/">pub.dev</a> 套件儲存庫中還有兩個新功能。</p>
+<p>首先，有一個針對套件發佈者的新安全功能。目的是檢測發佈者何時意外地將機密——例如雲端或 CI 憑證——發佈到 pub 套件中。在了解到在 GitHub 儲存庫中，每天都會 <a href="https://www.ndss-symposium.org/wp-content/uploads/2019/02/ndss2019_04B-3_Meli_paper.pdf">洩露數千個機密</a> 後，我們受到啟發加入了此洩露檢測功能。</p>
+<p>洩露檢測作為 dart pub publish 命令中運行的預發佈驗證的一部分運行。如果它在即將發佈的檔案中檢測到潛在的機密，則發佈命令將在不發佈的情況下退出，並列印如下輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Publishing my_package 1.0.0 to https://pub.dartlang.org:</span><br><span class="line">Package validation found the following errors:</span><br><span class="line">* line 1, column 1 of lib/key.pem: Potential leak of Private Key detected.</span><br><span class="line">╷</span><br><span class="line">1 │ ┌ - - -BEGIN PRIVATE KEY - - -</span><br><span class="line">2 │ │ H0M6xpM2q+53wmsN/eYLdgtjgBd3DBmHtPilCkiFICXyaA8z9LkJ</span><br><span class="line">3 │ └ - - -END PRIVATE KEY - - -</span><br><span class="line">╵</span><br><span class="line">* line 2, column 23 of lib/my_package.dart: Potential leak of Google OAuth Refresh Token detected.</span><br><span class="line">╷</span><br><span class="line">2 │ final refreshToken = &quot;1//042ys8uoFwZrkCgYIARAAGAQSNwF-L9IrXmFYE-sfKefSpoCnyqEcsHX97Y90KY-p8TPYPPnY2IPgRXdy0QeVw7URuF5u9oUeIF0&quot;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在極少數情況下，此檢測可能會出現誤報，將您實際上打算發佈的內容或檔案標記為潛在洩露。在這些情況下，您可以將檔案加入 <a href="https://dart.dev/go/false-secrets">允許清單</a>。</p>
+<p>其次，我們為發佈者加入了另一個功能，支援撤回已發佈的套件版本。當發佈了錯誤的套件版本時，我們通常建議發佈一個新的次要版本，以修復意外問題。在極少數情況下——例如，當您還沒有這樣的修復程式時，或者當您意外發佈了一個新的主要版本但打算發佈一個新的次要版本時——您可以使用新的 <a href="https://dart.dev/go/package-retraction">套件撤回功能</a> 作為最後的手段。此功能在 pub.dev 上的管理 UI 中提供：</p>
+<figure>
+<img alt="Screenshot of the package retraction UI" src="https://cdn-images-1.medium.com/max/1024/1*9KDYm1R4x6D4S-mzL-QE2g.png" />
+</figure>
+
+<p>當套件版本被撤回時，pub 用戶端在 pub get 或 pub upgrade 中不再解析到該版本。如果任何開發人員已經解析到撤回的版本（因此它在他們的 <code>pubspec.lock</code> 檔案中），他們下次運行 pub 時會看到一條警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub get</span><br><span class="line">Resolving dependencies…</span><br><span class="line">mypkg 0.0.181-buggy (retracted, 0.0.182-fixed available)</span><br><span class="line">Got dependencies!</span><br></pre></td></tr></table></figure>
+
+<h3 id="用於檢測雙向-Unicode-字元的安全分析-CVE-2021–22567"><a href="#用於檢測雙向-Unicode-字元的安全分析-CVE-2021–22567" class="headerlink" title="用於檢測雙向 Unicode 字元的安全分析 (CVE-2021–22567)"></a>用於檢測雙向 Unicode 字元的安全分析 (CVE-2021–22567)</h3><p>最近發現了一個涉及雙向 Unicode 字元的一般程式設計語言漏洞 (<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-42574">CVE-2021–42574</a>)。此漏洞影響支援 Unicode 的大多數現代程式設計語言。以下 Dart 原始程式碼說明了該問題：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">final</span> accessLevel = <span class="string">&#x27;user&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (accessLevel == <span class="string">&#x27;user‮ .⁦// Check if admin⁩ ⁦&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;You are a regular user.&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;You are an admin.&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可能會認為這個程式會列印 *You are a regular user.*，但實際上它可能會列印 *You are an admin.*！透過使用包含雙向 Unicode 字元的字串，可以利用此漏洞。這些字元會將文字的方向從左到右更改為從右到左，然後再返回，所有這些都在同一行中。使用雙向字元時，文字在螢幕上的渲染方式可能與實際文字內容大不相同。您可以在 <a href="https://gist.github.com/mit-mit/7dda00ca6278ce7d2555f78d59d9e67b?h=1">此 GitHub 程式碼 gist</a> 中看到一個範例。</p>
+<p>針對此漏洞的緩解措施包括使用檢測雙向 Unicode 字元的工具（編輯器、程式碼審查工具等），以便開發人員可以意識到它們，並有意識地接受它們的使用。上面連結到的 GitHub gist 檔案檢視器就是一個顯示這些字元的工具的範例。</p>
+<p>Dart 2.15 引入了一個進一步的緩解措施（Dart 安全公告 <a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-8pcp-6qc9-rqmv">CVE-2021–22567</a>）：Dart 分析器現在會掃描雙向 Unicode 字元，並標記任何使用它們的情況：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ dart analyze</span><br><span class="line">Analyzing cvetest...                   2.6s</span><br><span class="line"></span><br><span class="line">info • bin/cvetest.dart:4:27 • The Unicode code point &#x27;U+202E&#x27;</span><br><span class="line">       changes the appearance of text from how it&#x27;s interpreted</span><br><span class="line">       by the compiler. Try removing the code point or using the</span><br><span class="line">       Unicode escape sequence &#x27;\u202E&#x27;. •</span><br><span class="line">       text_direction_code_point_in_literal</span><br></pre></td></tr></table></figure>
+
+<p>我們建議將這些字元替換為 Unicode 跳脫序列，以便它們在任何文字編輯器或檢視器中都可見。或者，如果您確實有合法使用這些字元的情況，您可以透過在使用前的行中加入覆蓋來禁用警告：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ignore: text_direction_code_point_in_literal</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="使用第三方-pub-伺服器時的-Pub-dev-憑證漏洞-CVE-2021–22568"><a href="#使用第三方-pub-伺服器時的-Pub-dev-憑證漏洞-CVE-2021–22568" class="headerlink" title="使用第三方 pub 伺服器時的 Pub.dev 憑證漏洞 (CVE-2021–22568)"></a>使用第三方 pub 伺服器時的 Pub.dev 憑證漏洞 (CVE-2021–22568)</h3><p>我們還發佈了第二個與 pub.dev 相關的 Dart 安全公告：<a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-r32f-vhjp-qhj7">CVE-2021–22568</a>。此公告針對可能已將套件發佈到第三方 pub 套件伺服器（例如私人或公司內部套件伺服器）的套件發佈者。<strong>僅</strong>發佈到公共 pub.dev 儲存庫（標準設定）的開發人員<strong>不受</strong>此漏洞的影響。</p>
+<p>如果您已發佈到第三方儲存庫，則該漏洞是：提交給該第三方儲存庫進行身份驗證的 OAuth2 臨時（一小時）存取權杖可能會被濫用於對公共 pub.dev 儲存庫進行身份驗證。因此，惡意的第三方 pub 伺服器可能會使用存取權杖在 pub.dev 上冒充您並在那裡發佈套件。如果您已將套件發佈到不受信任的第三方套件儲存庫，請考慮審計您在 pub.dev 公共套件儲存庫上的所有帳戶活動。您可以使用 <a href="https://pub.dev/my-activity-log">pub.dev 活動日誌</a> 來完成此目的。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>我們希望您會喜歡 Dart 2.15 中的這些新功能，<a href="https://dart.dev/get-dart">今天即可使用</a>。這是我們今年的最後一個版本，我們想藉此機會感謝 Dart 生態系統。感謝所有出色的回饋，感謝您在我們不斷發展中提供的持續支援，感謝您在過去一年中透過在 <a href="https://pub.dev/">pub.dev</a> 上發佈數千個套件來擴展我們的生態系統。我們迫不及待地想在明年重新開始，我們為 2022 年計劃了很多令人興奮的事情。在此之前，祝您假期愉快！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7e7a598e508a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-2-15-7e7a598e508a">宣佈 Dart 2.15</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/44737a81.html" rel="prev" title="【文章翻譯】Announcing Flutter 2.8">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Flutter 2.8
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/898be70a.html" rel="next" title="【文章翻譯】What’s New in Flutter 2.8">
+      【文章翻譯】What’s New in Flutter 2.8 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-15"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-worker-isolates-%E7%9A%84%E5%BF%AB%E9%80%9F%E4%BD%B5%E7%99%BC"><span class="nav-number">1.1.</span> <span class="nav-text">使用 worker isolates 的快速併發</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD%EF%BC%9A%E6%A7%8B%E9%80%A0%E5%87%BD%E6%95%B8-tear-offs"><span class="nav-number">1.2.</span> <span class="nav-text">新的語言功能：構造函數 tear-offs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E9%97%9C%E7%9A%84%E8%AA%9E%E8%A8%80%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">相關的語言變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E9%80%B2-dart-core-%E5%87%BD%E5%BC%8F%E5%BA%AB%E4%B8%AD%E7%9A%84%E5%88%97%E8%88%89"><span class="nav-number">1.4.</span> <span class="nav-text">改進 dart:core 函式庫中的列舉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A3%93%E7%B8%AE%E6%8C%87%E6%A8%99"><span class="nav-number">1.5.</span> <span class="nav-text">壓縮指標</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-SDK-%E4%B8%AD%E5%8C%85%E5%90%AB%E7%9A%84-Dart-DevTools"><span class="nav-number">1.6.</span> <span class="nav-text">Dart SDK 中包含的 Dart DevTools</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%97%E4%BB%B6%E7%99%BC%E4%BD%88%E8%80%85%E7%9A%84%E6%96%B0-pub-%E5%8A%9F%E8%83%BD"><span class="nav-number">1.7.</span> <span class="nav-text">套件發佈者的新 pub 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%96%BC%E6%AA%A2%E6%B8%AC%E9%9B%99%E5%90%91-Unicode-%E5%AD%97%E5%85%83%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90-CVE-2021%E2%80%9322567"><span class="nav-number">1.8.</span> <span class="nav-text">用於檢測雙向 Unicode 字元的安全分析 (CVE-2021–22567)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%AC%AC%E4%B8%89%E6%96%B9-pub-%E4%BC%BA%E6%9C%8D%E5%99%A8%E6%99%82%E7%9A%84-Pub-dev-%E6%86%91%E8%AD%89%E6%BC%8F%E6%B4%9E-CVE-2021%E2%80%9322568"><span class="nav-number">1.9.</span> <span class="nav-text">使用第三方 pub 伺服器時的 Pub.dev 憑證漏洞 (CVE-2021–22568)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.10.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

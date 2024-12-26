@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 非同步程式設計：Futures  許多非同步 Dart API 會返回 futures。   Dart 用於非同步程式設計的最基本 API 之一是 futures——Future 類型的物件。在大多數情況下，Dart 的 futures 與其他語言中的 future 或 promise API 非常相似。 本文討論 Dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart asynchronous programming: Futures">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/23cdf5f.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 非同步程式設計：Futures  許多非同步 Dart API 會返回 futures。   Dart 用於非同步程式設計的最基本 API 之一是 futures——Future 類型的物件。在大多數情況下，Dart 的 futures 與其他語言中的 future 或 promise API 非常相似。 本文討論 Dart">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/394/1*G4044qvxp8yBjmGVHVLEyw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/584/1*UD63BMoIBmzoA6jo3LjCCg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/624/0*xlxALlxjazVifRep.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=96937f831137">
+<meta property="article:published_time" content="2019-09-18T06:01:03.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:40:05.532Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="programming-languages">
+<meta property="article:tag" content="asynchronous-programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/394/1*G4044qvxp8yBjmGVHVLEyw.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/23cdf5f.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart asynchronous programming: Futures | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/23cdf5f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart asynchronous programming: Futures
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-18 14:01:03" itemprop="dateCreated datePublished" datetime="2019-09-18T14:01:03+08:00">2019-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:40:05" itemprop="dateModified" datetime="2024-12-18T22:40:05+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-非同步程式設計：Futures"><a href="#Dart-非同步程式設計：Futures" class="headerlink" title="Dart 非同步程式設計：Futures"></a>Dart 非同步程式設計：Futures</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/394/1*G4044qvxp8yBjmGVHVLEyw.png" />
+<figcaption>許多非同步 Dart API 會返回 futures。</figcaption>
+</figure>
+
+<p>Dart 用於非同步程式設計的最基本 API 之一是 <em>futures</em>——<code>Future</code> 類型的物件。在大多數情況下，Dart 的 futures 與其他語言中的 <em>future</em> 或 <em>promise</em> API 非常相似。</p>
+<p>本文討論 Dart futures 背後的概念，並告訴您如何使用 Future API。它還討論了 Flutter FutureBuilder widget，它可以根據 future 的狀態，幫助您非同步更新 Flutter UI。</p>
+<p>由於 Dart 語言功能（例如 <a href="https://dart.dev/codelabs/async-await">async-await</a>），您可能永遠不需要直接使用 Future API。但是您幾乎肯定會在 Dart 程式碼中遇到 futures。而且您可能想要 <em>建立</em> futures 或 <em>讀取</em> 使用 Future API 的程式碼。</p>
+<blockquote>
+<p>本文是基於 <em>Flutter in Focus</em> 影片系列 <em>Dart 中的非同步程式設計</em> 的第二篇文章。第一篇文章，<a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">隔離區和事件迴圈</a>，涵蓋了 Dart 支援背景工作的基礎。</p>
+</blockquote>
+<blockquote>
+<p>如果您喜歡透過觀看或聆聽來學習，本文中的所有內容都包含在以下影片中。</p>
+</blockquote>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FOTS-ap9_aXc%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DOTS-ap9_aXc&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FOTS-ap9_aXc%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/8b6cf4ee42282247c713fd0c0da5298c/href">https://medium.com/media/8b6cf4ee42282247c713fd0c0da5298c/href</a></iframe>
+
+<p>您可以將 futures 想像成資料的小禮盒。有人遞給您其中一個禮盒，一開始是關閉的。過了一會兒，盒子彈開了，裡面要麼是一個值，要麼是一個錯誤。</p>
+<p>因此，future 可以處於以下三種狀態之一：</p>
+<ol>
+<li><strong>未完成：</strong> 禮盒是 <em>關閉的</em>。</li>
+<li><strong>已完成並帶有值：</strong> 禮盒是打開的，您的禮物（資料）已 <em>準備好</em>。</li>
+<li><strong>已完成並帶有錯誤：</strong> 禮盒是打開的，但 <em>出現了問題</em>。</li>
+</ol>
+<p>您即將看到的大部分程式碼都圍繞著處理這三種狀態。您收到一個 future，您需要決定在盒子打開之前做什麼，在盒子打開並帶有值時做什麼，以及如果出現錯誤時做什麼。您會經常看到這種 1-2-3 模式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/584/1*UD63BMoIBmzoA6jo3LjCCg.png" />
+<figcaption>future 的 3 種狀態</figcaption>
+</figure>
+
+<p>您可能還記得我們關於 <a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">Dart 事件迴圈</a> 的文章中的事件迴圈（如下圖所示）。關於 futures，需要了解的一件好事是，它們實際上只是一個 API，旨在使事件迴圈的使用更容易。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/624/0*xlxALlxjazVifRep.png" />
+<figcaption>Dart 事件迴圈一次處理一個事件。</figcaption>
+</figure>
+
+<p>您編寫的 Dart 程式碼由單個執行緒執行。在您的應用程式執行的整個過程中，那個小小的執行緒一直不斷地循環，從事件佇列中提取事件並處理它們。</p>
+<p>假設您有一些下載按鈕的程式碼（如下所示，實現為 RaisedButton）。使用者點擊，您的按鈕開始下載圖片。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/d117128d4388430b3f161a8970cc27a0/href">https://medium.com/media/d117128d4388430b3f161a8970cc27a0/href</a></iframe>
+
+<p>首先發生點擊事件。事件迴圈獲取事件，並調用您的點擊處理程式（您使用 <code>onPressed</code> 參數設定給 RaisedButton 建構函式）。您的處理程式使用 <code>http</code> 函式庫發出請求 (<code>http.get()</code>)，並返回一個 future (<code>myFuture</code>)。</p>
+<p>因此，現在您有了您的小盒子 <code>myFuture</code>。它一開始是關閉的。要註冊一個回呼函式，以便在它打開時執行，您可以使用 <code>then()</code>。</p>
+<p>一旦您有了您的禮盒，您就等待。也許其他事件進來了，使用者做了一些事情，而您的小盒子就放在那裡，而事件迴圈繼續循環。</p>
+<p>最終，圖片的資料被下載，<code>http</code> 函式庫說：「太好了！我這裡有這個 future。」它將資料放入盒子中並彈開它，這將觸發您的回呼函式。</p>
+<p>現在，您傳遞給 <code>then()</code> 的那小段程式碼執行了，它顯示了圖像。</p>
+<p>在整個過程中，您的程式碼從未需要直接接觸事件迴圈。其他正在發生的事情，或者其他進來的事件都無關緊要。您需要做的就是從 <code>http</code> 函式庫獲取 future，然後說明 future 完成後要做什麼。</p>
+<p>在實際程式碼中，您還需要處理錯誤。我們稍後會向您展示如何做到這一點。</p>
+<p>讓我們仔細看看 Future API，其中一些您剛剛在使用中看到了。</p>
+<p>好的，第一個問題：您如何獲得 Future 的實例？在大多數情況下，您不會直接建立 futures。這是因為許多常見的非同步程式設計任務已經有為您產生 futures 的函式庫。</p>
+<p>例如，網路通訊返回一個 future：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> myFuture = http.<span class="keyword">get</span>(<span class="string">&#x27;http://example.com&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>存取共享偏好設定也會返回一個 future：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> myFuture = SharedPreferences.getInstance();</span><br></pre></td></tr></table></figure>
+
+<p>但是您也可以使用 Future 建構函式來建立 futures。</p>
+<h3 id="Future-建構函式"><a href="#Future-建構函式" class="headerlink" title="Future 建構函式"></a>Future 建構函式</h3><p>最簡單的建構函式是 <code>Future()</code>，它接受一個函式並返回一個與函式返回類型匹配的 future。稍後，函式會非同步運行，future 會以函式的返回值完成。以下是如何使用 <code>Future()</code> 的示例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e27a259c2540f79cd29b55eb1f790e92/href">https://medium.com/media/e27a259c2540f79cd29b55eb1f790e92/href</a></iframe>
+
+<p>讓我們添加一些列印語句以使非同步部分更清楚：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9f21b9217f909011fb1789ff165ae78a/href">https://medium.com/media/9f21b9217f909011fb1789ff165ae78a/href</a></iframe>
+
+<p>如果您在 DartPad (<a href="https://dartpad.dev/">dartpad.dev</a>) 中運行該程式碼，則整個 <code>main</code> 函式會在傳遞給 <code>Future()</code> 建構函式的函式之前完成。這是因為 <code>Future()</code> 建構函式一開始只返回一個未完成的 future。它說：「這是這個盒子。您先拿著它，稍後我會去運行您的函式，並在其中放入一些資料。」以下是上述程式碼的輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Done with main().</span><br><span class="line">Creating the future.</span><br></pre></td></tr></table></figure>
+
+<p>另一個建構函式 <code>Future.value()</code> 在您已經知道 future 的值時很方便。當您構建使用快取的服務時，此建構函式非常有用。有時您已經擁有所需的值，因此您可以將其放入其中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> myFuture = Future.value(<span class="number">12</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>Future.value()</code> 建構函式有一個用於完成並帶有錯誤的對應項。它被稱為 <code>Future.error()</code>，它的工作原理基本相同，但接受一個錯誤物件和一個可選的堆疊追蹤：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> myFuture = Future.error(ArgumentError.notNull(<span class="string">&#x27;input&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+<p>最方便的 future 建構函式可能是 <code>Future.delayed()</code>。它的工作原理與 <code>Future()</code> 類似，只是它會在運行函式和完成 future 之前等待指定的時長。</p>
+<p>使用 <code>Future.delayed()</code> 的一種方法是當您為測試建立模擬網路服務時。如果您需要確保您的載入微調器正確顯示，則延遲的 future 是您的朋友。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5b436044f5e815fb6fae7547737bdefa/href">https://medium.com/media/5b436044f5e815fb6fae7547737bdefa/href</a></iframe>
+
+<h3 id="使用-futures"><a href="#使用-futures" class="headerlink" title="使用 futures"></a>使用 futures</h3><p>現在您知道了 futures 的來源，讓我們來談談如何使用它們。正如我們前面提到的，使用 future 主要與處理它的三種狀態有關：未完成，已完成並帶有值，或已完成並帶有錯誤。</p>
+<p>以下程式碼使用 <code>Future.delayed()</code> 建立一個 future，該 future 在 3 秒後完成，值為 100。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ab4bcdad8dbe7a1b5424537f1ae494c8/href">https://medium.com/media/ab4bcdad8dbe7a1b5424537f1ae494c8/href</a></iframe>
+
+<p>當此程式碼執行時，<code>main()</code> 從上到下運行，建立 future 並列印「Waiting for a value…」。在整個過程中，future 都是未完成的。它在 3 秒後才會完成。</p>
+<p>要 <em>使用</em> 完成的值，您可以使用 <code>then()</code>。這是每個 future 上的一個實例方法，您可以使用它來註冊一個回呼函式，以便在 future 完成並帶有值時執行。您給它一個接受單個參數的函式，該參數與 future 的類型匹配。一旦 future 完成並帶有值，您的函式將使用該值被調用。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/f988acb78c06b4f422eb91fc8a37698c/href">https://medium.com/media/f988acb78c06b4f422eb91fc8a37698c/href</a></iframe>
+
+<p>以下是上述程式碼的輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Waiting for a value... _(3 秒後回呼函式執行)_</span><br><span class="line">The value is 100.</span><br></pre></td></tr></table></figure>
+
+<p>除了執行您的程式碼外，<code>then()</code> 還會返回一個它自己的 future，與您傳遞給它的任何函式的返回值匹配。因此，如果您需要進行幾次非同步調用，即使它們的返回類型不同，您也可以將它們鏈接在一起。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5a6e0a91c6b445d288a0000afcca55b3/href">https://medium.com/media/5a6e0a91c6b445d288a0000afcca55b3/href</a></iframe>
+
+<p>回到我們的第一個示例，如果初始 future 沒有完成並帶有值 - 如果它完成並帶有錯誤會發生什麼？<code>then()</code> 方法需要一個值。您需要一種方法來註冊另一個回呼函式以防出現錯誤。</p>
+<p>答案是使用 <code>catchError()</code>。它的工作原理與 <code>then()</code> 類似，只是它接受一個錯誤而不是一個值，並且如果 future 完成並帶有錯誤，它就會執行。就像 <code>then()</code> 一樣，<code>catchError()</code> 方法也返回它自己的 future，因此您可以構建一個由 <code>then()</code> 和 <code>catchError()</code> 方法組成的完整鏈，它們彼此等待。</p>
+<blockquote>
+<p><strong>注意：</strong>如果您使用 <code>async-await</code> 語言功能，則無需調用 <code>then()</code> 或 <code>catchError()</code>。相反，您 <code>await</code> 完成的值，並使用 <code>try-catch-finally</code> 來處理錯誤。有關詳細資訊，請參閱 Dart 語言導覽的 <a href="https://dart.dev/guides/language/language-tour#asynchrony-support">非同步支援</a> 部分。</p>
+</blockquote>
+<p>以下是如何使用 <code>catchError()</code> 來處理 future 完成並帶有錯誤的情況的示例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/db525189bde74549870e219535581770/href">https://medium.com/media/db525189bde74549870e219535581770/href</a></iframe>
+
+<p>您甚至可以給 <code>catchError()</code> 一個測試函式來檢查錯誤，然後再調用回呼函式。您可以透過這種方式擁有多個 <code>catchError()</code> 函式，每個函式檢查不同類型的錯誤。以下是如何使用 <code>catchError()</code> 的可選 <code>test</code> 參數指定測試函式的示例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/fe5017c41b1935118b8bac05a0e78bb0/href">https://medium.com/media/fe5017c41b1935118b8bac05a0e78bb0/href</a></iframe>
+
+<p>現在您已經了解到這裡，希望您可以看到 future 的三種狀態通常如何反映在程式碼的結構中。上例中有三個程式碼塊：</p>
+<ol>
+<li>第一個程式碼塊建立一個未完成的 future。</li>
+<li>然後，如果 future 完成並帶有值，則會有一個函式被調用。</li>
+<li>然後，如果 future 完成並帶有錯誤，則會有一個函式被調用。</li>
+</ol>
+<p>還有一個您可能想要使用的方法：<code>whenComplete()</code>。您可以使用它在 future 完成時執行一個函式，無論它是帶有值還是錯誤。</p>
+<p>它有點像 <code>try-catch-finally</code> 中的 <code>finally</code> 程式碼塊。如果一切順利，則會執行程式碼；如果有錯誤，則會執行程式碼；無論如何都會執行程式碼。</p>
+<h3 id="在-Flutter-中使用-futures"><a href="#在-Flutter-中使用-futures" class="headerlink" title="在 Flutter 中使用 futures"></a>在 Flutter 中使用 futures</h3><p>這就是您如何建立 futures，以及一些關於如何使用它們的值的資訊。現在讓我們來談談如何在 Flutter 中使用它們。</p>
+<p>假設您有一個網路服務將返回一些 JSON 資料，並且您想要顯示該資料。您可以建立一個 <code>StatefulWidget</code> 來建立 future，檢查完成或錯誤，調用 <code>setState()</code>，並通常手動處理所有連線。</p>
+<p>或者您可以使用 <code>FutureBuilder</code>。它是 Flutter SDK 附帶的一個 widget。您給它一個 future 和一個 builder 函式，它會在 future 完成時自動重建其子項。</p>
+<p><code>FutureBuilder</code> widget 的工作原理是調用其 builder 函式，該函式接受一個上下文和 future 當前狀態的快照。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/d4d061e92c50ac8668b523456fd22ca3/href">https://medium.com/media/d4d061e92c50ac8668b523456fd22ca3/href</a></iframe>
+
+<p>您可以檢查快照以查看 future 是否完成並帶有錯誤：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ec30bac06a737610df8007c8a790080b/href">https://medium.com/media/ec30bac06a737610df8007c8a790080b/href</a></iframe>
+
+<p>否則，您可以檢查 <code>hasData</code> 屬性以查看它是否完成並帶有值：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/822acd24d8ce82d850f9478bfc202de2/href">https://medium.com/media/822acd24d8ce82d850f9478bfc202de2/href</a></iframe>
+
+<p>如果 <code>hasError</code> 和 <code>hasData</code> 都不是 <code>true</code>，那麼您就知道您仍在等待，您也可以為此輸出一些內容。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/2dcbbe30464eec59149d857caf678ea8/href">https://medium.com/media/2dcbbe30464eec59149d857caf678ea8/href</a></iframe>
+
+<p>即使在 Flutter 程式碼中，您也可以看到這三種狀態如何不斷出現：未完成，已完成並帶有值，以及已完成並帶有錯誤。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>本文討論了 futures 代表什麼，以及如何使用 Future 和 FutureBuilder API 來建立 futures 並使用它們的完成值。</p>
+<p>如果您想了解更多關於使用 futures 的資訊 - 可以使用可運行的示例和互動式練習來測試您的理解 - 請查看關於 <a href="https://dart.dev/codelabs/async-await">futures、async 和 await</a> 的非同步程式碼實驗室。</p>
+<p>或者繼續觀看 <em>Dart 中的非同步程式設計</em> 系列中的下一個影片。它討論了 <em>streams</em>，它們與 futures 非常相似，因為它們可以提供值或錯誤。但是，futures 只給您一個結果就停止了，而 streams 則繼續運行。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FnQBpOIHE4eE%3Ffeature%3Doembed&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DnQBpOIHE4eE&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FnQBpOIHE4eE%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/19f7572c0ed7e65b2b45fc00703972c6/href">https://medium.com/media/19f7572c0ed7e65b2b45fc00703972c6/href</a></iframe>
+
+<p><em>非常感謝 Andrew Brogdon，他製作了本文所依據的影片。</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=96937f831137" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-asynchronous-programming-futures-96937f831137">Dart 非同步程式設計：Futures</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+              <a href="/tags/asynchronous-programming/" rel="tag"># asynchronous-programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e4668f10.html" rel="prev" title="【文章翻譯】What do Flutter package users need? Findings from Q2 user survey">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】What do Flutter package users need? Findings from Q2 user survey
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3c6a7d27.html" rel="next" title="【文章翻譯】Announcing verified publishers on pub.dev">
+      【文章翻譯】Announcing verified publishers on pub.dev <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%EF%BC%9AFutures"><span class="nav-number">1.</span> <span class="nav-text">Dart 非同步程式設計：Futures</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Future-%E5%BB%BA%E6%A7%8B%E5%87%BD%E5%BC%8F"><span class="nav-number">1.1.</span> <span class="nav-text">Future 建構函式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-futures"><span class="nav-number">1.2.</span> <span class="nav-text">使用 futures</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Flutter-%E4%B8%AD%E4%BD%BF%E7%94%A8-futures"><span class="nav-number">1.3.</span> <span class="nav-text">在 Flutter 中使用 futures</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

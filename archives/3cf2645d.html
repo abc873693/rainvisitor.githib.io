@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 託管私有的 Dart 套件庫我們最近發布的 Dart 2.15 版本增加了對私有套件庫的支援。套件庫是一個託管 Dart 套件的伺服器，供 dart pub 客戶端使用。這篇文章討論了如何將私有套件庫與 pub.dev 一起使用，並利用 Dart 2.15 中引入的新的權杖驗證機制。 此功能已被 Cloudsmith 和 JFrog A">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Hosting a private Dart package repository">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/3cf2645d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 託管私有的 Dart 套件庫我們最近發布的 Dart 2.15 版本增加了對私有套件庫的支援。套件庫是一個託管 Dart 套件的伺服器，供 dart pub 客戶端使用。這篇文章討論了如何將私有套件庫與 pub.dev 一起使用，並利用 Dart 2.15 中引入的新的權杖驗證機制。 此功能已被 Cloudsmith 和 JFrog A">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*-xVF9afKxXP0_RTKs1pyxA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/454/1*hv1Nujq4-g2-y2uLuLYVqA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/454/1*JeK8mYxYCn-XoeHUCJlPEg.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=774c3c51dff9">
+<meta property="article:published_time" content="2022-03-16T08:03:25.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:49:42.242Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="jfrog-artifactory">
+<meta property="article:tag" content="cloudsmith">
+<meta property="article:tag" content="package-repository">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/800/1*-xVF9afKxXP0_RTKs1pyxA.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/3cf2645d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Hosting a private Dart package repository | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/3cf2645d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Hosting a private Dart package repository
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-16 16:03:25" itemprop="dateCreated datePublished" datetime="2022-03-16T16:03:25+08:00">2022-03-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:49:42" itemprop="dateModified" datetime="2024-12-18T22:49:42+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="託管私有的-Dart-套件庫"><a href="#託管私有的-Dart-套件庫" class="headerlink" title="託管私有的 Dart 套件庫"></a>託管私有的 Dart 套件庫</h2><p>我們最近發布的 Dart 2.15 版本增加了對私有套件庫的支援。套件庫是一個託管 Dart 套件的伺服器，供 dart pub 客戶端使用。這篇文章討論了如何將私有套件庫與 <a href="https://pub.dev/">pub.dev</a> 一起使用，並利用 Dart 2.15 中引入的新的權杖驗證機制。</p>
+<p>此功能已被 <a href="https://help.cloudsmith.io/docs/dart-repository">Cloudsmith</a> 和 <a href="https://jfrog.com/blog/how-to-use-pub-repositories-in-artifactory/">JFrog Artifactory</a> 採用，它們提供自定義套件庫作為服務：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*-xVF9afKxXP0_RTKs1pyxA.png" />
+<figcaption>Cloudsmith 和 JFrog Artifactory 現在都提供私有 Dart 儲存庫。</figcaption>
+</figure>
+
+<h3 id="為什麼要使用自定義套件庫？"><a href="#為什麼要使用自定義套件庫？" class="headerlink" title="為什麼要使用自定義套件庫？"></a>為什麼要使用自定義套件庫？</h3><p>預設套件庫 <a href="https://pub.dev/">pub.dev</a> 由 Dart 團隊運營。它促進了 Dart 套件的發布以供公開使用，並允許任何 Dart 開發人員只需將套件的名稱添加到他們的 pubspec 檔案中即可使用這些套件。這使得活躍的生態系統可以建立豐富的 Dart 套件集合。但是，在以下情況下，自定義套件庫可能很有用：</p>
+<ol>
+<li>在組織內共享私有套件。這可能是一個希望在其成員之間共享內部專有套件，而不是與公眾共享的組織。</li>
+<li>在企業環境中嚴格控制依賴項。一些公司希望明確地為批准使用的特定 <em>套件版本</em> 建立允許清單。這可能是為了執行程式碼審查策略或許可證合規性。</li>
+<li>沒有公共網際網路存取的 sécurisé 環境。一些組織在一個監管環境中運作，在該環境中不允許連接到公共網際網路，進而也不允許連接到 <a href="https://pub.dev/">pub.dev</a>。這通常適用於政府機構&#x2F;承包商和一些銀行服務提供商。</li>
+</ol>
+<p>只需要共享一些專有套件的組織（情況 1）可能會使用 <a href="https://dart.dev/tools/pub/dependencies#git-packages">git 依賴項</a>。這是一個強大的機制，因為 dart pub 客戶端命令會調用 git 客戶端來複製 git 依賴項——透過這種方式，您可以使用 SSH 金鑰驗證複製依賴項，並使用 GitHub&#x2F;GitLab 團隊管理權限。由於 <a href="https://www.yubico.com/blog/github-now-supports-ssh-security-keys/">GitHub 支援使用 Yubikey 的 SSH</a>，此設定在某些情況下效果很好。</p>
+<p>但是，在版本解決方面，dart pub 中的 git 依賴項有一些限制。當使用 git 依賴項時，dart pub 只會複製 pubspec.yaml 中指定的標籤&#x2F;分支&#x2F;引用，因為沒有嘗試多個版本依賴項的機制。因此，使用私有自定義套件庫可能很有吸引力，因為自定義套件庫可以向 dart pub 客戶端提供版本清單，允許 <a href="https://nex3.medium.com/pubgrub-2fb6470504f'">版本解決器</a> 選擇相容的版本並避免衝突。它還可以輕鬆地使用 <code>dart pub outdated</code> 和 <code>dart pub upgrade --major-versions</code> 升級私有和公共依賴項。</p>
+<p>Git 依賴項不支援尋求 <em>更嚴格的依賴項控制</em>（情況 2）或使用 <em>沒有網際網路存取的 sécurisé 環境</em>（情況 3）的組織，因為許多套件必須鏡像。在這些情況下，幾乎總是最好只有一個自定義套件庫鏡像 <a href="https://pub.dev/">pub.dev</a> 的允許清單子集。</p>
+<h3 id="使用自定義套件庫"><a href="#使用自定義套件庫" class="headerlink" title="使用自定義套件庫"></a>使用自定義套件庫</h3><p>從 Dart 2.15 開始，您可以使用 <em>簡短形式的託管依賴項</em> 語法依賴於來自自定義套件庫的套件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">foo:</span></span><br><span class="line">    <span class="attr">hosted:</span> <span class="string">https://dart-packages.example.com</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">^1.4.0</span></span><br><span class="line"><span class="attr">environment:</span> </span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&gt;=2.15.0</span> <span class="string">&lt;3.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>簡短形式的語法需要 SDK 約束 <code>&gt;=2.15.0</code>，因為舊版本的 Dart SDK 不支援此語法。如果您不想擔心語法，也可以只使用 <code>dart pub add</code> 命令從自定義套件庫中添加依賴項：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub add foo --hosted https://dart-packages.example.com</span><br><span class="line">Resolving dependencies... </span><br><span class="line">+ foo 1.4.0</span><br><span class="line">Changed 1 dependency!</span><br></pre></td></tr></table></figure>
+
+<p>使用託管依賴項語法，可以將來自自定義套件庫的依賴項與來自官方套件庫的依賴項混合使用。以下範例依賴於來自 <code>dart-packages.example.com</code> 儲存庫的套件 <code>foo</code> 和來自 pub.dev 的套件 <code>retry</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">retry:</span> <span class="string">^3.0.0</span></span><br><span class="line">  <span class="attr">foo:</span></span><br><span class="line">    <span class="attr">hosted:</span> <span class="string">https://dart-packages.example.com</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">^1.4.0</span></span><br><span class="line"><span class="attr">environment:</span> </span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&gt;=2.15.0</span> <span class="string">&lt;3.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>當使用自定義套件庫共享私有套件時（情況 1），這很有用。但是對於 <em>更嚴格的依賴項控制</em>（情況 2）或在 <em>沒有網際網路存取的 sécurisé 環境</em>（情況 3）中工作，最好覆蓋預設套件庫。</p>
+<h4 id="覆蓋預設套件庫"><a href="#覆蓋預設套件庫" class="headerlink" title="覆蓋預設套件庫"></a>覆蓋預設套件庫</h4><p>預設情況下，<code>dart pub get</code> 會從 pub.dev 獲取依賴項，除非使用託管依賴項語法指定自定義套件庫。但是，可以使用環境變數 <code>PUB_HOSTED_URL</code> 覆蓋 <em>預設套件庫</em>。當鏡像 pub.dev 的子集時（情況 2 或 3），此方法特別有用，因為無需更新 pubspec.yaml 檔案以引用自定義套件庫 URL。例如，只需編寫以下內容即可：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">retry:</span> <span class="string">^3.0.0</span></span><br><span class="line">  <span class="attr">foo:</span> <span class="string">^1.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>如果套件 <code>retry</code> 和 <code>foo</code> 的允許清單版本被複製到自定義套件庫，並且環境變數 <code>PUB_HOSTED_URL</code> 指向自定義套件庫 URL，則 <code>pub get</code> 可以按如下方式工作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">export</span> PUB_HOSTED_URL=https://dart-packages.example.com</span><br><span class="line">$ dart pub get</span><br><span class="line">Resolving dependencies... </span><br><span class="line">+ retry 3.1.0</span><br><span class="line">+ foo 1.4.0</span><br><span class="line">Changed 2 dependencies!</span><br></pre></td></tr></table></figure>
+
+<p>當建置伺服器位於公司防火牆後面，並且不允許外部網路連線以避免當有人忘記設定 <code>PUB_HOSTED_URL</code> 時的意外注入攻擊時，這種方法效果最佳。同樣，建議在 pubspec.yaml 中設定 <code>publish_to: &lt;hosted-url&gt;</code>，以避免意外發布到 pub.dev（當未定義 <code>PUB_HOSTED_URL</code> 時）。</p>
+<h4 id="針對自定義套件庫進行驗證"><a href="#針對自定義套件庫進行驗證" class="headerlink" title="針對自定義套件庫進行驗證"></a>針對自定義套件庫進行驗證</h4><p>大多數自定義套件庫可能是需要驗證的私有套件庫。Dart 2.15 引入了 <a href="https://dart.dev/tools/pub/cmd/pub-token"><code>dart pub token</code></a> 命令來管理驗證權杖。對自定義套件庫的請求使用秘密權杖進行驗證。您可以從自定義套件庫獲取秘密權杖，並將其傳遞給 <code>dart pub token add &lt;hosted-url&gt;</code>，它會提示輸入權杖，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub token add https://dart-packages.example.com</span><br><span class="line">Enter secret token: [輸入秘密權杖]</span><br><span class="line">Requests to <span class="string">&quot;dart-packages.example.com&quot;</span> will now be authenticated using the secret token.</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="從-CI-環境進行驗證"><a href="#從-CI-環境進行驗證" class="headerlink" title="從 CI 環境進行驗證"></a>從 CI 環境進行驗證</h4><p>在 CI 中運行時，通常可以將 <a href="https://docs.github.com/en/actions/security-guides/encrypted-secrets#about-encrypted-secrets">秘密儲存在環境變數中</a>，雖然可以使用 <code>echo $TOKEN | dart pub token add &lt;hosted-url&gt;</code> 傳遞秘密，但也可以告訴 dart pub 在與特定自定義儲存庫通信時從環境變數中讀取秘密：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub token add https://dart-packages.example.com --env-var MY_SECRET_TOKEN</span><br><span class="line">Requests to <span class="string">&quot;https://dart-packages.example.com&quot;</span> will now be authenticated using the secret token stored <span class="keyword">in</span> the environment variable <span class="string">&quot;MY_SECRET_TOKEN&quot;</span>.</span><br></pre></td></tr></table></figure>
+
+
+<p>這可確保 dart pub 不會實際將秘密儲存在其設定檔中，而只是儲存它應該從環境變數 <code>$MY_SECRET_TOKEN</code> 中讀取秘密的事實。這允許在 CI 環境中操作時僅將秘密儲存在環境變數中，並降低了如果執行環境在 CI 作業之間共享時秘密意外洩露的風險。</p>
+<h3 id="發布到自定義套件庫"><a href="#發布到自定義套件庫" class="headerlink" title="發布到自定義套件庫"></a>發布到自定義套件庫</h3><p>要將套件發布到自定義套件庫，您需要在 pubspec.yaml 中指定 <code>publish_to: &lt;hosted-url&gt;</code>，然後運行 <code>dart pub publish</code>。這使用與 <code>dart pub get</code> 使用的相同的權杖進行驗證。至少，您的 pubspec.yaml 檔案應如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">mypkg</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.0</span><span class="number">.0</span></span><br><span class="line"><span class="attr">publish_to:</span> <span class="string">https://dart-packages.example.com</span></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">meta:</span> <span class="string">^1.7.0</span></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&gt;=2.15.0</span> <span class="string">&lt;3.0.0</span></span><br></pre></td></tr></table></figure>
+
+
+<p>運行 <code>dart pub publish</code> 時，務必查看提供的資訊。在確認發布操作之前，您應始終執行以下操作：</p>
+<ul>
+<li>檢查套件將發布到的 URL。</li>
+<li>查看要包含在套件中的檔案清單。</li>
+<li>考慮套件驗證建議。例如：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub publish</span><br><span class="line">Publishing mypkg 1.0.0 to https://dart-packages.example.com</span><br><span class="line">|-- CHANGELOG.md</span><br><span class="line">|-- LICENSE</span><br><span class="line">|-- README.md</span><br><span class="line">|-- lib</span><br><span class="line">|   <span class="string">&#x27;-- mypkg.dart</span></span><br><span class="line"><span class="string">&#x27;</span>-- pubspec.yaml</span><br><span class="line">Package validation found the following potential issue:</span><br><span class="line">* It<span class="string">&#x27;s strongly recommended to include a &quot;homepage&quot; or &quot;repository&quot; field in your pubspec.yaml</span></span><br><span class="line"><span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>對於發布到自定義儲存庫，建議 <em>可能不</em> 重要，但提供套件的元資料通常很有用。在 pub.dev 上，具有正確元資料和文件的套件得分更高 <a href="https://pub.dev/help/scoring">pub 分數</a>。</p>
+<p>可以透過使用環境變數 <code>PUB_HOSTED_URL</code> 覆蓋 <em>預設套件庫</em> 來發布到自定義儲存庫，但是，如果您這樣做，強烈建議您在 pubspec.yaml 檔案中指定 <code>publish_to: &lt;hosted-url&gt;</code>；這可以防止您意外地將專有套件發布到公共儲存庫。如果您不想將專有套件發布到 <em>任何</em> 套件儲存庫，請指定 <code>publish_to: none</code> 以防止意外發布。</p>
+<h3 id="取得自定義套件庫"><a href="#取得自定義套件庫" class="headerlink" title="取得自定義套件庫"></a>取得自定義套件庫</h3><p>如前所述，自定義套件庫可作為多個商業供應商提供的服務，從而減輕您託管和維護自己的自定義套件庫的負擔。</p>
+<h4 id="Cloudsmith-中的權杖驗證"><a href="#Cloudsmith-中的權杖驗證" class="headerlink" title="Cloudsmith 中的權杖驗證"></a>Cloudsmith 中的權杖驗證</h4><p>自 2020 年以來，Cloudsmith 一直提供私有和公共 Dart 套件庫。<a href="https://cloudsmith.com/resources/blog/improvements-to-dart-package-support">Cloudsmith 最近宣布</a> 支援其 Dart 套件庫產品的權杖驗證。有關更多資訊，請查看 <a href="https://help.cloudsmith.io/docs/dart-repository">Cloudsmith 文件</a>。</p>
+<figure><a href="https://help.cloudsmith.io/docs/dart-repository"><img alt="" src="https://cdn-images-1.medium.com/max/454/1*hv1Nujq4-g2-y2uLuLYVqA.png" /></a><figcaption>由 Cloudsmith 託管的私有 Dart 套件庫。</figcaption></figure>
+
+
+<h4 id="JFrog-Artifactory-中的-Dart-支援"><a href="#JFrog-Artifactory-中的-Dart-支援" class="headerlink" title="JFrog Artifactory 中的 Dart 支援"></a>JFrog Artifactory 中的 Dart 支援</h4><p>JFrog Artifactory 最近 <a href="https://jfrog.com/blog/how-to-use-pub-repositories-in-artifactory">宣布支援自定義 Dart 套件庫</a>，包括支援分層儲存庫和從 <a href="https://pub.com/">pub.dev</a> 上的公共套件庫鏡像套件。有關更多資訊，請查看 <a href="https://www.jfrog.com/confluence/display/JFROG/Pub+Repositories">JFrog Artifactory 文件</a>。</p>
+<figure><a href="https://www.jfrog.com/confluence/display/JFROG/Pub+Repositories"><img alt="" src="https://cdn-images-1.medium.com/max/454/1*JeK8mYxYCn-XoeHUCJlPEg.png" /></a><figcaption>由 JFrog 管理的自定義 Dart 套件庫。</figcaption></figure>
+
+
+<h4 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h4><p>對於那些想要編寫自己的自定義套件庫的人，我們發布了一個關於 <a href="https://github.com/dart-lang/pub/blob/master/doc/repository-spec-v2.md">提供 Dart 套件庫的規範</a>。它相當簡單，但如果您不清楚某些方面，或者您有任何改進建議，請隨時在 <a href="https://github.com/dart-lang/pub-dev/issues">pub.dev 儲存庫</a> 上提交問題。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=774c3c51dff9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/hosting-a-private-dart-package-repository-774c3c51dff9">託管私有 Dart 套件庫</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/jfrog-artifactory/" rel="tag"># jfrog-artifactory</a>
+              <a href="/tags/cloudsmith/" rel="tag"># cloudsmith</a>
+              <a href="/tags/package-repository/" rel="tag"># package-repository</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/fe0724b4.html" rel="prev" title="【文章翻譯】Only a few days left to submit for the Flutter Puzzle Hack + announcing the judges">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Only a few days left to submit for the Flutter Puzzle Hack + announcing the judges
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/d99ff4be.html" rel="next" title="【文章翻譯】Gradual null safety migration for large Dart projects">
+      【文章翻譯】Gradual null safety migration for large Dart projects <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A8%97%E7%AE%A1%E7%A7%81%E6%9C%89%E7%9A%84-Dart-%E5%A5%97%E4%BB%B6%E5%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">託管私有的 Dart 套件庫</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E7%BE%A9%E5%A5%97%E4%BB%B6%E5%BA%AB%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼要使用自定義套件庫？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%87%AA%E5%AE%9A%E7%BE%A9%E5%A5%97%E4%BB%B6%E5%BA%AB"><span class="nav-number">1.2.</span> <span class="nav-text">使用自定義套件庫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A6%86%E8%93%8B%E9%A0%90%E8%A8%AD%E5%A5%97%E4%BB%B6%E5%BA%AB"><span class="nav-number">1.2.1.</span> <span class="nav-text">覆蓋預設套件庫</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%9D%E5%B0%8D%E8%87%AA%E5%AE%9A%E7%BE%A9%E5%A5%97%E4%BB%B6%E5%BA%AB%E9%80%B2%E8%A1%8C%E9%A9%97%E8%AD%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">針對自定義套件庫進行驗證</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%9E-CI-%E7%92%B0%E5%A2%83%E9%80%B2%E8%A1%8C%E9%A9%97%E8%AD%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">從 CI 環境進行驗證</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BC%E5%B8%83%E5%88%B0%E8%87%AA%E5%AE%9A%E7%BE%A9%E5%A5%97%E4%BB%B6%E5%BA%AB"><span class="nav-number">1.3.</span> <span class="nav-text">發布到自定義套件庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%BE%97%E8%87%AA%E5%AE%9A%E7%BE%A9%E5%A5%97%E4%BB%B6%E5%BA%AB"><span class="nav-number">1.4.</span> <span class="nav-text">取得自定義套件庫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cloudsmith-%E4%B8%AD%E7%9A%84%E6%AC%8A%E6%9D%96%E9%A9%97%E8%AD%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">Cloudsmith 中的權杖驗證</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JFrog-Artifactory-%E4%B8%AD%E7%9A%84-Dart-%E6%94%AF%E6%8F%B4"><span class="nav-number">1.4.2.</span> <span class="nav-text">JFrog Artifactory 中的 Dart 支援</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.4.3.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

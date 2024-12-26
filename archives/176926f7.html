@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 pub.dev 的螢幕截圖和自動發佈功能從今天開始，pub.dev 上有一些新功能：您現在可以為套件宣告螢幕截圖，讓搜尋方式更具視覺化。而且現在發佈流程可以完全自動化，由 GitHub Actions 支援。 將螢幕截圖加入 pub.devpub.dev 的核心目標之一是讓開發者更容易找到適合特定用途的套件。當您搜尋 Widget 或其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Screenshots and automated publishing for pub.dev">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/176926f7.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 pub.dev 的螢幕截圖和自動發佈功能從今天開始，pub.dev 上有一些新功能：您現在可以為套件宣告螢幕截圖，讓搜尋方式更具視覺化。而且現在發佈流程可以完全自動化，由 GitHub Actions 支援。 將螢幕截圖加入 pub.devpub.dev 的核心目標之一是讓開發者更容易找到適合特定用途的套件。當您搜尋 Widget 或其">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*B2bqbwEtObMoGQTm8B-FVQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*69KfhhHmmvZ6BLvypXjx2A.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*dqxBy1vvLW108xdpqLLZ5Q.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9bceb19edf79">
+<meta property="article:published_time" content="2023-01-18T10:00:55.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:42:43.948Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="pubdev">
+<meta property="article:tag" content="package-management">
+<meta property="article:tag" content="github-actions">
+<meta property="article:tag" content="package">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*B2bqbwEtObMoGQTm8B-FVQ.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/176926f7.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Screenshots and automated publishing for pub.dev | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/176926f7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Screenshots and automated publishing for pub.dev
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-18 18:00:55" itemprop="dateCreated datePublished" datetime="2023-01-18T18:00:55+08:00">2023-01-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:42:43" itemprop="dateModified" datetime="2024-12-19T10:42:43+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="pub-dev-的螢幕截圖和自動發佈功能"><a href="#pub-dev-的螢幕截圖和自動發佈功能" class="headerlink" title="pub.dev 的螢幕截圖和自動發佈功能"></a>pub.dev 的螢幕截圖和自動發佈功能</h2><p>從今天開始，pub.dev 上有一些新功能：您現在可以為套件宣告螢幕截圖，讓搜尋方式更具視覺化。而且現在發佈流程可以完全自動化，由 GitHub Actions 支援。</p>
+<h3 id="將螢幕截圖加入-pub-dev"><a href="#將螢幕截圖加入-pub-dev" class="headerlink" title="將螢幕截圖加入 pub.dev"></a>將螢幕截圖加入 pub.dev</h3><p>pub.dev 的核心目標之一是讓開發者更容易找到適合特定用途的套件。當您搜尋 Widget 或其他視覺元件時，圖片扮演著重要的角色。我們現在在套件搜尋結果中顯示螢幕截圖，讓您更容易找到套件。</p>
+<h4 id="套件搜尋和套件頁面中的螢幕截圖"><a href="#套件搜尋和套件頁面中的螢幕截圖" class="headerlink" title="套件搜尋和套件頁面中的螢幕截圖"></a>套件搜尋和套件頁面中的螢幕截圖</h4><p>螢幕截圖的縮圖現在會顯示在搜尋結果中，您也可以篩選搜尋結果，僅列出包含螢幕截圖的套件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*B2bqbwEtObMoGQTm8B-FVQ.png" />
+</figure>
+
+<p>螢幕截圖縮圖也會顯示在套件頁面上，點擊縮圖會觸發包含所有螢幕截圖的圖片輪播。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*69KfhhHmmvZ6BLvypXjx2A.png" />
+</figure>
+
+<h4 id="在-pubspec-yaml-中宣告螢幕截圖"><a href="#在-pubspec-yaml-中宣告螢幕截圖" class="headerlink" title="在 pubspec.yaml 中宣告螢幕截圖"></a>在 <code>pubspec.yaml</code> 中宣告螢幕截圖</h4><p>將螢幕截圖加入到套件非常簡單。在 <code>pubspec.yaml</code> 的 <code>screenshots</code> 欄位中宣告檔案，並附上描述和路徑。以下是 <code>animations</code> 套件的範例。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">animations</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"><span class="attr">screenshots:</span></span><br><span class="line"> <span class="bullet">-</span> <span class="attr">description:</span> <span class="string">&#x27;容器轉換模式的範例。&#x27;</span></span><br><span class="line">   <span class="attr">path:</span> <span class="string">example/screenshots/container_transform_lineup.webp</span></span><br><span class="line"> <span class="bullet">-</span> <span class="attr">description:</span> <span class="string">&#x27;淡入淡出模式的範例。&#x27;</span></span><br><span class="line">   <span class="attr">path:</span> <span class="string">example/screenshots/fade_lineup.webp</span></span><br><span class="line">   <span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>更多詳細資訊，請參閱 <a href="https://dart.dev/tools/pub/pubspec#screenshots">dart.dev&#x2F;tools&#x2F;pub&#x2F;pubspec#screenshots</a>。</p>
+<h3 id="pub-dev-的自動發佈"><a href="#pub-dev-的自動發佈" class="headerlink" title="pub.dev 的自動發佈"></a>pub.dev 的自動發佈</h3><p>數千名 Dart 社群成員在 pub.dev 上發佈套件，造福所有 Dart 和 Flutter 開發者。傳統上，這些套件發佈者透過運行本地終端機命令 <code>dart pub publish</code> 並使用他們的 Google 帳戶進行驗證來發佈到 pub.dev。在幕後，<em>refresh token</em> 會儲存在他們開發機器上的設定檔中，讓他們無需再次驗證即可發佈新版本。這個流程簡單易懂，但需要許多手動步驟。我們很高興推出新的自動發佈流程，可以直接從 GitHub Action 發佈新的 pub.dev 版本。這有幾個好處：</p>
+<ul>
+<li>每個版本都會在 GitHub 中自動標記一致的版本標籤</li>
+<li>設定審查和批准新版本發佈的流程變得更容易。</li>
+<li>發佈過程由 GitHub 簽名的 token 進行驗證，確保沒有憑證需要儲存在磁碟上。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*dqxBy1vvLW108xdpqLLZ5Q.png" />
+</figure>
+
+<h4 id="確保自動發佈的安全性"><a href="#確保自動發佈的安全性" class="headerlink" title="確保自動發佈的安全性"></a>確保自動發佈的安全性</h4><p>目前，一些使用者已採用將包含 <em>refresh token</em> 的 <code>pub-credentials.json</code> 設定檔儲存在 GitHub Actions 上的秘密環境變數中的方法。透過這種方式，他們可以編寫一個 GitHub Action 工作流程，恢復設定檔並使用它來發佈套件的新版本。雖然這種流程在技術上可行，但工具設計時並未考慮到這一點，而且該流程有多個缺點：</p>
+<ul>
+<li><code>pub-credentials.json</code> 檔案可以用於發佈作者有權發佈的任何套件，而不僅僅是從設定的流程發佈的一個套件。</li>
+<li>如果洩露，<code>pub-credentials.json</code> 可以用於發佈新版本和新套件，偽裝成建立 <code>pub-credentials.json</code> 檔案的使用者。</li>
+<li>在 <code>pub-credentials.json</code> 中 <a href="https://myaccount.google.com/permissions">撤銷 <em>refresh token</em> 的使用者介面</a> 並不容易找到。</li>
+</ul>
+<p>事實上，不止一次發生過套件發佈時意外包含了作者的 <code>pub-credentials.json</code> 檔案的情況，因為作者在 CI 作業中提取了檔案。發佈套件以及更新套件所需的憑證是一個非常嚴重的安全漏洞，我們最終在 <code>dart pub publish</code> 中 <a href="https://dart.dev/go/false-secrets">實作了洩露偵測</a>。</p>
+<p>我們新的自動發佈支援減輕了這些問題，可以使用以下其中一種方法驗證到 pub.dev：</p>
+<ul>
+<li>由 Github Actions 簽名的臨時 <a href="https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect">OIDC token</a>。</li>
+<li>可以從大多數 GCP 資源（如 Google Cloud Build 或其他雲端環境，例如 Azure 或 AWS）使用的 GCP 服務帳戶。</li>
+</ul>
+<p>這些流程啟用了依賴長期秘密 token 的自動發佈，如果意外洩露，這些 token 很容易被濫用。如果您將發佈流程部署到自訂機器上，您當然可以依賴匯出的服務帳戶金鑰，但必須非常小心地妥善保護這些金鑰。</p>
+<h4 id="啟用安全發佈"><a href="#啟用安全發佈" class="headerlink" title="啟用安全發佈"></a>啟用安全發佈</h4><p>只需幾個步驟，您就可以從 GitHub 啟用自動發佈 - 有關所有詳細資訊，請參閱 <a href="http://dart.dev/go/automated-publishing">dart.dev&#x2F;go&#x2F;automated-publishing</a>。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9bceb19edf79" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/screenshots-and-automated-publishing-for-pub-dev-9bceb19edf79">pub.dev 的螢幕截圖和自動發佈</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/pubdev/" rel="tag"># pubdev</a>
+              <a href="/tags/package-management/" rel="tag"># package-management</a>
+              <a href="/tags/github-actions/" rel="tag"># github-actions</a>
+              <a href="/tags/package/" rel="tag"># package</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/d64188d4.html" rel="prev" title="【文章翻譯】Material 3 for Flutter">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Material 3 for Flutter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/e7e3bfa0.html" rel="next" title="【文章翻譯】Playful typography with Flutter">
+      【文章翻譯】Playful typography with Flutter <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#pub-dev-%E7%9A%84%E8%9E%A2%E5%B9%95%E6%88%AA%E5%9C%96%E5%92%8C%E8%87%AA%E5%8B%95%E7%99%BC%E4%BD%88%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">pub.dev 的螢幕截圖和自動發佈功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87%E8%9E%A2%E5%B9%95%E6%88%AA%E5%9C%96%E5%8A%A0%E5%85%A5-pub-dev"><span class="nav-number">1.1.</span> <span class="nav-text">將螢幕截圖加入 pub.dev</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%97%E4%BB%B6%E6%90%9C%E5%B0%8B%E5%92%8C%E5%A5%97%E4%BB%B6%E9%A0%81%E9%9D%A2%E4%B8%AD%E7%9A%84%E8%9E%A2%E5%B9%95%E6%88%AA%E5%9C%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">套件搜尋和套件頁面中的螢幕截圖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8-pubspec-yaml-%E4%B8%AD%E5%AE%A3%E5%91%8A%E8%9E%A2%E5%B9%95%E6%88%AA%E5%9C%96"><span class="nav-number">1.1.2.</span> <span class="nav-text">在 pubspec.yaml 中宣告螢幕截圖</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E7%9A%84%E8%87%AA%E5%8B%95%E7%99%BC%E4%BD%88"><span class="nav-number">1.2.</span> <span class="nav-text">pub.dev 的自動發佈</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A2%BA%E4%BF%9D%E8%87%AA%E5%8B%95%E7%99%BC%E4%BD%88%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">1.2.1.</span> <span class="nav-text">確保自動發佈的安全性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%95%9F%E7%94%A8%E5%AE%89%E5%85%A8%E7%99%BC%E4%BD%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">啟用安全發佈</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

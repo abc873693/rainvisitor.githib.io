@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 AngularDart 整合 Google 地圖本文將介紹如何將 Google 地圖整合到 AngularDart 應用程式中。該應用程式本身非常簡單：它計算地圖上兩個選定標記之間的大圓距離（球體表面上的最短距離）。 在此過程中，您將：  註冊您自己的 Google 地圖 API 金鑰。 建立一個基本的 Angular 網頁應用程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Google Maps with AngularDart">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/60b7d9e0.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 AngularDart 整合 Google 地圖本文將介紹如何將 Google 地圖整合到 AngularDart 應用程式中。該應用程式本身非常簡單：它計算地圖上兩個選定標記之間的大圓距離（球體表面上的最短距離）。 在此過程中，您將：  註冊您自己的 Google 地圖 API 金鑰。 建立一個基本的 Angular 網頁應用程">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*hLce2qgbJEkxjOlOr8jn9g.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*cPMKvi22U5csti4Dubb-4A.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*8Opaixc6Ardgd0wYKyvKNw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/634/1*V9N-6dAV8vZjuT6cI1Sftw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*AOtq_2d-f5cETtXb-ixzYA.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a75f7f84f941">
+<meta property="article:published_time" content="2017-02-23T02:00:31.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:38:50.413Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="web-development">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="google-maps">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/800/1*hLce2qgbJEkxjOlOr8jn9g.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/60b7d9e0.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Google Maps with AngularDart | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/60b7d9e0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Google Maps with AngularDart
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-02-23 10:00:31" itemprop="dateCreated datePublished" datetime="2017-02-23T10:00:31+08:00">2017-02-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:38:50" itemprop="dateModified" datetime="2024-12-18T15:38:50+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-AngularDart-整合-Google-地圖"><a href="#使用-AngularDart-整合-Google-地圖" class="headerlink" title="使用 AngularDart 整合 Google 地圖"></a>使用 AngularDart 整合 Google 地圖</h2><p>本文將介紹如何將 Google 地圖整合到 AngularDart 應用程式中。該應用程式本身非常簡單：它計算地圖上兩個選定標記之間的<a href="https://en.wikipedia.org/wiki/Great-circle_distance">大圓距離</a>（球體表面上的最短距離）。</p>
+<p>在此過程中，您將：</p>
+<ul>
+<li>註冊您自己的 Google 地圖 API 金鑰。</li>
+<li>建立一個基本的 Angular 網頁應用程式。</li>
+<li>將 Dart 與 Google 地圖 JavaScript API 整合，並處理地圖互動。</li>
+<li>學習一些 Angular 元件的優化技巧。</li>
+</ul>
+<p>本文的篇幅大約是程式碼的四倍。如果您願意，可以直接查看完整的<a href="https://github.com/isoos/google_maps_angular_dart">原始碼</a>和最終的<a href="https://isoos.github.io/google_maps_angular_dart/">Demo</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*hLce2qgbJEkxjOlOr8jn9g.png" />
+<figcaption>Demo 的螢幕截圖</figcaption>
+</figure>
+
+<h3 id="Google-地圖-JavaScript-API"><a href="#Google-地圖-JavaScript-API" class="headerlink" title="Google 地圖 JavaScript API"></a>Google 地圖 JavaScript API</h3><p><a href="https://developers.google.com/maps/documentation/javascript/">Google 地圖 JavaScript API</a>允許開發人員在其網站上嵌入和整合 Google 地圖。您可以使用自己的圖像、數據和處理來自訂顯示的地圖內容和處理方式。</p>
+<p>要開始使用 Google 地圖 API 進行開發，您必須註冊一個免費的 API 金鑰，該金鑰允許合理的使用量。隨著您的應用程式獲得更多關注，您可以將其升級到付費方案。</p>
+<p>訪問<a href="https://developers.google.com/maps/documentation/javascript/">JavaScript API 頁面</a>，然後在頁面頂部點擊「取得金鑰」。為您的專案建立名稱，然後點擊「建立並啟用 API」：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*cPMKvi22U5csti4Dubb-4A.png" />
+</figure>
+
+<p>您的金鑰將在幾秒鐘內啟用並準備使用：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*8Opaixc6Ardgd0wYKyvKNw.png" />
+</figure>
+
+<p>記下您的 API 金鑰。我們將在擷取地圖 JavaScript 函式庫時使用它：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://maps.googleapis.com/maps/api/js?key=您的金鑰</span><br></pre></td></tr></table></figure>
+
+<p>在 JavaScript 中，要建立地圖實例並在其上放置標記，我們將使用以下程式碼：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hostElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;map-id&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> map = <span class="keyword">new</span> google.<span class="property">maps</span>.<span class="title class_">Map</span>(hostElement, &#123;</span><br><span class="line">  <span class="attr">zoom</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="attr">center</span>: &#123;<span class="attr">lat</span>: <span class="number">47.4979</span>, <span class="attr">lng</span>: <span class="number">19.0402</span>&#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> marker = <span class="keyword">new</span> google.<span class="property">maps</span>.<span class="title class_">Marker</span>(&#123;</span><br><span class="line">  <span class="attr">position</span>: &#123;<span class="attr">lat</span>: <span class="number">47.4979</span>, <span class="attr">lng</span>: <span class="number">19.0402</span>&#125;,</span><br><span class="line">  <span class="attr">map</span>: map,</span><br><span class="line">  <span class="attr">label</span>: <span class="string">&#x27;A&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>稍後您將看到，Dart 程式碼將非常相似（具有 Dart 的所有額外好處）。</p>
+<h3 id="AngularDart-應用程式"><a href="#AngularDart-應用程式" class="headerlink" title="AngularDart 應用程式"></a>AngularDart 應用程式</h3><p>開始使用 AngularDart 應用程式的最簡單方法是遵循<a href="https://webdev.dartlang.org/guides/get-started">入門指南</a>，並在 WebStorm 或 IntelliJ IDEA 的社群版中<a href="https://webdev.dartlang.org/guides/get-started#4-create-and-run-a-web-app">建立新專案</a>。</p>
+<p>如果您使用的是不同的編輯器，或者您只想遵循我們的範例程式碼的結構，以下是最低要求。</p>
+<p>在 pubspec 檔案 <code>pubspec.yaml</code> 中：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">google_maps_angular_dart</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">0.0</span><span class="number">.1</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">整合</span> <span class="string">Google</span> <span class="string">地圖的</span> <span class="string">Angular</span> <span class="string">應用程式</span></span><br><span class="line"></span><br><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&#x27;&gt;=1.19.0 &lt;2.0.0&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">angular2:</span> <span class="string">^2.2.0</span></span><br><span class="line">  <span class="attr">google_maps:</span> <span class="string">^3.0.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dev_dependencies:</span></span><br><span class="line">  <span class="attr">dart_to_js_script_rewriter:</span> <span class="string">^1.0.1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">transformers:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">angular2:</span></span><br><span class="line">    <span class="attr">platform_directives:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;package:angular2/common.dart#COMMON_DIRECTIVES&#x27;</span></span><br><span class="line">    <span class="attr">platform_pipes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;package:angular2/common.dart#COMMON_PIPES&#x27;</span></span><br><span class="line">    <span class="attr">entry_points:</span> <span class="string">web/main.dart</span></span><br><span class="line"><span class="bullet">-</span> <span class="string">dart_to_js_script_rewriter</span></span><br></pre></td></tr></table></figure>
+
+<p>在主機頁面 <code>web/index.html</code> 中：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 其他標題 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://maps.googleapis.com/maps/api/js?key=您的金鑰&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">defer</span> <span class="attr">src</span>=<span class="string">&quot;main.dart&quot;</span> <span class="attr">type</span>=<span class="string">&quot;application/dart&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">map-control</span>&gt;</span><span class="tag">&lt;/<span class="name">map-control</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在應用程式的入口點 <code>web/main.dart</code> 中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:angular2/platform/browser.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:google_maps_angular_dart/component/map_control.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  bootstrap(MapControl);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>&lt;map-control&gt;</code> 元件的 Dart 檔案 <code>lib/component/map_control.dart</code> 中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:angular2/core.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span>(</span><br><span class="line">  selector: <span class="string">&#x27;map-control&#x27;</span>,</span><br><span class="line">  template: <span class="string">&#x27;&#123;&#123;distance&#125;&#125;&#x27;</span>,</span><br><span class="line">)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapControl</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> distance = <span class="string">&#x27;尚未計算距離&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的程式碼不會做太多事情，但這是一個開始，您可以使用 <code>pub serve</code> 執行它，然後在 Dartium 中打開頁面：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ pub serve</span><br><span class="line">Loading source assets...</span><br><span class="line">Loading angular2 and dart_to_js_script_rewriter transformers...</span><br><span class="line">Serving google_maps_angular_dart web on http://localhost:8080</span><br><span class="line">Build completed successfully</span><br></pre></td></tr></table></figure>
+
+<h3 id="Google-地圖整合"><a href="#Google-地圖整合" class="headerlink" title="Google 地圖整合"></a>Google 地圖整合</h3><p>要開始 Google 地圖整合，請將以下 script 標籤放入您的 <code>web/index.html</code> 中。請注意，您需要設定您的 API 金鑰：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://maps.googleapis.com/maps/api/js?key=[您的金鑰]&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>幸運的是，pub 上有一個現成的 Google 地圖 Dart 套件。將其加入到您的 <code>pubspec.yaml</code> 中：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">angular2:</span> <span class="string">^2.2.0</span></span><br><span class="line">  <span class="attr">google_maps:</span> <span class="string">^3.0.0</span></span><br></pre></td></tr></table></figure>
+
+
+<p>然後執行 <code>pub get</code>以下載套件。</p>
+<p>我們需要在元件模板中為地圖區域建立一個主機元素。我們將從基本樣式開始，並使用 <code>#mapArea</code> 錨點在下一步中識別元素：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;width: 300px; height: 300px&quot;</span> #<span class="attr">mapArea</span>&gt;</span>[map]<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>在元件程式碼中，我們可以注入元素的參考，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ViewChild</span>(<span class="string">&#x27;mapArea&#x27;</span>)</span><br><span class="line">ElementRef mapAreaRef;</span><br></pre></td></tr></table></figure>
+
+
+<p>在 <code>MapControl</code> 類別建立後，元素參考不會立即提供，因此我們需要連接到 Angular 的生命週期回調：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapControl</span> <span class="keyword">implements</span> <span class="title">AfterViewInit</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> ngAfterViewInit() &#123;</span><br><span class="line">    <span class="comment">// mapAreaRef 現在可用</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>提示：使用 IDE 為您撰寫方法主體。例如，在 IntelliJ 中，按 <code>CMD + N</code>（或 <code>CTRL + N</code>），然後選擇「實作方法…」選單項。它將允許您選擇缺少的方法，您只需要擔心方法主體：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/634/1*V9N-6dAV8vZjuT6cI1Sftw.png" />
+</figure>
+
+<p>如下面的程式碼所示，Dart API 與 JavaScript API 非常相似，額外的好處是它經過類型檢查。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapControl</span> <span class="keyword">implements</span> <span class="title">AfterViewInit</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> ngAfterViewInit() &#123;</span><br><span class="line">    GMap map = <span class="keyword">new</span> GMap(</span><br><span class="line">        mapAreaRef.nativeElement,</span><br><span class="line">        <span class="keyword">new</span> MapOptions()</span><br><span class="line">          ..zoom = <span class="number">2</span></span><br><span class="line">          ..center = <span class="keyword">new</span> LatLng(<span class="number">47.4979</span>, <span class="number">19.0402</span>)</span><br><span class="line">                             <span class="comment">// ^ 布達佩斯，匈牙利</span></span><br><span class="line">        );</span><br><span class="line">    <span class="keyword">new</span> Marker(<span class="keyword">new</span> MarkerOptions()</span><br><span class="line">      ..map = map</span><br><span class="line">      ..position = <span class="keyword">new</span> LatLng(<span class="number">47.4979</span>, <span class="number">19.0402</span>)</span><br><span class="line">      ..label = <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>類型檢查好處的一個例子是，當我們監聽事件時，我們不需要考慮如何存取屬性。例如，IDE 可以幫助我們找到包含標記位置的 <code>MouseEvent</code> 屬性 (<code>latLng</code>)。</p>
+<p>以下程式碼回應拖動標記：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">marker.onDrag.listen((MouseEvent event) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;拖動時的新位置：<span class="subst">$&#123;event.latLng&#125;</span>&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在地圖上擷取點擊事件類似：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">map.onClick.listen((MouseEvent event) &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;使用者點擊的位置：<span class="subst">$&#123;event.latLng&#125;</span>&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="整合在一起"><a href="#整合在一起" class="headerlink" title="整合在一起"></a>整合在一起</h3><p>為了測量兩個坐標之間的距離，我們將在地圖上追蹤兩個標記。使用者應該能夠拖動標記或透過點擊放置它們。</p>
+<p>我們需要將地圖和標記作為欄位進行追蹤：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GMap _map;</span><br><span class="line">Marker _aMarker;</span><br><span class="line">Marker _bMarker;</span><br></pre></td></tr></table></figure>
+
+<p>更新初始化以儲存地圖參考並註冊點擊處理程式。點擊處理程式會更新標記位置和距離：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"> <span class="keyword">void</span> ngAfterViewInit() &#123;</span><br><span class="line">   _map = <span class="keyword">new</span> GMap(</span><br><span class="line">       mapAreaRef.nativeElement,</span><br><span class="line">       <span class="keyword">new</span> MapOptions()</span><br><span class="line">         ..zoom = <span class="number">2</span></span><br><span class="line">         ..center = <span class="keyword">new</span> LatLng(<span class="number">47.4979</span>, <span class="number">19.0402</span>)</span><br><span class="line">                            <span class="comment">// ^ 布達佩斯，匈牙利</span></span><br><span class="line">       );</span><br><span class="line">   _map.onClick.listen((MouseEvent event) &#123;</span><br><span class="line">     _updatePosition(event.latLng);</span><br><span class="line">     _updateDistance();</span><br><span class="line">   &#125;);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>這是點擊處理程式第一部分的程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _updatePosition(LatLng position) &#123;</span><br><span class="line">  <span class="keyword">if</span> (_aMarker == <span class="keyword">null</span>) &#123;</span><br><span class="line">    _aMarker = _createMarker(_map, <span class="string">&#x27;A&#x27;</span>, position);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (_bMarker == <span class="keyword">null</span>) &#123;</span><br><span class="line">    _bMarker = _createMarker(_map, <span class="string">&#x27;B&#x27;</span>, position);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    _aMarker.position = _bMarker.position;</span><br><span class="line">    _bMarker.position = position;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>標記實例化的程式碼與前面的範例類似：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Marker _createMarker(GMap map, <span class="built_in">String</span> label, LatLng position) &#123;</span><br><span class="line">  <span class="keyword">final</span> Marker marker = <span class="keyword">new</span> Marker(<span class="keyword">new</span> MarkerOptions()</span><br><span class="line">    ..map = map</span><br><span class="line">    ..draggable = <span class="keyword">true</span></span><br><span class="line">    ..label = label</span><br><span class="line">    ..position = position);</span><br><span class="line">  marker.onDrag.listen((MouseEvent event) &#123;</span><br><span class="line">    _updateDistance();</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> marker;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>借助 dart:math 中的工具函數，我們能夠處理大圓距離計算的數學運算，並在我們的 <code>distance</code> 欄位中設定值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">地球半徑，單位為公里。</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">int</span> radiusOfEarth = <span class="number">6371</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">double</span> _toRadian(<span class="built_in">num</span> degree) =&gt; degree * PI / <span class="number">180.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _updateDistance() &#123;</span><br><span class="line">  <span class="keyword">if</span> (_aMarker == <span class="keyword">null</span> || _bMarker == <span class="keyword">null</span>) <span class="keyword">return</span>;</span><br><span class="line">  LatLng a = _aMarker.position;</span><br><span class="line">  LatLng b = _bMarker.position;</span><br><span class="line">  <span class="built_in">double</span> dLat = _toRadian(b.lat - a.lat);</span><br><span class="line">  <span class="built_in">double</span> sLat = pow(sin(dLat / <span class="number">2</span>), <span class="number">2</span>);</span><br><span class="line">  <span class="built_in">double</span> dLng = _toRadian(b.lng - a.lng);</span><br><span class="line">  <span class="built_in">double</span> sLng = pow(sin(dLng / <span class="number">2</span>), <span class="number">2</span>);</span><br><span class="line">  <span class="built_in">double</span> cosALat = cos(_toRadian(a.lat));</span><br><span class="line">  <span class="built_in">double</span> cosBLat = cos(_toRadian(b.lat));</span><br><span class="line">  <span class="built_in">double</span> x = sLat + cosALat * cosBLat * sLng;</span><br><span class="line">  <span class="built_in">double</span> d = <span class="number">2</span> * atan2(sqrt(x), sqrt(<span class="number">1</span> - x)) * radiusOfEarth;</span><br><span class="line">  distance = <span class="string">&#x27;<span class="subst">$&#123;d.round()&#125;</span> 公里&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您是否曾經想過您住的地方距離親戚、著名地點或地標有多遠？現在是時候試用該應用程式並親自檢查一下了。事實證明，我家距離山景城的 Google 總部 9815 公里：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*AOtq_2d-f5cETtXb-ixzYA.png" />
+<figcaption>加州山景城 Googleplex 與作者在匈牙利布達佩斯的住所之間的距離</figcaption>
+</figure>
+
+<h3 id="優化應用程式"><a href="#優化應用程式" class="headerlink" title="優化應用程式"></a>優化應用程式</h3><p>此時，我們 Angular 應用程式中的 Google 地圖整合已完成。我們正在監聽和回應地圖事件，並在地圖上建立物件。在最後一部分中，我們將實作一些功能，為我們的 Demo 增添一些美好的修飾。</p>
+<h4 id="分離模板和樣式"><a href="#分離模板和樣式" class="headerlink" title="分離模板和樣式"></a>分離模板和樣式</h4><p>將複雜的 UI 模板放在單獨的 <code>.html</code> 檔案中是一個好習慣。我們可以用 CSS 樣式做同樣的事情：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(</span><br><span class="line">    selector: <span class="string">&#x27;map-control&#x27;</span>,</span><br><span class="line">    templateUrl: <span class="string">&#x27;map_control.html&#x27;</span>,</span><br><span class="line">    styleUrls: <span class="keyword">const</span> &lt;<span class="built_in">String</span>&gt;[<span class="string">&#x27;map_control.css&#x27;</span>])</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MapControl</span> <span class="keyword">implements</span> <span class="title">AfterViewInit</span> </span>&#123;</span><br></pre></td></tr></table></figure>
+
+<p>地圖元素有一個 CSS 類別 <code>map-area</code>：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;map-area&quot;</span> #<span class="attr">mapArea</span>&gt;</span>[map]<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我們的 CSS 檔案可以像這樣簡單：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.map-area</span> &#123;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">500px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">400px</span>;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">10px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="處理距離單位"><a href="#處理距離單位" class="headerlink" title="處理距離單位"></a>處理距離單位</h4><p>有些人精通公里 ↔ 英里的轉換，但我們其他人想要一個下拉選單，我們可以在其中選擇距離單位。在 HTML 模板中，下拉選單可以是一個簡單的 <code>&lt;SELECT&gt;</code> 元素，模型綁定到 <code>unit</code> 欄位。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">label</span>&gt;</span>單位：<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> [(<span class="attr">ngModel</span>)]=<span class="string">&quot;unit&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;km&quot;</span>&gt;</span>公里<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">option</span> <span class="attr">value</span>=<span class="string">&quot;miles&quot;</span>&gt;</span>英里<span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>在 Dart 程式碼中，我們想要儲存單位，並在單位更新時更新距離：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">String</span> _unit = <span class="string">&#x27;km&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">String</span> <span class="keyword">get</span> unit =&gt; _unit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> unit(<span class="built_in">String</span> value) &#123;</span><br><span class="line">  _unit = value;</span><br><span class="line">  _updateDistance();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>並且別忘了在距離計算中更新先前硬編碼的公里：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">將公里轉換為英里的常數值。</span></span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">double</span> milesPerKm = <span class="number">0.621371</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... 與之前的程式碼相同</span></span><br><span class="line"><span class="keyword">if</span> (unit == <span class="string">&#x27;miles&#x27;</span>) &#123;</span><br><span class="line">  d *= milesPerKm;</span><br><span class="line">&#125;</span><br><span class="line">distance = <span class="string">&#x27;<span class="subst">$&#123;d.round()&#125;</span> <span class="subst">$unit</span>&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="格式化坐標"><a href="#格式化坐標" class="headerlink" title="格式化坐標"></a>格式化坐標</h4><p>如果我們想發佈標記的位置怎麼辦？最簡單的方法是在 Dart 中公開位置值，這樣我們就可以在模板中使用 <code>&#123;&#123;a&#125;&#125;</code> 和 <code>&#123;&#123;b&#125;&#125;</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 公開位置值。</span></span><br><span class="line">LatLng <span class="keyword">get</span> a =&gt; _aMarker?.position;</span><br><span class="line">LatLng <span class="keyword">get</span> b =&gt; _bMarker?.position;</span><br></pre></td></tr></table></figure>
+
+
+<p>當標記尚未初始化時，模板可以隱藏標籤，防止潛在的空值問題：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;a != null&quot;</span>&gt;</span>A: &#123;&#123;a&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;b != null&quot;</span>&gt;</span>B: &#123;&#123;b&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>但是，<code>&#123;&#123;a&#125;&#125;</code> 將會轉換為調用 <code>LatLng.toString()</code>，它會給我們兩個非常長的 double 值，而幾個數字就足夠了。一種解決方案是在模板中使用管道：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;a != null&quot;</span>&gt;</span>A: &#123;&#123;a.lat | number : &#x27;1.4-4&#x27;&#125;&#125;, &#123;&#123;a.lng | number : &#x27;1.4-4&#x27;&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;b != null&quot;</span>&gt;</span>B: &#123;&#123;b.lat | number : &#x27;1.4-4&#x27;&#125;&#125;, &#123;&#123;b.lng | number : &#x27;1.4-4&#x27;&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p><a href="https://webdev.dartlang.org/angular/guide/template-syntax">模板語法指南</a>建議將該邏輯放在控制器類別中，以便更好地進行測試：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">&#x27;A&#x27; 標記的格式化位置。</span></span></span><br><span class="line"><span class="built_in">String</span> <span class="keyword">get</span> aPosition =&gt; _formatPosition(a);</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">&#x27;B&#x27; 標記的格式化位置。</span></span></span><br><span class="line"><span class="built_in">String</span> <span class="keyword">get</span> bPosition =&gt; _formatPosition(b);</span><br><span class="line"></span><br><span class="line"><span class="built_in">String</span> _formatPosition(LatLng pos) &#123;</span><br><span class="line">  <span class="keyword">if</span> (pos == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;<span class="subst">$&#123;pos.lat.toStringAsFixed(<span class="number">4</span>)&#125;</span>, &#x27;</span></span><br><span class="line">      <span class="string">&#x27;<span class="subst">$&#123;pos.lng.toStringAsFixed(<span class="number">4</span>)&#125;</span>&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>這樣，模板就可以更簡單了：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;a != null&quot;</span>&gt;</span>A: &#123;&#123;aPosition&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;b != null&quot;</span>&gt;</span>B: &#123;&#123;bPosition&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="清理模板"><a href="#清理模板" class="headerlink" title="清理模板"></a>清理模板</h4><p>最後一步，將所有剩餘的程式碼部分從模板移動到控制器：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">是否應顯示 &#x27;A&#x27; 標記的位置</span></span></span><br><span class="line"><span class="built_in">bool</span> <span class="keyword">get</span> showA =&gt; a != <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">是否應顯示 &#x27;B&#x27; 標記的位置</span></span></span><br><span class="line"><span class="built_in">bool</span> <span class="keyword">get</span> showB =&gt; b != <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">是否應顯示 &#x27;distance&#x27; 標籤</span></span></span><br><span class="line"><span class="built_in">bool</span> <span class="keyword">get</span> showDistance =&gt; distance != <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>這樣做，模板只會參考 getter：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;showA&quot;</span>&gt;</span>A: &#123;&#123;aPosition&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> *<span class="attr">ngIf</span>=<span class="string">&quot;showB&quot;</span>&gt;</span>B: &#123;&#123;bPosition&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span> *<span class="attr">ngIf</span>=<span class="string">&quot;showDistance&quot;</span>&gt;</span></span><br><span class="line"> 距離：&#123;&#123;distance&#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>如您所見，使用 Google 地圖實作雙向整合很容易：原始碼乾淨且易讀。在 Dart 工具鏈的全力支援下，它很容易擴展，而無需擔心我們可能會在其他地方造成破壞。</p>
+<p>讀者可以練習一下，使用 Dart 中的相同 API 將<a href="https://developers.google.com/maps/documentation/javascript/earthquakes#heatmaps">熱圖視覺化</a>新增到地圖中。查看 <a href="https://pub.dartlang.org/packages/google_maps">google_maps</a> 套件以了解所有可能性。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a75f7f84f941" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/google-maps-with-angulardart-a75f7f84f941">使用 AngularDart 的 Google 地圖</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">dartlang</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/web-development/" rel="tag"># web-development</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/google-maps/" rel="tag"># google-maps</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4f58b335.html" rel="prev" title="【文章翻譯】Zero to One with Flutter">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Zero to One with Flutter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/1bb66f07.html" rel="next" title="【文章翻譯】Making a Dart web app offline-capable: 3 lines of code">
+      【文章翻譯】Making a Dart web app offline-capable: 3 lines of code <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-AngularDart-%E6%95%B4%E5%90%88-Google-%E5%9C%B0%E5%9C%96"><span class="nav-number">1.</span> <span class="nav-text">使用 AngularDart 整合 Google 地圖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-%E5%9C%B0%E5%9C%96-JavaScript-API"><span class="nav-number">1.1.</span> <span class="nav-text">Google 地圖 JavaScript API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AngularDart-%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">AngularDart 應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Google-%E5%9C%B0%E5%9C%96%E6%95%B4%E5%90%88"><span class="nav-number">1.3.</span> <span class="nav-text">Google 地圖整合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B4%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7"><span class="nav-number">1.4.</span> <span class="nav-text">整合在一起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E5%8C%96%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.5.</span> <span class="nav-text">優化應用程式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E9%9B%A2%E6%A8%A1%E6%9D%BF%E5%92%8C%E6%A8%A3%E5%BC%8F"><span class="nav-number">1.5.1.</span> <span class="nav-text">分離模板和樣式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%99%95%E7%90%86%E8%B7%9D%E9%9B%A2%E5%96%AE%E4%BD%8D"><span class="nav-number">1.5.2.</span> <span class="nav-text">處理距離單位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%9D%90%E6%A8%99"><span class="nav-number">1.5.3.</span> <span class="nav-text">格式化坐標</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.5.4.</span> <span class="nav-text">清理模板</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.6.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼您是否曾經嘗試載入網頁應用程式（例如遊戲或測量轉換器），卻因為網路斷線而無法使用？這是一個糟糕的體驗，但幸運的是，我們擁有讓此類應用程式可供使用者使用的技術。 對於大多數應用程式和遊戲，只需 3 行 Dart 程式碼和在終端機中輸入 1 個指令即可完成。在這篇簡短的文章中，我將引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Making a Dart web app offline-capable: 3 lines of code">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/1bb66f07.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼您是否曾經嘗試載入網頁應用程式（例如遊戲或測量轉換器），卻因為網路斷線而無法使用？這是一個糟糕的體驗，但幸運的是，我們擁有讓此類應用程式可供使用者使用的技術。 對於大多數應用程式和遊戲，只需 3 行 Dart 程式碼和在終端機中輸入 1 個指令即可完成。在這篇簡短的文章中，我將引">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*GsjtYvVghuA63qhhRdyfPQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*cufcmiyxW8k4ku1-Y_zsvg.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e980010a7815">
+<meta property="article:published_time" content="2017-03-27T21:34:03.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:35:00.464Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="offline">
+<meta property="article:tag" content="progressive-web-app">
+<meta property="article:tag" content="service-worker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*GsjtYvVghuA63qhhRdyfPQ.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/1bb66f07.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Making a Dart web app offline-capable: 3 lines of code | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1bb66f07.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Making a Dart web app offline-capable: 3 lines of code
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-28 05:34:03" itemprop="dateCreated datePublished" datetime="2017-03-28T05:34:03+08:00">2017-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:35:00" itemprop="dateModified" datetime="2024-12-18T15:35:00+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="讓-Dart-網頁應用程式具備離線功能：只需-3-行程式碼"><a href="#讓-Dart-網頁應用程式具備離線功能：只需-3-行程式碼" class="headerlink" title="讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼"></a>讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼</h2><p>您是否曾經嘗試載入網頁應用程式（例如遊戲或測量轉換器），卻因為網路斷線而無法使用？這是一個糟糕的體驗，但幸運的是，我們擁有讓此類應用程式可供使用者使用的技術。</p>
+<p>對於大多數應用程式和遊戲，只需 3 行 Dart 程式碼和在終端機中輸入 1 個指令即可完成。在這篇簡短的文章中，我將引導您完成這些步驟，並確保您可以隨時玩 <a href="https://isoos.github.io/offline_pop_pop_win/">Pop, Pop, Win!</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*GsjtYvVghuA63qhhRdyfPQ.png" />
+<figcaption>[Pop, Pop, Win!](https://dart-lang.github.io/sample-pop_pop_win/) - Dart 中的 [踩地雷實作](https://github.com/dart-lang/sample-pop_pop_win/)</figcaption>
+</figure>
+
+<h3 id="Service-Worker"><a href="#Service-Worker" class="headerlink" title="Service Worker"></a>Service Worker</h3><p>Service Worker 是一個在背景執行的 JavaScript 檔案。它可以控制與之關聯的網頁或網站，攔截和修改導航和資源請求，並以非常精細的方式快取資源。</p>
+<p>它是一種非侵入式網頁技術：如果瀏覽器 <a href="http://caniuse.com/#feat=serviceworkers">支援</a> Service Worker，它們可以改善使用者體驗，但網站即使沒有它們也可以正常運作（使用預設的網頁行為）。這是一個有用的屬性，可以啟用**漸進式網頁應用程式 (PWA)**，您可以為大多數使用者提供更進階的功能，同時確保其餘使用者不被鎖定。</p>
+<p>作為背景處理執行緒，Service Worker 可以幫助：</p>
+<ul>
+<li>離線模式（在網路斷線時從快取中擷取資源）</li>
+<li>快取策略（用於近乎即時的快取回應，稍後可以使用新內容進行更新）</li>
+<li>推播通知（如在行動應用程式中）</li>
+<li>訊息傳遞（如果應用程式在多個分頁中開啟）</li>
+</ul>
+<p>對於我們的離線遊戲體驗來說，重要的功能是：我們希望玩 Pop, Pop, Win!，而不是看到這隻恐龍：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*cufcmiyxW8k4ku1-Y_zsvg.png" />
+<figcaption>有趣的事實：您可以透過按下向上箭頭鍵來玩這隻恐龍。</figcaption>
+</figure>
+
+<h3 id="使用-Dart-建立漸進式網頁應用程式"><a href="#使用-Dart-建立漸進式網頁應用程式" class="headerlink" title="使用 Dart 建立漸進式網頁應用程式"></a>使用 Dart 建立漸進式網頁應用程式</h3><p>支援離線模式大致需要以下步驟：</p>
+<ol>
+<li>確定要將哪些資源放入快取以供離線使用。</li>
+<li>建立一個 Service Worker 來準備這些資源的快取。</li>
+<li>註冊 Service Worker，以便可以從離線快取中提供後續請求（以防網路斷線）。</li>
+<li>在該 Service Worker 中，使用 URL 預先填入離線快取，並從快取或網路中處理適當的擷取請求。</li>
+<li>確保 Service Worker 偵測到應用程式或靜態資源的變更，並將新版本放入快取中。</li>
+</ol>
+<p>雖然上面的列表可能聽起來有點嚇人，但 Dart 中有一個 <a href="https://pub.dartlang.org/packages/pwa">pwa</a> 套件可以為我們完成大部分工作，提供高階 API 並自動化大部分工作。</p>
+<h4 id="應用程式中的變更"><a href="#應用程式中的變更" class="headerlink" title="應用程式中的變更"></a>應用程式中的變更</h4><p>在您的 <code>pubspec.yaml</code> 中匯入 pwa 套件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dependencies:</span><br><span class="line">  pwa: ^0.1.2</span><br></pre></td></tr></table></figure>
+
+<p>執行 <code>pub get</code> 後，將客戶端新增到您的 <code>web/main.dart</code> 中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:pwa/client.dart&#x27;</span> <span class="keyword">as</span> pwa;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  <span class="comment">// 註冊 PWA ServiceWorker 以進行離線快取。</span></span><br><span class="line">  <span class="keyword">new</span> pwa.Client();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的程式碼透過註冊 Service Worker（我們將在下一步中建立）來處理上面列表中的第 3 項。目前我們沒有將 <code>Client</code> 實例用於其他任何用途，但隨著 pwa 套件獲得新功能，它可能會用於其他用途。</p>
+<h4 id="自動生成的漸進式網頁應用程式"><a href="#自動生成的漸進式網頁應用程式" class="headerlink" title="自動生成的漸進式網頁應用程式"></a>自動生成的漸進式網頁應用程式</h4><p>pwa 套件提供程式碼生成，處理上面列表中的第 1-2 項和第 4-5 項。為了確保正確使用快取（包括填入和清空快取），請使用以下工作流程：</p>
+<ol>
+<li>建置您的 Web 應用程式，所有靜態資源都位於 <code>build/web</code> 中：<br><code>pub build</code></li>
+<li>運行程式碼產生器以掃描（或重新掃描）您的離線資源：<br><code>pub run pwa</code></li>
+<li>再次建置您的專案，因為您需要編譯（新的）<code>pwa.dart</code> 檔案：<br><code>pub build</code></li>
+</ol>
+<p>這些步驟會產生一個名為 <code>lib/pwa/offline_urls.g.dart</code> 的檔案，其中包含要快取的離線 URL 列表。<code>.g.dart</code> 副檔名表示該檔案是生成的，可能會被 pwa 的程式碼產生器工具自動覆蓋。</p>
+<p>第一次執行時，此工作流程會產生 <code>web/pwa.dart</code> 檔案，其中包含具有合理預設值的 Service Worker。您可以修改此檔案（例如，自訂離線 URL 或使用高階 API），因為程式碼產生器不會再次更改或覆蓋它。</p>
+<h3 id="注意事項"><a href="#注意事項" class="headerlink" title="注意事項"></a>注意事項</h3><p>雖然 Dartium 非常適合大多數 Web 開發，但目前很難與 Service Worker 一起使用。我們建議改用 Chrome 或 Firefox。</p>
+<p>快取失效是電腦科學中最難的問題之一。底層的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Cache">Web Cache API</a> 提供了一些保證，pwa 函式庫也盡力妥善處理邊緣情況，但不要將快取視為任何真正重要內容的可靠儲存空間。在快取可用時使用它，在不可用時優雅地失敗。</p>
+<h3 id="試試看"><a href="#試試看" class="headerlink" title="試試看"></a>試試看</h3><p>您現在可以部署應用程式的新版本。或者嘗試 <a href="https://isoos.github.io/offline_pop_pop_win/">離線 Pop, Pop, Win! 遊戲</a>。</p>
+<p>開啟遊戲並玩一輪後，關閉您的 Wi-Fi 或拔掉網路線，然後重新載入（或重新輸入 URL）。如果您使用的是 Chrome 或 Firefox，您的遊戲應該可以正常執行。祝您好運，玩得開心！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e980010a7815" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/making-a-dart-web-app-offline-capable-3-lines-of-code-e980010a7815">讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/offline/" rel="tag"># offline</a>
+              <a href="/tags/progressive-web-app/" rel="tag"># progressive-web-app</a>
+              <a href="/tags/service-worker/" rel="tag"># service-worker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/60b7d9e0.html" rel="prev" title="【文章翻譯】Google Maps with AngularDart">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Google Maps with AngularDart
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/bb02b5b4.html" rel="next" title="【文章翻譯】Zero to One with Flutter, Part Two">
+      【文章翻譯】Zero to One with Flutter, Part Two <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%93-Dart-%E7%B6%B2%E9%A0%81%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E5%85%B7%E5%82%99%E9%9B%A2%E7%B7%9A%E5%8A%9F%E8%83%BD%EF%BC%9A%E5%8F%AA%E9%9C%80-3-%E8%A1%8C%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.</span> <span class="nav-text">讓 Dart 網頁應用程式具備離線功能：只需 3 行程式碼</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Service-Worker"><span class="nav-number">1.1.</span> <span class="nav-text">Service Worker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dart-%E5%BB%BA%E7%AB%8B%E6%BC%B8%E9%80%B2%E5%BC%8F%E7%B6%B2%E9%A0%81%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Dart 建立漸進式網頁應用程式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E4%B8%AD%E7%9A%84%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.2.1.</span> <span class="nav-text">應用程式中的變更</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90%E7%9A%84%E6%BC%B8%E9%80%B2%E5%BC%8F%E7%B6%B2%E9%A0%81%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.2.2.</span> <span class="nav-text">自動生成的漸進式網頁應用程式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85"><span class="nav-number">1.3.</span> <span class="nav-text">注意事項</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A9%A6%E8%A9%A6%E7%9C%8B"><span class="nav-number">1.4.</span> <span class="nav-text">試試看</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

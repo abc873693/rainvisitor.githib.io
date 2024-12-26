@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.1：改進效能和易用性今天，我們宣佈推出 Dart 2.1 穩定版，這是 Dart 2 的一個更新，它提供了更小的程式碼大小、更快的類型檢查、更好的類型錯誤易用性，以及新的語言特性，以提高構建使用者體驗時的生產力。     Dart 2 正式發佈Dart 2 是 Dart 平台的一次重大升級。它完成了從早期網頁根源到主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.1: Improved performance &amp; usability">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/1edb2c4a.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.1：改進效能和易用性今天，我們宣佈推出 Dart 2.1 穩定版，這是 Dart 2 的一個更新，它提供了更小的程式碼大小、更快的類型檢查、更好的類型錯誤易用性，以及新的語言特性，以提高構建使用者體驗時的生產力。     Dart 2 正式發佈Dart 2 是 Dart 平台的一次重大升級。它完成了從早期網頁根源到主">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*xZHP-8eEl6qJCCTKXyQZ8w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/718/1*9hItMsF9iM2BHzbuJkHNbg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/327/1*bJV4DQzBey1fc64nerTprg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1000/0*uUIuZJgNCevxAkZQ">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/449/1*Y_8yHDINe7LtvmyFmCqWzw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/485/1*Ym0nqsHWlTscD140Urk0xw.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9f55fca6f31a">
+<meta property="article:published_time" content="2018-11-15T10:37:52.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:51:38.538Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="programming-languages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/960/1*xZHP-8eEl6qJCCTKXyQZ8w.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/1edb2c4a.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.1: Improved performance & usability | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1edb2c4a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.1: Improved performance & usability
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-15 18:37:52" itemprop="dateCreated datePublished" datetime="2018-11-15T18:37:52+08:00">2018-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:51:38" itemprop="dateModified" datetime="2024-12-18T15:51:38+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-1：改進效能和易用性"><a href="#宣佈-Dart-2-1：改進效能和易用性" class="headerlink" title="宣佈 Dart 2.1：改進效能和易用性"></a>宣佈 Dart 2.1：改進效能和易用性</h2><p>今天，我們宣佈推出 Dart 2.1 穩定版，這是 Dart 2 的一個更新，它提供了更小的程式碼大小、更快的類型檢查、更好的類型錯誤易用性，以及新的語言特性，以提高構建使用者體驗時的生產力。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*xZHP-8eEl6qJCCTKXyQZ8w.png" />
+</figure>
+
+<h3 id="Dart-2-正式發佈"><a href="#Dart-2-正式發佈" class="headerlink" title="Dart 2 正式發佈"></a>Dart 2 正式發佈</h3><p>Dart 2 是 Dart 平台的一次重大升級。它完成了從早期網頁根源到主流程式語言的轉變，適用於跨行動裝置和網頁快速開發豐富的使用者體驗。Dart 作為一種語言，在提供虛擬機器 (VM) 和編譯成原生機器碼和 JavaScript 方面都有些獨特。這支援了各種平台的不同需求，無論是開發還是生產。</p>
+<p>作為向 Dart 2 過渡的一部分，我們加入了<a href="https://www.dartlang.org/guides/language/sound-dart">健全的類型系統</a>，以支援大型團隊構建複雜的應用程式；新的編譯器支援生成針對行動裝置最佳化的原生程式碼；以及完全重新設計的<a href="https://webdev.dartlang.org/tools">網頁平台工具</a>。Dart 為 <a href="https://flutter.io/">Flutter</a> 提供動力，Flutter 是一個快速發展的工具包，用於從單一程式碼庫為 iOS 和 Android 構建美觀的原生體驗；它也是 Google 一些最大專案（例如 Google Ads）使用的語言。</p>
+<p>自 8 月份 <a href="https://medium.com/dartlang/dart-2-stable-and-the-dart-web-platform-3775d5f8eac7">Dart 2 發佈</a> 以來，我們一直致力於讓整個生態系統都使用 Dart 2。我們將 <a href="https://www.dartlang.org/">dartlang.org</a> 網站切換到使用 Dart 2 範例，並提供<a href="https://medium.com/dartlang/getting-ready-for-dart-2-and-making-your-packages-look-great-on-the-pub-site-118464d7f59d">用於遷移</a> Dart 1.x 套件的工具和文件。我們理解 Dart 2 中的重大變更涉及到現有 Dart 開發人員的遷移工作，我們非常感謝那些幫助我們為未來建立新基礎的人。我們現在的重點轉向利用這些投資來改進效能和生產力。</p>
+<h3 id="Dart-2-1-語言支援-int-到-double-的轉換"><a href="#Dart-2-1-語言支援-int-到-double-的轉換" class="headerlink" title="Dart 2.1 語言支援 int 到 double 的轉換"></a>Dart 2.1 語言支援 int 到 double 的轉換</h3><p>新的 Flutter 開發人員經常在指定 padding、設定字體大小等時遇到如下分析錯誤：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/718/1*9hItMsF9iM2BHzbuJkHNbg.png" />
+</figure>
+
+<p>從系統的角度來看，這些錯誤是有道理的：API 需要一種類型 (double)，而開發人員指定了不同類型 (int) 的值。但是，從易用性的角度來看，這似乎有點愚蠢：從 int 到 double 有一個簡單的轉換，為什麼不直接這樣做呢？Dart 2.1 現在<a href="https://github.com/dart-lang/language/issues/4">可以推斷 int 何時可以靜默地評估為 double</a>：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/327/1*bJV4DQzBey1fc64nerTprg.png" />
+</figure>
+
+<h3 id="Dart-2-1-語言支援-Mixins"><a href="#Dart-2-1-語言支援-Mixins" class="headerlink" title="Dart 2.1 語言支援 Mixins"></a>Dart 2.1 語言支援 Mixins</h3><p>我們還<a href="https://github.com/dart-lang/language/issues/7">改進了 Dart 對 Mixins 的支援</a>。如果您以前沒有接觸過 Dart Mixins，那麼值得閱讀 Romain Rastel 撰寫的這篇關於 <a href="https://medium.com/flutter-community/dart-what-are-mixins-3a72344011f3">Dart Mixins 的精彩介紹</a>。Dart 2.1 引入了一種新的 Mixins 語法，其中包含一個新的 <code>mixin</code> 關鍵字，您可以使用它來定義只能用作 Mixins 的類別。我們還加入了支援，以便 Mixins 可以擴展其他類別（以前它們只能擴展 Object），並且可以在其父類別中調用方法。</p>
+<p>擴展非 Object 類別的一個例子來自 Flutter 的<a href="https://flutter.io/tutorials/animation/#rendering-animations">動畫 API</a>，其中 SingleTickerProviderStateMixin（一個提供用於將動畫前進一幀的 ticker 的框架類別）<a href="https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/ticker_provider.dart#L66">宣告了一個</a>實作通用 TickerProvider 介面的 Mixin。動畫僅適用於有狀態的 Widget（因為動畫中的位置被視為狀態）。新的 Mixin 支援允許我們透過宣告只有擴展 Flutter State 類別的類別才能使用 Mixin 來表達這一點：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1000/0*uUIuZJgNCevxAkZQ" />
+</figure>
+
+<h3 id="Dart-2-1-編譯時類型檢查"><a href="#Dart-2-1-編譯時類型檢查" class="headerlink" title="Dart 2.1 編譯時類型檢查"></a>Dart 2.1 編譯時類型檢查</h3><p>Dart 2 的健全類型系統可以在開發過程中保護您，當您違反類型指定的契約時，它會告訴您。例如，假設您正在為 Flutter 建立一個狀態類別。這個類別應該擴展框架 State 類別。State 類別應該傳遞包含其狀態的 StatefulWidget。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/449/1*Y_8yHDINe7LtvmyFmCqWzw.png" />
+</figure>
+
+<p>現在，如果您犯了一個程式設計錯誤，並且例如傳遞了 StatelessWidget 的後代而不是 StatefulWidget，類型資訊可以使工具捕獲錯誤並立即向您顯示警告：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/485/1*Ym0nqsHWlTscD140Urk0xw.png" />
+</figure>
+
+<p>這些<em>編輯時</em>類型檢查已在 Dart 2.0 中加入（由 <a href="https://www.dartlang.org/tools/analyzer">Dart Analyzer</a> 提供支援）。但是，還有另一個地方您可能會期望進行這些類型檢查，即在<em>編譯時</em>，當您進行 Flutter 發佈構建時。這些檢查在 Dart 2.0 中是不完整的，這可能會導致易用性問題，錯誤的原始程式碼可以在不產生任何錯誤的情況下進行編譯。在 Dart 2.1 中，這些檢查是完整的，並且 Analyzer 和 Dart 編譯器包含相同的檢查。</p>
+<h3 id="Dart-2-1-針對-Flutter-開發人員的效能改進"><a href="#Dart-2-1-針對-Flutter-開發人員的效能改進" class="headerlink" title="Dart 2.1 針對 Flutter 開發人員的效能改進"></a>Dart 2.1 針對 Flutter 開發人員的效能改進</h3><p>對於在我們的 VM 上執行的 <a href="https://hackernoon.com/why-flutter-uses-dart-dd635a054ebf">AOT 編譯程式碼</a>（例如 Flutter 應用程式），Dart 2 通常比 Dart 1.x 更快。但是，在一些邊緣情況下，<a href="https://www.dartlang.org/guides/language/sound-dart">新類型系統</a> 加入的全面檢查會導致 20-40% 的額外開銷。在 Dart 2.1 中，我們大幅降低了類型檢查的成本，無論是對於 AOT 編譯程式碼，還是對於使用 JIT（即時）編譯在 VM 中執行的程式碼。</p>
+<p>一個由此受益的具體案例是我們的開發人員工具（使用 VM 執行）。例如，對一個大型基準測試應用程式（基於 Flutter Gallery 的多個串聯副本）執行程式碼分析過去需要約 41 秒；現在只需要約 25 秒。</p>
+<h3 id="Dart-2-1-針對網頁開發人員的效能改進"><a href="#Dart-2-1-針對網頁開發人員的效能改進" class="headerlink" title="Dart 2.1 針對網頁開發人員的效能改進"></a>Dart 2.1 針對網頁開發人員的效能改進</h3><p>我們還改進了在網頁上執行的 Dart 程式碼的程式碼大小和編譯時間。我們專注於 <a href="https://webdev.dartlang.org/tools/dart2js">dart2js</a> 的輸出大小，並且看到了良好的結果，例如，對於我們的一個範例，<a href="https://twitter.com/kevmoo/status/1055292888626515968">縮小後的輸出大小減少了 17%，編譯時間提高了 15%</a>。</p>
+<h3 id="核心-SDK-之外的變更"><a href="#核心-SDK-之外的變更" class="headerlink" title="核心 SDK 之外的變更"></a>核心 SDK 之外的變更</h3><p>除了 Dart SDK 中的上述變更之外，我們還在核心 SDK 之外進行了一些令人興奮的變更。</p>
+<p>Protocol Buffers（簡稱 <em>protobuf</em>）是一種平台中立的序列化結構化資料的機制。它們在 Google 內部廣泛使用，並且在 Google 之外也得到了廣泛的採用，例如作為 <a href="https://grpc.io/">gRPC</a> 的一部分。Dart 現在是一種官方支援的 protobuf 語言，我們在 <a href="https://developers.google.com/protocol-buffers/">核心 protocol buffers 網站</a> 上加入了詳細的文件，其中包含<a href="https://developers.google.com/protocol-buffers/docs/darttutorial">教學</a>和<a href="https://developers.google.com/protocol-buffers/docs/reference/overview">參考</a>文件。</p>
+<p>您可能聽說過 <a href="https://cloud.google.com/knative/">knative</a>，這是一個基於 <a href="https://kubernetes.io/">Kubernetes</a> 的平台，用於支援構建、部署和管理無伺服器工作負載。我們最近調查了在 knative 上支援 Dart 程式碼的服務，並<a href="https://github.com/knative/docs/tree/master/serving/samples/helloworld-dart">建立了一個小範例</a>。對於大多數 Dart 應用程式開發人員來說，這可能太低階了，但我們從平台的角度來看，覺得這非常令人興奮，並預計這將是改進 Google Cloud 中 Dart 程式碼服務支援的關鍵基石，例如為 Flutter 應用程式建立後端。</p>
+<h3 id="獲取-Dart-2-1"><a href="#獲取-Dart-2-1" class="headerlink" title="獲取 Dart 2.1"></a>獲取 Dart 2.1</h3><p><a href="https://www.dartlang.org/tools/sdk/archive">Dart SDK 2.1</a> 可以從 Dart 首頁下載。如果您是 Flutter 開發人員，Dart 2.1 將作為即將推出的 Flutter 1.0 版本的一部分包含在內。</p>
+<p>我們還更新了 <a href="https://dartpad.dartlang.org/">DartPad</a> 以執行 Dart 2.1，並加入了 <a href="https://dartpad.dartlang.org/e93b969fed77325db0b848a85f1cf78e">int-to-double</a> 和 <a href="https://dartpad.dartlang.org/b60dc2fc7ea49acecb1fd2b57bf9be57">mixins</a> 的範例。</p>
+<h3 id="接下來是什麼"><a href="#接下來是什麼" class="headerlink" title="接下來是什麼"></a>接下來是什麼</h3><p>我們預計將發佈多個 2.x 版本，以利用 Dart 2 平台基礎。我們將根據框架合作夥伴和應用程式開發人員的需求來制定這些版本。在 2019 年，我們預計將研究以下領域：</p>
+<ul>
+<li>Dart 語言的持續發展：對於 Dart 2.2，我們正在研究許多變更，例如對 <a href="https://github.com/dart-lang/language/issues/61">const 表達式</a> 的改進和對新的 <a href="https://github.com/dart-lang/language/issues/37">Set 字面量</a> 的支援。除了 2.2 之外，我們還在研究對 Unicode 字串的支援，並且正在研究是否可以提供更好的空值安全性。</li>
+<li>進一步改進以最佳化 Dart 作為建立使用者介面的語言：Dart 2 以其新的類型系統和可選的 new 開始了這段旅程，Dart 2.1 加入 int 到 double 值推斷，我們目前正在研究許多潛在的改進，例如支援 <a href="https://github.com/dart-lang/language/issues/78">Widget 列表中的條件</a>，將 <a href="https://github.com/dart-lang/language/issues/47">物件集合</a> 擴展到其他集合，甚至可能<a href="https://github.com/dart-lang/language/issues/72">移除使用分號終止語句的需要</a>。</li>
+<li>更好的效能：我們將繼續減小編譯後 Dart 程式碼的大小和提高效能，包括更好地支援使用多核處理器，進一步減小程式碼大小以改善下載和啟動時間，以及可能更好地控制大小或運行時效能是否最重要。</li>
+</ul>
+<p>要了解更多關於 Dart 和 Flutter 的資訊，我們誠邀您加入我們參加 <a href="https://developers.google.com/events/flutter-live/">Flutter Live</a>，這是一個線上活動，將於 12 月 4 日舉行，並將在網路上進行直播。我們很興奮屆時能與您分享更多關於路線圖的資訊。</p>
+<p>目前就這些。我們希望您喜歡 Dart 2.1！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9f55fca6f31a" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-1-improved-performance-usability-9f55fca6f31a">宣佈 Dart 2.1：改進效能和易用性</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續對話。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/82122693.html" rel="prev" title="【文章翻譯】Future<void> vs Future<Null>, what’s the difference?">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Future<void> vs Future<Null>, what’s the difference?
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/e75284cc.html" rel="next" title="【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals">
+      【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-1%EF%BC%9A%E6%94%B9%E9%80%B2%E6%95%88%E8%83%BD%E5%92%8C%E6%98%93%E7%94%A8%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.1：改進效能和易用性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-%E6%AD%A3%E5%BC%8F%E7%99%BC%E4%BD%88"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 2 正式發佈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-1-%E8%AA%9E%E8%A8%80%E6%94%AF%E6%8F%B4-int-%E5%88%B0-double-%E7%9A%84%E8%BD%89%E6%8F%9B"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 2.1 語言支援 int 到 double 的轉換</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-1-%E8%AA%9E%E8%A8%80%E6%94%AF%E6%8F%B4-Mixins"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 2.1 語言支援 Mixins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-1-%E7%B7%A8%E8%AD%AF%E6%99%82%E9%A1%9E%E5%9E%8B%E6%AA%A2%E6%9F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2.1 編譯時類型檢查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-1-%E9%87%9D%E5%B0%8D-Flutter-%E9%96%8B%E7%99%BC%E4%BA%BA%E5%93%A1%E7%9A%84%E6%95%88%E8%83%BD%E6%94%B9%E9%80%B2"><span class="nav-number">1.5.</span> <span class="nav-text">Dart 2.1 針對 Flutter 開發人員的效能改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-1-%E9%87%9D%E5%B0%8D%E7%B6%B2%E9%A0%81%E9%96%8B%E7%99%BC%E4%BA%BA%E5%93%A1%E7%9A%84%E6%95%88%E8%83%BD%E6%94%B9%E9%80%B2"><span class="nav-number">1.6.</span> <span class="nav-text">Dart 2.1 針對網頁開發人員的效能改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83-SDK-%E4%B9%8B%E5%A4%96%E7%9A%84%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.7.</span> <span class="nav-text">核心 SDK 之外的變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8D%B2%E5%8F%96-Dart-2-1"><span class="nav-number">1.8.</span> <span class="nav-text">獲取 Dart 2.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E4%B8%8B%E4%BE%86%E6%98%AF%E4%BB%80%E9%BA%BC"><span class="nav-number">1.9.</span> <span class="nav-text">接下來是什麼</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

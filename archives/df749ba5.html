@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 讓 Dart 成為更好的 UI 語言    在 Dart 團隊中，我們正忙於實作一些讓我非常興奮的語言變更。它們都與集合字面量有關，即用於建立列表、映射和集合的內建語法： 如果您今天沒有編寫 Dart 程式碼，這可能與您和您的人生目標沒有太大關係，但我還是希望您能繼續閱讀。我認為這些功能本身就很有趣，而且它們背後的執行模型可能會以有用和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Making Dart a Better Language for UI">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/df749ba5.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 讓 Dart 成為更好的 UI 語言    在 Dart 團隊中，我們正忙於實作一些讓我非常興奮的語言變更。它們都與集合字面量有關，即用於建立列表、映射和集合的內建語法： 如果您今天沒有編寫 Dart 程式碼，這可能與您和您的人生目標沒有太大關係，但我還是希望您能繼續閱讀。我認為這些功能本身就很有趣，而且它們背後的執行模型可能會以有用和">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*4PIeARfthvxtn0cvBB5MPw.jpeg">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f1ccaf9f546c">
+<meta property="article:published_time" content="2019-03-19T11:36:19.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:49:52.413Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="ui">
+<meta property="article:tag" content="programming-languages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*4PIeARfthvxtn0cvBB5MPw.jpeg">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/df749ba5.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Making Dart a Better Language for UI | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/df749ba5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Making Dart a Better Language for UI
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-19 19:36:19" itemprop="dateCreated datePublished" datetime="2019-03-19T19:36:19+08:00">2019-03-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:49:52" itemprop="dateModified" datetime="2024-12-18T15:49:52+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="讓-Dart-成為更好的-UI-語言"><a href="#讓-Dart-成為更好的-UI-語言" class="headerlink" title="讓 Dart 成為更好的 UI 語言"></a>讓 Dart 成為更好的 UI 語言</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*4PIeARfthvxtn0cvBB5MPw.jpeg" />
+</figure>
+
+<p>在 <a href="https://www.dartlang.org/">Dart</a> 團隊中，我們正忙於實作一些讓我非常興奮的語言變更。它們都與集合字面量有關，即用於建立列表、映射和集合的內建語法：</p>
+<p>如果您今天沒有編寫 Dart 程式碼，這可能與您和您的人生目標沒有太大關係，但我還是希望您能繼續閱讀。我認為這些功能本身就很有趣，而且它們背後的執行模型可能會以有用和&#x2F;或引人入勝的方式拓展您的大腦。我總是覺得學習新的語言知識很有趣，即使是用我目前沒有使用的語言。</p>
+<h3 id="Flutter-使用者如何建構他們的-UI"><a href="#Flutter-使用者如何建構他們的-UI" class="headerlink" title="Flutter 使用者如何建構他們的 UI"></a>Flutter 使用者如何建構他們的 UI</h3><p>如果您在過去一年中聽說過 Dart，那可能是在 <a href="https://flutter.dev/">Flutter</a> 的上下文中。如果您沒聽說過這個名字，Flutter 是一個用於建構跨平台行動應用程式的 UI 架構。我無法在這裡詳細介紹它，但點選連結，它會回答您心中的每一個問題。（好吧，至少是關於 Flutter 的每一個問題。它不會告訴您為什麼您高中時暗戀的人從未回電。）</p>
+<p>任何 UI 架構都會做出的一個關鍵選擇是如何定義基本的視覺化 UI 元素 - 按鈕、顏色、文字、佈局等。您是在某種單獨的「模板」或「標記」格式中編寫這些內容，還是在定義 UI 行為的可執行程式碼中編寫這些內容？每十五年左右，業界就會對哪個答案是正確的進行一次翻轉。</p>
+<p><a href="https://angular.io/">Angular</a> 和大多數 Web 架構都遵循 HTML 的腳步並使用模板。<a href="https://reactjs.org/">React</a> 將 UI 放入您的 JavaScript 中，但也新增了一個名為 <a href="https://reactjs.org/docs/introducing-jsx.html">JSX</a> 的嵌入式 DSL，使其看起來像 HTML。我猜，試圖魚與熊掌兼得，儘管並非每個人都會將 HTML 描述為特別像甜點。</p>
+<p>Flutter 使用普通的 Dart 表達式語法將 UI 直接放入您的 Dart 程式碼中。請看：</p>
+<p>在 return 關鍵字之後的所有內容都是一個大的巢狀表達式，它會產生一部分使用者介面。使用 Dart 執行此操作有一些實質上的好處：</p>
+<ul>
+<li><strong>只需學習一種語言：Dart。</strong> 由於 Dart 的設計讓來自其他語言的人感到熟悉，因此希望不會太難。</li>
+<li><strong>在建構 UI 時，您可以使用通用程式語言的所有抽象功能。</strong> 將片段提取到可重複使用的函數中。為這些函數提供參數以改變生成的 UI。將內容儲存在局部變數中。隨心所欲。</li>
+<li><strong>您永遠不會遇到表達能力的限制，而不必移植到其他語言。</strong> 如果您曾經使用過宣告式語言，您可能遇到過這樣的情況：您達到了它實際可以表達的極限。此時，您要么放棄您正在嘗試做的事情，要么費力地用低階的、通常是指令式語言重寫整個內容。由於您已經 <em>在</em> 使用具有完整功能的 Dart 語言中，因此您永遠不會遇到這種限制，並且您的 UI 程式碼可以順利地變得更加複雜。</li>
+</ul>
+<p>當然，主要的挑戰，也是人們一開始就使用宣告式語言的原因，是用指令式語言定義內容可能非常繁瑣且難以閱讀。</p>
+<p>想像一下，如果不是這一點 HTML：</p>
+<p>您必須編寫如下內容：</p>
+<p>幸運的是，現代語言和 API 並不 <em>那麼</em> 低階。即使語句是指令式的，<em>表達式</em> 也是相當宣告式的。雖然上面的程式碼很糟糕，但這段程式碼與 HTML 差不多：</p>
+<p>現代的反應式範式，您透過從頭開始建構 UI 作為單個表達式，「建構」您的 UI，可以讓您走得很遠。上面 Flutter 範例中的相關部分只是：</p>
+<p>它有括弧和方括弧而不是尖括弧，但除此之外與「標記」語言相距不遠。令人驚訝的是，這效果非常好。Dart 的語法基於 JavaScript，而 JavaScript 來自 Java，Java 來自 C。在此過程中，我們加入了方括弧列表字面量語法和命名參數，但這些都是相當 <em>次要的</em>。</p>
+<p>C 語言的設計目的是在 PDP-11 上實作命令列作業系統。它的符號在行動裝置上建構圖形化 UI 時的縮放比例並不太差，這既證明了 Ritchie 的設計品味，也證明了我們對 C 語法共同的斯德哥爾摩症候群。無論如何，它 <em>大多數情況下</em> 都有效。</p>
+<p>在這裡的範例中，建構 UI 不需要任何有趣的執行時 <em>邏輯</em>。所有內容都很好地放入單個巢狀表達式中。但是假設，由於某些原因，您不想在星期二顯示文字的「這是 Flutter」部分。（也許您需要在螢幕上騰出空間來顯示「Taco Tuesday！」橫幅。）</p>
+<p>有幾種方法可以表達這一點，但沒有一種方法像上面的範例那樣好和宣告式。以下是一種方法：</p>
+<p>我們更接近於驅使人們使用模板的令人討厭的低階指令式程式碼。當我們查看真實的 Flutter 程式碼時，我們很遺憾地看到很多看起來像這樣的程式碼。因此，大約一年前，Flutter 團隊要求我們在 Dart 上提出語言變更，以使用 Dart 編寫的 UI 程式碼更容易編寫、閱讀和維護。</p>
+<h3 id="「UI-作為程式碼」"><a href="#「UI-作為程式碼」" class="headerlink" title="「UI 作為程式碼」"></a>「UI 作為程式碼」</h3><p>我們將此倡議稱為「<a href="https://github.com/munificent/ui-as-code">UI 作為程式碼」</a>，因為它是關於使用程式碼建構 UI。但最終目標是語言功能盡可能普遍適用於盡可能多的 Dart 程式，無論是否使用 Flutter。（如果您想了解更多背景資訊，這裡有一份我寫的 <a href="https://github.com/munificent/ui-as-code/blob/master/Motivation.md">長篇動機文件</a>。）</p>
+<p>在探索了 <a href="https://github.com/munificent/ui-as-code/blob/master/Choices.md">許多選項</a> 之後，我們決定專注於圍繞集合字面量的一些有針對性的改進。這看起來可能不像將 JSX 之類的東西塞進 Dart 中那麼性感（並不是說我完全排除這種可能性），但它的優點是使用者可以更容易地在他們的程式碼中逐步利用它。</p>
+<p>僅僅讓列表字面量變得更有趣，似乎影響有限。但是，如果您查看上面的 Flutter UI 程式碼，它基本上是一個由建構函數調用和列表字面量組成的大樹。列表字面量佔據了很大一部分。（哎呀，<a href="https://en.wikipedia.org/wiki/Lisp_(programming_language)">整個語言</a> 都是圍繞它們設計的。）如果您深入研究一些例子，在這些例子中，您感覺應該能夠以宣告式的方式編寫某些內容，但卻不得不進行一堆令人討厭的指令式修改，通常是圍繞 <em>列表</em> 的。</p>
+<p>如果我們可以讓集合變得更好，我們就可以讓 <em>很多</em> Dart 程式碼變得更好。為此，我們正在新增三個新功能：</p>
+<h3 id="展開運算符"><a href="#展開運算符" class="headerlink" title="展開運算符"></a>展開運算符</h3><p>通常，當您建構 Widget 列表時，其中一些 Widget 已經在其他 <em>列表</em> 中。以下是一些 Flutter 程式碼：</p>
+<p><code>buildTab2Conversation()</code> 方法返回一個 Widget 列表，我們希望用標題和頁尾將其圍繞起來。必須以指令式的方式建構結果列表真的很麻煩。它強制程式碼「反向」閱讀，在您看到一堆東西在 <code>children</code> 上亂搞之前，您必須先查看程式碼，才能看到它們是 <em>誰的</em> 子級。</p>
+<p>Dart 有一個稱為 <a href="https://news.dartlang.org/2012/02/method-cascades-in-dart-posted-by-gilad.html">方法級聯</a> 的功能，它可以有所幫助。這些功能讓您可以在表達式中間塞入一個修改方法調用，同時產生原始物件。有了這個，您會得到：</p>
+<p>這有點好，但仍然很尷尬。那個尾隨的 <code>..add()</code> 用於附加單個項目，尤其令人震驚。您可能已經猜到我們是如何解決這個問題的，因為許多其他語言已經有了相同的解決方案。（&gt;90% 的語言設計是找出要從其他語言中借用哪些功能。）我們正在新增一個稱為 <em>展開運算符</em> 的 <a href="https://github.com/dart-lang/language/blob/master/accepted/future-releases/spread-collections/feature-specification.md">新語法</a>。</p>
+<p>在集合字面量中，展開運算符會解壓縮另一個集合並將其內容直接插入到位。例如：</p>
+<p>列表元素之前的 <code>...</code> 會導致其元素插入到周圍的列表中。這與 JavaScript 使用的語法相同。Python、Ruby 和其他一些語言使用前綴 <code>*</code> 來表示相同的意思，但我們認為它在視覺上不夠突出。有了這個功能，Flutter 範例變成了：</p>
+<p>我相信這是一個真正的改進。列表視圖的所有子級都緊密地嵌套在一個列表字面量中。這看起來更好，並且與類型推斷也更好。有了列表中的所有元素，我們可以在推斷列表的 <em>類型</em> 時使用所有元素。</p>
+<p>我這裡展示了一個 Flutter 範例，但我花了很長時間梳理了大量的 Dart 程式碼，以查看這種語法在哪些地方有用，它在所有地方都發揮了作用。特別是，用於調用其他程式的命令列參數列表的程式碼確實受益於展開運算符。</p>
+<h3 id="元素"><a href="#元素" class="headerlink" title="元素"></a>元素</h3><p>在我介紹最後兩個功能之前，我想深入探討一下展開運算符實際上 <em>是什麼</em>。看起來我好像在過分強調這一點，但我保證清楚這一點在以後會有幫助。以下是一個主要問題：<em>展開運算符是一個表達式嗎？</em></p>
+<p>它看起來像一個表達式，因為它出現在列表字面量中，在預期表達式的地方：</p>
+<p>像表達式一樣，您對它進行計算，它會產生一些資料。也許它是一個計算結果為 <a href="https://api.dartlang.org/stable/2.2.0/dart-core/Iterable-class.html">Iterable</a> 物件的表達式？但是，等等，這說不通。這就是展開運算符 <em>內部</em> 的表達式所做的。如果您只想使用一個計算結果為 <code>Iterable</code> 的表達式，則無需在其前面加上 <code>...</code>。</p>
+<p>展開運算符不會計算結果為單個 <code>Iterable</code> 物件，它會 <em>解壓縮</em> 該物件並計算結果為 <code>Iterable</code> 產生的 <em>一系列</em> 物件。然後將其重新打包回某個新物件是沒有用的。但是表達式總是計算結果為 <em>單個</em> 物件。</p>
+<p>如果展開運算符是一個表達式，那麼在允許表達式的其他地方使用它意味著什麼？</p>
+<p>這會做什麼？將整個 <code>Iterable</code> 作為物件儲存在 <code>wat</code> 中是沒有意義的。如果您想要這樣做，您可以完全省略 <code>...</code>。答案是展開運算符 <em>不是</em> 表達式。它們是另一種語法類別。Dart 像許多語言一樣，已經有兩個大的語法組：語句和表達式。</p>
+<p>語句會執行，但不產生任何結果值。相反，它們預期會產生一些有用的副作用。它們不能在任何需要值的地方使用，因為它不會給您提供值。這就是為什麼，例如，這是禁止的：</p>
+<p><code>for</code> 語句不會產生值，因此將其塞入變數初始化程式中是沒有意義的。<em>確實有</em> <a href="https://en.wikipedia.org/wiki/Expression-oriented_programming_language">將表達式和語句統一起來</a> 並允許此類程式碼的語言。它們定義每個語句以某種方式執行，<em>並</em> 產生一個值。但 Dart 不是這些語言之一。</p>
+<p>表達式計算結果為單個結果值。您可以在值有用的地方使用它們。還有「<a href="https://www.eskimo.com/~scs/cclass/notes/sx3a.html">表達式語句」</a> - 後跟分號的表達式 - 它們是包含單個表達式的語句。這很方便，因為許多表達式也恰好具有副作用，即使不需要它們的結果也很有用。</p>
+<p>展開運算符不是其中任何一個。展開運算符可以計算結果為零個值（如果您展開空集合）、一個值或多個值。它是它自己的東西。這個類別的一個好名字是「生成器」。我的模型來自 <a href="https://en.wikipedia.org/wiki/Icon_(programming_language)#Generators">Icon</a>，其中 <em>每個</em> 表達式都可以是一個生成器。但 Dart 已經有了 <a href="https://www.dartlang.org/articles/language/beyond-async#generators">生成器函數</a>，所以我不想過度使用這個術語。</p>
+<p>展開運算符只能出現在可以優雅地處理接收零個或多個值的地方。如果沒有徹底修改語言的執行模型並將其變成 Icon（我發現這很奇怪地吸引人，但可能不切實際……），那麼沒有太多地方符合這個限制。基本上是集合字面量，也許還有位置參數列表。（我為後者寫了一份 <a href="https://github.com/munificent/ui-as-code/blob/master/in-progress/parameter-freedom.md">提案</a>，但它相當複雜，所以我們沒有這樣做，至少現在沒有。）</p>
+<p>這就留下了集合字面量的正文內部。基於此，我將這些稱為「元素」。元素是一段程式碼，當計算時會產生零個或多個值。然後，這些值會插入到它們出現的周圍上下文中。因此，在列表中，它們成為新列表中的一系列元素。在映射中，它們成為一系列鍵&#x2F;值對。您明白了。</p>
+<p>因此，集合字面量的正文可以包含表達式或元素。允許兩個類別有點令人困惑，但幸運的是，我們可以透過說集合只包含元素來簡化這一點。然後我們將「表達式元素」定義為包含單個表達式的元素。該元素總是產生一個結果 - 表達式的值。有點像表達式語句的元素等價物。</p>
+<p>好的，這就是我們現在的處境。我們已經將集合更改為包含元素而不是表達式，並定義了兩種元素，展開運算符和表達式元素。要計算集合字面量，您可以遍歷元素，計算每個元素，並將所有結果物件連接起來（或在集合的情況下進行聯合）。</p>
+<p>考慮到這個模型，我們可以瀏覽其他兩個新功能：</p>
+<h3 id="集合-If"><a href="#集合-If" class="headerlink" title="集合 If"></a>集合 If</h3><p>編寫任何 Flutter 程式碼，您很快就會遇到這樣的情況：您想要建構的 Widget 樹會根據某些條件而變化。假設我們有：</p>
+<p>後來，我們決定在 Android 上使用不同的搜尋按鈕。您已經可以使用條件表達式執行此操作：</p>
+<p>這可以，但我從未覺得 C 的條件運算符很容易閱讀。但是，通常情況下，您不想根據條件 <em>交換</em> Widget，您只想 <em>省略</em> 一個 Widget。假設您根本不想在 Android 上顯示搜尋框。今天，Flutter 使用者傾向於使用以下兩種模式之一。這是一種：</p>
+<p>它強制您重新排列整個函數，方法是在使用子列表之前將其提取出來並以指令式的方式建構它。另一種模式如下：</p>
+<p>這使用了一個條件表達式，它有時會產生一個 null，然後從結果列表中過濾掉該 null。向提出這個想法的人致敬，但這不是任何使用者為了完成如此簡單的任務而應該編寫的內容。簡單的問題應該有簡單的解決方案，對程式的小概念變化不應該需要大的文字變化。</p>
+<p>以下是新的內容。對於我們想要在 Android 上使用不同按鈕的第一個範例，它看起來像這樣：</p>
+<p>它使用熟悉的 <code>if</code> 和 <code>else</code> 語法，而不是 <code>?:</code>。這實際上與現有的條件表達式只差幾個標記，因此它似乎沒有發揮作用。更有趣的情況是當我們想在 Android 上 <em>省略</em> 按鈕時：</p>
+<p>請注意，沒有 <code>else</code> 子句。這兩個範例看起來與 Ruby 等語言非常相似，在 Ruby 中，<code>if</code> 是一個表達式。但表達式必須始終計算結果為一個值，即使條件為 false。在 Ruby 中，在這種情況下，它隱式計算結果為 <code>nil</code>。</p>
+<p>但這 <em>不是</em> 您在這裡想要的。您不希望在子 Widget 列表中以 null 元素結束。這就是為什麼上面的條件表達式範例必須使用煩人的 <code>where()</code> 將其過濾掉。幸運的是，這在這裡不是問題。因為集合中的 <code>if</code> 不是 <em>表達式</em>。它是一個 <em>元素</em>。</p>
+<p>現在您明白為什麼我要帶您瀏覽所有關於展開運算符的東西了。元素為我們提供了基礎，讓我們可以使用 <code>if</code> 語法從集合中完全省略一個元素。如果條件為 true 或存在 <code>else</code> 情況，則 <code>if</code> 元素會產生單個值。如果條件為 false 且沒有 <code>else</code> 子句，則它根本不產生任何值。</p>
+<p>我認為這種行為非常有用，但如果您查看程式碼並期望 <code>if</code> 的行為像一個簡單的表達式，也會令人困惑。</p>
+<h3 id="集合-For"><a href="#集合-For" class="headerlink" title="集合 For"></a>集合 For</h3><p>前一個功能採用了現有的 Dart 語句語法，並將其重新用於在集合的上下文中執行一些有用的操作。還有其他值得採用的語句形式嗎？</p>
+<p>大多數語句形式都沒有意義。在其中插入 <code>return</code> 語句不會做任何有用的事情，因為它只會退出周圍的函數。<code>while</code> 也不是很有用。為了退出 <code>while</code> 迴圈，主體通常包含 <code>break</code>、<code>return</code> 或某種副作用，例如指派。但這意味著主體包含 <em>語句</em>，這不是我們想要的。目標是使集合更具 <em>表達性</em>，而不是更具 <em>指令性</em>。</p>
+<p>我仔細研究了現有程式碼中的許多集合字面量，尋找我認為可以透過新語法改進的模式。到目前為止，最主要的是 <code>if</code>。但我看到一些地方我認為可以透過 <code>for</code> 改進。以下是我找到的一些程式碼的略微清理後的範例：</p>
+<p>所有 <code>command.add()</code> 的東西都感覺不必要地指令式。如果我們允許在集合字面量中使用 <code>for</code> 迴圈，則變為：</p>
+<h3 id="組合元素"><a href="#組合元素" class="headerlink" title="組合元素"></a>組合元素</h3><p>鑒於我們已經加入了展開運算符，<code>for</code> 語法似乎並沒有那麼引人注目。您不能使用展開運算符與可迭代物件上的高階方法的某種組合來完成同樣的事情嗎？是的，您可以。您會得到如下內容：</p>
+<p>這確實有效，並且適用於某些使用案例。讓我們考慮一個稍微不同的例子。假設我們只想在存在相應的 JSON 檔案時包含一個入口點。這意味著我們沒有進行簡單的 1-1 對應。僅使用展開運算符，我們會得到如下內容：</p>
+<p>這也有效。但將簡單的「如果檔案存在，則執行此操作」邏輯轉換為基於流的高階函數樣式變得越來越困難。總有一些 <code>map()</code>、<code>where()</code> 和 <code>transform()</code> 的組合可以完成這項工作，但感覺就像將俳句翻譯成逆波蘭表示法。</p>
+<p>有一個更乾淨的解決方案，它涉及一個關鍵問題：這些新的 <code>if</code> 和 <code>for</code> 元素的 <em>主體</em> 是什麼？在我目前向您展示的範例中，它始終是一個表達式。但沒有必要僅限於此。相反，我們允許任何元素都放在那裡。換句話說，所有這三個新功能都可以自由組合。上面的程式碼可以表示為：</p>
+<p><code>for</code> 內部的一個簡單的 <code>if</code>，就像您在編寫指令式語句時所做的一樣。組合元素的語義非常明顯：</p>
+<ul>
+<li>如果條件為 true，則 <code>if</code> 元素會產生其 <code>then</code> 子句產生的所有值，否則會產生「else」子句的所有元素。如果沒有「else」，則不產生任何元素。</li>
+<li>每次執行主體時，<code>for</code> 元素都會產生其主體元素產生的所有值的連接。</li>
+</ul>
+<p>這可以啟用一些我認為很酷的模式。您遇到的顯顯問題是想根據單個條件包含或省略 <em>多個</em> 值。因此，假設在我們之前的範例中，我們想跳過 Android 上的標題和搜尋框。您可以透過將展開運算符包裝在 <code>if</code> 中來執行此操作：</p>
+<p>這裡需要展開運算符來解壓縮內部列表。否則，當不在 Android 上時，您將包含整個內部列表作為單個值。（我們考慮過在這種情況下根據靜態類型隱式展平，但當您考慮 <code>List&lt;Object&gt;</code> 之類的東西應該如何表現時，這就變得非常可疑了。）</p>
+<p>您可以將展開列表字面量視為語句的元素等價物 - 它讓您可以在只預期一個元素的地方放置多個元素。（如果您熟悉 <a href="https://en.wikipedia.org/wiki/Comma_operator">逗號運算符</a>，那基本上就是表達式的類似形式。到處都是類比。）</p>
+<p>在空集合字面量中使用 <code>for</code> 和 <code>if</code> 可以讓您獲得與其他語言（如 Python）支援的特殊「列表推導式」語法不太一樣的語法：</p>
+<p>您甚至可以巢狀 <code>for</code>：</p>
+<p>這會建構一個列表，其中包含給定 <code>hor</code> 和 <code>vert</code> 矩形中所有點的 <a href="https://en.wikipedia.org/wiki/Cartesian_product">笛卡爾積</a>。</p>
+<p>此外，這些新功能可以跨集合類型組合。我一直使用列表作為範例，因為它們最常出現，但所有這些功能也適用於映射和集合。唯一的區別是，對於集合，重複項會被隱式丟棄。在映射中，基本元素不是原始表達式元素，而是鍵&#x2F;值對。例如，這：</p>
+<p>可以重寫為：</p>
+<p>我們對所有這些功能的一個真正擔憂是，我們基本上是在為您提供新的方式來表達您今天已經可以表達的東西。這是有代價的，因為這意味著使用者需要花費腦力來 <a href="https://en.wikipedia.org/wiki/Hick%27s_law">決定使用哪個功能</a>，並且在閱讀其他人的程式碼時，他們可能會花時間質疑為什麼選擇一個選項而不是另一個選項。只需學習更多功能，語言就更大了。</p>
+<p>我們花了很長時間 <a href="https://github.com/munificent/ui-as-code/blob/master/Choices.md">為此而苦惱</a>。有時候，什麼都不做是最好的設計。簡單性非常有價值，而且您很少有機會讓一種語言隨著時間的推移變得更簡單。但是，在查看了大量程式碼並與一位令人愉快的 UX 研究人員合作進行了一項研究後，我們相當有信心這些功能足夠輕量級且有用，可以發揮其作用。</p>
+<p>與任何語言更改一樣，在使用者使用之前，您永遠不知道它會如何運作。這些功能將在即將發佈的 Dart 2.3 版本中提供，我非常期待看到您如何使用它們。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f1ccaf9f546c" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c">讓 Dart 成為更好的 UI 語言</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/ui/" rel="tag"># ui</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/e75284cc.html" rel="prev" title="【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/bd9de999.html" rel="next" title="【文章翻譯】Announcing Windows support for Dart on Travis CI">
+      【文章翻譯】Announcing Windows support for Dart on Travis CI <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%93-Dart-%E6%88%90%E7%82%BA%E6%9B%B4%E5%A5%BD%E7%9A%84-UI-%E8%AA%9E%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">讓 Dart 成為更好的 UI 語言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Flutter-%E4%BD%BF%E7%94%A8%E8%80%85%E5%A6%82%E4%BD%95%E5%BB%BA%E6%A7%8B%E4%BB%96%E5%80%91%E7%9A%84-UI"><span class="nav-number">1.1.</span> <span class="nav-text">Flutter 使用者如何建構他們的 UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%8CUI-%E4%BD%9C%E7%82%BA%E7%A8%8B%E5%BC%8F%E7%A2%BC%E3%80%8D"><span class="nav-number">1.2.</span> <span class="nav-text">「UI 作為程式碼」</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%95%E9%96%8B%E9%81%8B%E7%AE%97%E7%AC%A6"><span class="nav-number">1.3.</span> <span class="nav-text">展開運算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%B4%A0"><span class="nav-number">1.4.</span> <span class="nav-text">元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88-If"><span class="nav-number">1.5.</span> <span class="nav-text">集合 If</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88-For"><span class="nav-number">1.6.</span> <span class="nav-text">集合 For</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%84%E5%90%88%E5%85%83%E7%B4%A0"><span class="nav-number">1.7.</span> <span class="nav-text">組合元素</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.13    作者：Kevin Moore 和 Michael Thomsen 今天，我們宣佈推出 Dart 2.13，其中包含類型別名——目前我們第二個最受歡迎的語言功能。Dart 2.13 還包含改進的 Dart FFI 和更好的效能，並且我們有新的 Dart 官方 Docker 映像。這篇文章提供了在 2.12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.13">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/9f4439db.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.13    作者：Kevin Moore 和 Michael Thomsen 今天，我們宣佈推出 Dart 2.13，其中包含類型別名——目前我們第二個最受歡迎的語言功能。Dart 2.13 還包含改進的 Dart FFI 和更好的效能，並且我們有新的 Dart 官方 Docker 映像。這篇文章提供了在 2.12">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*qMQKtkRNuvBjORjoJrN2bQ.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c6d547b57067">
+<meta property="article:published_time" content="2021-05-19T10:32:20.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:39:28.272Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*qMQKtkRNuvBjORjoJrN2bQ.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/9f4439db.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.13 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9f4439db.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.13
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-19 18:32:20" itemprop="dateCreated datePublished" datetime="2021-05-19T18:32:20+08:00">2021-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:39:28" itemprop="dateModified" datetime="2024-12-19T10:39:28+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-13"><a href="#宣佈-Dart-2-13" class="headerlink" title="宣佈 Dart 2.13"></a>宣佈 Dart 2.13</h2><figure>
+<img alt="A graphic showing highlights of what’s in this post: type aliases, better FFI, null safety, Docker support" src="https://cdn-images-1.medium.com/max/1024/1*qMQKtkRNuvBjORjoJrN2bQ.png" />
+</figure>
+
+<p><em>作者：Kevin Moore 和 Michael Thomsen</em></p>
+<p>今天，我們宣佈推出 Dart 2.13，其中包含<em>類型別名</em>——目前我們第二個最受歡迎的語言功能。Dart 2.13 還包含改進的 Dart FFI 和更好的效能，並且我們有新的 Dart 官方 Docker 映像。這篇文章提供了在 2.12 中引入的空安全功能的更新，討論了新的 2.13 功能，有一些關於 Docker 和 Google Cloud 支援 Dart 後端的令人興奮的消息，並預覽了一些您可以在未來版本中看到的一些變更。</p>
+<h3 id="空安全更新"><a href="#空安全更新" class="headerlink" title="空安全更新"></a>空安全更新</h3><p>我們在 3 月的 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 版本中推出了<a href="https://dart.dev/null-safety">健全的空安全</a>。空安全是 Dart 最新的主要生產力功能，旨在幫助您避免空錯誤——這類錯誤通常難以發現。隨著該版本的推出，我們鼓勵套件發佈者開始將 pub.dev 上的共享套件遷移到空安全。</p>
+<p>我們非常高興地看到空安全被採用的速度如此之快！在發佈後的短短幾個月內，<strong>pub.dev 上前 500 個最受歡迎的套件中，有 93% 已經支援空安全</strong>。我們要向所有套件開發人員表示衷心的感謝，感謝他們如此迅速地完成了這項工作，並幫助整個生態系統向前發展！</p>
+<p>有了這麼多支援空安全的套件，您很有可能可以開始將您的應用程式遷移到使用空安全。第一步是使用 <code>dart pub outdated</code> 檢查您的應用程式的相依性。有關詳細資訊，請參閱<a href="https://dart.dev/null-safety/migration-guide#step1-wait">空安全遷移指南</a>。我們還更改了我們的 <code>dart create</code> 和 <code>flutter create</code> 範本，以便它們現在預設在新應用程式和套件中啟用空安全。</p>
+<h3 id="宣佈類型別名"><a href="#宣佈類型別名" class="headerlink" title="宣佈類型別名"></a>宣佈類型別名</h3><p>類型別名是 2.13 語言中的一項新功能。它擴展了我們早期的支援，允許建立函數類型的類型別名，但不支援任何其他類型。這個備受期待的功能在語言問題追蹤器中被評為<a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">第二高</a>。</p>
+<p>使用類型別名，您可以為任何現有類型建立新名稱，然後可以在任何可以使用原始類型的地方使用該名稱。您並不是真的在定義一個新類型，只是引入了一個簡寫別名。別名甚至通過類型相等測試：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> Integer = <span class="built_in">int</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="built_in">int</span> == Integer); <span class="comment">// true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那麼您可以使用類型別名做什麼呢？一種常見的用法是為類型指定一個更短或更具描述性的名稱，使您的程式碼更具可讀性和可維護性。</p>
+<p>一個很好的例子是使用 JSON（感謝 GitHub 使用者 <a href="https://github.com/Levi-Lesches">Levi-Lesches</a> 提供的這個例子）。在這裡，我們可以定義一個新的類型別名 <code>Json</code>，它將 JSON 文件描述為從 String 鍵到任何值（使用動態類型）的映射。然後，我們可以在定義我們的 <code>fromJson</code> 命名建構函數和 <code>json</code> getter 時使用該 <code>Json</code> 類型別名。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> Json = <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> age;</span><br><span class="line"></span><br><span class="line">  User.fromJson(Json json) :</span><br><span class="line">    name = json[<span class="string">&#x27;name&#x27;</span>],</span><br><span class="line">    age = json[<span class="string">&#x27;age&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  Json <span class="keyword">get</span> json =&gt; &#123;</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span>: name,</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>: age,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您也可以在命名類別的類型別名上調用建構函數，因此以下是完全合法的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">var</span> j = Json();</span><br><span class="line">  j[<span class="string">&#x27;name&#x27;</span>] = <span class="string">&#x27;Michael&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>透過使用類型別名為複雜類型命名，您可以使讀者更容易理解程式碼的不變性。例如，以下程式碼定義了一個類型別名來描述包含泛型類型 X 的鍵和 <code>List&lt;X&gt;</code> 類型值的映射。透過為類型指定一個帶有單個類型參數的名稱，映射的規則結構對於程式碼的讀者來說變得更加明顯。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> MapToList&lt;X&gt; = <span class="built_in">Map</span>&lt;X, <span class="built_in">List</span>&lt;X&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  MapToList&lt;<span class="built_in">int</span>&gt; m = &#123;&#125;;</span><br><span class="line">  m[<span class="number">7</span>] = [<span class="number">7</span>]; <span class="comment">// OK</span></span><br><span class="line">  m[<span class="number">8</span>] = [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]; <span class="comment">// OK</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> x <span class="keyword">in</span> m.keys) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;<span class="subst">$x</span> --&gt; <span class="subst">$&#123;m[x]&#125;</span>&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=&gt;</span><br><span class="line"></span><br><span class="line"><span class="number">7</span> --&gt; [<span class="number">7</span>]</span><br><span class="line"><span class="number">8</span> --&gt; [<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果您嘗試使用不匹配的類型，您將收到分析錯誤：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">m[<span class="number">42</span>] = [<span class="string">&#x27;The&#x27;</span>, <span class="string">&#x27;meaning&#x27;</span>, <span class="string">&#x27;of&#x27;</span>, <span class="string">&#x27;life&#x27;</span>];</span><br><span class="line"></span><br><span class="line">=&gt;</span><br><span class="line"></span><br><span class="line">元素類型 <span class="string">&#x27;String&#x27;</span> 無法賦值給列表類型 <span class="string">&#x27;int&#x27;</span>。</span><br></pre></td></tr></table></figure>
+
+<p>您甚至可以在重命名公共程式庫中的類別時使用類型別名。想像一下，您在公共程式庫中有一個現有的類別 <code>PoorlyNamedClass</code>，您想將其重命名為 <code>BetterNamedClass</code>。如果您只是重命名類別，那麼您的 API 客戶將會收到突然的編譯錯誤。使用類型別名，您可以繼續進行重命名，但然後為舊的類別名稱定義一個新的類型別名，然後為舊名稱添加一個 <code>@Deprecated</code> 註釋。使用 <code>PoorlyNamedClass</code> 時會導致警告，但會繼續編譯並像以前一樣工作，讓使用者有時間升級他們的程式碼。</p>
+<p>以下是您如何在 <code>mylibrary.dart</code> 檔案中實作 <code>BetterNamedClass</code> 並棄用 <code>PoorlyNamedClass</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BetterNamedClass</span> </span>&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Deprecated</span>(<span class="string">&#x27;請改用 BetterNamedClass&#x27;</span>)</span><br><span class="line"><span class="keyword">typedef</span> PoorlyNamedClass = BetterNamedClass;</span><br></pre></td></tr></table></figure>
+
+<p>以下是當有人嘗試使用 <code>PoorlyNamedClass</code> 時會發生的情況：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;mylibrary.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  PoorlyNamedClass p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;PoorlyNamedClass&#x27;</span> 已棄用，不應使用。請改用 BetterNamedClass。</span><br></pre></td></tr></table></figure>
+
+<p>類型別名功能從 Dart 2.13 開始提供。要啟用它，請將 pubspec 中的 Dart SDK 下限約束設定為至少 2.13：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">environment:</span><br><span class="line">  sdk: &quot;&gt;=2.13.0 &lt;3.0.0&quot;</span><br></pre></td></tr></table></figure>
+
+<p>由於<a href="https://dart.dev/guides/language/evolution#language-versioning">語言版本控制</a>，此功能向後相容。SDK 約束低於 2.13 的套件可以安全地引用在 2.13 套件中定義的類型別名，即使 2.13 之前的套件無法定義自己的類型別名。</p>
+<h3 id="Dart-2-13-FFI-變更"><a href="#Dart-2-13-FFI-變更" class="headerlink" title="Dart 2.13 FFI 變更"></a>Dart 2.13 FFI 變更</h3><p>我們在 Dart FFI（我們用於調用 C 程式碼的互操作機制）中也有一些新功能。</p>
+<p>首先，FFI 現在支援具有內聯陣列的結構體（<a href="https://github.com/dart-lang/sdk/issues/35763">#35763</a>）。考慮一個具有內聯陣列的 C 結構體，如下所示：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyStruct</span> &#123;</span></span><br><span class="line">  <span class="type">uint8_t</span> arr[<span class="number">8</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您現在可以直接在 Dart 中包裝它，使用 <code>Array</code> 的類型參數指定元素類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StructInlineArray</span> <span class="keyword">extends</span> <span class="title">Struct</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Array</span>(<span class="number">8</span>)</span><br><span class="line">  <span class="keyword">external</span> Array&lt;Uint8&gt; arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其次，FFI 現在支援壓縮結構體（<a href="https://github.com/dart-lang/sdk/issues/38158">#38158</a>）。通常，結構體在記憶體中的佈局方式使得成員位於更容易被 CPU 存取的地址邊界中。使用<a href="http://www.catb.org/esr/structure-packing/">壓縮結構體</a>，可以省略一些填充以降低整體記憶體消耗，通常以特定於平台的方式。使用新的 <code>@Packed(&lt;alignment&gt;)</code> 註釋，您可以輕鬆指定填充。例如，以下程式碼建立了一個在記憶體中具有 4 位元組對齊的結構體：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Packed</span>(<span class="number">4</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TASKDIALOGCONFIG</span> <span class="keyword">extends</span> <span class="title">Struct</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Uint</span>32()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">int</span> cbSize;</span><br><span class="line">  <span class="meta">@IntPtr</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">int</span> hwndParent;</span><br><span class="line">  <span class="meta">@IntPtr</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">int</span> hInstance;</span><br><span class="line">  <span class="meta">@Uint</span>32()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">int</span> dwFlags;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dart-2-13-效能變更"><a href="#Dart-2-13-效能變更" class="headerlink" title="Dart 2.13 效能變更"></a>Dart 2.13 效能變更</h3><p>我們正在繼續努力減少 Dart 程式碼的應用程式大小和記憶體佔用。在大型 Flutter 應用程式中，表示 AOT 編譯的 Dart 程式的中繼資料的內部結構可能會佔用相當大的記憶體塊。這些中繼資料大多數都用於啟用熱重新載入、互動式除錯和人類可讀的堆疊追蹤格式等功能——這些功能在已部署的應用程式中從未使用過。在過去的一年中，我們一直在重構 Dart 原生運行時，以盡可能消除這種開銷。其中一些改進適用於以發佈模式構建的所有 Flutter 應用程式，但有些改進需要您透過使用 <code>--split-debug-info</code> 旗標將除錯資訊從 AOT 編譯的應用程式中分離出來，以放棄人類可讀的堆疊追蹤。</p>
+<p>Dart 2.13 包含許多變更，這些變更在使用 <code>--split-debug-info</code> 時顯著減少了程式中繼資料佔用的空間。以 Flutter Gallery 應用程式為例。在 Android 上，發行版 APK 的大小為 112.4 MB（包含除錯資訊），106.7 MB（不包含除錯資訊）（總體減少了 5%）。此 APK 包含許多資產。僅查看 APK 內的程式碼中繼資料，它從 Dart 2.12 的 5.7 MB 減少到 Dart 2.13 的 3.7 MB（減少了 35%）。</p>
+<p>如果應用程式大小和記憶體佔用對您很重要，請考慮使用 <code>--split-debug-info</code> 旗標省略除錯資訊。請注意，這樣做的話，您需要使用<a href="https://flutter.dev/docs/deployment/obfuscate#reading-an-obfuscated-stack-trace">符號化</a>命令使堆疊追蹤再次可讀。</p>
+<h3 id="官方-Docker-支援和-Google-Cloud-上的-Dart"><a href="#官方-Docker-支援和-Google-Cloud-上的-Dart" class="headerlink" title="官方 Docker 支援和 Google Cloud 上的 Dart"></a>官方 Docker 支援和 Google Cloud 上的 Dart</h3><p>Dart 現在可以作為<a href="https://docs.docker.com/docker-hub/official_images/">Docker 官方映像</a>使用。雖然 Dart 多年來一直提供 Docker 映像，但這些<a href="https://hub.docker.com/_/dart">新的 Dart 映像</a>已通過 Docker 的測試和驗證，符合最佳實務。它們還支援提前 (AOT) 編譯，這可以顯著減少構建的容器的大小，並可以提高在容器環境（例如<a href="https://cloud.google.com/run">Cloud Run</a>）中的部署速度。</p>
+<p>雖然 Dart 仍然專注於讓 Flutter 等應用程式框架能夠在每個螢幕上驅動漂亮的像素，但我們意識到，大多數使用者體驗背後至少有一個託管服務。透過簡化使用 Dart 構建後端服務，我們支援完整的堆疊體驗，讓開發人員可以使用與他們用於在前段驅動 widget 的相同語言和業務邏輯將他們的應用程式擴展到雲端。</p>
+<p>一般來說，將 Dart 用於 Flutter 應用程式後端尤其適合 Google 的託管無伺服器平台 Cloud Run 的簡潔性和可擴展性。這包括縮放為零，這意味著當您的後端沒有處理任何請求時，您不會產生成本。我們與 Google Cloud 團隊合作，提供<a href="https://pub.dev/packages/functions_framework">Dart 函數框架</a>，這是一個套件、工具和範例的集合，可以輕鬆編寫 Dart 函數來部署，而不是完整的伺服器來處理 HTTP 請求和 CloudEvents。</p>
+<p>請查看我們的<a href="https://dart.dev/server/google-cloud">Google Cloud 文件</a>以開始使用。</p>
+<h3 id="關於接下來的一些話"><a href="#關於接下來的一些話" class="headerlink" title="關於接下來的一些話"></a>關於接下來的一些話</h3><p>我們已經在為即將發佈的版本進行一些令人興奮的變更。與往常一樣，您可以使用<a href="https://github.com/dart-lang/language/projects/1">語言漏斗</a>追蹤器來關注我們的進度。</p>
+<p>我們正在研究的一個領域是 Dart 和 Flutter 的一套新的規範 lint。Lint 是一種配置 Dart <a href="https://dart.dev/guides/language/analysis-options">靜態分析</a>的強大方法，但由於有數百個可能的 lint 可以開啟或關閉，因此很難決定選擇什麼。我們目前正在定義兩套規範的 lint，我們將在 Dart 和 Flutter 專案中預設應用這些 lint。我們預計這將在下一個穩定版本中預設啟用。如果您想要預覽，請查看兩個套件 <a href="https://pub.dev/packages/lints">lints</a> 和 <a href="https://pub.dev/packages/flutter_lints">flutter_lints</a>。</p>
+<p>最後，如果您進行 Dart VM 運行時的深度嵌入，請注意，我們計劃棄用現有的機制。我們將用一個基於 Dart FFI 的更快、更靈活的模型來替換它（請參閱追蹤問題 <a href="https://github.com/dart-lang/sdk/issues/45451">#45451</a>）。</p>
+<h3 id="Dart-2-13-現已推出"><a href="#Dart-2-13-現已推出" class="headerlink" title="Dart 2.13 現已推出"></a>Dart 2.13 現已推出</h3><p>Dart 2.13，包含類型別名和改進的 FFI，現已在 <a href="https://dart.dev/get-dart">Dart 2.13</a> 和 <a href="https://flutter.dev/docs/get-started/">Flutter 2.2</a> SDK 中推出。</p>
+<p>如果您一直在等待您的相依性遷移到空安全，您可能需要再次檢查，使用 <code>dart pub outdated</code>。前 500 個最受歡迎的套件中，有 93% 已經遷移，您很有可能已經沒有障礙了。我們還要向已經遷移的開發人員表示衷心的感謝！</p>
+<p>我們很樂意聽到您對本部落格文章中討論的新功能和變更的體驗。請在下方留言或在 Twitter 上聯繫我們 <a href="https://twitter.com/dart_lang">@dart_lang</a>。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c6d547b57067" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-13-c6d547b57067">宣佈 Dart 2.13</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/3418b624.html" rel="prev" title="【文章翻譯】What’s new in Flutter 2.2">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】What’s new in Flutter 2.2
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/de9202e4.html" rel="next" title="【文章翻譯】Implementing structs by value in Dart FFI">
+      【文章翻譯】Implementing structs by value in Dart FFI <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-13"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.13</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%AE%89%E5%85%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.</span> <span class="nav-text">空安全更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88%E9%A1%9E%E5%9E%8B%E5%88%A5%E5%90%8D"><span class="nav-number">1.2.</span> <span class="nav-text">宣佈類型別名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-13-FFI-%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 2.13 FFI 變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-13-%E6%95%88%E8%83%BD%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2.13 效能變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%98%E6%96%B9-Docker-%E6%94%AF%E6%8F%B4%E5%92%8C-Google-Cloud-%E4%B8%8A%E7%9A%84-Dart"><span class="nav-number">1.5.</span> <span class="nav-text">官方 Docker 支援和 Google Cloud 上的 Dart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%9C%E6%96%BC%E6%8E%A5%E4%B8%8B%E4%BE%86%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A9%B1"><span class="nav-number">1.6.</span> <span class="nav-text">關於接下來的一些話</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-13-%E7%8F%BE%E5%B7%B2%E6%8E%A8%E5%87%BA"><span class="nav-number">1.7.</span> <span class="nav-text">Dart 2.13 現已推出</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的 built_value，實現不可變物件模型上週我寫了關於 built_collection 的文章。最後我提到，要真正使用不可變集合，您需要不可變值。所以我們現在來談談 built_value。這是我在 Dart 開發者峰會 (影片) 上演講的第二個主要部分。 值類型built_value 套件用於定義您自己的值類型。這個">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart’s built_value for Immutable Object Models">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/a24b7fe8.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的 built_value，實現不可變物件模型上週我寫了關於 built_collection 的文章。最後我提到，要真正使用不可變集合，您需要不可變值。所以我們現在來談談 built_value。這是我在 Dart 開發者峰會 (影片) 上演講的第二個主要部分。 值類型built_value 套件用於定義您自己的值類型。這個">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=83e2497922d4">
+<meta property="article:published_time" content="2016-11-30T03:48:47.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:47:59.323Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="immutability">
+<meta property="article:tag" content="clean-code">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=83e2497922d4">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/a24b7fe8.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart’s built_value for Immutable Object Models | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/a24b7fe8.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart’s built_value for Immutable Object Models
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-30 11:48:47" itemprop="dateCreated datePublished" datetime="2016-11-30T11:48:47+08:00">2016-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:47:59" itemprop="dateModified" datetime="2024-12-18T15:47:59+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-的-built-value，實現不可變物件模型"><a href="#Dart-的-built-value，實現不可變物件模型" class="headerlink" title="Dart 的 built_value，實現不可變物件模型"></a>Dart 的 built_value，實現不可變物件模型</h2><p>上週我<a href="https://medium.com/@davidmorgan_14314/darts-built-collection-for-immutable-collections-db662f705eff#.71roxijm3">寫了關於</a> <a href="https://github.com/google/built_collection.dart"><code>built_collection</code></a> 的文章。最後我提到，要真正使用不可變集合，您需要不可變值。所以我們現在來談談 <a href="https://github.com/google/built_value.dart"><code>built_value</code></a>。這是我在 <a href="https://www.youtube.com/watch?v=TMeJxWltoVo">Dart 開發者峰會</a> (影片) 上演講的第二個主要部分。</p>
+<h3 id="值類型"><a href="#值類型" class="headerlink" title="值類型"></a>值類型</h3><p><code>built_value</code> 套件用於定義您自己的<em>值類型</em>。這個術語有<a href="https://en.wikipedia.org/wiki/Value_type">精確的含義</a>，但我們非正式地使用它來表示僅基於值判斷相等性的類型。例如，數字：我的 3 等於你的 3。</p>
+<p>不僅如此：我的 3 將<em>永遠</em>等於你的 3；它不能變成 4，也不能變成 null，更不能變成完全不同的類型。值類型天生就是不可變的。這使得它們易於互動和推理。</p>
+<p>這聽起來非常抽象。值類型有什麼用？事實證明：有很多用處。非常多。可以說——而且我經常這樣說——任何用於模擬現實世界的類都應該是值類型。觀察：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user1 = User(name: <span class="string">&quot;John Smith&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> user2 = User(name: <span class="string">&quot;John Smith&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(user1 == user2);</span><br></pre></td></tr></table></figure>
+
+<p>它應該印出什麼？關鍵是，這兩個實例都應該指向現實世界中的某個人。因為它們的值相同，所以它們必須指向<em>同一個人</em>。所以它們必須被認為是相等的。</p>
+<p>那麼不可變性呢？考慮：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user1.nickname = <span class="string">&#x27;Joe&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>更新「使用者」暱稱意味著什麼？它可能意味著任何數量的更改；也許我的網頁上的歡迎文字使用了暱稱，那也應該更新。我可能在某個地方有一些儲存空間，那也需要更新。我現在有兩個主要問題：</p>
+<ul>
+<li>我不知道誰持有對 <code>user1</code> 的引用。該值在它們下面剛剛更改；根據它們的使用方式，這可能會產生任何數量不可預測的影響。</li>
+<li>任何持有 <code>user2</code> 或類似值的人現在都持有一個過時的值。</li>
+</ul>
+<p>不可變性無法解決第二個問題，但它確實消除了第一個問題。這意味著沒有不可預測的更新，只有明確的更新：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> updatedUser = User(name: <span class="string">&quot;John Smith&quot;</span>, nickname: <span class="string">&quot;Joe&quot;</span>);</span><br><span class="line">saveToDatabase(updatedUser); <span class="comment">// 資料庫將通知前端。</span></span><br></pre></td></tr></table></figure>
+
+<p>關鍵是，這意味著更改是<em>局部的，直到明確發佈</em>。這會產生易於推理的簡單程式碼——並且使程式碼既正確又快速。</p>
+<h3 id="值類型的問題"><a href="#值類型的問題" class="headerlink" title="值類型的問題"></a>值類型的問題</h3><p>那麼，顯而易見的問題是：如果值類型如此有用，為什麼我們沒有到處看到它們？</p>
+<p>不幸的是，它們的實作非常費力。在 Dart 和大多數其他物件導向語言中，需要大量的<a href="https://en.wikipedia.org/wiki/Boilerplate_code">樣板程式碼</a>。在我於 Dart 開發者峰會上的演講中，我展示了一個簡單的雙欄位類<a href="https://www.youtube.com/watch?v=TMeJxWltoVo&feature=youtu.be&t=369">需要如此多的樣板程式碼，以至於佔滿了整張投影片</a> (影片)。</p>
+<h3 id="介紹-built-value"><a href="#介紹-built-value" class="headerlink" title="介紹 built_value"></a>介紹 built_value</h3><p>我們需要一個語言特性——討論起來令人興奮，但不太可能很快出現——或者某種形式的<a href="https://en.wikipedia.org/wiki/Metaprogramming">元程式設計</a>。我們發現 Dart 已經有一種非常好的元程式設計方法：<a href="https://github.com/dart-lang/source_gen"><code>source_gen</code></a>。</p>
+<p>目標很明確：使定義和使用值類型變得如此容易，以至於我們可以在任何值類型有意義的地方使用它們。</p>
+<p>首先，我們需要快速繞道，看看如何使用 <code>source_gen</code> 處理這個問題。<code>source_gen</code> 工具在您手動維護的原始碼旁邊的新檔案中建立生成的原始碼，因此我們需要為生成的實作留出空間。這意味著一個抽象類別：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> nickname;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這有足夠的資訊來產生一個實作。按照慣例，生成的程式碼以 <code>_$</code> 開頭，以標記它是私有的和生成的。因此生成的實作將被稱為 <code>_$User</code>。為了允許它擴展 <code>User</code>，將有一個名為 <code>_</code> 的私有建構函數用於此目的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">=== user.dart ===</span><br><span class="line"></span><br><span class="line">abstract class User &#123;</span><br><span class="line">  String get name;</span><br><span class="line"></span><br><span class="line">  @nullable</span><br><span class="line">  String get nickname;</span><br><span class="line"></span><br><span class="line">  User._();</span><br><span class="line">  factory User() = UserImpl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=== user.g.dart 由 source_gen 產生 ===</span><br><span class="line"></span><br><span class="line">class _$User extends User &#123;</span><br><span class="line">  String name;</span><br><span class="line">  String nickname;</span><br><span class="line"></span><br><span class="line">  _$User() : super._();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我們需要使用 Dart 的 <code>part</code> 陳述式來引入生成的程式碼：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">=== user.dart ===</span><br><span class="line"></span><br><span class="line">library user;</span><br><span class="line"></span><br><span class="line">part &#x27;user.g.dart&#x27;;</span><br><span class="line"></span><br><span class="line">abstract class User &#123;</span><br><span class="line">  String get name;</span><br><span class="line"></span><br><span class="line">  @nullable</span><br><span class="line">  String get nickname;</span><br><span class="line"></span><br><span class="line">  User._();</span><br><span class="line">  factory User() = _$User;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">=== user.g.dart 由 source_gen 產生 ===</span><br><span class="line"></span><br><span class="line">part of user;</span><br><span class="line"></span><br><span class="line">class _$User extends User &#123;</span><br><span class="line">  String name;</span><br><span class="line">  String nickname;</span><br><span class="line"></span><br><span class="line">  _$User() : super._();</span><br><span class="line"></span><br><span class="line">  // 生成的實作放在這裡。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我們正在取得進展！我們有一種方法可以產生程式碼，並將其插入到我們手寫的程式碼中。現在回到有趣的部分：您實際上手寫的內容，以及 <code>built_value</code> 應該生成的內容。</p>
+<p>我們缺少一種實際指定欄位值的方法。我們可以考慮使用具名可選參數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">factory</span> User(&#123;<span class="built_in">String</span> name, <span class="built_in">String</span> nickname&#125;) = _$User;</span><br></pre></td></tr></table></figure>
+
+<p>但這有幾個缺點：它強迫您在建構函數中重複所有欄位名稱，並且它只提供了一種一次設定所有欄位的方法；如果您想逐個構建值怎麼辦？</p>
+<p>幸運的是，<a href="https://en.wikipedia.org/wiki/Builder_pattern">建構器模式</a> 來拯救我們了。我們已經看到它在 Dart 中的集合中<a href="https://medium.com/@davidmorgan_14314/darts-built-collection-for-immutable-collections-db662f705eff#.oj7boxdoh">效果如何</a>——感謝串聯運算符。假設我們有一個建構器類型，我們可以使用它作為建構函數——透過請求一個將建構器作為參數的函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> nickname;</span><br><span class="line"></span><br><span class="line">  User._();</span><br><span class="line">  <span class="keyword">factory</span> User([updates(UserBuilder b)]) = _$User;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這有點令人驚訝，但它導致了一個非常簡單的實例化語法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user1 = User((b) =&gt; b</span><br><span class="line">  ..name = <span class="string">&#x27;John Smith&#x27;</span></span><br><span class="line">  ..nickname = <span class="string">&#x27;Joe&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如何根據舊值建立新值？傳統的建構器模式提供了一個 <code>toBuilder</code> 方法來轉換為建構器；然後您應用您的更新並調用 <code>build</code>。但對於大多數使用案例來說，一個更好的模式是有一個 <code>rebuild</code> 方法。與建構函數一樣，它接受一個以建構器為參數的函數，並提供簡單的內聯更新：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user2 = user1.rebuild((b) =&gt; b</span><br><span class="line">  ..nickname = <span class="string">&#x27;Jojo&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>不過，我們仍然需要 <code>toBuilder</code>，以防您想將建構器保留一段時間。因此，我們希望所有值類型都有兩種方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Built</span>&lt;<span class="title">V</span>, <span class="title">B</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// 建立一個新的實例：應用 [updates] 的實例。</span></span><br><span class="line">  V rebuild(updates(B builder));</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 轉換為建構器。</span></span><br><span class="line">  B toBuilder();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>您不需要為這些方法編寫實作，<code>built_value</code> 將為您產生它。因此，您只需聲明您「實作 Built」：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">library</span> user;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:built_value/built_value.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">part</span> <span class="string">&#x27;user.g.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> <span class="keyword">implements</span> <span class="title">Built</span>&lt;<span class="title">User</span>, <span class="title">UserBuilder</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> nickname;</span><br><span class="line"></span><br><span class="line">  User._();</span><br><span class="line">  <span class="keyword">factory</span> User([updates(UserBuilder b)]) = _$User;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>就這樣！定義了一個值類型，產生了一個實作，並且易於使用。當然，生成的實作不僅僅是欄位：它還提供了 <code>operator==</code>、<code>hashCode</code>、<code>toString</code> 以及對必要欄位的 null 檢查。</p>
+<p>不過，我跳過了一個主要細節：我說「假設我們有一個建構器類型」。當然，我們正在產生程式碼，所以答案很簡單：我們會為您產生它。<code>User</code> 中引用的 <code>UserBuilder</code> 是在 <code>user.g.dart</code> 中建立的。</p>
+<p>…<em>除非</em>您想在建構器中編寫一些程式碼，這是一個非常合理的做法。如果您想這樣做，您可以對建構器遵循相同的模式。它被聲明為抽象的，有一個私有建構函數和一個委託給生成的實作的工廠：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">UserBuilder</span> <span class="keyword">implements</span> <span class="title">Builder</span>&lt;<span class="title">User</span>, <span class="title">UserBuilder</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@virtual</span></span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@virtual</span></span><br><span class="line">  <span class="built_in">String</span> nickname;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將例如 John &quot;Joe&quot; Smith 解析為使用者名稱 + 暱稱。</span></span><br><span class="line">  <span class="keyword">void</span> parseUser(<span class="built_in">String</span> user) &#123;</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  UserBuilder._();</span><br><span class="line">  <span class="keyword">factory</span> UserBuilder() = _$UserBuilder;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><code>@virtual</code> 註釋來自 <code>package:meta</code>，並且是允許生成的實作覆寫欄位所必需的。現在您已經將工具方法加入到您的建構器中，您可以像將其賦值給欄位一樣內聯使用它們：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user = User((b) =&gt; b..parseUser(<span class="string">&#x27;John &quot;Joe&quot; Smith&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+
+<p>自訂建構器的使用案例相對少見，但它們可以非常強大。例如，您可能希望您的建構器實作一個用於設定共用欄位的通用介面，以便它們可以互換使用。</p>
+<h3 id="嵌巢建構器"><a href="#嵌巢建構器" class="headerlink" title="嵌巢建構器"></a>嵌巢建構器</h3><p><code>built_value</code> 還有一個您還沒有看到的主要功能：嵌巢建構器。當一個 <code>built_value</code> 欄位持有 <code>built_collection</code> 或另一個 <code>built_value</code> 時，預設情況下，它在建構器中作為<em>嵌巢建構器</em>提供。這意味著您可以<em>更容易</em>地更新深層嵌套的欄位，而不是整個結構都是可變的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> structuredData = Account((b) =&gt; b</span><br><span class="line">  ..user.name = <span class="string">&#x27;John Smith&#x27;</span></span><br><span class="line">  ..user.nickname = <span class="string">&#x27;Joe&#x27;</span></span><br><span class="line">  ..credentials.email = <span class="string">&#x27;john.smith@example.com&#x27;</span></span><br><span class="line">  ..credentials.phone.country = Country.us</span><br><span class="line">  ..credentials.phone.number = <span class="string">&#x27;555 01234 567&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> updatedStructuredData = structuredData.rebuild((b) =&gt; b</span><br><span class="line">  ..credentials.phone.country = Country.switzerland</span><br><span class="line">  ..credentials.phone.number = <span class="string">&#x27;555 01234 555&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>為什麼比整個結構都是可變的「更容易」？</p>
+<p>首先，所有建構器提供的 <code>update</code> 方法意味著您可以隨時進入新的作用域，「重新啟動」串聯運算符，並簡潔地內聯進行您想要的任何更新：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> updatedStructuredData = structuredData.rebuild((b) =&gt; b</span><br><span class="line">  ..user.update((b) =&gt; b</span><br><span class="line">    ..name = <span class="string">&#x27;Johnathan Smith&#x27;</span>)</span><br><span class="line">  ..credentials.phone.update((b) =&gt; b</span><br><span class="line">    ..country = Country.switzerland</span><br><span class="line">    ..number = <span class="string">&#x27;555 01234 555&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+
+<p>其次，嵌套建構器會根據需要自動建立。例如，在 <code>built_value</code> 的基準測試程式碼中，我們定義了一個名為 <code>Node</code> 的類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> <span class="keyword">implements</span> <span class="title">Built</span>&lt;<span class="title">Node</span>, <span class="title">NodeBuilder</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">get</span> label;</span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  Node <span class="keyword">get</span> left;</span><br><span class="line">  <span class="meta">@nullable</span></span><br><span class="line">  Node <span class="keyword">get</span> right;</span><br><span class="line"></span><br><span class="line">  Node._();</span><br><span class="line">  <span class="keyword">factory</span> Node([updates(NodeBuilder b)]) = _$Node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>建構器的自動建立讓我們可以內聯建立我們想要的任何樹結構：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> node = Node((b) =&gt; b</span><br><span class="line">  ..left.left.left.right.left.right.label = <span class="string">&#x27;I’m a leaf!&#x27;</span></span><br><span class="line">  ..left.left.right.right.label = <span class="string">&#x27;I’m also a leaf!&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> updatedNode = node.rebuild((b) =&gt; b</span><br><span class="line">  ..left.left.right.right.label = <span class="string">&#x27;I’m not a leaf any more!&#x27;</span></span><br><span class="line">  ..left.left.right.right.right.label = <span class="string">&#x27;I’m the leaf now!&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p>我提到基準測試了嗎？更新時，<code>built_value</code> 只複製需要更新的結構部分，重用其餘部分。所以它<em>很快</em>——而且記憶體效率很高*。</p>
+<p>但您不必只構建樹。使用 <code>built_value</code>，您可以使用完全類型的不可變物件模型…它們與高效的不可變樹一樣快速和強大。您可以混合和匹配類型資料、自訂結構（如 <code>Node</code> 範例）以及來自 <code>built_collection</code> 的集合：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> structuredData = Account((b) =&gt; b</span><br><span class="line">  ..user.update((b) =&gt; b</span><br><span class="line">    ..name = <span class="string">&#x27;John Smith&#x27;</span>)</span><br><span class="line">  ..credentials.phone.update((b) =&gt; b</span><br><span class="line">    ..country = Country.us</span><br><span class="line">    ..number = <span class="string">&#x27;555 01234 567&#x27;</span>)</span><br><span class="line">  ..node.left.left.left.account.update((b) =&gt; b</span><br><span class="line">    ..user.name = <span class="string">&#x27;John Smith II&#x27;</span></span><br><span class="line">    ..user.nickname = <span class="string">&#x27;Is lost in a tree&#x27;</span>)</span><br><span class="line">  ..node.left.right.right.account.update((b) =&gt; b</span><br><span class="line">    ..user.name = <span class="string">&#x27;John Smith III&#x27;</span>));</span><br></pre></td></tr></table></figure>
+
+
+<p>當我說大多數資料都應該是值類型時，我說的<em>就是這些</em>值類型！</p>
+<h3 id="更多關於-built-value"><a href="#更多關於-built-value" class="headerlink" title="更多關於 built_value"></a>更多關於 built_value</h3><p>我已經討論了為什麼需要 <code>built_value</code> 以及它的使用方法。還有更多：<code>built_value</code> 還提供了 <code>EnumClass</code>，用於像列舉一樣的類別，以及 JSON 序列化，用於伺服器&#x2F;客戶端通訊和資料儲存。我將在以後的文章中討論這些內容。</p>
+<p>之後，我將深入研究<a href="https://github.com/google/built_value.dart/tree/master/chat_example">聊天範例</a>，該範例在具有伺服器和客戶端的端到端系統中使用 <code>built_value</code>。</p>
+<p>編輯：<a href="https://medium.com/@davidmorgan_14314/darts-built-value-for-serialization-f5db9d0f4159#.par5t1142">下一篇文章</a>。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=83e2497922d4" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/darts-built-value-for-immutable-object-models-83e2497922d4">Dart 的 <code>built_value</code>，實現不可變物件模型</a> 最初發佈於 <a href="https://medium.com/dartlang">dartlang</a> 的 Medium 上，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/immutability/" rel="tag"># immutability</a>
+              <a href="/tags/clean-code/" rel="tag"># clean-code</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/archives/f1831e03.html" rel="next" title="【文章翻譯】Dart’s built_value for Serialization">
+      【文章翻譯】Dart’s built_value for Serialization <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E7%9A%84-built-value%EF%BC%8C%E5%AF%A6%E7%8F%BE%E4%B8%8D%E5%8F%AF%E8%AE%8A%E7%89%A9%E4%BB%B6%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">Dart 的 built_value，實現不可變物件模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%BC%E9%A1%9E%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">值類型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%BC%E9%A1%9E%E5%9E%8B%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-number">1.2.</span> <span class="nav-text">值類型的問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%B4%B9-built-value"><span class="nav-number">1.3.</span> <span class="nav-text">介紹 built_value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%B7%A2%E5%BB%BA%E6%A7%8B%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">嵌巢建構器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E9%97%9C%E6%96%BC-built-value"><span class="nav-number">1.5.</span> <span class="nav-text">更多關於 built_value</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

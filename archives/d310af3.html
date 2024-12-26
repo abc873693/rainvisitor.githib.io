@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 一步修復多個分析問題在快速修復分析問題中，我們探討了在編輯時自動修復個別診斷的支持。有時即使這樣也太慢了，您真的希望一次修復多個診斷。幸運的是，也有支持這樣做的，我們將在本文中介紹。 修復多個診斷的方法有幾種，取決於您要修復多少診斷，我們將分別研究每一種方法。 修復同一個診斷的多個出現位置您是否曾經透過將類別移動到不同的檔案來重構程式碼">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Bulk application of fixes">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/d310af3.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 一步修復多個分析問題在快速修復分析問題中，我們探討了在編輯時自動修復個別診斷的支持。有時即使這樣也太慢了，您真的希望一次修復多個診斷。幸運的是，也有支持這樣做的，我們將在本文中介紹。 修復多個診斷的方法有幾種，取決於您要修復多少診斷，我們將分別研究每一種方法。 修復同一個診斷的多個出現位置您是否曾經透過將類別移動到不同的檔案來重構程式碼">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/460/0*URmNnWSjGRGOorjv">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/444/0*3QaE0FunXWpPp2Az">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/658/0*p2Pf06L6A4JSX7IS">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/658/0*S4UnOqdx-h0U55jU">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/430/0*dHw4rjdxTR0liZX8">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/352/0*Wk6qnyUlNr3qN0GQ">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/460/0*mr1A2XnnRCaamU22">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/640/0*3klKEJk5p40lCPbO">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/536/0*iRZIzPrwKl7jEYNY">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/430/0*FDf16dDPwfPg_dET">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Jrz3MRfYVtcXrb9C">
+<meta property="article:published_time" content="2022-05-05T14:41:38.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:28:04.028Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="linter">
+<meta property="article:tag" content="analyzer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/460/0*URmNnWSjGRGOorjv">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/d310af3.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Bulk application of fixes | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/d310af3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Bulk application of fixes
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-05 22:41:38" itemprop="dateCreated datePublished" datetime="2022-05-05T22:41:38+08:00">2022-05-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:28:04" itemprop="dateModified" datetime="2024-12-20T02:28:04+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="一步修復多個分析問題"><a href="#一步修復多個分析問題" class="headerlink" title="一步修復多個分析問題"></a>一步修復多個分析問題</h2><p>在<a href="https://medium.com/dartlang/quick-fixes-for-analysis-issues-c10df084971a">快速修復分析問題</a>中，我們探討了在編輯時自動修復個別診斷的支持。有時即使這樣也太慢了，您真的希望一次修復多個診斷。幸運的是，也有支持這樣做的，我們將在本文中介紹。</p>
+<p>修復多個診斷的方法有幾種，取決於您要修復多少診斷，我們將分別研究每一種方法。</p>
+<h3 id="修復同一個診斷的多個出現位置"><a href="#修復同一個診斷的多個出現位置" class="headerlink" title="修復同一個診斷的多個出現位置"></a>修復同一個診斷的多個出現位置</h3><p>您是否曾經透過將類別移動到不同的檔案來重構程式碼？如果是這樣，很可能某些 import 僅僅是因為移動的類別中的引用才需要的，這會導致您留下未使用的 import：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/460/0*URmNnWSjGRGOorjv" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/444/0*3QaE0FunXWpPp2Az" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>對於任何可以在同一個檔案中多次應用的修復，工具都提供了一個選項，可以在檔案中的任何位置應用它。</p>
+<p>這些修復會顯示在與其他修復相同的位置，並且標籤通常與單個位置修復相似，但會添加一些短語，例如「在檔案中」。例如，以下是此修復在 IDE 中的顯示方式：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/658/0*p2Pf06L6A4JSX7IS" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/658/0*S4UnOqdx-h0U55jU" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<p>選擇「在檔案中」修復會完全按照您的預期執行 - 它會移除檔案中所有未使用的 import：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/430/0*dHw4rjdxTR0liZX8" />
+<figcaption>Visual Studio Code</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/352/0*Wk6qnyUlNr3qN0GQ" />
+<figcaption>IntelliJ IDEA</figcaption>
+</figure>
+
+<h3 id="修復檔案中的所有診斷"><a href="#修復檔案中的所有診斷" class="headerlink" title="修復檔案中的所有診斷"></a>修復檔案中的所有診斷</h3><p>這很棒，但它只修復一種診斷，並且需要您找到報告診斷的位置（在編輯器中或在問題視圖中）才能調用修復。看起來工具還可以做得更多。</p>
+<p>在 Visual Studio Code 中，它可以。您可以將修復應用於單個檔案中的所有診斷。為了了解如何操作，我們將使用與上面相同的示例：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/460/0*mr1A2XnnRCaamU22" />
+</figure>
+
+<p>如果您按一下滑鼠右鍵打開上下文選單，您將看到以下內容：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/640/0*3klKEJk5p40lCPbO" />
+</figure>
+
+<p>如果您選擇**原始碼動作…**，它會打開第二個選單：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/536/0*iRZIzPrwKl7jEYNY" />
+</figure>
+
+<p>選擇<strong>全部修復</strong>會將修復應用於編輯器中的所有診斷，產生以下結果：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/430/0*FDf16dDPwfPg_dET" />
+</figure>
+
+<p>您也可以從命令面板調用<strong>全部修復</strong>命令，您可以透過從<strong>檢視</strong>選單中選擇**命令面板…**或使用鍵盤快捷鍵（任何平台上的 F1，Windows 和 Linux 上的 Control+Shift+P 或 macOS 上的 Command+Shift+P）來打開命令面板。您可以透過輸入命令的名稱來篩選列表。命令面板看起來像這樣：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Jrz3MRfYVtcXrb9C" />
+</figure>
+
+<h3 id="修復目錄中的所有診斷"><a href="#修復目錄中的所有診斷" class="headerlink" title="修復目錄中的所有診斷"></a>修復目錄中的所有診斷</h3><p>我們用於修復診斷的最完整的工具是命令列工具 <code>dart fix</code>。它可以修復給定目錄中的所有診斷，這意味著您可以使用它來修復套件或應用程式中的所有內容。</p>
+<p>當然，有一些注意事項。它並不能修復每個診斷，因為它應用與 IDE 中可用的快速修復相同的快速修復，並且並非每個診斷都有快速修復。當有多個同樣有效的方法來修復問題時，它也不會應用快速修復診斷，因為它不知道您更喜歡應用哪個修復。這些注意事項也適用於上一節中描述的<strong>全部修復</strong>命令。</p>
+<p>雖然不需要經常使用此工具（這也是您可能不知道它的原因之一），但在某些情況下它特別有用。</p>
+<p>首先，考慮您想要啟用新的 lint，甚至是 lints 集的情況，例如<a href="https://github.com/dart-lang/lints/blob/main/lib/core.yaml">核心</a>、<a href="https://github.com/dart-lang/lints/blob/main/lib/recommended.yaml">建議</a>或<a href="https://github.com/flutter/packages/blob/master/packages/flutter_lints/lib/flutter.yaml">flutter</a>規則集之一。您的套件中很可能至少有一些違反 lint 規則的情況。如果存在與 lint 相關聯的修復，那麼一步應用該修復到所有位置會比單獨應用修復到每個違規位置更方便。</p>
+<p>其次，考慮您從一個 Flutter 版本更新到另一個版本的情況。如果兩個版本之間有 API 變更，則很有可能存在修復以升級您的程式碼以符合最新版本。同樣，如果所有這些變更都在單個操作中應用，則會很方便。</p>
+<p>這就是 <code>dart fix</code> 命令的用武之地。它可以在多個檔案中應用針對多個診斷的快速修復。</p>
+<p>該命令有兩種模式。「空運行」模式會告訴您可以應用多少變更以及可以修復哪些診斷，但不會修改任何檔案。「應用」模式會應用變更。</p>
+<p>您可以提供包含要修復的檔案的目錄的路徑，但如果您省略目錄，它會遞迴地修復目前目錄及其子目錄中的所有檔案。</p>
+<p>假設您已啟用 <code>prefer_single_quotes</code> lint，並且您有一個包含以下內容的檔案：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&quot;package:logging/logging.dart&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> logger = Logger(<span class="string">&quot;myApp&quot;</span>);</span><br><span class="line">  logger.info(<span class="string">&quot;Entering myApp&quot;</span>);</span><br><span class="line">  <span class="comment">// Do stuff.</span></span><br><span class="line">  logger.info(<span class="string">&quot;Exiting myApp&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>從包含此檔案的目錄中使用 <code>--dry-run</code> 選項運行 <code>dart fix</code> 命令會產生以下輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ dart fix --dry-run</span><br><span class="line">Computing fixes in __bin__ (dry run)... 4.3s</span><br><span class="line"></span><br><span class="line">3 proposed fixes in 1 file.</span><br><span class="line"></span><br><span class="line">demo.dart</span><br><span class="line">  prefer_single_quotes • 3 fixes</span><br></pre></td></tr></table></figure>
+
+<p>該工具已找到三個違反 lint 的地方，並報告它能夠修復所有三個，但它不會修改檔案。</p>
+<p>再次運行 <code>dart fix</code> 工具，但這次使用 <code>--apply</code> 選項，會產生幾乎相同的輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ dart fix --apply</span><br><span class="line">Computing fixes in __bin__... 5.3s</span><br><span class="line">Applying fixes...         0.0s</span><br><span class="line"></span><br><span class="line">3 proposed fixes in 1 file.</span><br><span class="line"></span><br><span class="line">demo.dart</span><br><span class="line">  prefer_single_quotes • 3 fixes</span><br><span class="line"></span><br><span class="line">3 fixes made in 1 file.</span><br></pre></td></tr></table></figure>
+
+<p>但這次檔案會更新為包含以下內容：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:logging/logging.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> logger = Logger(<span class="string">&#x27;myApp&#x27;</span>);</span><br><span class="line">  logger.info(<span class="string">&#x27;Entering myApp&#x27;</span>);</span><br><span class="line">  <span class="comment">// Do stuff.</span></span><br><span class="line">  logger.info(<span class="string">&#x27;Exiting myApp&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由於空運行模式不會產生任何允許您查看所建議的實際變更的 diff 輸出，<strong>請考慮在使用 <code>--apply</code> 選項運行工具之前提交您的變更</strong>。這樣，更容易查看工具實際進行了哪些變更，並還原您不喜歡的任何變更。</p>
+<p>如果您不想在運行工具之前提交，並且您正在使用 IntelliJ IDEA，則可以使用<strong>檔案-&gt;本地歷史記錄</strong>功能來比較應用修復前後的狀態。（如需更多資訊，請參閱<a href="https://www.jetbrains.com/help/idea/local-history.html#label-local-history-revisions">將標籤添加到特定狀態的本地歷史記錄</a>。）</p>
+<p><code>dart fix</code> 命令無法修復所有問題，但如果可以的話，它比手動應用修復到所有位置要容易得多。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>能夠在單個操作中應用多個修復不僅提高了快速修復的功能，還可能更容易進行更大規模的變更，例如啟用新的 lint 規則或升級到最新版本的 Flutter。</p>
+<p>與往常一樣，如果您對如何改進這些工具有任何想法，請透過<a href="https://github.com/dart-lang/sdk/issues/new">建立 dart-lang&#x2F;sdk 問題</a>告知我們。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/linter/" rel="tag"># linter</a>
+              <a href="/tags/analyzer/" rel="tag"># analyzer</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4acb2e9a.html" rel="prev" title="【文章翻譯】Does Flutter boost developer productivity?">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Does Flutter boost developer productivity?
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/8e1574a8.html" rel="next" title="【文章翻譯】I/O Pinball Powered by Flutter and Firebase">
+      【文章翻譯】I/O Pinball Powered by Flutter and Firebase <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%AD%A5%E4%BF%AE%E5%BE%A9%E5%A4%9A%E5%80%8B%E5%88%86%E6%9E%90%E5%95%8F%E9%A1%8C"><span class="nav-number">1.</span> <span class="nav-text">一步修復多個分析問題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%BE%A9%E5%90%8C%E4%B8%80%E5%80%8B%E8%A8%BA%E6%96%B7%E7%9A%84%E5%A4%9A%E5%80%8B%E5%87%BA%E7%8F%BE%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">修復同一個診斷的多個出現位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%BE%A9%E6%AA%94%E6%A1%88%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E8%A8%BA%E6%96%B7"><span class="nav-number">1.2.</span> <span class="nav-text">修復檔案中的所有診斷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E5%BE%A9%E7%9B%AE%E9%8C%84%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E8%A8%BA%E6%96%B7"><span class="nav-number">1.3.</span> <span class="nav-text">修復目錄中的所有診斷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

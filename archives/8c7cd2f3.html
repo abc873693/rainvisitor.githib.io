@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 三個很酷的 Dart 模式關於作者：Jose 最近大學畢業，現在在 Material 工作，這是一個設計系統，可幫助團隊建立高品質的數位體驗。Jose 的團隊維護 Flutter material 函式庫。 使用 Flutter 框架，您可以使用 Dart 程式語言建立漂亮的應用程式。隨著時間的推移，我學習了一些有用的 Dart 模式，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】3 cool Dart patterns">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/8c7cd2f3.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 三個很酷的 Dart 模式關於作者：Jose 最近大學畢業，現在在 Material 工作，這是一個設計系統，可幫助團隊建立高品質的數位體驗。Jose 的團隊維護 Flutter material 函式庫。 使用 Flutter 框架，您可以使用 Dart 程式語言建立漂亮的應用程式。隨著時間的推移，我學習了一些有用的 Dart 模式，">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*alx_hKg5fP3b1b22">
+<meta property="article:published_time" content="2020-05-20T08:01:01.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:41:56.673Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="coding">
+<meta property="article:tag" content="iife">
+<meta property="article:tag" content="conditional-statements">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*alx_hKg5fP3b1b22">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/8c7cd2f3.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】3 cool Dart patterns | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8c7cd2f3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】3 cool Dart patterns
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-20 16:01:01" itemprop="dateCreated datePublished" datetime="2020-05-20T16:01:01+08:00">2020-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:41:56" itemprop="dateModified" datetime="2024-12-18T22:41:56+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="三個很酷的-Dart-模式"><a href="#三個很酷的-Dart-模式" class="headerlink" title="三個很酷的 Dart 模式"></a>三個很酷的 Dart 模式</h2><p><em>關於作者：Jose 最近大學畢業，現在在 <a href="https://material.io/">Material</a> 工作，這是一個設計系統，可幫助團隊建立高品質的數位體驗。Jose 的團隊維護 Flutter <a href="https://api.flutter.dev/flutter/material/material-library.html">material 函式庫</a>。</em></p>
+<p>使用 Flutter 框架，您可以使用 Dart 程式語言建立漂亮的應用程式。隨著時間的推移，我學習了一些有用的 Dart 模式，這些模式幫助我成為一名更好的 Flutter 開發人員。以下是我推薦您在下一個應用程式中嘗試的三個模式：</p>
+<ul>
+<li>有條件地賦值：<code>boolean ? widget : widget</code></li>
+<li>將 Widget 合併到集合中：<code>for ()...[]</code></li>
+<li>立即調用匿名函式：<code>() &#123;&#125; ()</code></li>
+</ul>
+<p>本文將向您展示如何使用每種模式，最後會有一個嵌入的 Pen，您可以在其中使用程式碼。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*alx_hKg5fP3b1b22" />
+<figcaption>此螢幕截圖顯示了我將討論的程式碼及其產生的 UI。</figcaption>
+</figure>
+
+<h3 id="有條件地賦值"><a href="#有條件地賦值" class="headerlink" title="有條件地賦值"></a>有條件地賦值</h3><p><a href="https://dart.dev/guides/language/language-tour#conditional-expressions">條件賦值運算子</a> <code>?:</code>（也稱為 <a href="https://en.wikipedia.org/wiki/%3F:">三元運算子</a>）需要一個條件表達式和兩個值表達式。當您的 Widget 取決於布林值時，此模式非常有用。您可以使用三元運算子內嵌運行程式碼，而不是將運算模組化到單獨的方法中。我已經無數次使用過這種技術。</p>
+<p>在以下範例中，AppBar 標題取決於布林值。（在這種情況下，該值取決於 <code>isVegetarian</code> 布林值。）如果該值為 true，則標題文字設定為第一個值（「Vegetarian Food」）；否則，它就是第二個值（「Non-Vegetarian Food」）。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">  title: Text(Random().nextBool()</span><br><span class="line">      ? <span class="string">&#x27;Vegetarian Food&#x27;</span></span><br><span class="line">      : <span class="string">&#x27;Non-Vegetarian Food&#x27;</span>),</span><br><span class="line">),</span><br></pre></td></tr></table></figure>
+
+<h3 id="將-Widget-合併到集合中"><a href="#將-Widget-合併到集合中" class="headerlink" title="將 Widget 合併到集合中"></a>將 Widget 合併到集合中</h3><p>此模式 <code>for ()...[]</code> 使用展開運算子（…）將 Widget 列表合併到現有集合中。每當我使用 Widget 列表時，我都會使用它，通常與 <code>children</code> 屬性一起使用。以下範例使用此技術建立 Widget 列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">children: [</span><br><span class="line">  Container(),</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> food <span class="keyword">in</span> foods) ...[</span><br><span class="line">    <span class="keyword">if</span> (isVegetarian == food.isVegetarian)</span><br><span class="line">      ListTile(title: Text(food.name)),</span><br><span class="line">    SizedBox(height: <span class="number">50.0</span>),</span><br><span class="line">  ],</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+
+<p>在此範例中，<code>foods</code> 是 <code>Food</code> 物件的列表，定義如下：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;Food&gt; foods = [</span><br><span class="line">  Food(name: <span class="string">&#x27;apple&#x27;</span>, isVegetarian: <span class="keyword">true</span>),</span><br><span class="line">  Food(name: <span class="string">&#x27;nuts&#x27;</span>, isVegetarian: <span class="keyword">true</span>),</span><br><span class="line">  Food(name: <span class="string">&#x27;eggs&#x27;</span>, isVegetarian: <span class="keyword">true</span>),</span><br><span class="line">  Food(name: <span class="string">&#x27;chicken&#x27;</span>, isVegetarian: <span class="keyword">false</span>),</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">  Food(&#123;</span><br><span class="line">    <span class="keyword">this</span>.name,</span><br><span class="line">    <span class="keyword">this</span>.isVegetarian,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">  <span class="built_in">bool</span> isVegetarian;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>每當您需要多次（例如，在範例中，如果 <code>isVegetarian</code> 為 true，則為 3 次）將多個 Widget（例如範例中的 <code>ListTile</code> Widget）加入到 Widget 列表中時，<code>for ()...[]</code> 模式都很方便。</p>
+<p>由於展開運算子（…）對 Dart 來說相對較新，請確保您的 <code>pubspec.yaml</code> 檔案指定的 Dart SDK 版本為 2.3.0 或更高版本：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="attr">sdk:</span> <span class="string">&quot;&gt;=2.3.0 &lt;3.0.0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>要了解有關 <a href="https://dart.dev/guides/language/language-tour#collection-operators">集合運算子</a> 和 <a href="https://dart.dev/guides/language/language-tour#spread-operator">展開運算子</a> 的更多資訊，請閱讀 <a href="https://dart.dev/guides/language/language-tour">Dart 語言導覽</a>。</p>
+<h3 id="立即調用匿名函式"><a href="#立即調用匿名函式" class="headerlink" title="立即調用匿名函式"></a>立即調用匿名函式</h3><p>第三種模式 <code>() &#123;&#125; ()</code> 相當於 Dart 中的「立即調用函式表達式（<a href="https://en.wikipedia.org/wiki/Immediately_invoked_function_expression">IIFE</a>）」。這種方便的模式讓您可以定義匿名函式並立即執行它。我發現這種模式在處理可能有多個輸出的 Widget 時非常有用。程式碼可以內嵌使用，而不是使用巢狀的三元運算子或將簡單的調用模組化。以下範例顯示了此模式，其中包含一個帶有 switch 語句的匿名函式。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">color: () &#123;</span><br><span class="line">  <span class="keyword">switch</span> (getRandomElement(foods).name) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;apple&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> Colors.green;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;nuts&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> Colors.brown;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;eggs&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> Colors.yellow;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">      <span class="keyword">return</span> Colors.transparent;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;(),</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>您可以使用 CodePen 來玩 Flutter 程式碼。以下是一個包含本文中所有程式碼的 Pen：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fcodepen.io%2FJoseAlba%2Fembed%2Fpreview%2FmdeKexM%3Fheight%3D600%26slug-hash%3DmdeKexM%26default-tabs%3Djs%2Cresult%26host%3Dhttps%3A%2F%2Fcodepen.io&amp;display_name=CodePen&amp;url=https%3A%2F%2Fcodepen.io%2FJoseAlba%2Fpen%2FmdeKexM&amp;image=https%3A%2F%2Fscreenshot.codepen.io%2F4404447.mdeKexM.small.639bc042-f20b-4346-89cc-073a0500f278.png&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=codepen" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+<p>以下是用顏色表示的另一個 CodePen 範例：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fcodepen.io%2FJoseAlba%2Fembed%2Fpreview%2FeYpgpzY%3Fheight%3D600%26slug-hash%3DeYpgpzY%26default-tabs%3Djs%2Cresult%26host%3Dhttps%3A%2F%2Fcodepen.io&amp;display_name=CodePen&amp;url=https%3A%2F%2Fcodepen.io%2FJoseAlba%2Fpen%2FeYpgpzY&amp;image=https%3A%2F%2Fscreenshot.codepen.io%2F4404447.eYpgpzY.small.79a6eaaa-84bc-4960-8e82-1a3ea215fde9.png&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=codepen" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+
+<p>我希望這三種 Dart 模式能讓您在開發 Flutter 應用程式時擁有更大的自由度。如果您還有其他喜歡的技巧，請在評論中分享！</p>
+<p><em>要了解有關 Jose 的更多資訊，請造訪他的 <a href="https://github.com/JoseAlba">GitHub</a>、<a href="https://www.linkedin.com/in/josealba1996/">LinkedIn</a>、<a href="https://www.youtube.com/channel/UCOdKA_On0oPe1tz02z1QfxA?view_as=subscriber">YouTube</a> 或 <a href="https://www.instagram.com/jose.alba/">Instagram</a>。</em></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/coding/" rel="tag"># coding</a>
+              <a href="/tags/iife/" rel="tag"># iife</a>
+              <a href="/tags/conditional-statements/" rel="tag"># conditional-statements</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/be1257f8.html" rel="prev" title="【文章翻譯】Flutter Package Ecosystem Update">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Flutter Package Ecosystem Update
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/92400ff7.html" rel="next" title="【文章翻譯】Save the Date: Flutter Day, June 25, 2020">
+      【文章翻譯】Save the Date: Flutter Day, June 25, 2020 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E5%80%8B%E5%BE%88%E9%85%B7%E7%9A%84-Dart-%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">三個很酷的 Dart 模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E6%A2%9D%E4%BB%B6%E5%9C%B0%E8%B3%A6%E5%80%BC"><span class="nav-number">1.1.</span> <span class="nav-text">有條件地賦值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87-Widget-%E5%90%88%E4%BD%B5%E5%88%B0%E9%9B%86%E5%90%88%E4%B8%AD"><span class="nav-number">1.2.</span> <span class="nav-text">將 Widget 合併到集合中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E8%AA%BF%E7%94%A8%E5%8C%BF%E5%90%8D%E5%87%BD%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">立即調用匿名函式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

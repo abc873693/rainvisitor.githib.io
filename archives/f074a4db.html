@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣告可靠的空值安全作者：Filip Hracek 和 Michael Thomsen 今天，Dart 團隊迎來了一個重要的里程碑，我們推出了空值安全功能的技術預覽版。空值安全可以幫助您避免一類通常難以發現的錯誤，並且額外帶來一系列效能提升。我們現在發佈的是早期技術預覽版，期待您的回饋。 這篇文章描述了 Dart 團隊推出空值安全的計劃。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing sound null safety">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/f074a4db.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣告可靠的空值安全作者：Filip Hracek 和 Michael Thomsen 今天，Dart 團隊迎來了一個重要的里程碑，我們推出了空值安全功能的技術預覽版。空值安全可以幫助您避免一類通常難以發現的錯誤，並且額外帶來一系列效能提升。我們現在發佈的是早期技術預覽版，期待您的回饋。 這篇文章描述了 Dart 團隊推出空值安全的計劃。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*HKl1Jf0uBNP-gReYYcgC_g.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*7alHbKGJ1FoeNqII">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=defd2216a6f3">
+<meta property="article:published_time" content="2020-06-10T08:00:36.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:55:33.057Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming-languages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*HKl1Jf0uBNP-gReYYcgC_g.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/f074a4db.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing sound null safety | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/f074a4db.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing sound null safety
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-10 16:00:36" itemprop="dateCreated datePublished" datetime="2020-06-10T16:00:36+08:00">2020-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:55:33" itemprop="dateModified" datetime="2024-12-18T15:55:33+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣告可靠的空值安全"><a href="#宣告可靠的空值安全" class="headerlink" title="宣告可靠的空值安全"></a>宣告可靠的空值安全</h2><p><em>作者：Filip Hracek 和 Michael Thomsen</em></p>
+<p>今天，Dart 團隊迎來了一個重要的里程碑，我們推出了空值安全功能的技術預覽版。空值安全可以幫助您避免一類通常難以發現的錯誤，並且額外帶來一系列效能提升。我們現在發佈的是早期技術預覽版，期待您的回饋。</p>
+<p>這篇文章描述了 Dart 團隊推出空值安全的計劃。它還解釋了<em>可靠的</em>空值安全是什麼意思，以及它與許多其他語言採用的方法有何不同。</p>
+<h3 id="為什麼需要空值安全？"><a href="#為什麼需要空值安全？" class="headerlink" title="為什麼需要空值安全？"></a>為什麼需要空值安全？</h3><p>Dart 是一種型別安全語言。這意味著，當您取得某個型別的變數時，編譯器可以<em>保證</em>它是該型別的。但型別安全本身並不能保證變數不是空值。</p>
+<p>空值錯誤非常常見。在 GitHub 上搜尋會發現由 Dart 程式碼中的空值引起的<a href="https://github.com/search?l=Dart&q=%22called+on+null%22&type=Issues">數千個問題</a>，以及更多<a href="https://github.com/search?l=Dart&q=%22called+on+null%22&type=Commits">數千個提交</a>試圖修復這些問題。</p>
+<p>試著看看您是否可以在以下範例程式碼中發現可空性問題：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> printLengths(<span class="built_in">List</span>&lt;File&gt; files) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> file <span class="keyword">in</span> files) &#123;</span><br><span class="line">    <span class="built_in">print</span>(file.lengthSync());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果以空值呼叫此函式，它肯定會失敗，但還有第二種情況需要考慮：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 錯誤情況 1：將空值傳遞給 files。</span></span><br><span class="line">  printLengths(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 錯誤情況 2：傳遞檔案列表，其中包含一個空值項目。</span></span><br><span class="line">  printLengths([File(<span class="string">&#x27;filename1&#x27;</span>), File(<span class="string">&#x27;filename2&#x27;</span>), <span class="keyword">null</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>空值安全功能可以解決這個問題：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*HKl1Jf0uBNP-gReYYcgC_g.png" />
+</figure>
+
+<p>有了空值安全，您可以更有信心地推斷您的程式碼。不再有煩人的執行階段空值解參考錯誤。相反，您會在編碼時得到靜態錯誤。</p>
+<h3 id="可靠的空值安全"><a href="#可靠的空值安全" class="headerlink" title="可靠的空值安全"></a>可靠的空值安全</h3><p>Dart 的空值安全是<em>可靠的</em>。這意味著 Dart 可以 100% 確定在上面的範例中，<code>files</code> 列表及其中的元素都不能為空。當 Dart 分析您的程式碼並確定變數不可為空時，該變數<em>始終</em>不可為空：如果您在偵錯器中檢查正在執行的程式碼，您會看到不可空性在執行階段得以保留。相比之下，其他一些實作是不可靠的，並且在許多情況下仍然需要執行執行階段空值檢查。Dart 與 Swift 共享可靠的空值安全，但其他程式語言並不多。</p>
+<p>Dart 的空值安全的可靠性還有另一個令人欣喜的含義：它意味著您的程式可以更小、更快。因為 Dart <em>確實</em>確定 <code>files</code> 永遠不會為空，所以 Dart 可以優化。例如，Dart ahead-of-time (AOT) 編譯器可以產生更小、更快的原生程式碼，因為當它<em>知道</em>變數不為空時，它不需要加入空值檢查。</p>
+<p>我們已經看到一些非常有希望的初步結果。例如，在模擬典型 Flutter 架構渲染模式的微基準測試中，我們看到了 <a href="https://gist.github.com/a-siva/07e8a5bfa8548a3041d44d5d1c6f3a40">19% 的效能提升</a>。</p>
+<h3 id="設計原則"><a href="#設計原則" class="headerlink" title="設計原則"></a>設計原則</h3><p>在開始詳細設計空值安全之前，Dart 團隊定義了以下三個核心原則：</p>
+<ul>
+<li><strong>預設不可為空。</strong> 除非您明確告訴 Dart 變數可以為空，否則它會將其視為不可為空。我們選擇此作為預設值，因為我們發現非空值是 API 中最常見的選擇。</li>
+<li><strong>可逐步採用。</strong> 現有的 Dart 程式碼有很多。必須可以逐步遷移到空值安全，一部分一部分地遷移。在同一個專案中應該可以同時存在空值安全和非空值安全的程式碼。我們還將提供工具來幫助您進行遷移。</li>
+<li><strong>完全可靠。</strong> 如上所述，Dart 的空值安全是可靠的。一旦您將整個專案和您的依賴項遷移到空值安全，您就可以獲得可靠性的全部好處。</li>
+</ul>
+<h3 id="使用空值安全宣告變數"><a href="#使用空值安全宣告變數" class="headerlink" title="使用空值安全宣告變數"></a>使用空值安全宣告變數</h3><p>核心語法很簡單。以下是一些以不同方式宣告的不可為空變數。記住，不可為空是預設值，因此這些宣告看起來和今天一樣，但它們的含義發生了變化。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在空值安全的 Dart 中，這些變數都不能為空。</span></span><br><span class="line"><span class="keyword">var</span> i = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">final</span> b = Foo();</span><br><span class="line"><span class="built_in">String</span> m = <span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>Dart 將確保您永遠不會將空值賦值給上述任何變數。如果您在一千行程式碼之後嘗試執行 <code>i = null</code>，您將收到靜態分析錯誤和紅色波浪線，並且您的程式將拒絕編譯。</p>
+<p>如果您希望變數可以為空，您可以使用 <code>?</code>，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這些都是可為空的變數。</span></span><br><span class="line"><span class="built_in">int?</span> j = <span class="number">1</span>;  <span class="comment">// 之後可以為空。</span></span><br><span class="line"><span class="keyword">final</span> Foo? c = getFoo();  <span class="comment">// 函式可能傳回空值。</span></span><br><span class="line"><span class="built_in">String?</span> n;  <span class="comment">// 最初為空。之後的任何時候也可以為空。</span></span><br></pre></td></tr></table></figure>
+
+<p>上述變數的行為與今天所有變數的行為相同。</p>
+<p>您也可以在其他地方使用 <code>?</code> 語法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在函式參數中。</span></span><br><span class="line"><span class="keyword">void</span> boogie(<span class="built_in">int?</span> count) &#123;</span><br><span class="line">  <span class="comment">// count 可能為空。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在函式傳回值中。</span></span><br><span class="line">Foo? getFoo() &#123;</span><br><span class="line">  <span class="comment">// 可以傳回空值而不是 Foo。</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 也適用於：泛型、型別定義、型別檢查等。</span></span><br><span class="line"><span class="comment">// 以及上述的任何組合。</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，再次強調，我們的夢想是您幾乎永遠不需要使用 <code>?</code>。您的絕大多數型別都將是不可為空的。</p>
+<h3 id="讓空值安全更容易使用"><a href="#讓空值安全更容易使用" class="headerlink" title="讓空值安全更容易使用"></a>讓空值安全更容易使用</h3><p>Dart 團隊正在努力讓空值安全盡可能容易使用。例如，看看這段使用 <code>if</code> 檢查空值的程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> honk(<span class="built_in">int?</span> loudness) &#123;</span><br><span class="line">  <span class="keyword">if</span> (loudness == <span class="keyword">null</span>) &#123;</span><br><span class="line">    <span class="comment">// 未指定 loudness，以最大 loudness 通知開發人員。</span></span><br><span class="line">    _playSound(<span class="string">&#x27;error.wav&#x27;</span>, volume: <span class="number">11</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// loudness 不為空，我們將其限制在可接受的級別。</span></span><br><span class="line">  _playSound(<span class="string">&#x27;honk.wav&#x27;</span>, volume: loudness.clamp(<span class="number">0</span>, <span class="number">11</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>請注意，Dart 如何聰明地意識到，當我們通過該 <code>if</code> 陳述句時，<code>loudness</code> 變數<em>不可能</em>為空。因此，Dart 允許我們直接呼叫 <code>clamp()</code> 方法，而無需額外操作。這種便利性是由一種稱為<em>流程分析</em>的東西實現的：Dart 分析器會像執行程式碼一樣瀏覽您的程式碼，自動找出有關程式碼的額外資訊。</p>
+<p>以下是另一個範例，它顯示了一個 Dart 可以確定變數不為空的情況，因為我們總是為其賦值一個非空值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> sign(<span class="built_in">int</span> x) &#123;</span><br><span class="line">  <span class="comment">// 結果不可為空。</span></span><br><span class="line">  <span class="built_in">int</span> result;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (x &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    result = <span class="number">1</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    result = <span class="number">-1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 到這裡，Dart 知道 result 不可能為空。</span></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果您移除上述任何賦值（例如，刪除 <code>result = -1;</code> 行），Dart 就無法保證 <code>result</code> 將不為空：您將收到靜態錯誤，並且您的程式碼將無法編譯。</p>
+<p>流程分析僅在函式內部有效。如果您有一個全域變數或類別欄位，那麼 Dart 就無法保證何時會為其賦值什麼值。Dart 無法模擬整個應用程式的流程。因此，當您<em>知道</em>變數在第一次讀取之前將不為空，但您無法立即初始化它時，可以使用新的 <code>late</code> 關鍵字。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Goo</span> </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> Viscosity v;</span><br><span class="line"></span><br><span class="line">  Goo(Material m) &#123;</span><br><span class="line">    v = m.computeViscosity();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>請注意，<code>v</code> 不可為空，儘管它最初未初始化。Dart 相信您在為 <code>v</code> 賦值一個非空值之前不會嘗試讀取它，並且您的程式碼可以編譯而不會出錯。</p>
+<h3 id="空值安全向下相容"><a href="#空值安全向下相容" class="headerlink" title="空值安全向下相容"></a>空值安全向下相容</h3><p>Dart 團隊已經努力了一年多的時間，才讓空值安全進入技術預覽階段。這是自我們推出 Dart 2 以來，對 Dart 語言最大的補充。然而，它並不是一個重大變更。現有程式碼可以呼叫使用空值安全的程式碼，反之亦然。即使空值安全可用後，它也將是一個可選功能，您可以在準備就緒時採用。<strong>您現有的程式碼將繼續運行而不會發生變化</strong>。</p>
+<p>我們最近將 Dart <a href="https://api.dart.dev/dev/2.9.0-13.0.dev/index.html">核心程式庫遷移到完全使用空值安全</a>。作為空值安全向下相容的一個範例，我們替換了現有的核心程式庫，而沒有在 Dart 和 Flutter 測試環境中運行的現有測試和測試應用程式中造成任何損壞。我們甚至將新的核心程式庫推送到我們在 Google 內部的許多客戶，直接推送到他們的生產程式碼庫中，也沒有出現任何問題。我們計劃在該功能推出時將我們所有的套件和應用程式遷移到使用空值安全，我們希望您也能這樣做。但您可以按照自己的時間表，逐個套件、逐個應用程式地進行遷移。</p>
+<h3 id="空值安全路線圖"><a href="#空值安全路線圖" class="headerlink" title="空值安全路線圖"></a>空值安全路線圖</h3><p>我們計劃分三個階段逐步推出空值安全：</p>
+<ol>
+<li><strong>技術預覽。</strong> 這是<em>今天發佈</em>的，並且在 Dart 的 <a href="https://dart.dev/get-dart#release-channels">dev channel</a> 中可用。有關詳細資訊，請參閱下面的「立即試用」部分。事情仍然可能會發生變化，因此<strong>目前請勿在生產程式碼中使用空值安全</strong>。不過，請測試一下並 <a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&labels=NNBD&body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">給我們回饋</a>！</li>
+<li><strong>Beta 版。</strong> 空值安全將在 Dart 的 beta channel 中可用，並且不再需要 <a href="https://github.com/dart-lang/sdk/blob/master/docs/process/experimental-flags.md">實驗性標誌</a>。該功能將非常接近預期的最終版本。如果您擁有 <a href="https://pub.dev/">pub.dev</a> 套件或外掛，這是您可以開始遷移的時候，但您不應該將其發佈為穩定版本。</li>
+<li><strong>穩定版。</strong> 每個人都將擁有空值安全，並且您將被鼓勵將您遷移的套件和外掛發佈為穩定版本。您還應該遷移您的生產應用程式。</li>
+</ol>
+<p>如果一切順利，我們計劃在今年年底之前將空值安全作為一個穩定功能發佈。從現在到那時，我們將加入工具來幫助您使您的程式碼空值安全，包括：</p>
+<ul>
+<li>一個遷移工具，以支援您自動執行升級現有套件和應用程式的許多步驟</li>
+<li><a href="https://pub.dev/">pub.dev</a> 上的標籤，以便您可以判斷套件是否支援空值安全</li>
+<li>對 <a href="https://dart.dev/tools/pub/cmd/pub-outdated"><code>pub outdated</code></a> 命令的擴展，支援尋找支援空值安全的最新版本的依賴項</li>
+</ul>
+<h3 id="立即試用"><a href="#立即試用" class="headerlink" title="立即試用"></a>立即試用</h3><p>今天試用空值安全的最快方法是透過 <a href="https://nullsafety.dartpad.dev/3d9c1769de7912c654bc5d132aff60ac">nullsafety.dartpad.dev</a>，這是一個啟用了空值安全的 DartPad 版本。打開「使用程式碼片段學習」下拉選單，可以找到一系列學習練習，逐步介紹空值安全的新語法和基礎知識。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*7alHbKGJ1FoeNqII" />
+</figure>
+
+<p>您也可以在小型命令行程式中試用空值安全。（我們尚未遷移 Flutter 等較大的框架。）首先下載 <a href="https://github.com/dart-lang/samples/blob/master/null_safety/calculate_lix/README.md#dart-preview-sdk-installation">dev channel Dart SDK</a> 的副本，然後取得 <a href="https://github.com/dart-lang/samples/tree/master/null_safety/calculate_lix">此範例 Dart CLI 應用程式</a> 的副本（<a href="https://github.com/dart-lang/samples">GitHub 儲存庫</a>，<a href="https://github.com/dart-lang/samples/archive/master.zip">zip 壓縮檔案</a>）。範例應用程式的 <a href="https://github.com/dart-lang/samples/blob/master/null_safety/calculate_lix/README.md">README 檔案</a> 中包含使用空值安全實驗標誌運行應用程式的說明。範例中的其他檔案提供了在 VS Code 和 Android Studio 中啟用偵錯的啟動設定。</p>
+<p>我們也有文件，並計劃製作更多：</p>
+<ul>
+<li><a href="https://dart.dev/null-safety">空值安全指南</a></li>
+<li><a href="https://api.dart.dev/dev/2.9.0-13.0.dev/index.html">具有空值安全性的核心程式庫的 API 參考</a></li>
+</ul>
+<p>我們很高興將空值安全引入 Dart。可靠的空值安全是 Dart 的一個獨特功能，可以幫助您編寫更少錯誤的程式碼並獲得更好的效能。我們希望您在技術預覽中試用該功能，並透過我們的問題追蹤器 <a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&labels=NNBD&body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">給我們回饋</a>。編碼愉快！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=defd2216a6f3" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-sound-null-safety-defd2216a6f3">宣告可靠的空值安全</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/cf04c72.html" rel="prev" title="【文章翻譯】Black Lives Matter">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Black Lives Matter
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9735e3e.html" rel="next" title="【文章翻譯】Handling 404: Page not found error in Flutter">
+      【文章翻譯】Handling 404: Page not found error in Flutter <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%91%8A%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">宣告可靠的空值安全</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%9C%80%E8%A6%81%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼需要空值安全？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">可靠的空值安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A8%AD%E8%A8%88%E5%8E%9F%E5%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">設計原則</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8%E5%AE%A3%E5%91%8A%E8%AE%8A%E6%95%B8"><span class="nav-number">1.4.</span> <span class="nav-text">使用空值安全宣告變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%93%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8%E6%9B%B4%E5%AE%B9%E6%98%93%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">讓空值安全更容易使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8%E5%90%91%E4%B8%8B%E7%9B%B8%E5%AE%B9"><span class="nav-number">1.6.</span> <span class="nav-text">空值安全向下相容</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8%E8%B7%AF%E7%B7%9A%E5%9C%96"><span class="nav-number">1.7.</span> <span class="nav-text">空值安全路線圖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E8%A9%A6%E7%94%A8"><span class="nav-number">1.8.</span> <span class="nav-text">立即試用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

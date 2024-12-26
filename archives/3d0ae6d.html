@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 擴展方法基礎    在未來的版本中，Dart 語言將添加一個新功能，擴展方法，它允許您（假裝）向現有類型添加新成員。即使它實際上只是一個靜態函數，擴展方法也可以像普通方法一樣被調用，例如 o.extensionMethod(42)。 為什麼我們要添加擴展方法？它們有什麼用？您如何使用它們？為什麼我稱它們為「擴展方法」，而您也可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart extension method fundamentals">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/3d0ae6d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 擴展方法基礎    在未來的版本中，Dart 語言將添加一個新功能，擴展方法，它允許您（假裝）向現有類型添加新成員。即使它實際上只是一個靜態函數，擴展方法也可以像普通方法一樣被調用，例如 o.extensionMethod(42)。 為什麼我們要添加擴展方法？它們有什麼用？您如何使用它們？為什麼我稱它們為「擴展方法」，而您也可">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/903/1*D57vLbx-SwCUSnLXA9zHRQ.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=2d466cd8b308">
+<meta property="article:published_time" content="2019-11-05T08:33:42.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:37:38.762Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="programming-languages">
+<meta property="article:tag" content="extension-method">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/903/1*D57vLbx-SwCUSnLXA9zHRQ.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/3d0ae6d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart extension method fundamentals | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/3d0ae6d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart extension method fundamentals
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-11-05 16:33:42" itemprop="dateCreated datePublished" datetime="2019-11-05T16:33:42+08:00">2019-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:37:38" itemprop="dateModified" datetime="2024-12-18T22:37:38+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-擴展方法基礎"><a href="#Dart-擴展方法基礎" class="headerlink" title="Dart 擴展方法基礎"></a>Dart 擴展方法基礎</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/903/1*D57vLbx-SwCUSnLXA9zHRQ.png" />
+</figure>
+
+<p>在未來的版本中，Dart 語言將添加一個新功能，<em>擴展方法</em>，它允許您（假裝）向現有類型添加新成員。即使它實際上只是一個靜態函數，擴展方法也可以像普通方法一樣被調用，例如 <code>o.extensionMethod(42)</code>。</p>
+<p>為什麼我們要添加擴展方法？它們有什麼用？您如何使用它們？為什麼我稱它們為「擴展<em>方法</em>」，而您也可以添加其他成員？（最後一個很簡單：我個人認為它們是擴展<em>成員</em>，但「擴展方法」是工作標題，而且它與其他語言中的類似功能的名稱相同，因此秉承 Dart 的良好傳統，我們選擇了熟悉且不出所料的名稱。在這裡我不會用到擴展 getter、setter 或運算子，但如果您願意，您可以完全向 String 添加一個 % 運算子，無論我們怎麼稱呼這個功能。）</p>
+<p>由於我是設計此功能的人員之一，因此我將抓住機會在其他人有機會之前回答所有這些問題。（而且，因為我在完成此功能之前發佈了這篇文章，所以我甚至可以編輯掉那些不再正確的東西！）</p>
+<p>但首先，我們要繞個彎路！</p>
+<h3 id="在擴展方法之前我會做什麼"><a href="#在擴展方法之前我會做什麼" class="headerlink" title="在擴展方法之前我會做什麼"></a>在擴展方法之前我會做什麼</h3><p>假設，純粹假設，我認為 Future 上的 <a href="https://api.dartlang.org/stable/2.5.0/dart-async/Future/catchError.html">catchError</a> 函數很糟糕，應該用更新、更閃亮、更好的東西來代替。例如，因為它將 <a href="https://api.dartlang.org/stable/2.5.0/dart-core/Function-class.html">Function</a> 作為參數而不是適當的函數類型，這是出於完全合理的<em>歷史</em>原因，這意味著您不會獲得任何靜態類型檢查。這很糟糕，而且這個方法應該讓人感覺很糟糕。</p>
+<p>顯然我不能移除這個函數，這會破壞幾乎所有曾經出現過的 Dart 程式。</p>
+<p>那麼我至少想向 <code>Future&lt;T&gt;</code> 添加一個新方法，以便使用者可以使用它來代替，例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> MyFuture&lt;T&gt; <span class="keyword">on</span> Future&lt;T&gt; &#123;</span><br><span class="line">  Future&lt;T&gt; onError(<span class="keyword">void</span> <span class="built_in">Function</span>(<span class="built_in">Object</span>, StackTrace) onError) =&gt;</span><br><span class="line">    catchError(onError);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以這樣調用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eventualInteger.onError((e, s) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>遺憾的是，我不能直接將其添加到 <code>Future</code> 類中。如果我這樣做，我也會將其添加到 <code>Future</code> 介面中，而任何其他實作該介面的類將不完整，並且將無法再編譯。在某個時候，我們計算了 76 個實作 <code>Future</code> 的類別。那是一段時間以前的事了，我們已經停止計算了。我們仍然不能讓所有人失望，因此這個選項也不在考慮範圍內。</p>
+<p>那麼，我會使用一個靜態輔助函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Future&lt;T&gt; onError&lt;T&gt;(Future&lt;T&gt; future, </span><br><span class="line">                     <span class="keyword">void</span> <span class="built_in">Function</span>(<span class="built_in">Object</span>, StackTrace) onError) =&gt;</span><br><span class="line">  future.catchError(onError);</span><br></pre></td></tr></table></figure>
+
+<p>您可以這樣調用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">onError(eventualInteger, (e, s) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>同樣遺憾的是，這讀起來不太好。我們<em>喜歡</em>使用基於 <code>.</code> 的方法鏈，因為它允許我們從左到右閱讀：「執行此操作，然後執行該操作，然後執行更多操作」。使用靜態輔助函數會迫使我們將其讀作：「對以下內容執行該操作：執行此操作。之後，執行更多操作」… 什麼？它沒有相同的<em>流程</em>，相同的<em>schwung</em>。在實踐中，它幾乎是不可讀的。</p>
+<p>好吧，我沒有被嚇倒，所以我沒有改進 <code>Future</code> 類別，而是引入了一個新的改進的介面，並為使用者提供了一種包裝舊介面的方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFuture</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Future&lt;T&gt; _wrappee;</span><br><span class="line">  MyFuture(<span class="keyword">this</span>._wrappee);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  MyFuture&lt;T&gt; onError(<span class="keyword">void</span> <span class="built_in">Function</span>(<span class="built_in">Object</span>, StackTrace) onError) =&gt;</span><br><span class="line">    MyFuture(_wrappee.catchError(onError));</span><br><span class="line">  <span class="comment">// ... other forwarding methods</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可以這樣使用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyFuture(eventualInteger).onError((e, s) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>我甚至可能會讓 <code>MyFuture</code> 實作 <code>Future</code> 並將所有 <code>Future</code> 成員轉發到 <code>_wrappee</code> future，然後讓所有方法再次返回 <code>MyFuture</code> 包裝器，這樣我就可以繼續下去了。</p>
+<p>如果我這麼說的話，那就太好了！</p>
+<p>在擴展方法出現之前，這幾乎是最好的方法…這意味著手動添加包裝器，並承擔額外的包裝器物件和中間轉發函數帶來的效能損失。</p>
+<h3 id="我將如何使用擴展方法"><a href="#我將如何使用擴展方法" class="headerlink" title="我將如何使用擴展方法"></a>我將如何使用擴展方法</h3><p>一旦我們擺脫了沒有擴展的黑暗時代，我就可以使用擴展方法來獲得我真正想要的東西。我會這樣寫：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> MyFuture&lt;T&gt; <span class="keyword">on</span> Future&lt;T&gt; &#123;</span><br><span class="line">  Future&lt;T&gt; onError(<span class="keyword">void</span> <span class="built_in">Function</span>(<span class="built_in">Object</span>, StackTrace) onError) =&gt;</span><br><span class="line">    <span class="keyword">this</span>.catchError(onError);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後您可以這樣調用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eventualInteger.onError((e, s) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>就這樣。任務在五行內完成！</p>
+<p>「但它是<em>如何</em>運作的？」，您可能會問。它運行得非常好，謝謝。</p>
+<p>事實上，<em>它的行為與包裝器類別幾乎完全相同</em>，即使它實際上只是一個靜態輔助函數。您甚至可以顯式地寫 <code>MyFuture(eventualInteger).onError(...)</code>，就好像擴展是一個包裝器類別一樣。它不是，但它看起來和行為<em>幾乎</em>就像它是。而且您可以省略顯式包裝，並在類型正確時<em>隱式地</em>應用它。</p>
+<h3 id="它（不是）一個包裝器類別"><a href="#它（不是）一個包裝器類別" class="headerlink" title="它（不是）一個包裝器類別"></a>它（不是）一個包裝器類別</h3><p>擴展聲明的設計故意使其看起來像一個類別或混入聲明，並且它的行為就像一個帶有隱藏 <code>_wrappee</code> 的包裝器類別一樣。您甚至可以在聲明中使用靜態成員，它們就像類別或混入聲明中的靜態成員一樣工作。</p>
+<p>與包裝器類別相比，有一個<em>改進</em>：您可以在實例成員內部編寫 <code>this</code> 來引用 <code>_wrappee</code> 而不是包裝器物件。</p>
+<p>更改 <code>this</code> 的含義不僅僅是一個改進。這些是<em>靜態</em>擴展方法，正如我之前所說的，它們只是一種更方便的調用靜態函數的方式。這意味著沒有包裝器<em>物件</em>。它從未存在過，我們只是假裝它存在，但這意味著我們不能讓 <code>this</code> 引用不存在的物件。</p>
+<p>我們也不允許您將 <code>MyFuture(eventualInteger)</code> 作為一個值使用，因此如果您嘗試執行 <code>var myFuture = MyFuture(eventualInteger)</code>，我們將不允許。使用 <code>MyFuture(eventualInteger)</code> 的唯一方法是作為擴展成員調用的目標。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyFuture(eventualInteger).onError(...); <span class="comment">// 良好：用於調用方法。</span></span><br><span class="line"><span class="keyword">var</span> x = MyFuture(eventualInteger); <span class="comment">// 錯誤：用作獨立值。</span></span><br></pre></td></tr></table></figure>
+
+<p>這與您可以使用 <code>super</code> 來調用方法，但不能用於其值的方式相同。或者就像一個函式庫前綴。您所能做的就是存取一個成員；您不能將其視為一個值，因為它沒有值，也沒有值可以供它使用。</p>
+<p>因為沒有物件，所以您不能在擴展聲明中聲明<em>實例欄位</em>。但是，您可以聲明 getter 和 setter，甚至可以透過 <a href="https://api.dartlang.org/stable/2.5.1/dart-core/Expando-class.html">Expando</a> 支援它們。擴展也不能聲明任何構造函數，因為沒有任何東西被構造；它只是假裝有一個構造函數接受 <code>wrappee</code> 物件。</p>
+<h3 id="它（不）擴展類型"><a href="#它（不）擴展類型" class="headerlink" title="它（不）擴展類型"></a>它（不）擴展類型</h3><p>如果您每次使用擴展成員時都必須編寫 <code>MyFuture(...)</code> 包裝器，那麼這將不是一個很大的改進。我們可以直接編寫包裝器類別，並花費一些編譯器工程師的時間來確保我們優化掉中間物件。</p>
+<p>我在上面說過，您可以編寫 <code>eventualInteger.onError(...)</code>。這是可行的，因為我們會根據表達式的靜態類型和它們所調用成員的名稱<em>隱式地包裝</em>表達式。當以下所有條件都為真時，我們會自動將 <code>expr.method()</code> 包裝為 <code>Ext(expr).method()</code>：</p>
+<ul>
+<li><code>expr</code> 的靜態類型沒有名稱為 <code>method</code> 的成員（介面始終獲勝）。</li>
+<li>擴展 <code>Ext</code> 已導入或在當前函式庫範圍內聲明（擴展是<em>可存取的</em>）。</li>
+<li>擴展聲明了一個名稱為 <code>method</code> 的成員，<em>並且</em> <code>expr</code> 的靜態類型是 <code>Ext</code> 聲明的 <code>on</code> 類型的子類型（擴展是<em>適用的</em>）。</li>
+</ul>
+<p>如果成員調用有多個可存取且適用的擴展，則有一些規則可以決定哪個擴展將在衝突中獲勝。在某些情況下，沒有辦法選擇獲勝者，那麼它只是一個編譯時錯誤。這些規則僅取決於擴展聲明的 <code>on</code> 類型，而不是成員聲明。（Dart 沒有「重載」——多個具有相同名稱和不同簽名的方法，您可以根據參數結構或類型在它們之間進行選擇——而擴展方法不提供後門來獲得重載。）</p>
+<h3 id="這一切都是靜態的"><a href="#這一切都是靜態的" class="headerlink" title="這一切都是靜態的"></a>這一切都是靜態的</h3><p>我在上面說了「<em>靜態</em>擴展方法」，我這樣做是有原因的！</p>
+<p>Dart 是靜態類型的。編譯器在編譯時知道每個表達式的類型，因此如果您編寫 <code>target.member(42)</code>，並且 <code>member</code> 是一個擴展成員，則編譯器需要弄清楚要隱式地將 <code>target</code> 包裝成<em>哪個</em>擴展，以便找到整個成員調用的類型。</p>
+<p>如果隱式擴展包裝必須在找到目標表達式的類型<em>和</em>找到成員調用的類型<em>之間</em>發生，那麼很明顯，「擴展推斷」必須在越來越不準確地命名為「類型推斷」的階段中發生。這個階段主要以填補缺少的泛型而聞名。</p>
+<p>我的確寫了 <code>eventualInteger.onError((FormatException e, s) &#123;...&#125;)</code>，即使 <code>MyFuture</code> 擴展和 <code>onError</code> 方法都是泛型的。在進行類型推斷時，Dart 編譯器既選擇擴展，也推斷缺少的類型參數。在這裡，它首先決定使用 <code>MyFuture</code> 擴展，然後插入隱式包裝器，最後對擴展應用 <code>MyFuture(eventualInteger).onError((FormatException e, s) &#123;...&#125;)</code> 執行類型推斷，<em>其方式與</em>對應的包裝器類別<em>完全相同</em>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyFuture</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Future&lt;T&gt; _wrappee;</span><br><span class="line">  MyFuture(<span class="keyword">this</span>._wrappee);</span><br><span class="line">  Future&lt;T&gt; onError(<span class="keyword">void</span> <span class="built_in">Function</span>(<span class="built_in">Object</span>, StackTrace) onError) =&gt;</span><br><span class="line">     _wrappee.catchError(onError);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">MyFuture(eventualInteger).onError((FormatException e, s) &#123; ... &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在這種情況下，類型推斷將推斷以下擴展應用，並完成調用的完整類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MyFuture&lt;<span class="built_in">int</span>&gt;(eventualInteger).onError&lt;<span class="built_in">int</span>&gt;((FormatException e, s) &#123;...&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>這意味著<em>擴展的類型參數基於被包裝表達式的靜態類型</em>。如果您有 <code>Future&lt;num&gt; fut = Future&lt;int&gt;.value(42);</code>，則 <code>fut.onError(...)</code> 將在編譯時將 <code>MyFuture</code> 的 <code>T</code> 類型參數綁定到 <code>num</code>，而不是綁定到 <code>int</code>。這一切都是靜態的，就像任何其他推斷的類型參數一樣。</p>
+<p>這也意味著您將永遠無法在類型為 <code>dynamic</code> 的目標上調用擴展成員。</p>
+<h3 id="衝突解決"><a href="#衝突解決" class="headerlink" title="衝突解決"></a>衝突解決</h3><p>如上所述，當範圍內有多個適用的擴展時，有一些規則可以決定哪個擴展將獲勝。基本上，獲勝者是 <code>on</code> 類型最接近您正在調用成員的表達式的實際類型的擴展，有一些注意事項和決勝局。對於一起編寫的擴展，它通常「可以正常工作」。我不會詳細介紹這些細節，而是告訴您當它<em>不能</em>正常工作時該怎麼辦。</p>
+<p>當兩個不同的作者為相同的類型和成員名稱編寫了衝突的擴展時，您可能會遇到問題。假設擴展 <code>Ext1</code> 和 <code>Ext2</code> 都定義了一個適用於您的 <code>List</code> 物件的 <code>bubbleSort</code> 方法，並且衝突沒有明確的獲勝者，或者獲勝的不是您實際想要調用的那個（例如 <code>Ext2</code> 獲勝，而您想要調用 <code>Ext1.bubbleSort</code>）。那麼您必須<em>做點什麼</em>。</p>
+<p>最簡單的解決方案是使用顯式擴展應用：<code>Ext1(list).bubbleSort()</code>。這樣可以避免自動解析，只選擇您想要的那個。如果您只有少數幾個衝突，那麼這既簡單又可讀。</p>
+<p>但是，如果您在同一個檔案中有三百個衝突，那麼您可能希望避免額外的輸入。很難更改擴展是否<em>適用於</em>調用，但您可以更改它是否<em>可存取</em>。</p>
+<p>您可以透過在導入衝突擴展（或擴展，如果您真的運氣不好）時<em>隱藏</em>它來做到這一點：<code>import &quot;ext2lib.dart&quot; hide Ext2;</code>。這樣做將阻止 <code>Ext2</code> 擴展被導入到當前的函式庫範圍內，從而使其無法存取。顯然，完全不導入 <code>ext2lib.dart</code> 也會這樣做，但除非擴展是您從該函式庫中使用的唯一東西，否則這是不切實際的。</p>
+<p>（12 月 11 日編輯）在這裡我曾經說過，您可以使用<em>前綴</em>導入其中一個衝突的擴展，然後它將無法隱式使用。事實證明，有些人會在與他們擴展的類別相同的函式庫中聲明擴展方法，如果在使用前綴導入該函式庫時它無法工作，那就真的很煩人。所以我們修復了這個問題。使用前綴導入的擴展<em>也</em>可以隱式地工作。如果您真的需要在同一個函式庫中使用兩個衝突的擴展，則必須在每個存在衝突的地方使用顯式擴展應用。我們可能會考慮在未來添加一種不同的方法來禁用隱式擴展，至少如果衝突的擴展成為一個反復出現的問題的話。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>Dart 將在即將發佈的版本中獲得<em>擴展方法</em>——一種調用靜態函數的漂亮方法。</p>
+<p>您可以為<strong>實例方法</strong>、<strong>運算子</strong>、<strong>setter</strong> 和 <strong>getter</strong> 定義擴展成員，但<strong>不能定義欄位</strong>。</p>
+<p>您可以顯式地調用擴展方法，或者在沒有與介面成員或其他擴展衝突時隱式地調用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ext1(list).bubbleSort() <span class="comment">// 顯式，就像它是一個包裝器類別一樣。</span></span><br><span class="line">list.bubbleSort()       <span class="comment">// 隱式，就像它擴展了類型一樣。</span></span><br></pre></td></tr></table></figure>
+
+<p>隱式調用與顯式調用的工作方式相同，但它們首先<em>推斷</em>正在應用哪個擴展。如果由於衝突的擴展而導致擴展推斷失敗，則您可以執行以下任一操作：</p>
+<ul>
+<li>顯式地應用擴展。</li>
+<li>完全不導入衝突的擴展（移除導入或隱藏擴展）。</li>
+<li>（12 月 11 日編輯）：就這樣（目前）。</li>
+</ul>
+<p>擴展是<em>靜態的</em>。關於它們的一切都是基於靜態類型決定的。</p>
+<p>負責任地享受！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=2d466cd8b308" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/extension-methods-2d466cd8b308">Dart 擴展方法基礎</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+              <a href="/tags/extension-method/" rel="tag"># extension-method</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/3c6a7d27.html" rel="prev" title="【文章翻譯】Announcing verified publishers on pub.dev">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing verified publishers on pub.dev
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/defcb0a1.html" rel="next" title="【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables">
+      【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95%E5%9F%BA%E7%A4%8E"><span class="nav-number">1.</span> <span class="nav-text">Dart 擴展方法基礎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95%E4%B9%8B%E5%89%8D%E6%88%91%E6%9C%83%E5%81%9A%E4%BB%80%E9%BA%BC"><span class="nav-number">1.1.</span> <span class="nav-text">在擴展方法之前我會做什麼</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%88%91%E5%B0%87%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">我將如何使用擴展方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%EF%BC%88%E4%B8%8D%E6%98%AF%EF%BC%89%E4%B8%80%E5%80%8B%E5%8C%85%E8%A3%9D%E5%99%A8%E9%A1%9E%E5%88%A5"><span class="nav-number">1.3.</span> <span class="nav-text">它（不是）一個包裝器類別</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%83%EF%BC%88%E4%B8%8D%EF%BC%89%E6%93%B4%E5%B1%95%E9%A1%9E%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">它（不）擴展類型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%99%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E9%9D%9C%E6%85%8B%E7%9A%84"><span class="nav-number">1.5.</span> <span class="nav-text">這一切都是靜態的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%9D%E7%AA%81%E8%A7%A3%E6%B1%BA"><span class="nav-number">1.6.</span> <span class="nav-text">衝突解決</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.7.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

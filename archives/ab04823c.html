@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 開始將套件遷移到更健全、更安全的狀態此文章同時發布於 Dart 部落格 上。 今天，我們宣佈 Dart 和 Flutter 的健全空安全功能已進入 Beta 階段。空安全是我們最新的主要生產力功能，旨在 幫助您避免空錯誤，這是一種通常難以發現的錯誤。如果您想快速了解為什麼我們對空安全感到兴奋，請查看這部新影片： https:&#x2F;&#x2F;medium">
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 空安全 Beta 版此文章交叉發佈於此處和 Flutter 部落格。 今天我們宣佈 Dart 和 Flutter 的 Beta 版已提供完善的空安全功能。空安全是我們最新的主要生產力功能，旨在幫助您避免空值錯誤，這是一類通常難以發現的錯誤。如果您正在尋找我們為何對空安全感到興奮的快速摘要，請查看這部新影片： https:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【文章翻譯】Announcing Dart null safety beta">
 <meta property="og:url" content="https://blog.rainvisitor.me/archives/ab04823c.html">
 <meta property="og:site_name" content="RainVisitor Blog">
-<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 開始將套件遷移到更健全、更安全的狀態此文章同時發布於 Dart 部落格 上。 今天，我們宣佈 Dart 和 Flutter 的健全空安全功能已進入 Beta 階段。空安全是我們最新的主要生產力功能，旨在 幫助您避免空錯誤，這是一種通常難以發現的錯誤。如果您想快速了解為什麼我們對空安全感到兴奋，請查看這部新影片： https:&#x2F;&#x2F;medium">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 空安全 Beta 版此文章交叉發佈於此處和 Flutter 部落格。 今天我們宣佈 Dart 和 Flutter 的 Beta 版已提供完善的空安全功能。空安全是我們最新的主要生產力功能，旨在幫助您避免空值錯誤，這是一類通常難以發現的錯誤。如果您正在尋找我們為何對空安全感到興奮的快速摘要，請查看這部新影片： https:">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*kr-aQjGvnhY0JDCx1CGzRg.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/454/0*fM8TG0L56zVeJVlG">
@@ -33,9 +33,9 @@
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*P2ufPitLRaJRAD__KUfbvg.png">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*dPlSded52Mt6P5tY">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*AwqXx58arqVt6PhL">
-<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=4491da22077a">
-<meta property="article:published_time" content="2020-11-19T08:02:13.000Z">
-<meta property="article:modified_time" content="2024-09-30T08:55:14.924Z">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=87610fee6730">
+<meta property="article:published_time" content="2020-11-19T08:01:37.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:57:45.906Z">
 <meta property="article:author" content="Rainvisitor">
 <meta property="article:tag" content="dart">
 <meta property="article:tag" content="announcements">
@@ -187,14 +187,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-11-19 16:02:13" itemprop="dateCreated datePublished" datetime="2020-11-19T16:02:13+08:00">2020-11-19</time>
+              <time title="Created: 2020-11-19 16:01:37" itemprop="dateCreated datePublished" datetime="2020-11-19T16:01:37+08:00">2020-11-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+                <time title="Modified: 2024-12-18 15:57:45" itemprop="dateModified" datetime="2024-12-18T15:57:45+08:00">2024-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -202,7 +202,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
                 </span>
             </span>
 
@@ -217,93 +217,93 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="開始將套件遷移到更健全、更安全的狀態"><a href="#開始將套件遷移到更健全、更安全的狀態" class="headerlink" title="開始將套件遷移到更健全、更安全的狀態"></a>開始將套件遷移到更健全、更安全的狀態</h2><p><em>此文章同時發布於 <a href="https://medium.com/dartlang">Dart 部落格</a> 上。</em></p>
-<p>今天，我們宣佈 <strong>Dart 和 Flutter 的健全空安全功能已進入 Beta 階段</strong>。空安全是我們最新的主要生產力功能，旨在 <a href="https://dart.dev/null-safety">幫助您避免空錯誤</a>，這是一種通常難以發現的錯誤。如果您想快速了解為什麼我們對空安全感到兴奋，請查看這部新影片：</p>
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-空安全-Beta-版"><a href="#宣佈-Dart-空安全-Beta-版" class="headerlink" title="宣佈 Dart 空安全 Beta 版"></a>宣佈 Dart 空安全 Beta 版</h2><p><em>此文章交叉發佈於此處和 <a href="https://medium.com/flutter">Flutter 部落格</a>。</em></p>
+<p>今天我們宣佈 <strong>Dart 和 Flutter 的 Beta 版已提供完善的空安全功能</strong>。空安全是我們最新的主要生產力功能，旨在<a href="https://dart.dev/null-safety">幫助您避免空值錯誤</a>，這是一類通常難以發現的錯誤。如果您正在尋找我們為何對空安全感到興奮的快速摘要，請查看這部新影片：</p>
 <iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FiYhOU9AuaFs%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DiYhOU9AuaFs&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FiYhOU9AuaFs%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/34cc7c47f5441fbc839569d7a3cee7be/href">https://medium.com/media/34cc7c47f5441fbc839569d7a3cee7be/href</a></iframe>
 
-<p>隨著空安全功能升級到 Beta 階段， <strong>是時候開始對數千個在 <a href="https://pub.dev/">pub.dev</a> 上提供的套件進行社群遷移了</strong>。我們已經遷移了 Dart 核心函式庫、Flutter 框架以及 <a href="https://pub.dev/packages?q=&amp;prerelease-null-safe=1">超過 40 個</a> Dart 和 Flutter 套件。我們希望看到社群透過遷移他們的套件來擁抱空安全性。</p>
+<p>隨著空安全進入 Beta 版，<strong>是時候開始社群遷移</strong> <a href="https://pub.dev/">pub.dev</a> 上可用的數千個套件了。我們已經遷移了 Dart 核心程式庫、Flutter 架構，以及<a href="https://pub.dev/packages?q=&amp;prerelease-null-safe=1">超過 40 個</a> Dart 和 Flutter 套件。有了這些，我們希望看到社群透過遷移他們的套件來擁抱空安全。</p>
 <figure>
 <img alt="Timeline of Dart sound null safety support, from Technical Preview 1 to Stable in early 2021" src="https://cdn-images-1.medium.com/max/960/1*kr-aQjGvnhY0JDCx1CGzRg.png" />
 </figure>
 
-<p>隨著 Beta 版本的发布，我們也開始了在發佈穩定版空安全功能之前的最後衝刺。我們希望您能使用此功能，並告訴我們哪些部分可以改進，哪些 UI 訊息可以變得更容易理解，或者哪些文件可以變得更清晰。我們 **非常期待 <a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&amp;labels=NNBD&amp;body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">您的回饋</a>**。</p>
-<h3 id="選擇加入空安全功能"><a href="#選擇加入空安全功能" class="headerlink" title="選擇加入空安全功能"></a>選擇加入空安全功能</h3><p>在我們討論空安全功能的遷移之前，重要的是要重申（如我们在<a href="https://dart.dev/null-safety#null-safety-principles">空安全原则</a> 中所述），您可以控制何时开始采用空安全功能。應用程式和套件只有在它们的最小 <a href="https://dart.dev/null-safety#enable-null-safety">Dart SDK 约束</a> 至少为 Dart 2.12 预览版本时才会使用空安全功能：</p>
+<p>隨著 Beta 版的推出，我們也開始在發佈空安全功能的穩定版本之前的最後階段。我們希望您能使用此功能，並讓我們知道它的哪些部分可以改進，UI 訊息是否可以更容易理解，或者文件是否可以更清晰。我們**非常期待收到您的<a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&amp;labels=NNBD&amp;body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">回饋</a>**。</p>
+<h3 id="選擇加入空安全"><a href="#選擇加入空安全" class="headerlink" title="選擇加入空安全"></a>選擇加入空安全</h3><p>在我們討論空安全遷移之前，需要重複的是（如我們的<a href="https://dart.dev/null-safety#null-safety-principles">空安全原則</a>中所述），您可以控制何時開始採用空安全。只有當應用程式和套件的最低 <a href="https://dart.dev/null-safety#enable-null-safety">Dart SDK 限制</a> 至少是 Dart 2.12 預發佈版時，它們才會以空安全模式執行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">environment:</span><br><span class="line">  sdk: &quot;&gt;=2.12.0-0 &lt;3.0.0&quot;</span><br></pre></td></tr></table></figure>
 
-<p>要体验这一点，请尝试创建一个小的空安全版 hello 应用程序（例如，使用 dart create），其中包含如下所示的代码。然后，您可以尝试在更改SDK约束之前和之后运行该应用程序，以及运行 dart pub get，并体验程序行为的變化。（请确保使用在 dart –version 中报告 2.12 的 SDK。）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">**bin/hello.dart:**</span><br><span class="line">...</span><br><span class="line">void main() &#123;</span><br><span class="line">  var hello = &#x27;Hello Dart developers&#x27;;</span><br><span class="line">  if (someCondition) &#123;</span><br><span class="line">    hello = null;</span><br><span class="line">  &#125;</span><br><span class="line">  print(hello);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要體驗這一點，請嘗試建立一個小的空安全 hello 應用程式（例如，使用 <code>dart create</code>），其中包含如下所示的程式碼。然後，您可以嘗試在更改 SDK 限制並執行 <code>dart pub get</code> 之前和之後執行應用程式，並體驗程式行為的變化。（確保使用在 <code>dart --version</code> 中報告 2.12 的 SDK。）</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bin/hello.dart:</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> hello = <span class="string">&#x27;Hello Dart developers&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (someCondition) &#123;</span><br><span class="line">    hello = <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">print</span>(hello);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**在更改 SDK 约束之前：**</span><br><span class="line">$ dart run</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更改 SDK 限制之前：</span></span><br><span class="line">$ dart run</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">null</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">**在更改 SDK 约束之后（并运行 dart pub get）：**</span><br><span class="line">$ dart run</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更改 SDK 限制之後（並執行 dart pub get）：</span></span><br><span class="line">$ dart run</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/hello.dart:6:13: Error: Null can&#x27;t be assigned to a variable of type &#x27;String&#x27; because &#x27;String&#x27; is not nullable.</span><br><span class="line">hello = null;</span><br><span class="line">            ^</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bin/hello.dart:6:13: Error: Null can&#x27;t be assigned to a variable of type &#x27;String&#x27; because &#x27;String&#x27; is not nullable.</span><br><span class="line"></span><br><span class="line">    hello = null;</span><br><span class="line">            ^</span><br></pre></td></tr></table></figure>
 
-<h3 id="遷移到空安全功能"><a href="#遷移到空安全功能" class="headerlink" title="遷移到空安全功能"></a>遷移到空安全功能</h3><p>要將套件（或簡單的應用程式）遷移到空安全功能，請遵循以下五个步骤，这些步骤在 dart.dev 上的 <a href="https://dart.dev/null-safety/migration-guide">遷移指南</a> 中有完整的說明。</p>
-<h4 id="第-1-步：檢查您的相依性是否已準備好"><a href="#第-1-步：檢查您的相依性是否已準備好" class="headerlink" title="第 1 步：檢查您的相依性是否已準備好"></a>第 1 步：檢查您的相依性是否已準備好</h4><p>我們強烈建議您按照順序遷移程式碼，先遷移相依性圖的葉子节点。例如，如果 C 相依於 B，而 B 相依於 A，請先將 A 遷移到空安全功能，然后是 B，最后是 C。此顺序适用于 A、B 和 C 是函式庫、套件还是应用程序。</p>
+<h3 id="遷移至空安全"><a href="#遷移至空安全" class="headerlink" title="遷移至空安全"></a>遷移至空安全</h3><p>要將套件（或簡單的應用程式）遷移至空安全，請按照以下五個步驟操作，這些步驟在 dart.dev 的<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>中已完整記錄。</p>
+<h4 id="步驟-1：檢查您的依賴項是否已準備就緒"><a href="#步驟-1：檢查您的依賴項是否已準備就緒" class="headerlink" title="步驟 1：檢查您的依賴項是否已準備就緒"></a>步驟 1：檢查您的依賴項是否已準備就緒</h4><p>我們強烈建議您按順序遷移程式碼，先遷移依賴圖的葉子。例如，如果 C 依賴於 B，而 B 依賴於 A，則先將 A 遷移至空安全，然後是 B，然後是 C。此順序適用於 A、B 和 C 是程式庫、套件還是應用程式。</p>
 <figure>
 <img alt="Illustration of dependency order vs. migration order" src="https://cdn-images-1.medium.com/max/454/0*fM8TG0L56zVeJVlG" />
 </figure>
 
-<p>為什麼順序很重要？雖然您可以在相依性遷移之前取得一些遷移程式碼的進展，但如果您在相依性遷移期間更改其 API，您可能會冒著需要進行第二次遷移的風險。如果您的幾個相依性不是空安全的，請考慮使用在 pub.dev 上列出的每個套件的聯絡資訊來聯繫套件發佈者。</p>
-<h4 id="驗證相依性是否已準備好"><a href="#驗證相依性是否已準備好" class="headerlink" title="驗證相依性是否已準備好"></a>驗證相依性是否已準備好</h4><p>若要驗證您的應用程式或套件是否已準備好開始遷移，您可以在空安全模式下使用 dart pub outdated。以下範例顯示，如果此應用程式將其相依性升級到如 <strong>可解析</strong> 欄位中列出的路徑、進程和 pedantic 的預覽版本，則它已準備好進行遷移。</p>
+<p>為什麼順序很重要？儘管您可以在依賴項遷移之前在遷移程式碼方面取得一些進展，但如果您的依賴項在其遷移期間更改其 API，則您可能會冒險進行第二次遷移。如果您的某些依賴項不是空安全的，請考慮使用 pub.dev 上列出的每個套件的聯絡方式與套件發佈者聯繫。</p>
+<h4 id="驗證依賴項是否已準備就緒"><a href="#驗證依賴項是否已準備就緒" class="headerlink" title="驗證依賴項是否已準備就緒"></a><em>驗證依賴項是否已準備就緒</em></h4><p>要驗證您的應用程式或套件是否已準備好開始遷移，您可以使用空安全模式下的 <code>dart pub outdated</code>。以下範例顯示，如果此應用程式將其依賴項升級到 <strong>可解析</strong> 欄中列出的 <code>path</code>、<code>process</code> 和 <code>pedantic</code> 的預發佈版本，則它已準備好遷移。</p>
 <figure>
 <img alt="Screenshot of `dart pub outdated` output" src="https://cdn-images-1.medium.com/max/1024/0*zrUdYSzsjWZGr7Or" />
 </figure>
 
-<p>如果空安全支援在次要新版本中可用，您將在 <strong>可升級</strong> 欄位中看到它們。通常，空安全支援將在主要新版本中可用；在这种情况下，您将看到在 outdated 输出的 <strong>可解析</strong> 下列出的版本。若要升級到這些版本，請編輯您的 pubspec.yaml 檔案以允許這些主要版本。例如，您可能會將 process: ^3.0.13 更改為 process: ^4.0.0-nullsafety。</p>
-<p>您還可以在 pub.dev 上使用套件頁面上的新 <strong>空安全</strong> 標籤（例如 <a href="https://pub.dev/packages/collection/versions/1.15.0-nullsafety.5">collection 1.15</a>）和新的 <strong>進階搜尋</strong> <a href="https://pub.dev/packages?q=&amp;prerelease-null-safe=1">空安全搜尋選項</a> 來查找具有空安全支援的套件。</p>
+<p>如果在新的小版本中提供空安全支援，您將在 <strong>可升級</strong> 欄中看到它們。通常，在新的大版本中會提供空安全支援；在這種情況下，您將在過時輸出的 <strong>可解析</strong> 下看到列出的版本。要升級到這些版本，請編輯您的 <code>pubspec.yaml</code> 檔案以允許這些主要版本。例如，您可以將 <code>process: ^3.0.13</code> 更改為 <code>process: ^4.0.0-nullsafety</code>。</p>
+<p>您還可以使用套件頁面上的新 <strong>空安全</strong> 標籤（例如 <a href="https://pub.dev/packages/collection/versions/1.15.0-nullsafety.5">collection 1.15</a>）和新的<strong>進階搜尋</strong> <a href="https://pub.dev/packages?q=&amp;prerelease-null-safe=1">空安全搜尋選項</a> 在 pub.dev 上找到具有空安全支援的套件。</p>
 <figure>
 <img alt="Screenshot of pub.dev search" src="https://cdn-images-1.medium.com/max/1024/1*P2ufPitLRaJRAD__KUfbvg.png" />
 </figure>
 
-<h4 id="第-2-步：使用遷移工具進行遷移"><a href="#第-2-步：使用遷移工具進行遷移" class="headerlink" title="第 2 步：使用遷移工具進行遷移"></a>第 2 步：使用遷移工具進行遷移</h4><p>如果您的相依性已準備好，您可以繼續使用遷移工具 dart migrate 來遷移您的應用程式或套件。</p>
-<p>遷移工具是互動式的，因此您可以審查工具推斷出的可空性屬性。如果您不同意工具的任何結論，您可以加入可空性提示以更改推斷。加入幾個遷移提示可能會對遷移品質產生重大影響。</p>
+<h4 id="步驟-2：使用遷移工具進行遷移"><a href="#步驟-2：使用遷移工具進行遷移" class="headerlink" title="步驟 2：使用遷移工具進行遷移"></a>步驟 2：使用遷移工具進行遷移</h4><p>如果您的依賴項已準備就緒，則可以使用遷移工具 <code>dart migrate</code> 繼續遷移您的應用程式或套件。</p>
+<p>遷移工具是互動式的，因此您可以查看工具推斷出的可空性屬性。如果您不同意工具的任何結論，您可以加入可空性提示以更改推斷。加入一些遷移提示可以對遷移品質產生巨大影響。</p>
 <figure>
 <img alt="Screenshot of the migration tool UI" src="https://cdn-images-1.medium.com/max/1024/0*dPlSded52Mt6P5tY" />
 </figure>
 
-<p>少數 Dart 套件作者已經使用空安全功能的早期預覽版本測試了遷移，他們的回饋令人鼓舞。遷移指南中提供有關如何使用遷移工具的額外提示。</p>
-<h4 id="第-3-步：靜態分析您的遷移程式碼"><a href="#第-3-步：靜態分析您的遷移程式碼" class="headerlink" title="第 3 步：靜態分析您的遷移程式碼"></a>第 3 步：靜態分析您的遷移程式碼</h4><p>在您的 IDE 或命令列中使用 pub get 更新您的套件。然後使用您的 IDE 或命令列對您的 Dart 程式碼執行靜態分析：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub get</span><br><span class="line">$ dart analyze</span><br></pre></td></tr></table></figure>
+<p>我們已經讓少數 Dart 套件作者使用空安全的早期預覽版本測試遷移，他們的回饋令人鼓舞。遷移指南中包含有關如何使用遷移工具的更多提示。</p>
+<h4 id="步驟-3：靜態分析您遷移的程式碼"><a href="#步驟-3：靜態分析您遷移的程式碼" class="headerlink" title="步驟 3：靜態分析您遷移的程式碼"></a>步驟 3：靜態分析您遷移的程式碼</h4><p>在您的 IDE 或命令列中使用 <code>pub get</code> 更新您的套件。然後使用您的 IDE 或命令列對您的 Dart 程式碼執行靜態分析：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub get</span><br><span class="line">$ dart analyze</span><br></pre></td></tr></table></figure>
 
-<p>或在您的 Flutter 程式碼上：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub get</span><br><span class="line">$ flutter analyze</span><br></pre></td></tr></table></figure>
+<p>或者在您的 Flutter 程式碼上：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ flutter pub get</span><br><span class="line">$ flutter analyze</span><br></pre></td></tr></table></figure>
 
-<h4 id="第-4-步：確保測試通過"><a href="#第-4-步：確保測試通過" class="headerlink" title="第 4 步：確保測試通過"></a>第 4 步：確保測試通過</h4><p>運行您的測試，并确保它们通过。您可能需要更新預期為空值的測試，以防您更改了套件程式碼，使其不再允許為空。</p>
-<h4 id="第-5-步：發佈您的空安全套件"><a href="#第-5-步：發佈您的空安全套件" class="headerlink" title="第 5 步：發佈您的空安全套件"></a>第 5 步：發佈您的空安全套件</h4><p>遷移完成且測試通過後，您可以將套件作為預覽版本發佈。以下是最佳實務的簡要摘要：</p>
+<h4 id="步驟-4：確保測試通過"><a href="#步驟-4：確保測試通過" class="headerlink" title="步驟 4：確保測試通過"></a>步驟 4：確保測試通過</h4><p>執行您的測試並確保它們通過。您可能需要更新預期空值的測試，以防您更改了套件程式碼以不再允許空值。</p>
+<h4 id="步驟-5：發佈您的空安全套件"><a href="#步驟-5：發佈您的空安全套件" class="headerlink" title="步驟 5：發佈您的空安全套件"></a>步驟 5：發佈您的空安全套件</h4><p>當遷移完成且測試通過後，您可以將您的套件作為預發佈版本發佈。以下是最佳實務的簡要摘要：</p>
 <ul>
-<li>將您的版本號碼增量到下一個主要版本（例如，從 2.3.x 到 3.0.0）。此最佳實務可確保您的套件使用者不會在他們準備好使用空安全功能本身之前升級到它，並且它讓您能夠自由地重構 API 以最佳地利用空安全功能。</li>
-<li>將套件的版本設定為 <a href="https://dart.dev/tools/pub/publishing#publishing-prereleases">pub.dev 上的預覽版本</a>。（例如，使用 3.0.0-nullsafety.0，而不是 3.0.0。）</li>
+<li>將您的版本號遞增到下一個主要版本（例如，從 2.3.x 到 3.0.0）。此最佳實務可確保您的套件的使用者在準備好自己使用空安全之前不會升級到它，並且讓您可以自由地重構 API 以最佳地利用空安全。</li>
+<li>在 pub.dev 上將您的套件作為<a href="https://dart.dev/tools/pub/publishing#publishing-prereleases">預發佈版本</a>進行版本控制和發佈。（例如，使用 <code>3.0.0-nullsafety.0</code>，而不是 <code>3.0.0</code>。）</li>
 </ul>
-<p>有關遷移和版本控制的完整詳細資訊，請參閱 <a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>。</p>
-<h3 id="健全空安全的優點"><a href="#健全空安全的優點" class="headerlink" title="健全空安全的優點"></a>健全空安全的優點</h3><p>我們之前關於空安全功能技術預覽的部落格文章 <a href="https://medium.com/dartlang/announcing-sound-null-safety-defd2216a6f3">在 Dart 中</a> 和 <a href="https://medium.com/flutter/null-safety-flutter-tech-preview-cb5c98aba187">在 Flutter 中</a> 已經透過許多範例討論了空安全的優點。現在，空安全功能即將完成，我們看到了這種好处的几个实际例子。</p>
-<h4 id="更安全的程式碼"><a href="#更安全的程式碼" class="headerlink" title="更安全的程式碼"></a>更安全的程式碼</h4><p>就在最近，我們 <a href="https://github.com/flutter/flutter/issues/69863">發現了 Flutter 主頻道中的一个錯誤</a>，其中各種 flutter 工具命令在某些機器設定上會因空錯誤而崩潰：方法 ‘&gt;&#x3D;’ 被調用於 null 上。潜在问题是最近的一个添加了对检测 Android Studio 4.1 的支持的拉取请求。该 PR 添加了类似于以下内容的代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">final int major = version?.major;</span><br><span class="line">final int minor = version?.minor;</span><br><span class="line">if (globals.platform.isMacOS) &#123;</span><br><span class="line">  /// Android Studio 的插件路径在 4.1 版本之后发生了变化。</span><br><span class="line">  if (major &gt;= 4 &amp;&amp; minor &gt;= 1) &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<p>有關遷移和版本控制的完整詳細資訊，請參閱<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>。</p>
+<h3 id="完善空安全的好處"><a href="#完善空安全的好處" class="headerlink" title="完善空安全的好處"></a>完善空安全的好處</h3><p>我們之前關於 Dart 和 Flutter 中空安全的技術預覽的部落格文章透過許多範例討論了空安全的好處。現在，隨著空安全即將完成，我們看到了此好處的一些真實範例。</p>
+<h4 id="更安全的程式碼"><a href="#更安全的程式碼" class="headerlink" title="更安全的程式碼"></a>更安全的程式碼</h4><p>就在最近，我們在 Flutter master channel 中<a href="https://github.com/flutter/flutter/issues/69863">發現了一個錯誤</a>，其中各種 <code>flutter tool</code> 命令會在某些機器配置上因空值錯誤而崩潰：在空值上呼叫了方法 <code>&#39;&gt;=&#39;</code>。根本原因是最近的一個拉取請求，用於加入對偵測 Android Studio 4.1 的支援。該 PR 加入了如下程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">int</span> major = version?.major;</span><br><span class="line"><span class="keyword">final</span> <span class="built_in">int</span> minor = version?.minor;</span><br><span class="line"><span class="keyword">if</span> (globals.platform.isMacOS) &#123;</span><br><span class="line">  <span class="comment">/// <span class="language-markdown">Android Studio 4.1 版之後的 Plugin 路徑已更改。</span></span></span><br><span class="line">  <span class="keyword">if</span> (major &gt;= <span class="number">4</span> &amp;&amp; minor &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
 
-<p>你能找到错误吗？由于 version 可能会为 null，major 和 minor 也可能会为 null。这个错误在孤立情况下似乎很容易发现，但在实践中，即使是像 Flutter 存储库中使用的严格代码审查流程，也会经常出现类似的代码。使用空安全功能，静态分析 <a href="https://dartpad.dev/0e9797be7488d8ec6c3fca92b7f2740f">会立即发现这个问题</a>：</p>
+<p>您能發現錯誤嗎？因為 <code>version</code> 可能為空，<code>major</code> 和 <code>minor</code> 也可能為空。這個錯誤在這裡單獨看來似乎很容易發現，但在實務中，這樣的程式碼總是會溜走，即使是像 Flutter 儲存庫中使用的嚴格程式碼審查流程也是如此。使用空安全，靜態分析<a href="https://dartpad.dev/0e9797be7488d8ec6c3fca92b7f2740f">立即捕獲此問題</a>：</p>
 <figure>
 <img alt="Screenshot of analysis output in an IDE" src="https://cdn-images-1.medium.com/max/1024/0*AwqXx58arqVt6PhL" />
 </figure>
 
-<p>这是一个非常简单的错误。在 Google 内部早期使用空安全功能的代码中，我们已经看到更多复杂的错误被发现，然后通过空安全功能解决。以下是几个例子：</p>
+<p>那是一個相當簡單的錯誤。在我們在 Google 內部程式碼中早期使用空安全的過程中，我們已經看到更多複雜的錯誤被捕獲，然後透過空安全解決。以下是一些範例：</p>
 <ul>
-<li>一个内部团队发现，他们经常检查代码中的空值，而空安全功能知道这些空值永远不会为 null。这个问题最常出现在使用 <a href="https://developers.google.com/protocol-buffers">protobuf</a> 的代码中，其中可选字段在未设置时返回默认值，而不会返回 null。这导致代码错误地检查默认条件，因为混淆了默认值和 null 值。</li>
-<li>Google Pay 团队发现他们的 Flutter 代码中的错误，这些错误在尝试在 Widget 上下文之外访问 Flutter State 对象时会导致失败。在空安全功能之前，它们会返回 null 并隐藏错误；使用空安全功能，健全的分析确定这些属性永远不会为空，并抛出一个分析错误。</li>
-<li>Flutter 团队发现一个错误，如果将 null 传递给 Window.render() 中的 scene 参数，Flutter 引擎可能会崩溃。在空安全功能迁移期间，他们添加了一个提示，以 <a href="https://github.com/cbracken/engine/blob/bad869e229a8a02cad6e63d12e80807b33b5c12f/lib/ui/window.dart#L1069">将 Scene 标记为不可为空</a>，并且能够轻松地防止潜在的应用程序崩溃，如果传递了 null，这些崩溃可能会被触发。</li>
+<li>一個內部團隊發現，他們經常在空安全知道永遠不會為空的程式碼中檢查空值。此問題最常見於使用 <a href="https://developers.google.com/protocol-buffers">protobuf</a> 的程式碼中，其中可選欄位在未設定時返回預設值，而不是空值。這會導致程式碼透過混淆預設值和空值來錯誤地檢查預設條件。</li>
+<li>Google Pay 團隊在他們的 Flutter 程式碼中發現了錯誤，在嘗試在 Widget 上下文之外存取 Flutter State 物件時，它們會失敗。在空安全之前，這些會返回空值並掩蓋錯誤；使用空安全，完善的分析確定這些屬性永遠不會為空，並拋出分析錯誤。</li>
+<li>Flutter 團隊發現了一個錯誤，如果將空值傳遞給 <code>Window.render()</code> 中的 <code>scene</code> 參數，Flutter 引擎可能會崩潰。在空安全遷移期間，他們加入了一個提示以<a href="https://github.com/cbracken/engine/blob/bad869e229a8a02cad6e63d12e80807b33b5c12f/lib/ui/window.dart#L1069">將 Scene 標記為不可為空</a>，然後能夠輕鬆地防止如果傳遞空值會觸發的潛在應用程式崩潰。</li>
 </ul>
-<h4 id="在編譯過程中利用健全的空安全功能"><a href="#在編譯過程中利用健全的空安全功能" class="headerlink" title="在編譯過程中利用健全的空安全功能"></a>在編譯過程中利用健全的空安全功能</h4><p>Dart 空安全功能的健全性還有一個令人歡迎的含義：這意味著 Dart 編譯器可以利用可空性資訊。這可能會使您的程式更小、更快。我們還沒有很多實際應用程式完全遷移到健全的空安全功能（因為我們現在才開始進行這些應用程式相依的套件的生態系統遷移），但我們從核心框架中看到了非常令人鼓舞的結果。</p>
-<p>我們最近對 <a href="https://github.com/flutter/flutter/blob/master/examples/hello_world/lib/main.dart">hello_world</a> 範例進行了測試重新編譯，以測量空安全功能對應用程式大小的影響。這是一個最簡單的範例，它只會顯示「hello world」。在 <a href="https://gist.github.com/mit-mit/64e160f9dc3bf6c69c7ef2f81384594a">比較</a> 編譯後程式碼的總體大小時，未壓縮的（安裝在設備上的）程式碼大小縮小了 3.5%，而沒有做任何其他事情，只是使用健全的空安全功能重新編譯。這有可能實現，儘管這個應用程式只有 10 行程式碼，因為所有包含的函式庫的程式碼大小都縮小了；例如，Flutter 框架本身（套件：flutter）縮小了 3.9%。</p>
-<p>至於程式碼速度，強制執行健全的類型系統可能會增加開銷。但是，減少空檢查也可能會使程式碼執行得更快。我們對基准測試的初步分析表明，效能與以前的版本相當，並且新的額外類型資訊為我們在未來進行新的效能改進提供了潛力。我們計劃在未來的部落格文章中更多地介紹我們的效能工作。</p>
-<p>在某些情况下，我们已经看到空安全功能带来了性能提升，通常是在迁移到空安全功能时发现了代码逻辑中的缺陷。例如，我们在 Flutter 网页文字布局缓存中发现了一个问题。这个缓存使用了一个可为空的键，然后使用了一些逻辑来在为空时使用 TextAlign.start。这种逻辑导致缓存出现缺陷，即使元素仍然具有默认值，它们看起来也会像改变了一样。因此，经常出现缓存未命中。添加一个不可为空的 textAlign getter 有助于修复缓存缺陷，从而在文字被缓存的情况下，使文字渲染性能 <strong>提高了 14 倍</strong>。</p>
-<h3 id="立即開始吧！"><a href="#立即開始吧！" class="headerlink" title="立即開始吧！"></a>立即開始吧！</h3><p>包含空安全功能的 Dart 和 Flutter 的 Beta 版本今天已準備就緒。如果您使用 Flutter 開發，您可以使用 flutter channel beta 然後 flutter upgrade 切換到 Beta 版本。否則，您可以從 <a href="https://dart.dev/tools/sdk/archive#beta-channel">Dart SDK 檔案</a> 中獲取獨立的 Dart SDK。</p>
-<p>如果您開發套件，我們鼓勵您閱讀我們的 <a href="https://dart.dev/null-safety/migration-guide">遷移指南</a> 並規劃您的遷移。請 <a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&amp;labels=NNBD&amp;body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">告知我們</a> 您遇到的任何問題或建議。</p>
-<p>如果您是應用程式開發人員，您可能更希望延遲遷移，直到該功能出现在我們的穩定通道中。我們計劃快速解决 Beta 版本的回饋，修复任何剩余的问题。很难确定空安全功能将在稳定版中发布的确切时间，但我们预计将在明年年初。</p>
-<p>感謝您在我們努力使 Dart 變得更加健壯，以及使 Flutter 變得更加强大的過程中提供支持和回饋！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=4491da22077a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-dart-null-safety-beta-4491da22077a">宣佈 Dart 空安全功能 Beta 版本</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+<h4 id="在編譯期間利用完善的空安全"><a href="#在編譯期間利用完善的空安全" class="headerlink" title="在編譯期間利用完善的空安全"></a>在編譯期間利用完善的空安全</h4><p>Dart 空安全的完善性還有另一個令人歡迎的含義：這意味著 Dart 編譯器可以利用可空性資訊。這可能會使您的程式更小、更快。我們還沒有很多真實世界的應用程式完全遷移到完善的空安全（因為我們現在才剛剛開始這些應用程式所依賴的套件的生態系統遷移以實現完善性），但我們從核心架構中看到了非常令人鼓舞的結果。</p>
+<p>我們最近對 <a href="https://github.com/flutter/flutter/blob/master/examples/hello_world/lib/main.dart">hello_world</a> 範例進行了測試重新編譯，以測量空安全對應用程式大小的影響。這是一個最小化的範例，只顯示「hello world」。在<a href="https://gist.github.com/mit-mit/64e160f9dc3bf6c69c7ef2f81384594a">比較</a>編譯程式碼的總大小時，未壓縮的（安裝在設備上的）程式碼大小縮小了 3.5%，除了使用完善的空安全重新編譯之外沒有做任何事情。儘管這個應用程式只有 10 行程式碼，但這也是可能的，因為所有包含的程式庫的程式碼大小都縮小了；例如 Flutter 架構本身（<code>package:flutter</code>）縮小了 3.9%。</p>
+<p>至於程式碼速度，必須強制執行完善的型別系統可能會增加開銷。但是，進行更少的空值檢查也可能會使程式碼更快。我們對基準測試的初步分析顯示，效能與以前的版本相當，並且新的額外型別資訊為我們未來進行新型別的效能改進創造了潛力。我們計畫在未來的部落格文章中詳細介紹我們的效能工作。</p>
+<p>在某些情況下，我們已經看到空安全會帶來效能提升，通常是在遷移至空安全時發現了程式碼邏輯中的缺陷。例如，我們在 Flutter 網頁文字佈局快取中發現了一個問題。此快取使用的鍵是可為空的，然後是一些在為空時使用 <code>TextAlign.start</code> 的邏輯。此邏輯導致快取中的缺陷，即使元素仍然具有預設值，它們看起來也像已更改。因此，經常發生快取未命中。加入一個不可為空的 <code>textAlign</code> getter 有助於修復快取缺陷，從而在文字被快取的情況下使文字渲染效能<strong>提高 14 倍</strong>。</p>
+<h3 id="立即開始！"><a href="#立即開始！" class="headerlink" title="立即開始！"></a>立即開始！</h3><p>包含空安全的 Dart 和 Flutter 的 Beta 版本今天已經準備好了。如果您使用 Flutter 進行開發，您可以使用 <code>flutter channel beta</code> 切換到 Beta，然後使用 <code>flutter upgrade</code>。否則，您可以從 <a href="https://dart.dev/tools/sdk/archive#beta-channel">Dart SDK 存檔</a> 中獲取獨立的 Dart SDK。</p>
+<p>如果您開發套件，我們鼓勵您閱讀我們的<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>並規劃您的遷移。如果您有任何問題或建議，請<a href="https://github.com/dart-lang/sdk/issues/new?title=Null%20safety%20feedback:%20%5Bissue%20summary%5D&amp;labels=NNBD&amp;body=Describe%20the%20issue%20or%20potential%20improvement%20in%20detail%20here">告知我們</a>。</p>
+<p>如果您是應用程式開發人員，您可能希望延遲遷移，直到該功能進入我們的穩定頻道。我們計畫快速處理 Beta 版的回饋，修復任何剩餘的問題。很難說明空安全何時會在穩定版本中發佈的具體時間表，但我們認為是明年年初。</p>
+<p>感謝您的支援和回饋，我們正在努力使 Dart 成為更強大的語言，使 Flutter 成為更強大的架構！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=87610fee6730" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-null-safety-beta-87610fee6730">宣佈 Dart 空安全 Beta 版</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
 
     </div>
 
@@ -330,8 +330,8 @@
       <i class="fa fa-chevron-left"></i> 【文章翻譯】Deprecation Lifetime in Flutter
     </a></div>
       <div class="post-nav-item">
-    <a href="/archives/bca4006b.html" rel="next" title="【文章翻譯】Updates on Flutter Testing">
-      【文章翻譯】Updates on Flutter Testing <i class="fa fa-chevron-right"></i>
+    <a href="/archives/ab04823c.html" rel="next" title="【文章翻譯】Announcing Dart null safety beta">
+      【文章翻譯】Announcing Dart null safety beta <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -391,7 +391,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%96%8B%E5%A7%8B%E5%B0%87%E5%A5%97%E4%BB%B6%E9%81%B7%E7%A7%BB%E5%88%B0%E6%9B%B4%E5%81%A5%E5%85%A8%E3%80%81%E6%9B%B4%E5%AE%89%E5%85%A8%E7%9A%84%E7%8B%80%E6%85%8B"><span class="nav-number">1.</span> <span class="nav-text">開始將套件遷移到更健全、更安全的狀態</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B8%E6%93%87%E5%8A%A0%E5%85%A5%E7%A9%BA%E5%AE%89%E5%85%A8%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">選擇加入空安全功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B7%E7%A7%BB%E5%88%B0%E7%A9%BA%E5%AE%89%E5%85%A8%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">遷移到空安全功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC-1-%E6%AD%A5%EF%BC%9A%E6%AA%A2%E6%9F%A5%E6%82%A8%E7%9A%84%E7%9B%B8%E4%BE%9D%E6%80%A7%E6%98%AF%E5%90%A6%E5%B7%B2%E6%BA%96%E5%82%99%E5%A5%BD"><span class="nav-number">1.2.1.</span> <span class="nav-text">第 1 步：檢查您的相依性是否已準備好</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A9%97%E8%AD%89%E7%9B%B8%E4%BE%9D%E6%80%A7%E6%98%AF%E5%90%A6%E5%B7%B2%E6%BA%96%E5%82%99%E5%A5%BD"><span class="nav-number">1.2.2.</span> <span class="nav-text">驗證相依性是否已準備好</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC-2-%E6%AD%A5%EF%BC%9A%E4%BD%BF%E7%94%A8%E9%81%B7%E7%A7%BB%E5%B7%A5%E5%85%B7%E9%80%B2%E8%A1%8C%E9%81%B7%E7%A7%BB"><span class="nav-number">1.2.3.</span> <span class="nav-text">第 2 步：使用遷移工具進行遷移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC-3-%E6%AD%A5%EF%BC%9A%E9%9D%9C%E6%85%8B%E5%88%86%E6%9E%90%E6%82%A8%E7%9A%84%E9%81%B7%E7%A7%BB%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.2.4.</span> <span class="nav-text">第 3 步：靜態分析您的遷移程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC-4-%E6%AD%A5%EF%BC%9A%E7%A2%BA%E4%BF%9D%E6%B8%AC%E8%A9%A6%E9%80%9A%E9%81%8E"><span class="nav-number">1.2.5.</span> <span class="nav-text">第 4 步：確保測試通過</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC-5-%E6%AD%A5%EF%BC%9A%E7%99%BC%E4%BD%88%E6%82%A8%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%E5%A5%97%E4%BB%B6"><span class="nav-number">1.2.6.</span> <span class="nav-text">第 5 步：發佈您的空安全套件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%A5%E5%85%A8%E7%A9%BA%E5%AE%89%E5%85%A8%E7%9A%84%E5%84%AA%E9%BB%9E"><span class="nav-number">1.3.</span> <span class="nav-text">健全空安全的優點</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E5%AE%89%E5%85%A8%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.3.1.</span> <span class="nav-text">更安全的程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%B7%A8%E8%AD%AF%E9%81%8E%E7%A8%8B%E4%B8%AD%E5%88%A9%E7%94%A8%E5%81%A5%E5%85%A8%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%E5%8A%9F%E8%83%BD"><span class="nav-number">1.3.2.</span> <span class="nav-text">在編譯過程中利用健全的空安全功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E9%96%8B%E5%A7%8B%E5%90%A7%EF%BC%81"><span class="nav-number">1.4.</span> <span class="nav-text">立即開始吧！</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-%E7%A9%BA%E5%AE%89%E5%85%A8-Beta-%E7%89%88"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 空安全 Beta 版</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B8%E6%93%87%E5%8A%A0%E5%85%A5%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.1.</span> <span class="nav-text">選擇加入空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B7%E7%A7%BB%E8%87%B3%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">遷移至空安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-1%EF%BC%9A%E6%AA%A2%E6%9F%A5%E6%82%A8%E7%9A%84%E4%BE%9D%E8%B3%B4%E9%A0%85%E6%98%AF%E5%90%A6%E5%B7%B2%E6%BA%96%E5%82%99%E5%B0%B1%E7%B7%92"><span class="nav-number">1.2.1.</span> <span class="nav-text">步驟 1：檢查您的依賴項是否已準備就緒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A9%97%E8%AD%89%E4%BE%9D%E8%B3%B4%E9%A0%85%E6%98%AF%E5%90%A6%E5%B7%B2%E6%BA%96%E5%82%99%E5%B0%B1%E7%B7%92"><span class="nav-number">1.2.2.</span> <span class="nav-text">驗證依賴項是否已準備就緒</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-2%EF%BC%9A%E4%BD%BF%E7%94%A8%E9%81%B7%E7%A7%BB%E5%B7%A5%E5%85%B7%E9%80%B2%E8%A1%8C%E9%81%B7%E7%A7%BB"><span class="nav-number">1.2.3.</span> <span class="nav-text">步驟 2：使用遷移工具進行遷移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-3%EF%BC%9A%E9%9D%9C%E6%85%8B%E5%88%86%E6%9E%90%E6%82%A8%E9%81%B7%E7%A7%BB%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.2.4.</span> <span class="nav-text">步驟 3：靜態分析您遷移的程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-4%EF%BC%9A%E7%A2%BA%E4%BF%9D%E6%B8%AC%E8%A9%A6%E9%80%9A%E9%81%8E"><span class="nav-number">1.2.5.</span> <span class="nav-text">步驟 4：確保測試通過</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-5%EF%BC%9A%E7%99%BC%E4%BD%88%E6%82%A8%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%E5%A5%97%E4%BB%B6"><span class="nav-number">1.2.6.</span> <span class="nav-text">步驟 5：發佈您的空安全套件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%8C%E5%96%84%E7%A9%BA%E5%AE%89%E5%85%A8%E7%9A%84%E5%A5%BD%E8%99%95"><span class="nav-number">1.3.</span> <span class="nav-text">完善空安全的好處</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E5%AE%89%E5%85%A8%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="nav-number">1.3.1.</span> <span class="nav-text">更安全的程式碼</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%A8%E7%B7%A8%E8%AD%AF%E6%9C%9F%E9%96%93%E5%88%A9%E7%94%A8%E5%AE%8C%E5%96%84%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">在編譯期間利用完善的空安全</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E9%96%8B%E5%A7%8B%EF%BC%81"><span class="nav-number">1.4.</span> <span class="nav-text">立即開始！</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -414,7 +414,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Pub.dev 正式推出驗證發佈者今天，我們宣布在 pub.dev（Dart 套件庫）上推出一項新功能：驗證發佈者。當您使用 具有驗證發佈者的套件時，您可以確定發佈者就是他們聲稱的身份。當您以驗證發佈者的身份發佈 套件時，您將獲得更輕鬆的套件管理的額外好處。     提升套件使用者的信任度使用 Flutter 建構應用程式的應用程式開發">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing verified publishers on pub.dev">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/3c6a7d27.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Pub.dev 正式推出驗證發佈者今天，我們宣布在 pub.dev（Dart 套件庫）上推出一項新功能：驗證發佈者。當您使用 具有驗證發佈者的套件時，您可以確定發佈者就是他們聲稱的身份。當您以驗證發佈者的身份發佈 套件時，您將獲得更輕鬆的套件管理的額外好處。     提升套件使用者的信任度使用 Flutter 建構應用程式的應用程式開發">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/0*DfmB09PD2DK-pvTz">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/507/0*LQMWHLFUi6F7nPO1">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*GJcMpmN8bNi6H5_g">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Q24NUEox8eA10hVB">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=98f05466558a">
+<meta property="article:published_time" content="2019-10-10T11:01:08.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:38:16.558Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="package-management">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/960/0*DfmB09PD2DK-pvTz">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/3c6a7d27.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing verified publishers on pub.dev | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/3c6a7d27.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing verified publishers on pub.dev
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-10-10 19:01:08" itemprop="dateCreated datePublished" datetime="2019-10-10T19:01:08+08:00">2019-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:38:16" itemprop="dateModified" datetime="2024-12-18T22:38:16+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Pub-dev-正式推出驗證發佈者"><a href="#Pub-dev-正式推出驗證發佈者" class="headerlink" title="Pub.dev 正式推出驗證發佈者"></a>Pub.dev 正式推出驗證發佈者</h2><p>今天，我們宣布在 <a href="https://pub.dev/">pub.dev</a>（Dart 套件庫）上推出一項新功能：<em>驗證發佈者</em>。當您<em>使用</em> 具有驗證發佈者的套件時，您可以確定發佈者就是他們聲稱的身份。當您以驗證發佈者的身份<em>發佈</em> 套件時，您將獲得更輕鬆的套件管理的額外好處。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/0*DfmB09PD2DK-pvTz" />
+</figure>
+
+<h3 id="提升套件使用者的信任度"><a href="#提升套件使用者的信任度" class="headerlink" title="提升套件使用者的信任度"></a>提升套件使用者的信任度</h3><p>使用 <a href="https://flutter.dev/">Flutter</a> 建構應用程式的應用程式開發人員告訴我們，擁有豐富的高品質套件選擇對他們的生產力至關重要，這使他們能夠重複使用常見的組件並存取熱門的 SDK 和函式庫。我們看到 <a href="https://pub.dev/">pub.dev</a> 生態系統的巨大增長，在過去一年中發佈了數千個套件，並且每個月都有數十萬開發人員使用 pub.dev 瀏覽和搜尋新的套件內容。</p>
+<p>我們從套件使用者那裡聽到的最重要的選擇標準之一是<em>誰發佈了套件</em>。驗證發佈者透過驗證發佈者的身份，並在套件搜尋結果和套件詳細資訊頁面中清楚地列出發佈者身份（請注意下方螢幕截圖中 dart.dev 旁邊的藍色徽章），增強了這個訊號。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/507/0*LQMWHLFUi6F7nPO1" />
+<figcaption>套件搜尋結果顯示由已驗證發佈者發佈的套件</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*GJcMpmN8bNi6H5_g" />
+<figcaption>套件詳細資訊頁面顯示由已驗證發佈者發佈的套件</figcaption>
+</figure>
+
+<p>當您點擊發佈者時，您可以看到更多詳細資訊，包括發佈者的聯絡電子郵件、發佈者首頁的連結，以及發佈者的簡短描述。發佈者描述由發佈者提供，提供了一個小的品牌推廣機會。</p>
+<p>您還可以查看該發佈者發佈的所有套件的列表。以下是新的 <a href="https://pub.dev/publishers/dart.dev/packages">dart.dev 發佈者</a> 的範例。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Q24NUEox8eA10hVB" />
+<figcaption>發佈者的套件列表樣本</figcaption>
+</figure>
+
+<h4 id="發佈者驗證流程"><a href="#發佈者驗證流程" class="headerlink" title="發佈者驗證流程"></a>發佈者驗證流程</h4><p>在設計驗證流程時，我們希望建立一個值得信賴、成本低廉且任何有興趣成為驗證發佈者的人都可以使用的機制。我們也希望這個流程是自動化的，這樣帳戶就可以立即建立。</p>
+<p>在審查了幾種替代方案之後，我們決定將驗證建立在 DNS（網域名稱系統）二級網域的基礎上。我們選擇 DNS 是因為我們相信大多數套件發佈者已經擁有一個網域和一個位於該網域的首頁。在 <a href="https://dart.dev/tools/pub/publishing#create-verified-publisher">建立發佈者的過程中</a>，pub.dev 會根據 <a href="https://search.google.com/search-console/about">Google Search Console</a> 中的現有邏輯，驗證建立驗證發佈者的使用者是否具有對相關網域的管理員存取權限。</p>
+<h4 id="改進的套件管理"><a href="#改進的套件管理" class="headerlink" title="改進的套件管理"></a>改進的套件管理</h4><p>除了驗證發佈者身份的明顯好處之外，驗證發佈者功能還提供了管理上的好處。以前，如果您發佈許多套件，存取權管理是一項繁瑣的、逐個套件的工作，這會佔用您原本可以花在改進套件上的時間。有了驗證的發佈者，您可以為您的發佈者帳戶設定一個管理員團隊，所有團隊成員都可以發佈對發佈者擁有的所有套件的更新。</p>
+<p>我們還加入了一些新的自我管理選項，包括將現有套件移動到發佈者帳戶（如下所示）或將套件標記為 <a href="https://dart.dev/tools/pub/publishing#discontinue">已停止</a>。</p>
+<h4 id="轉移現有套件"><a href="#轉移現有套件" class="headerlink" title="轉移現有套件"></a>轉移現有套件</h4><p>將現有套件轉移到已驗證的發佈者很容易。只需 <a href="https://dart.dev/tools/pub/publishing#create-verified-publisher">建立一個已驗證的發佈者</a>，並對現有套件使用 <a href="https://dart.dev/tools/pub/publishing#transferring-a-package-to-a-verified-publisher">轉移功能</a>。每個套件的這個簡單過程只需幾分鐘。</p>
+<h4 id="Pub-dev-路線圖"><a href="#Pub-dev-路線圖" class="headerlink" title="Pub.dev 路線圖"></a>Pub.dev 路線圖</h4><p>我們正在討論 pub.dev 的許多未來改進。以下是一些想法：</p>
+<ul>
+<li>支援特定平台（例如，Android 或 Web；<a href="https://github.com/dart-lang/pub-dev/issues/187">#187</a>）的套件的搜尋支援，包括更好地理解 Dart Web 與 Flutter Web 套件</li>
+<li>套件的標籤或類別 (<a href="https://github.com/dart-lang/pub-dev/issues/367">#367</a>)</li>
+<li>對高質量套件進行投票或點讚 (<a href="https://github.com/dart-lang/pub-dev/issues/798">#798</a>)</li>
+<li>舉報可疑內容的明確政策和流程 (<a href="https://github.com/dart-lang/pub-dev/issues/1570">#1570</a>)</li>
+</ul>
+<p>如果您對某個特定想法感興趣，我們鼓勵您查看 <a href="https://github.com/dart-lang/pub-dev/issues?q=is:issue+is:open+sort:reactions-+1-desc">pub.dev 議題追蹤器</a>，以確保該想法已被追蹤，並透過對議題最上面的評論加入<em>豎起大拇指</em>的反應來表示您的興趣。</p>
+<h4 id="後續步驟"><a href="#後續步驟" class="headerlink" title="後續步驟"></a>後續步驟</h4><p>如果您是套件發佈者，我們鼓勵您盡快將您的套件轉移到已驗證的發佈者帳戶，以便為您自己和您的套件使用者獲得上述好處。我們已經轉移了許多最受歡迎的 <a href="https://pub.dev/publishers/dart.dev/packages">dart.dev 套件</a>，並預計很快會轉移更多套件。</p>
+<p>目前就這些。我們期待在 <a href="https://pub.dev/">pub.dev</a> 上看到更多高質量的套件！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=98f05466558a" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/verified-publishers-98f05466558a">宣布 pub.dev 上的驗證發佈者</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/package-management/" rel="tag"># package-management</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/23cdf5f.html" rel="prev" title="【文章翻譯】Dart asynchronous programming: Futures">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart asynchronous programming: Futures
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3d0ae6d.html" rel="next" title="【文章翻譯】Dart extension method fundamentals">
+      【文章翻譯】Dart extension method fundamentals <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pub-dev-%E6%AD%A3%E5%BC%8F%E6%8E%A8%E5%87%BA%E9%A9%97%E8%AD%89%E7%99%BC%E4%BD%88%E8%80%85"><span class="nav-number">1.</span> <span class="nav-text">Pub.dev 正式推出驗證發佈者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E5%A5%97%E4%BB%B6%E4%BD%BF%E7%94%A8%E8%80%85%E7%9A%84%E4%BF%A1%E4%BB%BB%E5%BA%A6"><span class="nav-number">1.1.</span> <span class="nav-text">提升套件使用者的信任度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%99%BC%E4%BD%88%E8%80%85%E9%A9%97%E8%AD%89%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">發佈者驗證流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%94%B9%E9%80%B2%E7%9A%84%E5%A5%97%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">改進的套件管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%89%E7%A7%BB%E7%8F%BE%E6%9C%89%E5%A5%97%E4%BB%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">轉移現有套件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pub-dev-%E8%B7%AF%E7%B7%9A%E5%9C%96"><span class="nav-number">1.1.4.</span> <span class="nav-text">Pub.dev 路線圖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.1.5.</span> <span class="nav-text">後續步驟</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

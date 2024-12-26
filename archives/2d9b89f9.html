@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 與可靠類型帶來的效能優勢  從 Dart 1.24、2.0 和 2.12（從左到右）中的同一個 Dart 方法生成的代碼變得更小。要了解原因（並查看實際生成的代碼），請继续阅读。   在過去的幾年中，我們強化了 Dart 的類型系統。最初的 Dart 語言（Dart 1）有一個不可靠的、可選的類型系統（類似於類型的 JavaS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart and the performance benefits of sound types">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/2d9b89f9.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 與可靠類型帶來的效能優勢  從 Dart 1.24、2.0 和 2.12（從左到右）中的同一個 Dart 方法生成的代碼變得更小。要了解原因（並查看實際生成的代碼），請继续阅读。   在過去的幾年中，我們強化了 Dart 的類型系統。最初的 Dart 語言（Dart 1）有一個不可靠的、可選的類型系統（類似於類型的 JavaS">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/722/1*WOmw6jN-nt82uXjGCqRC4g.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/195/1*GjL59kevCm5NQ5P9Unn_NA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*BmagjRb3ei3C-HjyYfLNyw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*1bEjUe15A0s47XMsZPqdNQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*x0UcFY8XwG-3vHe5hYxyQw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*xVdpKVxtt_TtfoXZDlu1Qw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*JPFuwgxqf2K-7tVD52M5uQ.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ceedd5b6cdc">
+<meta property="article:published_time" content="2021-01-19T09:02:52.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:45:07.037Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="performance">
+<meta property="article:tag" content="programming-languages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/722/1*WOmw6jN-nt82uXjGCqRC4g.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/2d9b89f9.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart and the performance benefits of sound types | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2d9b89f9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart and the performance benefits of sound types
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-19 17:02:52" itemprop="dateCreated datePublished" datetime="2021-01-19T17:02:52+08:00">2021-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:45:07" itemprop="dateModified" datetime="2024-12-18T22:45:07+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-與可靠類型帶來的效能優勢"><a href="#Dart-與可靠類型帶來的效能優勢" class="headerlink" title="Dart 與可靠類型帶來的效能優勢"></a>Dart 與可靠類型帶來的效能優勢</h2><figure>
+<img alt="3 screenshots of machine code: much code → less code → 3 lines of code." src="https://cdn-images-1.medium.com/max/722/1*WOmw6jN-nt82uXjGCqRC4g.png" />
+<figcaption>從 Dart 1.24、2.0 和 2.12（從左到右）中的同一個 Dart 方法生成的代碼變得更小。要了解原因（並查看實際生成的代碼），請继续阅读。</figcaption>
+</figure>
+
+<p>在過去的幾年中，我們強化了 Dart 的類型系統。最初的 Dart 語言（Dart 1）有一個不可靠的、可選的類型系統（類似於類型的 JavaScript 方言，例如微軟的 TypeScript 或 Facebook 的 Flow）。Dart 2 引入了一個更嚴格的、<a href="https://dart.dev/guides/language/type-system">可靠的類型系統</a>。在過去的兩年中，我們一直在努力透過 <a href="https://dart.dev/null-safety">可靠的空安全</a> 進一步擴展類型系統。</p>
+<p>雖然可靠的類型系統為開發人員提供了更大的信心，但它也使我們的編譯器能夠安全地使用類型來優化生成的代碼。有了可靠性，我們的工具透過結合靜態和（必要時）運行時檢查來保證類型的正確性。沒有可靠性，類型檢查只能進行到一定程度，並且靜態類型在運行時可能不正確。</p>
+<p>在實踐中，可靠性允許我們的編譯器生成更小、更快的代碼，尤其是在提前 (AOT) 設定中，我們將預編譯的原生代碼傳送給客戶端。</p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><p>以下範例方法演示了可靠類型如何對相對簡單的代碼產生巨大影響：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> getAge(Animal a) &#123;</span><br><span class="line">  <span class="keyword">return</span> a.age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在我們最後一個穩定的 Dart 1 版本 (1.24.3) 中，這個方法映射到 <strong>26 個原生 x64 指令</strong>——這還是在檢測和設定檔引導的優化之後，這會減慢初始運行時啟動速度。在 Dart 2.12 中使用可靠的空安全，此代碼僅映射到 <strong>3 個指令</strong>，而無需任何設定檔引導的優化。</p>
+<blockquote>
+<p>Dart 編譯為 ARM32&#x2F;64 和 x86&#x2F;x64 架構。在以下範例中，我們使用 x64，但在其他目標上的結果類似。</p>
+</blockquote>
+<p>範例方法的完整 Dart 代碼和上下文顯示在本文末尾，但以下是重點：</p>
+<ul>
+<li><code>Animal</code> 類包含一個類型為 <code>int</code> 的欄位 <code>age</code>。</li>
+<li><code>Animal</code> 有幾個子類別（<code>Cat</code>、<code>Dog</code>、<code>Snake</code>、<code>Hamster</code>）。</li>
+<li>上述方法在運行時在許多這些類型上被調用。</li>
+</ul>
+<h3 id="Dart-物件佈局"><a href="#Dart-物件佈局" class="headerlink" title="Dart 物件佈局"></a>Dart 物件佈局</h3><p>當編譯為原生 (x64) 代碼時，Dart 類 <code>Animal</code> 有一個簡單的佈局：</p>
+<figure>
+<img alt="8 bytes of object header, followed by 8 bytes of `age` field, followed by additional subclass fields." src="https://cdn-images-1.medium.com/max/195/1*GjL59kevCm5NQ5P9Unn_NA.png" />
+</figure>
+
+<p>前 8 個位元組是一個標題，提供具體化的類型資訊（即物件的運行時類型）。第二個 8 個位元組包含 <code>age</code> 欄位。所有子類別都保留（並可能添加到）此結構：任何額外的欄位都佈局在後面，保留基本類型的結構。給定 <code>Animal</code>（或任何子類別）的實例，<code>getAge</code> 方法應從 8 位元組偏移量載入欄位並返回它。</p>
+<h3 id="Dart-1：不可靠的類型"><a href="#Dart-1：不可靠的類型" class="headerlink" title="Dart 1：不可靠的類型"></a>Dart 1：不可靠的類型</h3><p>然而，在 Dart 1 中，靜態類型並不可靠，並且在編譯期間實際上被忽略。在運行時，我們不能假設靜態類型是正確的（因此，佈局也是預期的）。對 <code>age</code> 的存取可能是對不同偏移量處的欄位、對觸發更多可執行代碼的 getter 或對不存在的欄位（觸發可捕獲的運行時錯誤）的存取。</p>
+<p>Dart 1 被設計為依賴於客戶端設備上的即時編譯器和虛擬機器，該編譯器使用運行時類型資訊來優化代碼。在這種方案中，我們實際上編譯了每個方法兩次：第一次是為了收集資訊，第二次（對於熱點方法）是根據觀察到的運行時行為生成更優化的代碼。</p>
+<h4 id="Dart-1：第一次編譯"><a href="#Dart-1：第一次編譯" class="headerlink" title="Dart 1：第一次編譯"></a>Dart 1：第一次編譯</h4><p><code>getAge</code> 的第一次編譯在 x64 上產生了以下 47 個指令：</p>
+<figure>
+<img alt="2 columns full of assembly code." src="https://cdn-images-1.medium.com/max/1024/1*BmagjRb3ei3C-HjyYfLNyw.png" />
+</figure>
+
+<p>請注意，此代碼已檢測以確定運行時會發生什麼。它對傳遞的物件沒有任何假設，並且有效地執行等效於雜湊表查找以正確找到欄位、執行 getter 或拋出錯誤。</p>
+<h4 id="Dart-1：第二次編譯"><a href="#Dart-1：第二次編譯" class="headerlink" title="Dart 1：第二次編譯"></a>Dart 1：第二次編譯</h4><p>在這種情況下，代碼會被重複調用，並觸發第二次優化編譯，生成以下 26 個指令：</p>
+<figure>
+<img alt="2 columns of assembly code (but less than before). Most of the code is blue (prologue/epilogue) or red (various checks)." src="https://cdn-images-1.medium.com/max/1024/1*1bEjUe15A0s47XMsZPqdNQ.png" />
+</figure>
+
+<p>這個優化的代碼仍然很大。它基於設定檔資訊，發現該方法僅在 <code>Cat</code>、<code>Hamster</code> 和 <code>Dog</code> 的實例上被調用，並根據未來也將如此的假設進行了優化。</p>
+<p><strong>藍色</strong> 代碼是方法的序言和結尾（用於設置和恢復堆疊框架）。<strong>紅色</strong> 代碼檢查預期的情況——實例非空且屬於先前看到的類型之一——並為其他情況調用慢路徑。<strong>粗體</strong> 代碼是載入欄位的實際工作。</p>
+<p>如果未來的行為與過去不同，優化的代碼實際上可能會更慢：如果在新的實例（例如 <code>Snake</code>）上調用 <code>getAge</code>，代碼將執行額外的檢查，但仍然會進入慢路徑。</p>
+<h4 id="Dart-1-生成的代碼的問題"><a href="#Dart-1-生成的代碼的問題" class="headerlink" title="Dart 1 生成的代碼的問題"></a>Dart 1 生成的代碼的問題</h4><p>上面的生成的代碼在結構上與 Chrome 中的 JavaScript 引擎 V8 在給定或多或少等效的 JavaScript&#x2F;TypeScript&#x2F;Flow 程序時生成的代碼非常相似。雖然這種方法（和相應的生成的代碼）可以在許多情況下提供良好的效能，但當我們開始（尤其是使用 Flutter）面向更廣泛的客戶端平台（包括對大小和記憶體佔用更敏感的行動設備）時，它就不再適合了：</p>
+<ul>
+<li>首先，客戶端編譯的成本增加了 Dart 應用程式的整體佔用空間。</li>
+<li>其次，兩階段推測編譯的成本對應用程式啟動不利。</li>
+<li>第三，iOS 上不允許即時編譯：我們至少需要針對某些目標的替代策略。</li>
+</ul>
+<p>我們轉而採用提前編譯方法，但使用 Dart 1 會導致代碼質量差很多。即使使用複雜的、全程序分析，我們也無法始終在編譯時確定類型資訊，尤其是在應用程式變得更大時。此外，當整個應用程式都被預編譯時，推測的成本（上面的紅色代碼）變得過高。</p>
+<h3 id="Dart-2：可靠的類型"><a href="#Dart-2：可靠的類型" class="headerlink" title="Dart 2：可靠的類型"></a>Dart 2：可靠的類型</h3><p>在 Dart 2 中，我們引入了可靠性，這使我們能夠安全地根據類型資訊編譯代碼，並減少了對設定檔以獲得效能的依賴。使用 Dart 2，在單個提前編譯上，我們在 x64 上生成 10 個指令：</p>
+<figure>
+<img alt="Much less code, but still there’s some blue code (prologue/epilogue) and red code (null checks)." src="https://cdn-images-1.medium.com/max/1024/1*x0UcFY8XwG-3vHe5hYxyQw.png" />
+</figure>
+
+<p>此代碼仍然執行空檢查（紅色），如果發現空則調用輔助方法。</p>
+<h3 id="Dart-2-12：可靠的空安全"><a href="#Dart-2-12：可靠的空安全" class="headerlink" title="Dart 2.12：可靠的空安全"></a>Dart 2.12：可靠的空安全</h3><p>有了可靠的空安全，類型系統更加豐富，我們的編譯器可以利用這一點。編譯器可以安全地依賴於（現在的）非空類型，並消除上面的紅色代碼。在 Dart 2.12 beta 中，我們減少生成了 3 個指令：</p>
+<figure>
+<img alt="Some blue code (prologue/epilogue) but no red code! No null checks needed!" src="https://cdn-images-1.medium.com/max/1024/1*xVdpKVxtt_TtfoXZDlu1Qw.png" />
+</figure>
+
+<p>事實上，隨著代碼變得更簡單，我們也能够簡化序言和結尾。在我們即將發布的穩定版本中，我們將只為範例方法生成 3 個指令：</p>
+<figure>
+<img alt="Even less blue code (prologue/epilogue) than before." src="https://cdn-images-1.medium.com/max/1024/1*JPFuwgxqf2K-7tVD52M5uQ.png" />
+</figure>
+
+<p>有了可靠的空安全，我們可以將此方法的生成的代碼減少到其本質：欄位載入。在實踐中，對此方法的調用將始終被內聯，因為編譯器現在可以輕鬆地看到內聯是效能和代碼大小的雙贏。不再需要運行時檢查和補償代碼：更多的繁重工作在編譯時完成。我們不再需要客戶端編譯的啟動和記憶體開銷。因此，我們的用戶可以獲得更小、更快的代碼。</p>
+<h3 id="試試看！"><a href="#試試看！" class="headerlink" title="試試看！"></a>試試看！</h3><p>我們鼓勵您嘗試 <a href="https://dart.dev/null-safety">空安全</a>。它在 Dart 2.12 中可用，現在在我們的 beta 頻道中。一旦您的上游相依項被遷移，您就可以遷移您自己的套件和應用程式。正如這裡的範例所示，您可能不需要做太多更改。</p>
+<p>請記住，要獲得空安全的效能優勢，您需要一個完全遷移的應用程式。一旦您的應用程式完全遷移，我們的編譯器將自動利用空安全來生成更好、更小的代碼。</p>
+<h3 id="附註：代碼"><a href="#附註：代碼" class="headerlink" title="附註：代碼"></a>附註：代碼</h3><p>這是完整的 Dart 代碼，我編譯它生成了本文中的所有代碼。雖然這裡的範例是人為設計的，但模式（類別層次結構中的欄位）相當常見。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href">https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href</a></iframe>
+<img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ceedd5b6cdc" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">Dart 與可靠類型帶來的效能優勢</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/performance/" rel="tag"># performance</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/a4daf13.html" rel="prev" title="【文章翻譯】Providing operating system compatibility on a large scale">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Providing operating system compatibility on a large scale
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/ac78ba91.html" rel="next" title="【文章翻譯】Join us for">
+      【文章翻譯】Join us for <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E8%88%87%E5%8F%AF%E9%9D%A0%E9%A1%9E%E5%9E%8B%E5%B8%B6%E4%BE%86%E7%9A%84%E6%95%88%E8%83%BD%E5%84%AA%E5%8B%A2"><span class="nav-number">1.</span> <span class="nav-text">Dart 與可靠類型帶來的效能優勢</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B"><span class="nav-number">1.1.</span> <span class="nav-text">範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E7%89%A9%E4%BB%B6%E4%BD%88%E5%B1%80"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 物件佈局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-1%EF%BC%9A%E4%B8%8D%E5%8F%AF%E9%9D%A0%E7%9A%84%E9%A1%9E%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 1：不可靠的類型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dart-1%EF%BC%9A%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%B7%A8%E8%AD%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">Dart 1：第一次編譯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dart-1%EF%BC%9A%E7%AC%AC%E4%BA%8C%E6%AC%A1%E7%B7%A8%E8%AD%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">Dart 1：第二次編譯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dart-1-%E7%94%9F%E6%88%90%E7%9A%84%E4%BB%A3%E7%A2%BC%E7%9A%84%E5%95%8F%E9%A1%8C"><span class="nav-number">1.3.3.</span> <span class="nav-text">Dart 1 生成的代碼的問題</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2%EF%BC%9A%E5%8F%AF%E9%9D%A0%E7%9A%84%E9%A1%9E%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2：可靠的類型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-12%EF%BC%9A%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.5.</span> <span class="nav-text">Dart 2.12：可靠的空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A9%A6%E8%A9%A6%E7%9C%8B%EF%BC%81"><span class="nav-number">1.6.</span> <span class="nav-text">試試看！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E8%A8%BB%EF%BC%9A%E4%BB%A3%E7%A2%BC"><span class="nav-number">1.7.</span> <span class="nav-text">附註：代碼</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

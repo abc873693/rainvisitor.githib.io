@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.18：Objective-C 與 Swift 互通性Dart 2.18 現已推出。此版本預覽了 Objective-C 和 Swift 互通性，以及基於此互通性構建的新 iOS&#x2F;macOS 網路套件。它還包含針對泛型函數的改進類型推斷、異步程式碼的效能改進、新的 pub.dev 功能，以及工具和核心函式庫的清理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart 2.18: Objective-C &amp; Swift interop">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/62d48f18.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.18：Objective-C 與 Swift 互通性Dart 2.18 現已推出。此版本預覽了 Objective-C 和 Swift 互通性，以及基於此互通性構建的新 iOS&#x2F;macOS 網路套件。它還包含針對泛型函數的改進類型推斷、異步程式碼的效能改進、新的 pub.dev 功能，以及工具和核心函式庫的清理。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*byFoNx1wnEaO0S6N">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/420/0*FteRd2cVBg3Zq7JO">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/0*emVp4pmfOhLhiBJ4">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f4b3101f146c">
+<meta property="article:published_time" content="2022-08-30T10:21:05.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:52:29.708Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="null-safety">
+<meta property="article:tag" content="interop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*byFoNx1wnEaO0S6N">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/62d48f18.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart 2.18: Objective-C & Swift interop | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/62d48f18.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart 2.18: Objective-C & Swift interop
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-08-30 18:21:05" itemprop="dateCreated datePublished" datetime="2022-08-30T18:21:05+08:00">2022-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:52:29" itemprop="dateModified" datetime="2024-12-18T22:52:29+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-2-18：Objective-C-與-Swift-互通性"><a href="#Dart-2-18：Objective-C-與-Swift-互通性" class="headerlink" title="Dart 2.18：Objective-C 與 Swift 互通性"></a>Dart 2.18：Objective-C 與 Swift 互通性</h2><p><em>Dart 2.18 現已推出。此版本預覽了 Objective-C 和 Swift 互通性，以及基於此互通性構建的新 iOS&#x2F;macOS 網路套件。它還包含針對泛型函數的改進類型推斷、異步程式碼的效能改進、新的 pub.dev 功能，以及工具和核心函式庫的清理。</em></p>
+<p><em>最後，我們有最新的空安全遷移狀態數據，以及關於我們邁向完全空安全 Dart 的重要路線圖更新。請閱讀到最後！</em></p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*byFoNx1wnEaO0S6N" />
+</figure>
+
+<h3 id="將-Dart-引入-Objective-C-與-Swift-互通性"><a href="#將-Dart-引入-Objective-C-與-Swift-互通性" class="headerlink" title="將 Dart 引入 Objective-C 與 Swift 互通性"></a>將 Dart 引入 Objective-C 與 Swift 互通性</h3><p>我們在 2020 年預覽了用於調用原生 C API 的 Dart 外部函數介面 (FFI)，並於 2021 年 3 月在 Dart 2.12 中發佈。自該版本以來，大量的套件利用此功能與現有的原生 C API 整合。一些例子包括 <a href="https://pub.dev/packages/file_picker">file_picker</a>、<a href="https://pub.dev/packages/printing">printing</a>、<a href="https://pub.dev/packages/win32">win32</a>、<a href="https://pub.dev/packages/objectbox">objectbox</a>、<a href="https://pub.dev/packages/realm">realm</a>、<a href="https://pub.dev/packages/isar">isar</a>、<a href="https://pub.dev/packages/tflite_flutter">tflite_flutter</a> 和 <a href="https://pub.dev/packages/dbus">dbus</a>。</p>
+<p>Dart 團隊希望 Dart 支援與 Dart 運行的平台上的所有主要語言的互通性。Dart 2.18 達到了實現該目標的下一個里程碑。您的 Dart 程式碼可以調用 Objective-C 和 Swift 程式碼，這些程式碼通常用於 macOS 和 iOS 平台上的 API。Dart 在任何應用程式中都支援這種互通機制，從 CLI 應用程式到後端程式碼再到 Flutter UI。</p>
+<p>這種新機制利用了 Objective-C 和 Swift 程式碼可以基於 API 綁定作為 C 程式碼公開的事實。Dart API 包裝器生成工具 <a href="https://pub.dev/packages/ffigen">ffigen</a> 可以從 API 標頭檔建立這些綁定。讓我們來看一個例子。</p>
+<h3 id="使用-Objective-C-的時區範例"><a href="#使用-Objective-C-的時區範例" class="headerlink" title="使用 Objective-C 的時區範例"></a>使用 Objective-C 的時區範例</h3><p>macOS 有一個用於查詢時區資訊的 API，公開在 <a href="https://developer.apple.com/documentation/foundation/nstimezone?language=objc%5D">NSTimeZone 類別</a> 上。您可以查詢此 API 以獲取使用者已為其設備設定的時區和 <a href="https://www.w3.org/International/core/2005/09/timezone.html#:~:text=What%20is%20a%20%22zone%20offset,or%20%22%2D%22%20from%20UTC.">UTC 時區偏移量</a>。</p>
+<p>以下 Objective-C 應用程式範例使用此時區 API 來獲取系統時區和 GMT 偏移量：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main(<span class="type">int</span> argc, <span class="keyword">const</span> <span class="type">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="built_in">NSTimeZone</span> *timezone = [<span class="built_in">NSTimeZone</span> systemTimeZone];</span><br><span class="line">        <span class="built_in">NSInteger</span> secondsFromGMT = [timezone secondsFromGMT];</span><br><span class="line">        <span class="type">int</span> hoursFromGMT = secondsFromGMT / <span class="number">3600</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;Timezone name: %@&quot;</span>, [timezone name]);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;Timezone offset GMT: %d hours&quot;</span>, hoursFromGMT);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>該應用程式匯入了 <code>Foundation.h</code>，其中包含 Apple Foundation 函式庫的 API 標頭檔。接下來，在 <code>main</code> 方法內，它從 <code>NSTimeZone</code> 類別調用 <code>systemTimeZone</code> 方法。此方法返回一個 <code>NSTimeZone</code> 實例，其中包含設備上選定的時區。最後，應用程式向控制台輸出兩行，其中包含時區的名稱和以小時為單位的 UTC 偏移量。</p>
+<p>如果您運行此應用程式，它應該返回類似以下內容，具體取決於您的位置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Timezone name: Europe/Copenhagen</span><br><span class="line">Timezone offset GMT: 2 hours</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-Dart-的時區範例"><a href="#使用-Dart-的時區範例" class="headerlink" title="使用 Dart 的時區範例"></a>使用 Dart 的時區範例</h3><p>讓我們使用新的 Objective-C 互通性在 Dart 中複製此結果。</p>
+<p>首先建立一個新的 Dart CLI 應用程式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart create timezones</span><br></pre></td></tr></table></figure>
+
+<p>然後編輯您的 <code>pubspec</code> 檔案以包含 <code>ffigen</code> 設定。此設定指向標頭檔，並列出應該生成包裝器的 Objective-C 介面：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ffigen:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">&#x27;FoundationBindings&#x27;</span></span><br><span class="line">  <span class="attr">output:</span> <span class="string">&#x27;foundation_bindings.dart&#x27;</span></span><br><span class="line">  <span class="attr">headers:</span></span><br><span class="line">    <span class="attr">entry-points:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSTimeZone.h&#x27;</span></span><br><span class="line">  <span class="attr">objc-interfaces:</span></span><br><span class="line">    <span class="attr">include:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;NSTimeZone&#x27;</span></span><br><span class="line">  <span class="attr">description:</span> <span class="string">&#x27;Bindings to Foundation&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>這將為 <code>NSTimeZone.h</code> 中的標頭檔選擇 Objective-C 綁定，並且僅包含 <code>NSTimeZone</code> 介面中的 API。要生成包裝器，請運行 <code>ffigen</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart run ffigen</span><br></pre></td></tr></table></figure>
+
+<p>此命令建立一個新檔案 <code>foundation_bindings.dart</code>，其中包含一堆生成的 API 綁定。使用此綁定檔案，我們可以編寫我們的 Dart <code>main</code> 方法。此方法反映了 Objective-C 程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:ffi&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:ffi/ffi.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:timezones/foundation_bindings.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> SystemTimeZoneC = Pointer&lt;NSTimeZone&gt; <span class="built_in">Function</span>();</span><br><span class="line"><span class="keyword">typedef</span> SystemTimeZoneDart = Pointer&lt;NSTimeZone&gt; <span class="built_in">Function</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> SecondsFromGMTC = Int64 <span class="built_in">Function</span>(Pointer&lt;NSTimeZone&gt;);</span><br><span class="line"><span class="keyword">typedef</span> SecondsFromGMTDart = <span class="built_in">int</span> <span class="built_in">Function</span>(Pointer&lt;NSTimeZone&gt;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> GetNameC = Pointer&lt;Utf8&gt; <span class="built_in">Function</span>(Pointer&lt;NSTimeZone&gt;);</span><br><span class="line"><span class="keyword">typedef</span> GetNameDart = Pointer&lt;Utf8&gt; <span class="built_in">Function</span>(Pointer&lt;NSTimeZone&gt;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> dylib = DynamicLibrary.open(Platform.isMacOS ? <span class="string">&#x27;/System/Library/Frameworks/Foundation.framework/Versions/Current/Foundation&#x27;</span> : <span class="string">&#x27;Foundation&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> systemTimeZonePointer = dylib.lookupFunction&lt;SystemTimeZoneC, SystemTimeZoneDart&gt;(<span class="string">&#x27;NSTimeZone_systemTimeZone&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> timezone = systemTimeZonePointer();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> secondsFromGMTPointer = dylib.lookupFunction&lt;SecondsFromGMTC, SecondsFromGMTDart&gt;(<span class="string">&#x27;NSTimeZone_secondsFromGMT&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> secondsFromGMT = secondsFromGMTPointer(timezone);</span><br><span class="line">  <span class="keyword">final</span> hoursFromGMT = secondsFromGMT / <span class="number">3600</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> getNamePointer = dylib.lookupFunction&lt;GetNameC, GetNameDart&gt;(<span class="string">&#x27;NSTimeZone_name&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> name = getNamePointer(timezone).toDartString();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Timezone name: <span class="subst">$name</span>&#x27;</span>);</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Timezone offset GMT: <span class="subst">$hoursFromGMT</span> hours&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>就這樣！從今天的 Dart 2.18 開始，此新支援以實驗狀態提供。這增強了 Dart 的通用互通性支援，可以直接調用 macOS 和 iOS API。反過來，這補充了 Flutter 的 Plugin，提供了在任何 Dart 應用程式中都能運作的新支援，並允許您直接從 Dart 程式碼調用 macOS 和 iOS API。</p>
+<p>我們歡迎您的回饋。請透過在 GitHub 上的 <a href="https://github.com/dart-lang/sdk/issues/49673">回饋議題</a> 中評論，讓我們知道哪些有效、哪些可以更改或您遇到的問題。要進一步了解此互通性，請參閱 <a href="https://dart.dev/guides/libraries/objective-c-interop">Objective-C 和 Swift 互通性指南</a>。</p>
+<h3 id="平台特定的-http-函式庫"><a href="#平台特定的-http-函式庫" class="headerlink" title="平台特定的 http 函式庫"></a>平台特定的 http 函式庫</h3><p>Dart 包含一個通用的多平台 http 函式庫。此函式庫允許您編寫程式碼，而無需考慮平台細節。有時，您可能希望編寫特定於特定主機平台網路 API 的程式碼。</p>
+<p>例如，Apple 的網路函式庫 <a href="https://developer.apple.com/documentation/foundation/nsurlsession">NSURLSession</a> 允許指定僅限 WiFi 的網路或需要 VPN。為了支援這些使用案例，我們建立了一個新的網路套件，用於 macOS 和 iOS 平台，<a href="https://pub.dev/packages/cupertino_http">cupertino_http</a>。這是建立在上一節提到的新的 Objective-C 互通性之上的。它使用從 Foundation 中 Apple 的網路 API <a href="https://github.com/dart-lang/http/blob/master/pkgs/cupertino_http/ffigen.yaml">生成</a> 的大量 API 包裝器。</p>
+<h3 id="Cupertino-http-函式庫範例"><a href="#Cupertino-http-函式庫範例" class="headerlink" title="Cupertino http 函式庫範例"></a>Cupertino http 函式庫範例</h3><p>以下範例將 Flutter 應用程式的 http 用戶端設定為在 macOS 和 iOS 上使用 <code>cupertino_http</code> 函式庫，並在其他平台上使用來自 <code>dart:io</code> 的 Dart 常規 http 函式庫：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:cupertino_http/cupertino_http.dart&#x27;</span> <span class="keyword">as</span> cupertino;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:http/http.dart&#x27;</span> <span class="keyword">as</span> http;</span><br><span class="line"></span><br><span class="line"><span class="keyword">late</span> <span class="keyword">final</span> http.Client client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (Platform.isIOS || Platform.isMacOS) &#123;</span><br><span class="line">  client = cupertino.Client();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  client = http.Client();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在此初始設定之後，應用程式會在特定用戶端上進行任何後續的網路調用。例如，<code>http get()</code> 請求現在類似於：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> url = <span class="built_in">Uri</span>.parse(<span class="string">&#x27;https://example.com/whatsit/create&#x27;</span>);</span><br><span class="line"><span class="keyword">final</span> response = <span class="keyword">await</span> client.<span class="keyword">get</span>(url);</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Response status: <span class="subst">$&#123;response.statusCode&#125;</span>&#x27;</span>);</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Response body: <span class="subst">$&#123;response.body&#125;</span>&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>當您無法使用通用用戶端介面時，您可以使用 <code>cupertino_http</code> 函式庫直接調用 Apple 的網路 API：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> session = cupertino.cupertinoHttp.NSURLSession.sharedSession();</span><br><span class="line"></span><br><span class="line"><span class="comment">// Now you can use session to perform network requests such as</span></span><br><span class="line"><span class="comment">// dataTaskWithRequest, dataTaskWithURL, etc</span></span><br><span class="line"><span class="comment">// For example to get data from a URL:</span></span><br><span class="line"><span class="keyword">final</span> url = cupertino.cupertinoHttp.NSURL(string: <span class="string">&#x27;www.google.com&#x27;</span>)!;</span><br><span class="line"><span class="comment">// Now use the URL to get data or perform any other NSURLSession task.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="多平台應用程式中的平台特定網路"><a href="#多平台應用程式中的平台特定網路" class="headerlink" title="多平台應用程式中的平台特定網路"></a>多平台應用程式中的平台特定網路</h3><p>當我們設計此功能時，目標仍然是盡可能保持應用程式的多平台性。為了實現此目標，我們保留了用於基本 http 操作的通用多平台 http API 集，並允許為每個平台設定要使用的網路函式庫。您可以透過使用 <a href="https://pub.dev/documentation/http/latest/http/Client-class.html">package:http Client API</a> 來最大限度地減少您需要編寫的平台特定程式碼的數量。此 API 可以為每個平台進行設定，但以平台獨立的方式使用。</p>
+<p>Dart 2.18 提供了對兩個支援 <code>package:http</code> <a href="https://pub.dev/documentation/http/latest/http/Client-class.html">Client API</a> 的平台特定 http 函式庫的實驗性支援：</p>
+<ul>
+<li>基於 <a href="https://developer.apple.com/documentation/foundation/nsurlsession">NSURLSession</a> 的 <a href="https://pub.dev/packages/cupertino_http">cupertino_http</a>，用於 macOS&#x2F;iOS。</li>
+<li>基於 <a href="https://developer.android.com/guide/topics/connectivity/cronet">Cronet</a> 的 <a href="https://pub.dev/packages/cronet_http">cronet_http</a>，用於 Android，這是在 Android 上流行的網路函式庫。</li>
+</ul>
+<p>將通用用戶端 API 與多個 HTTP 實作相結合，為您提供了兩全其美的優勢。您可以獲得平台特定的行為，同時仍然可以從所有平台的單一共享來源集中維護您的應用程式。我們很樂意聽到您對此 <a href="https://github.com/dart-lang/http/issues/764">GitHub 議題</a> 的回饋。</p>
+<h3 id="改進的類型推斷"><a href="#改進的類型推斷" class="headerlink" title="改進的類型推斷"></a>改進的類型推斷</h3><p>Dart 使用許多泛型函數。考慮 <a href="https://api.dart.dev/stable/2.17.6/dart-core/Iterable/fold.html">fold</a> 方法，它將元素的集合簡化為單個值。以下範例計算整數列表的總和：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt; numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">final</span> sum = numbers.fold(<span class="number">0</span>, (x, y) =&gt; x + y);</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;The sum of <span class="subst">$numbers</span> is <span class="subst">$sum</span>&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在 Dart 2.17 或更早版本中，此方法返回類型錯誤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">line 2 • The operator &#x27;+&#x27; can&#x27;t be unconditionally invoked because the receiver can be &#x27;null&#x27;.</span><br></pre></td></tr></table></figure>
+
+<p>Dart 的類型推斷無法在參數之間傳遞資訊。這導致 <code>x</code> 的類型不確定。要解決潛在的錯誤，您需要指定類型：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> sum = numbers.fold(<span class="number">0</span>, (<span class="built_in">int</span> x, <span class="built_in">int</span> y) =&gt; x + y);</span><br></pre></td></tr></table></figure>
+
+<p>Dart 2.18 改進了類型推斷。之前的範例通過了靜態分析，並且可以推斷 <code>x</code> 和 <code>y</code> 都是非空的整數。此更改允許您編寫更簡潔的 Dart 程式碼，同時保留強類型推斷的完整可靠性屬性。</p>
+<h3 id="異步效能改進"><a href="#異步效能改進" class="headerlink" title="異步效能改進"></a>異步效能改進</h3><p>此版本的 Dart 改進了 Dart VM 應用異步方法和 <code>async*/sync*</code> 生成器函數的方式。這減少了程式碼大小。在兩個大型內部 Google 應用程式上，我們看到 AOT 快照大小減少了大約 10%。我們還看到微基準測試中的效能有所提高。</p>
+<p>這些更改包括其他一些小的行為更改；要進一步了解，請參閱 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#dart-vm">變更日誌</a>。</p>
+<h3 id="pub-dev-的改進"><a href="#pub-dev-的改進" class="headerlink" title="pub.dev 的改進"></a>pub.dev 的改進</h3><p>與 2.18 版本一起，我們對 <code>pub.dev</code> 套件儲存庫進行了兩項更改。</p>
+<p>個人通常在業餘時間維護發佈在 pub.dev 上的套件。這在時間和財務方面都可能付出高昂的代價。為了促進贊助，我們現在在 <code>pubspec</code> 中支援一個新的 <code>funding</code> 標籤，套件發佈者可以使用它來列出一個或多個贊助套件的連結。然後，這些連結會顯示在 pub.dev 的側邊欄中：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/420/0*FteRd2cVBg3Zq7JO" />
+</figure>
+
+<p>要進一步了解，請參閱 <a href="https://dart.dev/tools/pub/pubspec#funding">pubspec 文件</a>。</p>
+<p>此外，我們希望鼓勵豐富的開源套件生態系統。為了突出這一點，pub.dev 上的自動套件評分為使用 <a href="https://opensource.org/licenses">OSI 批准的許可證</a> 的套件額外獎勵 10 分。</p>
+<h3 id="一些重大變更"><a href="#一些重大變更" class="headerlink" title="一些重大變更"></a>一些重大變更</h3><p>Dart 非常注重簡潔性和可學習性。在添加新功能時，我們一直在努力保持謹慎的平衡。保持事物簡潔的一種方法是移除使用較少或有更好替代方案的歷史功能和 API。Dart 2.18 清理了此類別中的項目，包括一些較小的重大變更：</p>
+<ul>
+<li>我們在 2.18 中完成了過渡。此版本移除了最後兩個已棄用的工具 <code>dart2js</code>（使用 <code>dart compile js</code>）和 <code>dartanalyzer</code>（使用 <code>dart analyze</code>）。</li>
+<li>隨著語言版本控制的引入，<code>pub</code> 生成了一個新的解析檔案：<code>.dart_tool/package_config.json</code>。之前的檔案 <code>.packages</code> 使用的格式無法包含版本。我們停止使用 <code>.packages</code> 檔案。如果您有任何 <code>.packages</code> 檔案，您可以將其刪除。</li>
+<li>不能使用不擴展 <code>Object</code> 的類別的 Mixin（重大變更 <a href="https://github.com/dart-lang/sdk/issues/48167">#48167</a>）。這種行為從未被設計過。</li>
+<li><code>dart:io</code> 的 <code>RedirectException</code> 的 <code>uri</code> 屬性已更改為可空（重大變更 <a href="https://github.com/dart-lang/sdk/issues/49045">#49045</a>）。</li>
+<li><code>dart:io</code> 的網路 API 中遵循 <code>SCREAMING_SNAKE</code> 約定的常數已被移除（重大變更 <a href="https://github.com/dart-lang/sdk/issues/34218">#34218</a>；先前已棄用）。請改用相應的 <code>lowerCamelCase</code> 常數。</li>
+<li>Dart VM 不再在退出時恢復初始終端設定。更改 <code>Stdin</code> 設定 <code>lineMode</code> 和 <code>echoMode</code> 的程式現在負責在程式退出時恢復設定（重大變更 <a href="https://github.com/dart-lang/sdk/issues/45630">#45630</a>）。</li>
+</ul>
+<h3 id="空安全更新"><a href="#空安全更新" class="headerlink" title="空安全更新"></a>空安全更新</h3><p>我們很高興看到自 2020 年 11 月的 Beta 版本和 2021 年 3 月的 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 版本以來，空安全的廣泛使用。</p>
+<p>首先，pub.dev 上幾乎所有流行套件的應用程式開發人員都遷移到了空安全。分析顯示，前 250 名中最常用的套件中有 100% 支援空安全，前 1,000 名中最常用的套件中有 98% 支援空安全。</p>
+<p>其次，大多數應用程式開發人員都在完全遷移到空安全的程式碼庫中工作。這一點至關重要。Dart 的完整 <a href="https://dart.dev/null-safety/understanding-null-safety">可靠空安全</a> 在您遷移所有程式碼和所有依賴項（包括傳遞依賴項）之前不會生效。我們正在透過 <code>flutter run</code> 命令的遙測數據來追蹤這一點。</p>
+<p>下圖顯示了 <code>flutter run</code> 的不可靠與可靠空安全執行。在引入空安全之前，兩者都沒有。隨後是不可靠空安全的快速增長。隨著應用程式開始遷移到空安全，開發人員進行了部分遷移。有些部分仍然需要遷移。隨著時間的推移，我們看到可靠空安全會話的健康增長。到上個月底，可靠空安全會話的數量是不可靠空安全會話的四倍。我們希望在接下來的幾個季度中，我們將看到可靠空安全方法達到 100%！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/0*emVp4pmfOhLhiBJ4" />
+</figure>
+
+<h3 id="空安全路線圖的重要更新"><a href="#空安全路線圖的重要更新" class="headerlink" title="空安全路線圖的重要更新"></a>空安全路線圖的重要更新</h3><p>同時支援不可靠和可靠的空安全會增加開銷和複雜性。</p>
+<p>首先，Dart 開發人員需要學習和理解兩種模式。每當閱讀一段 Dart 程式碼時，請檢查 <a href="https://dart.dev/guides/language/evolution#language-versioning">語言版本</a>，以查看類型預設是否為非空（Dart 2.12 及更高版本）或可空（Dart 2.11 及更早版本）。</p>
+<p>其次，在我們的編譯器和運行時中同時支援兩種模式會減慢 Dart SDK 的發展速度，以支援新功能。</p>
+<p><em><strong>基於不可靠空安全的開銷以及上一節提到的非常積極的採用數據，我們的目標是過渡到僅支援可靠空安全，並停止非空安全和不可靠空安全模式。我們暫定於 2023 年年中發佈此版本。</strong></em></p>
+<p>這意味著將停止支援 Dart 2.11 及更早版本。SDK 約束下限小於 2.12 的 Pubspec 檔案將不再在 Dart 3 及更高版本中解析。在包含語言標記的原始程式碼中，如果設定小於 2.12（例如 <code>// @dart=2.9</code>），則會失敗。</p>
+<p>如果您已遷移到可靠空安全，您的程式碼將在 Dart 3 中以完全空安全的方式工作。如果您還沒有遷移，請立即遷移！要進一步了解這些更改，請參閱此 <a href="https://github.com/dart-lang/sdk/issues/49530">GitHub 議題</a>。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>對互通性、網路、類型推斷和 pub.dev 的新支援現已推出。要開始使用，您可以直接下載 <a href="https://dart.dev/get-dart">Dart 2.18 版本</a>，或者將其作為今天的 <a href="https://medium.com/flutter/announcing-flutter-3-3-at-flutter-vikings-6f213e068793">Flutter 3.3</a> SDK 版本的一部分嵌入。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f4b3101f146c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-2-18-f4b3101f146c">Dart 2.18：Objective-C 與 Swift 互通性</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/null-safety/" rel="tag"># null-safety</a>
+              <a href="/tags/interop/" rel="tag"># interop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/9eff9ba0.html" rel="prev" title="【文章翻譯】Firebase Crashlytics and the Flutter Casual Games Toolkit">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Firebase Crashlytics and the Flutter Casual Games Toolkit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/42ddec85.html" rel="next" title="【文章翻譯】What’s new in Flutter 3.3">
+      【文章翻譯】What’s new in Flutter 3.3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-2-18%EF%BC%9AObjective-C-%E8%88%87-Swift-%E4%BA%92%E9%80%9A%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">Dart 2.18：Objective-C 與 Swift 互通性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87-Dart-%E5%BC%95%E5%85%A5-Objective-C-%E8%88%87-Swift-%E4%BA%92%E9%80%9A%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">將 Dart 引入 Objective-C 與 Swift 互通性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Objective-C-%E7%9A%84%E6%99%82%E5%8D%80%E7%AF%84%E4%BE%8B"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Objective-C 的時區範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dart-%E7%9A%84%E6%99%82%E5%8D%80%E7%AF%84%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">使用 Dart 的時區範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B3%E5%8F%B0%E7%89%B9%E5%AE%9A%E7%9A%84-http-%E5%87%BD%E5%BC%8F%E5%BA%AB"><span class="nav-number">1.4.</span> <span class="nav-text">平台特定的 http 函式庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cupertino-http-%E5%87%BD%E5%BC%8F%E5%BA%AB%E7%AF%84%E4%BE%8B"><span class="nav-number">1.5.</span> <span class="nav-text">Cupertino http 函式庫範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E4%B8%AD%E7%9A%84%E5%B9%B3%E5%8F%B0%E7%89%B9%E5%AE%9A%E7%B6%B2%E8%B7%AF"><span class="nav-number">1.6.</span> <span class="nav-text">多平台應用程式中的平台特定網路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E9%80%B2%E7%9A%84%E9%A1%9E%E5%9E%8B%E6%8E%A8%E6%96%B7"><span class="nav-number">1.7.</span> <span class="nav-text">改進的類型推斷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%B0%E6%AD%A5%E6%95%88%E8%83%BD%E6%94%B9%E9%80%B2"><span class="nav-number">1.8.</span> <span class="nav-text">異步效能改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E7%9A%84%E6%94%B9%E9%80%B2"><span class="nav-number">1.9.</span> <span class="nav-text">pub.dev 的改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%87%8D%E5%A4%A7%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.10.</span> <span class="nav-text">一些重大變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%AE%89%E5%85%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.11.</span> <span class="nav-text">空安全更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%AE%89%E5%85%A8%E8%B7%AF%E7%B7%9A%E5%9C%96%E7%9A%84%E9%87%8D%E8%A6%81%E6%9B%B4%E6%96%B0"><span class="nav-number">1.12.</span> <span class="nav-text">空安全路線圖的重要更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.13.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量今天，我們宣佈推出 Dart 2.2 SDK 的穩定版本，這是 Dart 2 的一個增量更新，它提供了改進的 提前 (AOT) 編譯 原生程式碼的效能和一個新的集合字面量語言功能。     針對 Flutter 開發人員的 Dart 效能改進我們繼續努力使 AOT 編譯的程式碼（例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/e75284cc.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量今天，我們宣佈推出 Dart 2.2 SDK 的穩定版本，這是 Dart 2 的一個增量更新，它提供了改進的 提前 (AOT) 編譯 原生程式碼的效能和一個新的集合字面量語言功能。     針對 Flutter 開發人員的 Dart 效能改進我們繼續努力使 AOT 編譯的程式碼（例">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*saXdrIB-SjU2EL7gLGPUsA.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7e2ab19cc86d">
+<meta property="article:published_time" content="2019-02-26T09:03:47.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:50:32.328Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/960/1*saXdrIB-SjU2EL7gLGPUsA.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/e75284cc.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/e75284cc.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.2: Faster native code, support for set literals
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-26 17:03:47" itemprop="dateCreated datePublished" datetime="2019-02-26T17:03:47+08:00">2019-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:50:32" itemprop="dateModified" datetime="2024-12-18T15:50:32+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-2：更快的原生程式碼，支援集合字面量"><a href="#宣佈-Dart-2-2：更快的原生程式碼，支援集合字面量" class="headerlink" title="宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量"></a>宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量</h2><p>今天，我們宣佈推出 Dart 2.2 SDK 的穩定版本，這是 Dart 2 的一個增量更新，它提供了改進的 <a href="https://en.wikipedia.org/wiki/Ahead-of-time_compilation">提前 (AOT) 編譯</a> 原生程式碼的效能和一個新的集合字面量語言功能。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*saXdrIB-SjU2EL7gLGPUsA.png" />
+</figure>
+
+<h3 id="針對-Flutter-開發人員的-Dart-效能改進"><a href="#針對-Flutter-開發人員的-Dart-效能改進" class="headerlink" title="針對 Flutter 開發人員的 Dart 效能改進"></a>針對 Flutter 開發人員的 Dart 效能改進</h3><p>我們繼續努力使 <a href="https://hackernoon.com/why-flutter-uses-dart-dd635a054ebf">AOT 編譯的程式碼</a>（例如 Flutter 應用程式）更快。在 Dart 2.1 中，<a href="https://medium.com/dartlang/announcing-dart-2-1-improved-performance-usability-9f55fca6f31a">我們減少了類型檢查的開銷</a>，大大降低了 AOT 編譯程式碼和使用 JIT（即時）編譯在 VM 中執行的程式碼的類型檢查成本。</p>
+<p>在 Dart 2.2 中，我們特別關注 AOT 編譯程式碼的效能，<a href="https://github.com/flutter/flutter/pull/27789#issuecomment-464234710">在微基準測試中將 AOT 效能提高了 11-16%</a>（代價是程式碼大小增加了約 1%）。這一改進是幾個季度以來努力減少靜態調用開銷的結果。我們最佳化的 AOT 程式碼現在能夠使用 PC 相對調用（即使用 <a href="https://en.wikipedia.org/wiki/Program_counter">程式計數器</a>）直接調用目標；之前我們必須對物件池進行多次查找才能確定目標地址。當程式碼包含大量建構函式和靜態方法調用時，這些最佳化特別有用，例如建立大量 Widget 的 Flutter 使用者介面程式碼。</p>
+<h3 id="Dart-2-2-集合字面量語言功能"><a href="#Dart-2-2-集合字面量語言功能" class="headerlink" title="Dart 2.2 集合字面量語言功能"></a>Dart 2.2 集合字面量語言功能</h3><p>Dart 的核心函式庫 (dart:core) 包含許多集合類別，用於對物件的 <a href="https://api.dartlang.org/stable/dart-core/Map-class.html">映射</a>、<a href="https://api.dartlang.org/stable/dart-core/List-class.html">列表</a> 和 <a href="https://api.dartlang.org/stable/dart-core/Set-class.html">集合</a> 進行建模。映射是鍵值對的集合。列表是有序的值序列，其中每個值可以透過索引存取，並且可以出現多次。集合是無序的值集合，其中每個值只能出現一次，並且可以有效地檢查集合中是否存在值。</p>
+<p>Dart 集合通常使用編譯時常數初始化，因此 Dart 有一種方便的字面量語法來表達這種初始化。在 Dart 中，可以使用以下程式碼初始化列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> list = [<span class="string">&#x27;USD&#x27;</span>, <span class="string">&#x27;EUR&#x27;</span>, <span class="string">&#x27;JPY&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>以前，Dart 僅支援列表和映射的字面量語法，因此集合的初始化很麻煩，因為我們必須透過列表進行初始化：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> currencies = <span class="keyword">new</span> <span class="built_in">Set</span>.from([<span class="string">&#x27;USD&#x27;</span>, <span class="string">&#x27;EUR&#x27;</span>, <span class="string">&#x27;JPY&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+
+<p>這段程式碼不僅不方便且效率低下；缺乏字面量支援會導致貨幣無法成為編譯時常數。透過 Dart 2.2 將字面量擴展到支援集合，我們可以使用一種方便的新語法初始化集合並使其成為常數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> currencies = &#123;<span class="string">&#x27;USD&#x27;</span>, <span class="string">&#x27;EUR&#x27;</span>, <span class="string">&#x27;JPY&#x27;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>有關 Flutter 團隊如何開始應用集合字面量的真實範例，請參閱 <a href="https://github.com/flutter/flutter/pull/27811">PR #27811</a>。有關如何使用集合字面量的更多一般詳細資訊，請參閱 <a href="https://www.dartlang.org/guides/language/language-tour#sets">更新的 Dart 2.2 語言導覽</a>。</p>
+<h3 id="使用-Dart-2-通用前端-CFE-建立新的語言功能"><a href="#使用-Dart-2-通用前端-CFE-建立新的語言功能" class="headerlink" title="使用 Dart 2 通用前端 (CFE) 建立新的語言功能"></a>使用 Dart 2 通用前端 (CFE) 建立新的語言功能</h3><p>Dart 語言實作（Flutter 使用的 Dart VM、dart2js 編譯器和 Dart 開發編譯器 (dartdevc)）共用一個通用前端。Dart 通用前端（或 CFE）會解析 Dart 程式碼、執行類型推斷，並將 Dart 轉換為後端實作接受為輸入的低階中間語言。</p>
+<p>集合字面量功能是一個語言結構的例子，由於 CFE，我們能夠快速開發它。解析集合字面量和執行類型推斷的程式碼在 CFE 中為所有 Dart 後端實作一次。此外，我們建立了一個僅限前端的過渡實作，後端最初可以使用它。在過渡實作中，上述非 const 版本的貨幣集合字面量在編譯期間被轉換為等效的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> currencies = <span class="keyword">new</span> <span class="built_in">Set</span>&lt;<span class="built_in">String</span>&gt;();</span><br><span class="line">currencies.add(<span class="string">&#x27;USD&#x27;</span>);</span><br><span class="line">currencies.add(<span class="string">&#x27;EUR&#x27;</span>);</span><br><span class="line">currencies.add(<span class="string">&#x27;JPY&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>const 集合字面量的過渡實作是不同的，因為 const 集合不能以片段的形式逐步建立。相反，我們根據一個私有的不可修改集合類別來實作它，該類別包裝一個 const 映射，其中集合元素是映射的鍵：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> currencies = _UnmodifiableSet(&#123;<span class="string">&#x27;USD&#x27;</span>: <span class="keyword">true</span>, <span class="string">&#x27;EUR&#x27;</span>: <span class="keyword">true</span>, <span class="string">&#x27;JPY&#x27;</span>: <span class="keyword">true</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>不可修改集合類別根據包裝的映射實作 Set 介面中的方法。</p>
+<p>總體而言，我們最初能夠將集合字面量實作為僅限 CFE 的功能。後端最初可以使用 CFE 實作，然後獨立於功能的初始啟動開發自己的原生支援。這允許後端推遲其原生支援，直到更好地理解此功能的效能方面。</p>
+<h3 id="Dart-2-2-語言規範"><a href="#Dart-2-2-語言規範" class="headerlink" title="Dart 2.2 語言規範"></a>Dart 2.2 語言規範</h3><p>Dart 2 是 Dart 的一次 <a href="https://medium.com/dartlang/dart-2-stable-and-the-dart-web-platform-3775d5f8eac7">重大升級</a>，我們花了一段時間才將正式的 <a href="https://www.dartlang.org/guides/language/spec">Dart 語言規範</a> 更新以符合我們所做的所有變更。我們終於完成了這項工作，並且規範已更新至 Dart 2.2。我們還將語言規範來源移至新的 <a href="https://github.com/dart-lang/language/tree/master/specification">語言儲存庫</a>，並加入了持續整合，以確保在我們為未來版本的 Dart 語言發展規範時，以 PDF 格式生成滾動草案規範。2.2 和滾動 Dart 2.x 規範都可以從 <a href="https://www.dartlang.org/guides/language/spec">Dart 規範頁面</a> 獲得。</p>
+<h3 id="獲取-Dart-2-2"><a href="#獲取-Dart-2-2" class="headerlink" title="獲取 Dart 2.2"></a>獲取 Dart 2.2</h3><p><a href="https://www.dartlang.org/tools/sdk/archive">Dart SDK 2.2</a> 現在可以從 Dart 首頁下載。如果您是 Flutter 開發人員，則 Dart 2.2 已包含在內。（<em>注意</em>：目前的 Flutter master 和 dev channel 將報告 Dart 2.2。<a href="https://developers.googleblog.com/2019/02/launching-flutter-12-at-mobile-world.html">今天的 Flutter 1.2</a> 穩定版本將報告 Dart 2.1.2；這與 Dart 2.2 具有相同的功能）。</p>
+<p>目前就這些。我們希望您喜歡 Dart 2.2！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7e2ab19cc86d" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-2-faster-native-code-support-for-set-literals-7e2ab19cc86d">宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/1edb2c4a.html" rel="prev" title="【文章翻譯】Announcing Dart 2.1: Improved performance & usability">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Dart 2.1: Improved performance & usability
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/df749ba5.html" rel="next" title="【文章翻譯】Making Dart a Better Language for UI">
+      【文章翻譯】Making Dart a Better Language for UI <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-2%EF%BC%9A%E6%9B%B4%E5%BF%AB%E7%9A%84%E5%8E%9F%E7%94%9F%E7%A8%8B%E5%BC%8F%E7%A2%BC%EF%BC%8C%E6%94%AF%E6%8F%B4%E9%9B%86%E5%90%88%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.2：更快的原生程式碼，支援集合字面量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%9D%E5%B0%8D-Flutter-%E9%96%8B%E7%99%BC%E4%BA%BA%E5%93%A1%E7%9A%84-Dart-%E6%95%88%E8%83%BD%E6%94%B9%E9%80%B2"><span class="nav-number">1.1.</span> <span class="nav-text">針對 Flutter 開發人員的 Dart 效能改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-2-%E9%9B%86%E5%90%88%E5%AD%97%E9%9D%A2%E9%87%8F%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 2.2 集合字面量語言功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dart-2-%E9%80%9A%E7%94%A8%E5%89%8D%E7%AB%AF-CFE-%E5%BB%BA%E7%AB%8B%E6%96%B0%E7%9A%84%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD"><span class="nav-number">1.3.</span> <span class="nav-text">使用 Dart 2 通用前端 (CFE) 建立新的語言功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-2-%E8%AA%9E%E8%A8%80%E8%A6%8F%E7%AF%84"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2.2 語言規範</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8D%B2%E5%8F%96-Dart-2-2"><span class="nav-number">1.5.</span> <span class="nav-text">獲取 Dart 2.2</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

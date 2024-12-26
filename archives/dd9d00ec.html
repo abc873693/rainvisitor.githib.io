@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Google 暑期程式碼計畫 2020 成果    Google 暑期程式碼計畫 (GSoC) 是一個全球性的計畫，旨在讓學生開發者參與開放原始碼軟體開發。Google 贊助學生在暑假期間與一個指導性的開放原始碼組織合作，進行為期 3 個月的程式設計專案。 在 二月，我們很興奮地宣布 Dart 團隊將成為 2020 年 GSoC 的指導">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Google Summer of Code 2020 results">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/dd9d00ec.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Google 暑期程式碼計畫 2020 成果    Google 暑期程式碼計畫 (GSoC) 是一個全球性的計畫，旨在讓學生開發者參與開放原始碼軟體開發。Google 贊助學生在暑假期間與一個指導性的開放原始碼組織合作，進行為期 3 個月的程式設計專案。 在 二月，我們很興奮地宣布 Dart 團隊將成為 2020 年 GSoC 的指導">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/680/1*5VxyyQ1juWjwtTbSkwzzXA.jpeg">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a38cd072c9fe">
+<meta property="article:published_time" content="2020-09-02T07:51:09.000Z">
+<meta property="article:modified_time" content="2024-12-18T08:00:45.208Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="google-summer-of-code">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="open-source">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/680/1*5VxyyQ1juWjwtTbSkwzzXA.jpeg">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/dd9d00ec.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Google Summer of Code 2020 results | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/dd9d00ec.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Google Summer of Code 2020 results
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-02 15:51:09" itemprop="dateCreated datePublished" datetime="2020-09-02T15:51:09+08:00">2020-09-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 16:00:45" itemprop="dateModified" datetime="2024-12-18T16:00:45+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Google-暑期程式碼計畫-2020-成果"><a href="#Google-暑期程式碼計畫-2020-成果" class="headerlink" title="Google 暑期程式碼計畫 2020 成果"></a>Google 暑期程式碼計畫 2020 成果</h2><figure>
+<img alt="Google Summer of Code" src="https://cdn-images-1.medium.com/max/680/1*5VxyyQ1juWjwtTbSkwzzXA.jpeg" />
+</figure>
+
+<p><a href="https://summerofcode.withgoogle.com/">Google 暑期程式碼計畫 (GSoC)</a> 是一個全球性的計畫，旨在讓學生開發者參與開放原始碼軟體開發。Google 贊助學生在暑假期間與一個指導性的開放原始碼組織合作，進行為期 3 個月的程式設計專案。</p>
+<p>在 <a href="https://medium.com/dartlang/students-join-a-dart-project-for-google-summer-of-code-2020-655d39b557c2">二月</a>，我們很興奮地宣布 Dart 團隊將成為 2020 年 GSoC 的指導組織。我們最終 <a href="https://summerofcode.withgoogle.com/organizations/6544944065413120/">指導了 5 個專案</a>，這些專案是從來自世界各地學生的 170 多份申請中選出的。今天，我們很高興與大家分享我們的成果，這些成果將由參與專案的學生們來描述。</p>
+<h3 id="使用-package-ffigen-為-Dart-C-互通性產生-dart-ffi-繫結"><a href="#使用-package-ffigen-為-Dart-C-互通性產生-dart-ffi-繫結" class="headerlink" title="使用 package:ffigen 為 Dart-C 互通性產生 dart:ffi 繫結"></a>使用 package:ffigen 為 Dart-C 互通性產生 dart:ffi 繫結</h3><p><em>Prerak Mann</em></p>
+<p><a href="https://pub.dev/packages/ffigen">package:ffigen</a> 是一個 FFI 產生器，它透過從 C 標頭檔 (.h) 產生 Dart 繫結，大大減少了使用 dart:ffi 的工作量。</p>
+<p>為了理解這個工具的需求，請考慮 <a href="https://clang.llvm.org/doxygen/group__CINDEX.html">LibClang</a>（Clang 的 C 介面）。LibClang 的 <a href="https://github.com/dart-lang/ffigen/tree/master/third_party/libclang/include/clang-c">API</a> 大約有 8,000 行程式碼 (LOC)。如果您要手動為 LibClang 編寫 Dart <a href="https://github.com/dart-lang/ffigen/blob/master/example/libclang-example/generated_bindings.dart">繫結</a>，您將需要將近 4,500 LOC。使用 package:ffigen，您只需傳入一個小於 20 LOC 的 <a href="https://github.com/dart-lang/ffigen/blob/master/example/libclang-example/pubspec.yaml#L14">小型 YAML 設定檔</a>，然後就可以產生繫結。</p>
+<p>您可以控制要產生的 C 函式，並使用簡單的正規表示式來重新命名巨集、列舉和個別的結構成員。您也可以 <a href="https://github.com/dart-lang/ffigen#array-workaround">產生</a> 巢狀在結構中的陣列成員（dart:ffi 中尚不完全支援）。</p>
+<p>請查看 <a href="https://github.com/dart-lang/ffigen">github.com&#x2F;dart-lang&#x2F;ffigen</a> 以取得完整的 <a href="https://github.com/dart-lang/ffigen#configurations">設定</a>、<a href="https://github.com/dart-lang/ffigen#faq">常見問題</a>、<a href="https://github.com/dart-lang/ffigen/blob/master/example/">範例</a> 等等。</p>
+<h3 id="使用新的-Flutter-範例學習測試"><a href="#使用新的-Flutter-範例學習測試" class="headerlink" title="使用新的 Flutter 範例學習測試"></a>使用新的 Flutter 範例學習測試</h3><p><em>Abdullah Deshmukh</em></p>
+<p>您已經使用 Flutter 一段時間了，但仍然不知道如何測試 Flutter 應用程式嗎？那麼您可能會對我們建立的範例感興趣，該範例展示了測試 Flutter 應用程式的最佳實踐。您將能夠快速輕鬆地學習在 Flutter 中進行測試。</p>
+<p>該 <a href="https://github.com/flutter/samples/tree/master/testing_app">範例</a> 展示了不同類型的測試，包括：</p>
+<ul>
+<li>單元測試</li>
+<li>Widget 測試</li>
+<li>整合測試</li>
+<li>效能測試</li>
+<li>狀態管理測試</li>
+</ul>
+<p>作為額外福利，我們還建立了一個關於如何測試 Flutter 應用程式的程式碼實驗室。您可以在文章 <a href="https://medium.com/flutter/learn-testing-with-the-new-flutter-sample-gsoc20-work-product-e872c7f6492a">使用新的 Flutter 範例學習測試</a> 中查看專案下完成工作的詳細報告。</p>
+<h3 id="使用者可擴展的翻譯檔案格式"><a href="#使用者可擴展的翻譯檔案格式" class="headerlink" title="使用者可擴展的翻譯檔案格式"></a>使用者可擴展的翻譯檔案格式</h3><p><em>Jaime Blasco</em></p>
+<p><a href="https://pub.dev/packages/intl_translation">intl_translation</a> 套件僅支援 ARB 檔案格式，該格式在 Dart 之外並未廣泛使用。在 GSoC 2020 期間建立的 <a href="https://pub.dev/packages/intl_translation_format">intl_translation_format</a> 套件建基於 intl_translation，並添加了一個 TranslationFormat 類別，可以支援各種不同的格式。開發人員可以在自己的套件中添加對其他格式的支援，並且只需幾行程式碼即可建立與現有工具整合的提取和產生命令列工具。有了這些，其他格式（即使是專有格式）的現有翻譯可以輕鬆匯入到 Dart 專案中，並且源自 Dart 程式碼的新訊息可以整合到現有的翻譯工具和工作流程中。</p>
+<p>作為這些功能的展示，新的套件包含對多種格式的支援。除了 ARB 之外，它還支援 <strong>XLIFF v1.2 (iOS)、XLIFF v2.0</strong> 和 <strong>帶有 ICU 訊息的 JSON</strong>。<a href="https://github.com/jamesblasco/intl_translation_format_experiments">實驗性函式庫</a> 展示了如何實作對其他格式的支援，甚至是可以在執行階段更新的翻譯。</p>
+<h3 id="行動應用程式和聯合-Plugin-中的平台通道"><a href="#行動應用程式和聯合-Plugin-中的平台通道" class="headerlink" title="行動應用程式和聯合 Plugin 中的平台通道"></a>行動應用程式和聯合 Plugin 中的平台通道</h3><p><em>Ayush Bherwani</em></p>
+<p>在研究了平台通道（用於在 Dart 與原生程式碼（如 Swift 或 Kotlin）之間來回傳送訊息的 Flutter API）之後，我們決定使用兩個不同的範例來介紹這個主題。一個是 <a href="https://github.com/flutter/samples/tree/master/platform_channels">簡單的 Android 和 iOS 範例</a>，而另一個是 <a href="https://github.com/flutter/samples/tree/master/experimental/federated_plugin">聯合 Plugin</a>，能夠使用主頻道為 Web 和桌面建構。在這兩個範例之間，程式碼庫不僅展示了平台通道和用於移動資料的編解碼器的詳細資訊，還展示了聯合 Plugin 的 API 以及在 Web 和桌面（Windows 和 Linux）API 上調用原生程式碼的技術。</p>
+<p>如果您是一位正在尋找建構 Plugin 或僅存取平台 API 的開發人員，這些範例是開始學習的好地方。有關此專案的更多資訊，請參閱文章 <a href="https://medium.com/flutter/platform-channel-examples-7edeaeba4a66">平台通道範例</a>。</p>
+<h3 id="編寫-package-yaml-edit-以啟用-pub-add"><a href="#編寫-package-yaml-edit-以啟用-pub-add" class="headerlink" title="編寫 package:yaml_edit 以啟用 pub add &lt;package&gt;"></a>編寫 package:yaml_edit 以啟用 <code>pub add &lt;package&gt;</code></h3><p><em>Garett Tok Ern Liang</em></p>
+<p>Dart 專案在 pubspec.yaml 檔案中指定套件依賴項。<a href="https://yaml.org/spec/1.2/spec.html">YAML</a> 很好，因為它允許我們編寫註釋，但是以程式設計方式修改 YAML 是一個挑戰。</p>
+<p>為了應對這一挑戰，我們編寫了 <a href="https://pub.dev/packages/yaml_edit">package:yaml_edit</a> 以輕鬆執行上下文感知的字串操作，從而保留格式和註釋。該套件的測試套件包含超過 40,000 個測試，我們認為我們有一個非常好的解決方案。試用它並 <a href="https://github.com/google/dart-neats/issues">提交錯誤</a>！</p>
+<p>使用 package:yaml_edit，我們在 pub（Dart 和 Flutter 的套件管理工具）中添加了一個新的子命令 <code>pub add &lt;package&gt;</code>。<code>pub add</code> 會自動解析目標套件的最新相容版本，並將其添加到使用者的 pubspec.yaml 中。具體來說，<code>pub add &lt;package&gt;</code> 自動化了以下所有操作的繁瑣過程：</p>
+<ol>
+<li>訪問 <a href="https://pub.dev/packages/">https://pub.dev/packages/</a><package></li>
+<li>選擇要添加到套件的版本</li>
+<li>修改 pubspec.yaml</li>
+<li>執行 pub get</li>
+<li>根據需要重複步驟 2-4 多次，以獲得與其他依賴項相容的版本</li>
+</ol>
+<p>一個類似的移除依賴項的命令 - <code>pub remove &lt;package&gt;</code> - 也正在開發中。請密切關注即將在 pub 中推出的這兩個命令！</p>
+<blockquote>
+<p>非常感謝所有向 Dart 申請 Google 暑期程式碼計畫 2020 的人，以及今年完成專案的學生，以及每週花時間讓這個夏天成為一個很棒的程式碼夏天的導師。我們希望在整個 Dart 生態系統中再次見到你們這些學生作為貢獻者。</p>
+</blockquote>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a38cd072c9fe" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/google-summer-of-code-2020-results-a38cd072c9fe">Google 暑期程式碼計畫 2020 成果</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/google-summer-of-code/" rel="tag"># google-summer-of-code</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/open-source/" rel="tag"># open-source</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4e57f386.html" rel="prev" title="【文章翻譯】Introducing a brand new pub.dev">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Introducing a brand new pub.dev
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/44cfc921.html" rel="next" title="【文章翻譯】Exploring collections in Dart">
+      【文章翻譯】Exploring collections in Dart <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-%E6%9A%91%E6%9C%9F%E7%A8%8B%E5%BC%8F%E7%A2%BC%E8%A8%88%E7%95%AB-2020-%E6%88%90%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">Google 暑期程式碼計畫 2020 成果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-package-ffigen-%E7%82%BA-Dart-C-%E4%BA%92%E9%80%9A%E6%80%A7%E7%94%A2%E7%94%9F-dart-ffi-%E7%B9%AB%E7%B5%90"><span class="nav-number">1.1.</span> <span class="nav-text">使用 package:ffigen 為 Dart-C 互通性產生 dart:ffi 繫結</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B0%E7%9A%84-Flutter-%E7%AF%84%E4%BE%8B%E5%AD%B8%E7%BF%92%E6%B8%AC%E8%A9%A6"><span class="nav-number">1.2.</span> <span class="nav-text">使用新的 Flutter 範例學習測試</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%80%85%E5%8F%AF%E6%93%B4%E5%B1%95%E7%9A%84%E7%BF%BB%E8%AD%AF%E6%AA%94%E6%A1%88%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">使用者可擴展的翻譯檔案格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E5%8B%95%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E5%92%8C%E8%81%AF%E5%90%88-Plugin-%E4%B8%AD%E7%9A%84%E5%B9%B3%E5%8F%B0%E9%80%9A%E9%81%93"><span class="nav-number">1.4.</span> <span class="nav-text">行動應用程式和聯合 Plugin 中的平台通道</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B7%A8%E5%AF%AB-package-yaml-edit-%E4%BB%A5%E5%95%9F%E7%94%A8-pub-add"><span class="nav-number">1.5.</span> <span class="nav-text">編寫 package:yaml_edit 以啟用 pub add &lt;package&gt;</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

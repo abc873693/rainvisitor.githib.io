@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 AngularDart、Flutter 與網路：春季更新兩個月前，我們發布了 Flutter 網路支援的首個穩定版本。這對整個客戶端開發來說是一個重要的里程碑，它結合了 Flutter 建立的 UI 框架、Dart 工業級強度的 JavaScript 工具鏈以及 Web 平台的底層能力，在行動裝置和瀏覽器之間提供一致性。 自該版本發布以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】AngularDart, Flutter, and the web: Spring update">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/c738e276.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 AngularDart、Flutter 與網路：春季更新兩個月前，我們發布了 Flutter 網路支援的首個穩定版本。這對整個客戶端開發來說是一個重要的里程碑，它結合了 Flutter 建立的 UI 框架、Dart 工業級強度的 JavaScript 工具鏈以及 Web 平台的底層能力，在行動裝置和瀏覽器之間提供一致性。 自該版本發布以">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*TnLjhbuMnphc4ZlsuSdtog.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f7f5b8b10001">
+<meta property="article:published_time" content="2021-05-12T11:03:33.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:32:45.939Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="angulardart">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*TnLjhbuMnphc4ZlsuSdtog.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/c738e276.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】AngularDart, Flutter, and the web: Spring update | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c738e276.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】AngularDart, Flutter, and the web: Spring update
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-12 19:03:33" itemprop="dateCreated datePublished" datetime="2021-05-12T19:03:33+08:00">2021-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:32:45" itemprop="dateModified" datetime="2024-12-19T10:32:45+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="AngularDart、Flutter-與網路：春季更新"><a href="#AngularDart、Flutter-與網路：春季更新" class="headerlink" title="AngularDart、Flutter 與網路：春季更新"></a>AngularDart、Flutter 與網路：春季更新</h2><p>兩個月前，我們發布了 <a href="https://medium.com/flutter/flutter-web-support-hits-the-stable-milestone-d6b84e83b425">Flutter 網路支援的首個穩定版本</a>。這對整個客戶端開發來說是一個重要的里程碑，它結合了 Flutter 建立的 UI 框架、Dart 工業級強度的 JavaScript 工具鏈以及 Web 平台的底層能力，在行動裝置和瀏覽器之間提供一致性。</p>
+<p>自該版本發布以來，我們很高興看到開發人員開始在網路上使用 Flutter。即使在這個早期階段，超過 10% 的 flutter build 指令都以網路為目標，這表明 Web 應用程式已經開始使用 Flutter 部署。在 Google 內部，許多團隊開始依賴 Flutter 的網路支援。而且我們自己在 Flutter 開發中也大量使用它，包括 <a href="https://dartpad.dev/e0a2e942e85fde2cd39b2741ff0c49e9?null_safety=true">DartPad</a> 和 <a href="https://flutter.dev/docs/development/tools/devtools/overview">DevTools</a>（我們的效能和除錯工具套件）。</p>
+<p>幾年前，當我們第一次開始為 Flutter 加入網路支援時，我們希望它能帶來好的結果，但這仍然感覺像是一個登月計劃。雖然還有很多工作要做，但我們相信 Flutter 的網路支援有潛力以高品質的解決方案填補一個重要的利基市場。因此，我們正在調整 Dart 開源網路工具的投資，以專注於 Flutter。</p>
+<p>在改變我們的重點的同時，我們也正在縮減我們在 AngularDart 上的外部工作，這是一個從最初的 Angular 專案演變而來的獨立網路框架。六個月前，<a href="https://groups.google.com/a/dartlang.org/g/announce/c/Kz84KNBcf3U">我們宣布了 AngularDart 的路線圖</a>，其中包括發布一個長期穩定的更新（<a href="https://pub.dev/packages/angular/changelog">AngularDart 6</a>）和支援空安全，但優先考慮 AngularDart 工程工作在主要的內部客戶，包括 <a href="https://ads.google.com/">Google 廣告</a> 和 <a href="https://play.google.com/console">Google Play 管理中心</a>。雖然 AngularDart 框架本身相對容易開源，但 Google 的構建和發布系統是 <a href="https://sre.google/sre-book/release-engineering/#continuous-build-and-deployment-Yms8u8">高度專業化的</a>，導致顯著的差異，使得同步內部和外部版本變得非常困難。</p>
+<p>專注於大多數 AngularDart 使用者可以幫助我們充分利用我們才華橫溢的工程資源，我們希望每個人都能因此受益。對於廣告和 Play 管理中心等專案，我們可以更直接地滿足他們的需求，而無需擔心外部影響；對於外部使用者，我們可以將所有精力投入到為您提供一個高品質的 Flutter 產品，該產品適用於網路、桌面、行動和嵌入式場景。</p>
+<blockquote>
+<p>我們可以將所有精力投入到為您提供一個高品質的 Flutter 產品，該產品適用於網路、桌面、行動和嵌入式場景。</p>
+</blockquote>
+<p>在過去的幾個月中，我們一直在與 AngularDart 最大的外部使用者交談，以幫助他們制定自己的路線圖。對於某些人來說，Flutter 的網路支援是一個完美的選擇；其他人則對 AngularDart 的穩定性和成熟度感到滿意；還有一些人正在利用這個機會過渡到 <a href="https://angular.io/">Angular</a>（Google 流行的基於 TypeScript 的網路框架）。</p>
+<p>Angular 本身繼續快速增長。在過去的一年中，<a href="https://www.npmjs.com/package/@angular/core">每週下載量增長了 60% 以上</a>，並且近 <a href="https://github.com/angular/angular/network/dependents?package_id=UGFja2FnZS00NTE2NDYyMzQ=">兩百萬個公共 GitHub 儲存庫依賴於它</a>。它的語法對於今天使用 AngularDart 的人來說會很熟悉，對於尋找現代網路框架的開發人員來說，這是一個合乎邏輯的選擇。</p>
+<p>對於想要使用 Dart 的開發人員，我們認為 Flutter 的網路支援將是一個令人興奮的選擇。例如，<a href="https://propops.com/en/">PropOps</a>——一家房地產領域的科技初創公司——使用 Flutter 建立業務線應用程式取得了巨大的成功，如下面的螢幕截圖所示：</p>
+<figure>
+<img alt="PropOps 網路應用程式的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*TnLjhbuMnphc4ZlsuSdtog.png" />
+<figcaption>PropOps：一個基於雲端的房產管理工具，使用 Flutter 的網路支援構建。</figcaption>
+</figure>
+
+<p>在接下來的幾週內，我們將發布一個穩定的 AngularDart 外部版本，支援空安全；屆時，它將轉入維護模式。如果一個承諾的聯盟或社群團體想要接管該專案的領導權並繼續發展它，我們很樂意收到他們的來信。</p>
+<p>我們正在全力推進 Flutter 的網路支援以及 Angular 本身：請關注下週 <a href="https://events.google.com/io/">Google I&#x2F;O 活動</a> 的更多資訊！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f7f5b8b10001" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/angulardart-flutter-and-the-web-spring-update-f7f5b8b10001">AngularDart、Flutter 與網路：春季更新</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/angulardart/" rel="tag"># angulardart</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4c254af9.html" rel="prev" title="【文章翻譯】Announcing XD to Flutter v2.0!">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing XD to Flutter v2.0!
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/d5e92173.html" rel="next" title="【文章翻譯】Which factors affected users’ decisions to adopt Flutter? — Q1 2021 user survey results">
+      【文章翻譯】Which factors affected users’ decisions to adopt Flutter? — Q1 2021 user survey results <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AngularDart%E3%80%81Flutter-%E8%88%87%E7%B6%B2%E8%B7%AF%EF%BC%9A%E6%98%A5%E5%AD%A3%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">AngularDart、Flutter 與網路：春季更新</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

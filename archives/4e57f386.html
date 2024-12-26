@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 隆重推出全新的 pub.dev今天，我們推出了全新的 pub.dev 網站。它採用了新的評分指標，讓您可以更好地了解可能有用的套件，並為套件發布者提供更多可操作的回饋，以提高套件品質。為了幫助您找到支援您感興趣的所有平台的套件，我們新增了識別和搜尋多平台套件的功能。總體而言，我們重新設計了使用者介面，目標是提供與我們的 dart.dev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Introducing a brand new pub.dev">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/4e57f386.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 隆重推出全新的 pub.dev今天，我們推出了全新的 pub.dev 網站。它採用了新的評分指標，讓您可以更好地了解可能有用的套件，並為套件發布者提供更多可操作的回饋，以提高套件品質。為了幫助您找到支援您感興趣的所有平台的套件，我們新增了識別和搜尋多平台套件的功能。總體而言，我們重新設計了使用者介面，目標是提供與我們的 dart.dev">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*efALL34OP6a4tcxh">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*OmvIh_FRHtJDrSIk">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*RWVQoe0INHUfS_Ax">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*aTIl5H_AbGmOJBKO">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*LpResE7zZv_5x3xB">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*6UWz21c0wZuisozR">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=747406dcb486">
+<meta property="article:published_time" content="2020-07-15T07:01:02.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:56:20.201Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="google">
+<meta property="article:tag" content="development">
+<meta property="article:tag" content="package-management">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*efALL34OP6a4tcxh">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/4e57f386.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Introducing a brand new pub.dev | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4e57f386.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Introducing a brand new pub.dev
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-15 15:01:02" itemprop="dateCreated datePublished" datetime="2020-07-15T15:01:02+08:00">2020-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:56:20" itemprop="dateModified" datetime="2024-12-18T15:56:20+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="隆重推出全新的-pub-dev"><a href="#隆重推出全新的-pub-dev" class="headerlink" title="隆重推出全新的 pub.dev"></a>隆重推出全新的 pub.dev</h2><p>今天，我們推出了全新的 <a href="https://pub.dev/">pub.dev</a> 網站。它採用了新的評分指標，讓您可以更好地了解可能有用的套件，並為套件發布者提供更多可操作的回饋，以提高套件品質。為了幫助您找到支援您感興趣的所有平台的套件，我們新增了識別和搜尋多平台套件的功能。總體而言，我們重新設計了使用者介面，目標是提供與我們的 <a href="https://dart.dev/">dart.dev</a> 和 <a href="https://dartpad.dev/">dartpad.dev</a> 網站一致的愉悅而優雅的體驗。</p>
+<figure>
+<img alt="A screenshot of the page at https://pub.dev" src="https://cdn-images-1.medium.com/max/1024/0*efALL34OP6a4tcxh" />
+<figcaption>全新的 pub.dev 網站</figcaption>
+</figure>
+
+<h3 id="找到最符合您需求的套件"><a href="#找到最符合您需求的套件" class="headerlink" title="找到最符合您需求的套件"></a>找到最符合您需求的套件</h3><p>在過去一年中發布了近 7,000 個新套件，在尋找擴展應用程式功能的套件時，您不乏選擇。但是有這麼多套件可供選擇，您自然希望最受歡迎、品質最高、最常用的套件能夠脫穎而出。為了支援更好的套件搜尋結果，我們圍繞三個維度重新設計了 pub.dev 中的評分系統：</p>
+<figure>
+<img alt="Screenshot of a package summary: 552 likes; 100/110 pub points; 98% popularity" src="https://cdn-images-1.medium.com/max/1024/0*OmvIh_FRHtJDrSIk" />
+<figcaption>pub 套件的三個評分維度</figcaption>
+</figure>
+
+<ol>
+<li><strong>點讚數</strong>: 衡量有多少開發者點讚了一個套件。這提供了一個對套件整體評價的原始指標。</li>
+<li><strong>Pub 分數</strong>: 一種新的品質衡量標準。這包括品質的幾個維度，例如程式碼風格、平台支援和可維護性。詳情請見下文。</li>
+<li><strong>熱門度</strong>: 衡量有多少開發者使用一個套件。這反映了过去六十天內依賴該套件的應用程式數量。標準化後的評分範圍從 100%（最常用的套件）到 0%（最少使用的套件），但我們正在研究是否可以在未來版本中提供絕對使用計數。</li>
+</ol>
+<p>我們希望這些新的維度可以幫助正在尋找依賴套件的套件使用者，以及致力於發布高品質套件的套件發布者。</p>
+<h3 id="使用-Pub-分數衡量品質"><a href="#使用-Pub-分數衡量品質" class="headerlink" title="使用 Pub 分數衡量品質"></a>使用 Pub 分數衡量品質</h3><p>點讚數和熱門度提供了社群提供的、主觀的衡量標準，Pub 分數的目標是提供一個可衡量的、客觀品質的近似值。這並不容易；開發者以各種方式感知品質，但我們仍然相信大多數開發者都在尋找我們可以衡量的核心特徵。以前的 pub.dev 評分模型基於對問題的扣分。新的評分模型扭轉了這種方法，而是根據五個類別中的特徵授予分數：</p>
+<figure>
+<img alt="Screenshot: Pub points overview for a package" src="https://cdn-images-1.medium.com/max/1024/0*RWVQoe0INHUfS_Ax" />
+<figcaption>Pub 分數概述，包含類別和檢查，以及獲得的分數</figcaption>
+</figure>
+
+<ol>
+<li><em>遵循 Dart 檔案規範</em>: 遵循 pubspec、readme 和 changelog 檔案的最佳實務</li>
+<li><em>提供文件</em>: 提供 API 文件和說明性範例</li>
+<li><em>支援多個平台</em>: 支援盡可能多的 Dart 和 Flutter 平台</li>
+<li><em>通過靜態分析</em>: 提供無錯誤、警告和 lint 的程式碼</li>
+<li><em>支援最新的相依</em>: 具有支援最新 Dart 和 Flutter SDK 以及最新套件相依的相依限制</li>
+</ol>
+<p>我們預計隨著時間的推移，會為 Pub 分數新增更多檢查和類別，提高套件可以獲得的分數上限。例如，我們計劃在該功能推出時，為支援 <a href="https://medium.com/dartlang/announcing-sound-null-safety-defd2216a6f3">空安全</a> 新增一個分數。我們正在研究如何衡量可維護性（問題和拉取請求的回應速度）、可測試性（自動化測試覆蓋率）和社群友好度（貢獻者、維護者數量等）。如果您對一個好的衡量標準有任何想法，我們很樂意 <a href="https://github.com/dart-lang/pub-dev/issues">聽取您的意見</a>！</p>
+<h3 id="支援多平台應用程式"><a href="#支援多平台應用程式" class="headerlink" title="支援多平台應用程式"></a>支援多平台應用程式</h3><p>Dart 和 Flutter 都擅長建立針對多個平台的應用程式。在 pub.dev 上，我們為行動（iOS 和 Android）和 Web 平台提供了清晰的平台標籤，以及這些平台的搜尋篩選器：</p>
+<figure>
+<img alt="Screenshot: Search results for Flutter packages that support both Android and Web" src="https://cdn-images-1.medium.com/max/1024/0*aTIl5H_AbGmOJBKO" />
+<figcaption>搜尋中的平台篩選器</figcaption>
+</figure>
+
+<p>為了確保您的套件標記了正確的平台支援，請遵循 pub.dev <a href="https://pub.dev/help/scoring">評分說明頁面</a> 上的指南。</p>
+<p>當桌面平台（macOS、Windows 和 Linux）發展到更最終的狀態時，我們將新增類似的支援。目前，您可以在「進階」搜尋選項中找到這些平台的篩選器：</p>
+<figure>
+<img alt="Screenshot: Search results for Flutter packages that support Android, iOS, and macOS platforms" src="https://cdn-images-1.medium.com/max/1024/0*LpResE7zZv_5x3xB" />
+<figcaption>進階篩選器中的桌面平台</figcaption>
+</figure>
+
+<h3 id="優雅而令人愉悅的設計"><a href="#優雅而令人愉悅的設計" class="headerlink" title="優雅而令人愉悅的設計"></a>優雅而令人愉悅的設計</h3><p>Dart pub.dev 團隊與我們的內部創意團隊 Google Developer Studio 合作，Jeremy Sie 擔任主要設計師。除了功能更新之外，團隊還仔細研究了視覺設計，分享了他們對該專案的想法。為了提供一致的、易於存取的、以使用者為中心的體驗，我們根據 Google 的 <a href="https://material.io/design/">Material Design 系統</a> 進行了一系列改進。我們的目標是建立一個輕量級且簡化的介面，為套件發布者和使用者提供清晰簡潔的工作流程。</p>
+<p>更新後的設計採用了 <a href="https://material.io/components">Material 元件</a>，例如卡片和晶片，可以清晰地顯示套件詳細資訊，並讓單個套件的功能更加透明。我們更新了排版系統，並改進了整個網站的 <a href="https://material.io/design/typography/the-type-system.html#type-scale">字體比例</a>，使搜尋結果更加清晰，並改進了套件資訊的顯示方式。套件分數等元件也經過重新設計，使其更加清晰，並以一種使評分過程更加透明且更容易理解的方式進行組織。</p>
+<figure>
+<img alt="Screenshot: Package search results" src="https://cdn-images-1.medium.com/max/1024/0*6UWz21c0wZuisozR" />
+<figcaption>搜尋顯示所有三個 pub.dev 分數</figcaption>
+</figure>
+
+<p>我們還對首頁進行了更改。我們知道快速搜尋套件的能力是網站的核心部分，但我們希望透過顯示最有用的工具和函式庫來改進體驗。我們在前面加入了「Flutter 精選」和「最熱門套件」等區塊，幫助您快速瀏覽一些最好的套件。我們仔細研究了調色板和藝術方向，加入了插圖，並使程式碼範例等元件與 <a href="https://dart.dev/">dart.dev</a> 和 <a href="https://dartpad.dev/">dartpad.dev</a> 在視覺上保持一致。</p>
+<h3 id="立即試用-pub-dev"><a href="#立即試用-pub-dev" class="headerlink" title="立即試用 pub.dev"></a>立即試用 pub.dev</h3><p>我們邀請您立即試用新的 <a href="http://pub.dev/">pub.dev</a> 瀏覽和搜尋體驗，並使用新的評分維度和 Pub 分數報告。</p>
+<p>如果您是套件開發者，我們鼓勵您查看套件的 Pub 分數，尋找改進套件的機會。有關評分系統如何運作的更多詳細資訊，請參閱 <a href="https://pub.dev/help/scoring">pub.dev 評分說明</a>。</p>
+<p>與往常一樣，我們喜歡回饋。請在下方留言，或在 <a href="https://github.com/dart-lang/pub-dev/issues">pub.dev 問題追蹤器</a> 中提交問題。</p>
+<p><em>作者：Michael Thomsen（Dart 產品經理）和 Jeremy Sie（Google Developer Studio 視覺設計師）</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=747406dcb486" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/pub-dev-redesign-747406dcb486">隆重推出全新的 pub.dev</a> 最初發佈於 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/google/" rel="tag"># google</a>
+              <a href="/tags/development/" rel="tag"># development</a>
+              <a href="/tags/package-management/" rel="tag"># package-management</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/7f23cbe8.html" rel="prev" title="【文章翻譯】Dart string manipulation done right ">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart string manipulation done right 
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/dd9d00ec.html" rel="next" title="【文章翻譯】Google Summer of Code 2020 results">
+      【文章翻譯】Google Summer of Code 2020 results <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%86%E9%87%8D%E6%8E%A8%E5%87%BA%E5%85%A8%E6%96%B0%E7%9A%84-pub-dev"><span class="nav-number">1.</span> <span class="nav-text">隆重推出全新的 pub.dev</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%BE%E5%88%B0%E6%9C%80%E7%AC%A6%E5%90%88%E6%82%A8%E9%9C%80%E6%B1%82%E7%9A%84%E5%A5%97%E4%BB%B6"><span class="nav-number">1.1.</span> <span class="nav-text">找到最符合您需求的套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Pub-%E5%88%86%E6%95%B8%E8%A1%A1%E9%87%8F%E5%93%81%E8%B3%AA"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Pub 分數衡量品質</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8F%B4%E5%A4%9A%E5%B9%B3%E5%8F%B0%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">支援多平台應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%84%AA%E9%9B%85%E8%80%8C%E4%BB%A4%E4%BA%BA%E6%84%89%E6%82%85%E7%9A%84%E8%A8%AD%E8%A8%88"><span class="nav-number">1.4.</span> <span class="nav-text">優雅而令人愉悅的設計</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E8%A9%A6%E7%94%A8-pub-dev"><span class="nav-number">1.5.</span> <span class="nav-text">立即試用 pub.dev</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

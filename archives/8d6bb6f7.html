@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時今天，我們宣布推出 Dart SDK 的新版本 2.8。我們持續看到 Dart 社群的驚人成長；現在我們有 數百萬 Flutter 開發人員 使用 Dart 作為他們客戶端優化的語言，在任何平台上構建快速的應用程式。雖然我們仍在努力完成 即將推出的空安全 功能，使 Dar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.8">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/8d6bb6f7.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時今天，我們宣布推出 Dart SDK 的新版本 2.8。我們持續看到 Dart 社群的驚人成長；現在我們有 數百萬 Flutter 開發人員 使用 Dart 作為他們客戶端優化的語言，在任何平台上構建快速的應用程式。雖然我們仍在努力完成 即將推出的空安全 功能，使 Dar">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*JrrSSD8LCLMkAUIV8RJlkw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/1*av2bRfpUdU2Fk4s8xRPnhA.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7750918db0a">
+<meta property="article:published_time" content="2020-05-06T06:58:48.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:41:10.224Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="dependency-management">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*JrrSSD8LCLMkAUIV8RJlkw.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/8d6bb6f7.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.8 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8d6bb6f7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.8
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-06 14:58:48" itemprop="dateCreated datePublished" datetime="2020-05-06T14:58:48+08:00">2020-05-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:41:10" itemprop="dateModified" datetime="2024-12-18T22:41:10+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣布-Dart-2-8：更快的套件工具，新的工具確保相依性永不過時"><a href="#宣布-Dart-2-8：更快的套件工具，新的工具確保相依性永不過時" class="headerlink" title="宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時"></a>宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時</h2><p>今天，我們宣布推出 Dart SDK 的新版本 2.8。我們持續看到 Dart 社群的驚人成長；現在我們有 <a href="https://medium.com/flutter/flutter-spring-2020-update-f723d898d7af">數百萬 Flutter 開發人員</a> 使用 Dart 作為他們客戶端優化的語言，在任何平台上構建快速的應用程式。雖然我們仍在努力完成 <a href="https://medium.com/dartlang/dart-2-7-a3710ec54e97">即將推出的空安全</a> 功能，使 Dart 成為構建快速且穩定的使用者介面的更優化語言，但我們也有一些令人興奮的新功能，專注於讓開發人員在管理相依性時更有效率。</p>
+<p>Dart 平台透過 <a href="https://dart.dev/tools/pub/cmd">pub 客戶端工具</a> 和 <a href="https://pub.dev/">pub.dev</a> 套件儲存庫提供內建的套件管理支援，該儲存庫在過去一年中成長了 200%，現在擁有近 10,000 個套件。作為我們持續改進 Dart 生態系統工作的一部分，Dart 2.8 SDK 為 pub 客戶端工具帶來了兩項改進：<code>pub get</code> 的效能大幅提升，以及一個確保您的套件相依性保持最新的新工具。</p>
+<p>Dart 2.8 也在 Dart 語言和函式庫中帶來了一系列小的重大變更。這些變更為我們第一個版本的空安全功能奠定了基礎。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*JrrSSD8LCLMkAUIV8RJlkw.png" />
+<figcaption>宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時</figcaption>
+</figure>
+
+<h3 id="為空安全鋪路的重大變更"><a href="#為空安全鋪路的重大變更" class="headerlink" title="為空安全鋪路的重大變更"></a>為空安全鋪路的重大變更</h3><p>應用程式崩潰的常見原因是嘗試使用恰好為空的變數的程式碼。Tony Hoare 先生於 1965 年在 ALGOL 程式語言中引入了空引用，並在 <a href="https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/">2009 年的 QCon 演講</a> 中將其稱為他的「十億美元錯誤」。在某些情況下，空值很有用；挑戰在於將這些情況與無用的情況區分開來。在過去的一年中，我們一直忙於在 Dart 中構建對 <a href="https://github.com/dart-lang/language/issues/110">健全空安全</a> 的支援。這種支援將擴展類型系統以表達始終非空的變數，但此外，類型系統將是完全健全的：Dart 編譯器和執行時將能夠信任這些類型，並且當類型系統保證變數不為空時，能夠產生優化的程式碼。</p>
+<p>您可以想像，這是一項龐大的工作，涉及許多活動部件。為了確保我們可以使用清晰的語義構建空安全，我們決定在 Dart 語言和函式庫中進行一些小的重大變更。這些重大變更對 Dart 類型系統的邊緣情況和一些 Dart 核心函式庫進行了細微調整，以確保與可空性相關的優異可用性和效能。我們預計這些重大變更的實際影響（已在 Dart 公告列表上 <a href="https://groups.google.com/a/dartlang.org/g/announce/c/JwPWiC0jTiU">預先宣布</a>）對於常規應用程式程式碼來說是最小的。如果您在使用 Dart 2.8 時遇到任何問題，我們建議您查看 <a href="https://github.com/dart-lang/sdk/issues/40686">重大變更</a> 及其描述和緩解步驟。如果這沒有解決問題，請在我們的 <a href="https://github.com/dart-lang/sdk/issues">問題追蹤器</a> 中提交問題。要預覽空安全體驗，請嘗試 <a href="https://nullsafety.dartpad.dev/53257b6da4cb128dc1e069df64748ed1">空安全遊樂場</a>。</p>
+<h3 id="更高質量的套件生態系統"><a href="#更高質量的套件生態系統" class="headerlink" title="更高質量的套件生態系統"></a>更高質量的套件生態系統</h3><p>pub 套件管理器和 <a href="https://pub.dev/">pub.dev</a> 網站為 Dart 和 Flutter 提供了不斷發展的生態系統。pub.dev 上提供了近 10,000 個套件，我們不斷對正在分享的許多有趣的套件感到驚訝。我們的核心任務是幫助套件作者建立高質量的套件，並幫助應用程式開發人員找到這些套件——例如，我們加入了 <a href="https://medium.com/dartlang/improved-discovery-on-the-dart-package-site-9bfe24c3d7d3">改進的 pub.dev 發現</a>、<a href="https://medium.com/dartlang/verified-publishers-98f05466558a">驗證的發布者</a> 和 <a href="https://flutter.dev/docs/development/packages-and-plugins/favorites">Flutter Favorites</a>。</p>
+<p>今天，我們宣布從 <a href="https://pub.dev/">pub.dev</a> 儲存庫中检索套件的速度大幅提升，並推出一款新工具，幫助您保持所有套件相依性更新。隨著現代應用程式的複雜性，您的應用程式可能依賴於數十個套件。但是，您如何保持所有套件更新到最新版本，以確保您獲得最新的相依性以及所有可用的錯誤修復和效能改進？從 Dart 2.8 開始，您可以使用 <code>pub outdated</code>，這是一個新的工具，用於自動確定哪些相依性需要更新到最新和最好的版本。</p>
+<h3 id="Dart-2-8-pub-工具效能改進"><a href="#Dart-2-8-pub-工具效能改進" class="headerlink" title="Dart 2.8 pub 工具效能改進"></a>Dart 2.8 pub 工具效能改進</h3><p>我們透過在運行 <code>pub get</code> 時加入對並行擷取套件的支援，以及延遲 <code>pub run</code> 預編譯，優化了 pub 工具的效能。</p>
+<p>在對使用 <code>flutter create</code> 建立的新專案運行 <code>flutter pub get</code> 的非正式基準測試中，總執行時間從 Flutter 1.12（使用 Dart 2.7）的大約 6.5 秒減少到 Flutter 1.17（Dart 2.8）的僅 2.5 秒。在像 <a href="https://github.com/flutter/gallery">Flutter gallery</a> 這樣的大型應用程式中，時間從大約 15 秒減少到大約 3 秒！</p>
+<h3 id="使用-pub-outdated-管理相依性"><a href="#使用-pub-outdated-管理相依性" class="headerlink" title="使用 pub outdated 管理相依性"></a>使用 pub outdated 管理相依性</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/1*av2bRfpUdU2Fk4s8xRPnhA.gif" />
+</figure>
+
+<p>Dart 程式碼中的相依性會記錄在 <a href="https://kw-staging-dartlang-2.firebaseapp.com/tools/pub/pubspec">pubspec</a> 檔案中。當您透過運行 <code>pub get</code> 命令從 <a href="https://pub.dev/">pub.dev</a> 擷取套件時，pub 版本解算器（使用 <a href="https://medium.com/@nex3/pubgrub-2fb6470504f">PubGrub</a> 演算法）會運行一個程序，以確定所有相依性的最新可能版本集，以滿足 pubspec 中列出的約束。請注意，pub 使用單版本方案，其中每個套件都包含在應用程式中單一版本中；這是一項重要的優化，可確保您的應用程式大小盡可能小。</p>
+<p>始終使用最新的穩定套件版本是 <a href="http://dart.dev/tools/pub/dependencies#best-practices">最佳實務</a>，但這樣做可能很費力。Dart 支援使用 <a href="https://dart.dev/tools/pub/cmd/pub-upgrade">pub upgrade</a> 升級到 <a href="https://dart.dev/tools/pub/dependencies#version-constraints">語義相容</a> 的最新版本，但您不能在不更新 pubspec 的情況下包含套件的新主要版本。<code>pub outdated</code> 命令透過比較目前使用的版本與 pub.dev 上可用的最新版本，幫助您了解何時有次要版本和主要版本可用。</p>
+<p>讓我們考慮一個具體的例子。想像您正在構建一個應用程式，其 pubspec.yaml 包含以下內容：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">foo:</span> <span class="string">^1.3.0</span></span><br><span class="line">  <span class="attr">bar:</span> <span class="string">^2.0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>您運行 <code>pub get</code>，該工具會建立一個 pubspec.lock 檔案，其中包含以下版本：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">packages:</span></span><br><span class="line">  <span class="attr">foo:</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">&quot;1.3.0&quot;</span></span><br><span class="line">  <span class="attr">bar:</span></span><br><span class="line">    <span class="attr">version:</span> <span class="string">&quot;2.0.1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>幾個月過去了，pub.dev 現在有了 foo (1.3.1) 和 bar (2.1.0 和 3.0.3) 的新版本。您如何發現這些新版本可用？對於次要版本升級（foo 1.4.0 和 bar 2.1.0），您可以運行 <code>pub upgrade</code>，但这不會讓您獲得 bar 3.0.0。要發現新版本，您必須訪問 pub.dev 上的每個套件，並查看其最新版本。或者，您可以使用社群解決方案，例如 Paulina Szklarska 的 <a href="https://plugins.jetbrains.com/plugin/12400-flutter-pub-version-checker">版本檢查器</a> 或 Jeroen Meijer 的 <a href="https://marketplace.visualstudio.com/items?itemName=jeroen-meijer.pubspec-assist">pubspec assist</a>。</p>
+<p>有了 <code>pub outdated</code>，Dart SDK 現在支援版本發現。如果您使用的是支援 Dart 或 Flutter 的 IDE，請在 pubspec.yaml 檔案打開時使用顯示的 <strong>Pub outdated</strong> 動作。或者，您可以從終端機運行 <code>pub outdated</code>（或 <code>flutter pub outdated</code>）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pub outdated</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Dependencies            Current  Upgradable  Resolvable  Latest</span><br><span class="line">foo                     1.3.0    1.3.1       1.3.1       1.3.1</span><br><span class="line">bar                     2.0.1    2.1.0       3.0.3       3.0.3</span><br><span class="line"></span><br><span class="line">1 upgradable dependency is locked (in pubspec.lock) to an older version.</span><br><span class="line">To update it, use `pub upgrade`.</span><br><span class="line"></span><br><span class="line">1 dependency is constrained to a version that is older than a resolvable version.</span><br></pre></td></tr></table></figure>
+
+<p>此輸出告訴我們，我們可以使用 <code>pub upgrade</code> 自動升級到 foo 1.3.1，這將使我們獲得 foo 的最新可用版本。但它也告訴我們，雖然我們可以自動升級到 bar 2.1.0，但 3.0.3 版本可用。因為升級到 bar 3.0.3 是一個主要版本升級，所以我們需要透過編輯 pubspec.yaml 檔案來選擇加入該升級：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">foo:</span> <span class="string">^1.3.0</span></span><br><span class="line">  <span class="attr">bar:</span> <span class="string">^3.0.3</span></span><br></pre></td></tr></table></figure>
+
+<p>在我们进行编辑并运行 <code>pub upgrade</code> 之后，<code>pub outdated</code> 現在报告所有相依性都是最新的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pub outdated</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Dependencies            Current   Upgradable  Resolvable  Latest</span><br><span class="line">all up-to-date</span><br></pre></td></tr></table></figure>
+
+<p>成功，我們是最新的！因為我們剛剛選擇了新版本，包括一個新的主要版本，我們應該審查這些版本中任何潛在的重大變更，並運行所有測試以確保我們的應用程式仍然按預期工作。</p>
+<h3 id="後續步驟"><a href="#後續步驟" class="headerlink" title="後續步驟"></a>後續步驟</h3><p>效能改進、<a href="https://github.com/dart-lang/sdk/issues/40686">重大變更</a> 和新的 <code>pub outdated</code> 命令現已在穩定的 <a href="https://dart.dev/get-dart">Dart 2.8 SDK</a> 和穩定的 <a href="https://flutter.dev/docs/get-started/install">Flutter 1.17 SDK</a> 中提供。我們建議您 <a href="https://dart.dev/tools/pub/cmd/pub-outdated">立即運行 pub outdated</a>，以查看您的相依性的健康狀況！</p>
+<p>如果您發現任何問題，請在 <a href="https://github.com/dart-lang/pub/issues">pub 問題追蹤器</a> 中報告，或在 <a href="https://github.com/dart-lang/sdk/issues">SDK 問題追蹤器</a> 中報告一般問題。我們很樂意聽到您使用 <code>pub outdated</code> 的經驗。在下方留言或向 <a href="https://twitter.com/dart_lang">@dart_lang</a> 發送推文。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7750918db0a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-8-7750918db0a">宣布 Dart 2.8</a> 最初發佈於 Medium 的 <a href="https://medium.com/dartlang">Dart</a> ，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/dependency-management/" rel="tag"># dependency-management</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/6d3e5229.html" rel="prev" title="【文章翻譯】Modern Flutter Plugin Development">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Modern Flutter Plugin Development
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/33339ee9.html" rel="next" title="【文章翻譯】Announcing Flutter 1.17">
+      【文章翻譯】Announcing Flutter 1.17 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%B8%83-Dart-2-8%EF%BC%9A%E6%9B%B4%E5%BF%AB%E7%9A%84%E5%A5%97%E4%BB%B6%E5%B7%A5%E5%85%B7%EF%BC%8C%E6%96%B0%E7%9A%84%E5%B7%A5%E5%85%B7%E7%A2%BA%E4%BF%9D%E7%9B%B8%E4%BE%9D%E6%80%A7%E6%B0%B8%E4%B8%8D%E9%81%8E%E6%99%82"><span class="nav-number">1.</span> <span class="nav-text">宣布 Dart 2.8：更快的套件工具，新的工具確保相依性永不過時</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E7%A9%BA%E5%AE%89%E5%85%A8%E9%8B%AA%E8%B7%AF%E7%9A%84%E9%87%8D%E5%A4%A7%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.1.</span> <span class="nav-text">為空安全鋪路的重大變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E9%AB%98%E8%B3%AA%E9%87%8F%E7%9A%84%E5%A5%97%E4%BB%B6%E7%94%9F%E6%85%8B%E7%B3%BB%E7%B5%B1"><span class="nav-number">1.2.</span> <span class="nav-text">更高質量的套件生態系統</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-8-pub-%E5%B7%A5%E5%85%B7%E6%95%88%E8%83%BD%E6%94%B9%E9%80%B2"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 2.8 pub 工具效能改進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-pub-outdated-%E7%AE%A1%E7%90%86%E7%9B%B8%E4%BE%9D%E6%80%A7"><span class="nav-number">1.4.</span> <span class="nav-text">使用 pub outdated 管理相依性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.5.</span> <span class="nav-text">後續步驟</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

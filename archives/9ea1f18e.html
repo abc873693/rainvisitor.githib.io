@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 全新的 DartPad.dev，支援 Flutter今天，我們宣布對 DartPad.dev 進行重大升級，它採用了全新的外觀和體驗，並支援熱門的 Flutter UI 工具包。DartPad 是我們的線上編輯器，可以直接在您的瀏覽器中運行 Dart 程式，現在它也可以運行 Flutter 應用程式了。   立即開始創作要建立新的 Fl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】A brand new DartPad.dev with Flutter support">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/9ea1f18e.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 全新的 DartPad.dev，支援 Flutter今天，我們宣布對 DartPad.dev 進行重大升級，它採用了全新的外觀和體驗，並支援熱門的 Flutter UI 工具包。DartPad 是我們的線上編輯器，可以直接在您的瀏覽器中運行 Dart 程式，現在它也可以運行 Flutter 應用程式了。   立即開始創作要建立新的 Fl">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/700/1*X7Sild_wdEFGRYaSk2C3Og.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/700/1*Sd404nMeJmYEgbPpE7HN7g.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*CONdjdCgZJH6oN7B4tjA5w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/700/1*pjBKPqejQhVga2yXYWWigw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/700/1*f-DNPnkA6gB5wkT_TVVpSQ.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=16fe6027784">
+<meta property="article:published_time" content="2019-12-04T09:27:59.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:35:07.668Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="dartpad">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/700/1*X7Sild_wdEFGRYaSk2C3Og.gif">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/9ea1f18e.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】A brand new DartPad.dev with Flutter support | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9ea1f18e.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】A brand new DartPad.dev with Flutter support
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-04 17:27:59" itemprop="dateCreated datePublished" datetime="2019-12-04T17:27:59+08:00">2019-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:35:07" itemprop="dateModified" datetime="2024-12-18T22:35:07+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="全新的-DartPad-dev，支援-Flutter"><a href="#全新的-DartPad-dev，支援-Flutter" class="headerlink" title="全新的 DartPad.dev，支援 Flutter"></a>全新的 DartPad.dev，支援 Flutter</h2><p>今天，我們宣布對 <a href="https://dartpad.dev/">DartPad.dev</a> 進行重大升級，它採用了全新的外觀和體驗，並支援熱門的 <a href="https://flutter.dev/">Flutter</a> UI 工具包。DartPad 是我們的線上編輯器，可以直接在您的瀏覽器中運行 Dart 程式，現在它也可以運行 Flutter 應用程式了。</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*X7Sild_wdEFGRYaSk2C3Og.gif" /></figure>
+
+<h3 id="立即開始創作"><a href="#立即開始創作" class="headerlink" title="立即開始創作"></a>立即開始創作</h3><p>要建立新的 Flutter 專案，請點擊「<strong>新增面板</strong>」按鈕，然後選擇 <strong>Flutter</strong>。</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*Sd404nMeJmYEgbPpE7HN7g.gif" /></figure>
+
+<p>這會在編輯器中加入一些起始程式碼並運行它。每當 DartPad 偵測到您正在使用 <code>package:flutter</code> 時，就會出現一個面板來顯示 UI。或者使用「<strong>範例</strong>」選單來尋找 Flutter 範例。</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*CONdjdCgZJH6oN7B4tjA5w.png" /></figure>
+
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h3><p>Flutter 的所有核心函式庫，例如  <a href="https://api.flutter.dev/flutter/cupertino/cupertino-library.html">cupertino</a> 和 <a href="https://api.flutter.dev/flutter/material/material-library.html">material</a>，都可以使用，DartPad 可以顯示它們的文件。選擇一個符號即可在底部面板中查看文件。</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*pjBKPqejQhVga2yXYWWigw.gif" /></figure>
+
+<p>DartPad 使用 Dart 格式化工具 (<a href="https://github.com/dart-lang/dart_style">dartfmt</a>) 格式化程式碼、提供輔助、提供修正、建議自動完成，並顯示錯誤和警告。</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/700/1*f-DNPnkA6gB5wkT_TVVpSQ.gif" /></figure>
+
+<p>當您準備好分享您的程式碼片段時，您可以 <a href="https://help.github.com/en/github/writing-on-github/creating-gists">建立 GitHub gist</a>，並將 gist ID 放入像這樣的 URL 中：<code>https://dartpad.dev/&lt;GistID&gt;</code>。您可以在錯誤報告、StackOverflow 問題或您選擇的社群媒體平台上分享此連結。查看<a href="https://github.com/dart-lang/dart-pad/wiki/Sharing-Guide">分享指南</a>以了解更多詳細資訊。</p>
+<p>您也可以將 DartPad 嵌入到頁面中，<a href="https://flutter.dev/docs/codelabs/layout-basics">例如在此程式碼實驗室中</a>。嵌入式 DartPad 特別適用於文章、程式碼實驗室和教學。(如果您有興趣在程式碼實驗室和教學中使用 DartPad，請查看<a href="https://dart.dev/resources/dartpad-tutorials.pdf">本指南</a>)。要了解更多關於將 DartPad 加到頁面的資訊，請查看<a href="https://github.com/dart-lang/dart-pad/wiki/Embedding-Guide">嵌入指南</a>。</p>
+<h3 id="感謝！"><a href="#感謝！" class="headerlink" title="感謝！"></a>感謝！</h3><p>DartPad 是 Dart <a href="https://github.com/dart-lang">開源專案</a> 的一部分。如果您提交了 DartPad 的 <a href="https://github.com/dart-lang/dart-pad/issues">問題</a> 或變更，感謝您使其變得更好。如果您想貢獻，請從  <a href="https://github.com/dart-lang/dart-pad">github.com&#x2F;dart-lang&#x2F;dart-pad</a> 開始。要了解更多關於在 Web 上運行 Flutter 的資訊，請造訪 <a href="https://flutter.dev/web">flutter.dev&#x2F;web</a>。</p>
+<p>我們迫不及待地想看看您會創造出什麼！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=16fe6027784" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/a-brand-new-dartpad-dev-with-flutter-support-16fe6027784">全新的 DartPad.dev，支援 Flutter</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/dartpad/" rel="tag"># dartpad</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/defcb0a1.html" rel="prev" title="【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/e3f3d9b7.html" rel="next" title="【文章翻譯】Announcing Dart 2.7: A safer, more expressive Dart">
+      【文章翻譯】Announcing Dart 2.7: A safer, more expressive Dart <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E6%96%B0%E7%9A%84-DartPad-dev%EF%BC%8C%E6%94%AF%E6%8F%B4-Flutter"><span class="nav-number">1.</span> <span class="nav-text">全新的 DartPad.dev，支援 Flutter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E9%96%8B%E5%A7%8B%E5%89%B5%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">立即開始創作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%9F%E8%AC%9D%EF%BC%81"><span class="nav-number">1.3.</span> <span class="nav-text">感謝！</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

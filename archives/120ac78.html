@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.14今天，我們發佈了 Dart SDK 的 2.14 版本，這是我們持續努力的最新成果，旨在透過獨特的可移植性、生產力和穩健性組合，打造構建應用程式的最佳平台。這次，我們對 Apple Silicon 提供了更好的支援，並進行了許多生產力增強，例如用於在您編寫程式碼時透過程式碼樣式分析來捕捉錯誤的標準 lints、更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.14">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/120ac78.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.14今天，我們發佈了 Dart SDK 的 2.14 版本，這是我們持續努力的最新成果，旨在透過獨特的可移植性、生產力和穩健性組合，打造構建應用程式的最佳平台。這次，我們對 Apple Silicon 提供了更好的支援，並進行了許多生產力增強，例如用於在您編寫程式碼時透過程式碼樣式分析來捕捉錯誤的標準 lints、更">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*qlsMfajTUkBw1APUpjcCZg.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b48b9bb2fb67">
+<meta property="article:published_time" content="2021-09-08T08:59:41.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:17:31.001Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*qlsMfajTUkBw1APUpjcCZg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/120ac78.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.14 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/120ac78.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.14
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-08 16:59:41" itemprop="dateCreated datePublished" datetime="2021-09-08T16:59:41+08:00">2021-09-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:17:31" itemprop="dateModified" datetime="2024-12-20T02:17:31+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-14"><a href="#宣佈-Dart-2-14" class="headerlink" title="宣佈 Dart 2.14"></a>宣佈 Dart 2.14</h2><p>今天，我們發佈了 Dart SDK 的 2.14 版本，這是我們持續努力的最新成果，旨在透過獨特的可移植性、生產力和穩健性組合，打造構建應用程式的最佳平台。這次，我們對 Apple Silicon 提供了更好的支援，並進行了許多生產力增強，例如用於在您編寫程式碼時透過程式碼樣式分析來捕捉錯誤的標準 lints、更快的 pub 工具、使用 cascades 更好地格式化程式碼，以及一些小型語言功能。</p>
+<figure>
+<img alt="An illustration with text that summarizes the new 2.14 features" src="https://cdn-images-1.medium.com/max/1024/1*qlsMfajTUkBw1APUpjcCZg.png" />
+</figure>
+
+<h3 id="Dart-SDK-中的-Apple-Silicon-支援"><a href="#Dart-SDK-中的-Apple-Silicon-支援" class="headerlink" title="Dart SDK 中的 Apple Silicon 支援"></a>Dart SDK 中的 Apple Silicon 支援</h3><p>自從 Apple 在 2020 年底宣佈了他們新的 <a href="https://support.apple.com/en-us/HT211814">Apple Silicon</a> 處理器以來，我們一直致力於更新 Dart SDK，以增加對在新處理器上原生執行的支援。所需的變更已在開發頻道中提供了一段時間，在過去一個月中在測試頻道中提供，而從 Dart 2.14.1 開始，現在已在 Dart 穩定頻道中提供。當您 <a href="https://dart.dev/get-dart">下載</a> macOS SDK 時，請務必選擇 ARM64 選項。請注意，Flutter SDK 中捆綁的 Dart SDK 尚未包含這些改進。</p>
+<p>該支援包括在 Apple Silicon 上運行 SDK&#x2F;Dart VM 本身，以及支援編譯在 Apple Silicon 上運行的可執行檔（使用 <a href="https://dart.dev/tools/dart-compile#exe">dart compile</a>）。Dart 命令列工具現在啟動速度更快，因為它們使用了原生 Apple Silicon 支援。</p>
+<h3 id="為-Dart-和-Flutter-共享的標準-lints"><a href="#為-Dart-和-Flutter-共享的標準-lints" class="headerlink" title="為 Dart 和 Flutter 共享的標準 lints"></a>為 Dart 和 Flutter 共享的標準 lints</h3><p>開發人員通常更喜歡他們的程式碼遵循某種樣式。這些規則中的許多規則不僅僅是樣式偏好（例如眾所周知的 tab 與空格的討論），還涵蓋了可能導致錯誤或引入錯誤的編碼樣式。例如，Dart 樣式指南要求對所有控制流程結構（例如 if-else 陳述式）使用大括號。這可以防止經典的 <a href="https://en.wikipedia.org/wiki/Dangling_else">懸空 else</a> 問題，其中對如何解釋多個巢狀 if-else 陳述式存在歧義。另一個例子是類型推斷。雖然在使用初始值宣告變數時使用類型推斷是可以的，但在 <a href="https://dart-lang.github.io/linter/lints/prefer_typing_uninitialized_variables.html">宣告未初始化的變數</a> 時指定類型很重要，以確保類型安全。</p>
+<p>強制執行良好程式碼樣式的一個選項是透過某種形式的人工強制執行，通常是透過程式碼審查。但是，通常透過在您編寫程式碼時運行的靜態分析來強制執行規則會更有效。</p>
+<p>在 Dart 中，這種靜態分析是高度 <a href="https://dart.dev/guides/language/analysis-options">可配置的</a>，我們有 <a href="https://dart.dev/tools/linter-rules">數百條樣式規則</a>（也稱為 <em>lints</em>）。有了這麼多的選項，選擇要啟用哪些規則可能會有點讓人不知所措。Dart 團隊維護著一份 <a href="https://dart.dev/guides/language/effective-dart/style">Dart 樣式指南</a>，其中描述了我們認為編寫和設定 Dart 程式碼樣式的最佳方式，但從歷史上看，我們沒有一套與樣式指南相對應的官方 linter 規則集。</p>
+<p>許多開發人員——以及 pub.dev 網站 <a href="https://pub.dev/help/scoring">評分</a> 引擎——都使用了 <a href="https://github.com/google/pedantic">pedantic</a> linter 規則集。然而，pedantic 起源於 Google 內部的 Dart 樣式指南，由於歷史原因，它與一般的 Dart 樣式指南不同。此外，Flutter 架構從未使用過 pedantic 規則集，而是有自己的一套規範規則。</p>
+<p>這聽起來可能有點混亂，確實如此。但隨著今天的發佈，我們很高興地宣佈，我們現在有一套全新的 linter 集合，它們實作了樣式指南，並且 Dart 和 Flutter SDK 已更新，預設為新專案使用這些規則集。規則集如下：</p>
+<ul>
+<li><a href="https://github.com/dart-lang/lints/blob/main/lib/core.yaml">package:lints&#x2F;core.yaml:</a> Dart 樣式指南中的主要規則，我們認為所有 Dart 程式碼都應該遵循。pub.dev 評分引擎已更新為使用這些規則而不是 pedantic。</li>
+<li><a href="https://github.com/dart-lang/lints/blob/main/lib/recommended.yaml">package:lints&#x2F;recommended.yaml</a>: 核心規則，以及其他建議的規則。建議所有通用 Dart 程式碼都使用此集。</li>
+<li><a href="https://github.com/flutter/packages/blob/master/packages/flutter_lints/lib/flutter.yaml">package:flutter_lints&#x2F;flutter.yaml</a>: 核心和建議的規則，以及其他 Flutter 特定的建議規則。建議所有 Flutter 程式碼都使用此集。</li>
+</ul>
+<p>如果您有現有專案，我們強烈建議您升級到這些新的規則集。從 pedantic 升級 <a href="https://github.com/dart-lang/lints#migrating-from-packagepedantic">只需幾個步驟</a>。</p>
+<h3 id="Dart-格式化工具和-cascades"><a href="#Dart-格式化工具和-cascades" class="headerlink" title="Dart 格式化工具和 cascades"></a>Dart 格式化工具和 cascades</h3><p>我們對 Dart 格式化工具如何使用 <a href="https://dart.dev/guides/language/language-tour#cascade-notation">cascades</a> 格式化程式碼進行了多項優化。以前，格式化工具在某些情況下會產生令人困惑的格式。例如，在此範例中，<code>doIt()</code> 是在什麼上調用的？</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = errorState ? foo : bad..doIt();</span><br></pre></td></tr></table></figure>
+
+<p>它看起來像是總是在 <code>bad</code> 上調用的，但實際上 cascade 適用於整個 <code>?</code> 表達式，因此 cascade 是在該表達式的結果上調用的，而不僅僅是在 <code>false</code> 子句上。新的格式化工具使這一點更加清晰：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = errorState ? foo : bad</span><br><span class="line">  ..doIt();</span><br></pre></td></tr></table></figure>
+
+<p>其他變更與包含多個 cascades 的行的格式化方式以及 cascades 通常縮排的程度有關。我們還大大提高了格式化包含 cascades 的程式碼的速度；在為 <a href="https://developers.google.com/protocol-buffers/docs/reference/dart-generated">protocol buffers</a> 生成的 Dart 程式碼中，我們看到格式化速度提高了 10 倍。</p>
+<p>有關所有詳細資訊，請參閱 <a href="https://github.com/dart-lang/dart_style/pull/1033">追蹤議題</a>。</p>
+<h3 id="Pub-支援忽略檔案"><a href="#Pub-支援忽略檔案" class="headerlink" title="Pub 支援忽略檔案"></a>Pub 支援忽略檔案</h3><p>目前，當您將套件 <a href="https://dart.dev/tools/pub/publishing">發佈</a> 到 <a href="https://pub.dev/">pub.dev</a> 社群儲存庫時，pub 會抓取該資料夾中的所有檔案，但有一些例外，會跳過隱藏檔案（以點開頭的檔案：<code>.</code>）和 <code>.gitignore</code> 中列出的檔案。一些開發人員要求能夠控制在 <code>.gitignore</code> 列表之外忽略哪些檔案。例如，您可能在 <code>tool/</code> 資料夾中有一些用於 <em>維護</em> 套件的內部開發工具，但這些工具與 <em>使用</em> 套件的人無關。</p>
+<p>Dart 2.14 中更新的 pub 命令支援新的 <code>.pubignore</code> 檔案，您可以在其中列出不想上傳到 pub.dev 的檔案。此檔案使用與 <code>.gitignore</code> 檔案相同的格式。有關詳細資訊，請參閱 <a href="https://dart.dev/tools/pub/publishing#what-files-are-published">套件發佈文件</a>。</p>
+<h3 id="Pub-和-dart-test-效能"><a href="#Pub-和-dart-test-效能" class="headerlink" title="Pub 和 dart test 效能"></a>Pub 和 <code>dart test</code> 效能</h3><p>雖然 pub 可能最常用於管理程式碼相依關係，但它還有第二個重要的用途：支援工具。一個這樣的例子是 Dart 測試工具，透過 <code>dart test</code> 命令公開。此命令實際上只是 <code>pub run test:test</code> 命令的包裝器，它在 <a href="https://github.com/dart-lang/test/blob/master/pkgs/test/bin/test.dart">package:test</a> 中運行測試入口點。在調用該入口點之前，pub 首先將其編譯為可以更快運行的原生程式碼。</p>
+<p>在 Dart 2.14 之前，對 <code>pubspec</code> 的任何變更（包括與 <code>package:test</code> 無關的變更）都會使此測試的構建失效，您會看到一堆如下所示的輸出，其中包含“正在預編譯可執行檔”：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart test</span><br><span class="line">正在預編譯可執行檔... (11.6s)</span><br><span class="line">預編譯 test:test。</span><br><span class="line">00:01 +1: 所有測試都通過了！</span><br></pre></td></tr></table></figure>
+
+<p>在 Dart 2.14 中，pub 對何時使構建步驟失效更加智慧，因此只有在版本變更時才會進行構建。此外，我們改進了使用平行化執行構建步驟的方式，因此步驟本身完成得更快。我們在測試的一些套件中看到它花費的時間減少了一半。</p>
+<h3 id="新的語言功能"><a href="#新的語言功能" class="headerlink" title="新的語言功能"></a>新的語言功能</h3><p>Dart 2.14 還包含許多小型語言功能。這次，我們專注於更具體的改進，這些改進的用途可能更狹窄，但可以啟用以前不支援的更專門的用例。</p>
+<p>首先，我們加入了一個新的 <a href="https://github.com/dart-lang/language/issues/120">三重移位</a> 運算子（<code>&gt;&gt;&gt;</code>）。這與現有的移位運算子（<code>&gt;&gt;</code>）類似，但 <code>&gt;&gt;</code> 執行算術移位，而 <code>&gt;&gt;&gt;</code> 執行邏輯或無符號移位，其中零位元被移位到最高有效位元，無論被移位的數字是正數還是負數。</p>
+<p>我們還移除了一個對類型引數的舊限制，該限制不允許使用泛型函數類型作為類型引數。以下所有內容在 2.14 之前都是無效的，但現在允許：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">late</span> <span class="built_in">List</span>&lt;T <span class="built_in">Function</span>&lt;T&gt;(T)&gt; idFunctions;</span><br><span class="line"><span class="keyword">var</span> callback = [&lt;T&gt;(T value) =&gt; value];</span><br><span class="line"><span class="keyword">late</span> S <span class="built_in">Function</span>&lt;S <span class="keyword">extends</span> T <span class="built_in">Function</span>&lt;T&gt;(T)&gt;(S) f;</span><br></pre></td></tr></table></figure>
+
+<p>最後，我們對註釋類型進行了一些小調整。（註釋，例如 <a href="https://api.dart.dev/stable/2.13.4/dart-core/Deprecated-class.html">@Deprecated</a>，通常用於 Dart 程式碼中以捕捉中繼資料。）以前，註釋不能傳遞類型引數，因此 <code>@TypeHelper&lt;int&gt;(42, &quot;The meaning&quot;)</code> 之類的程式碼是不允許的。此限制現已移除。</p>
+<h3 id="套件和核心函式庫變更"><a href="#套件和核心函式庫變更" class="headerlink" title="套件和核心函式庫變更"></a>套件和核心函式庫變更</h3><p>我們對核心 Dart 套件和函式庫進行了許多增強，包括：</p>
+<ul>
+<li><code>dart:core</code>：在 <code>Object</code> 類中加入了靜態方法 <code>hash</code>、<code>hashAll</code> 和 <code>hashAllUnordered</code>。這些方法可以用於以一致的方式組合多個物件的雜湊碼（<a href="https://api.dart.dev/stable/2.14.0/dart-core/Object/hashAll.html">hashAll 範例</a>）。</li>
+<li><code>dart:core</code>：原生的 <code>DateTime</code> 類現在可以更好地處理夏令時變更前後的本地時間，這些變更不精確為一小時——例如，澳大利亞的豪勳爵島，它使用 30 分鐘的偏移量。</li>
+<li><a href="https://pub.dev/packages/ffi">package:ffi</a>：增加了使用 <a href="https://pub.dev/documentation/ffi/latest/ffi/Arena-class.html">arena</a> 分配器管理記憶體的支援（<a href="https://github.com/dart-lang/sdk/blob/master/samples/ffi/resource_management/arena_sample.dart">範例</a>）。Arenas 是一種基於區域的記憶體管理形式，其中資源會在 arena&#x2F;區域退出後自動釋放。</li>
+<li><a href="https://pub.dev/packages/ffigen">package:ffigen</a>：現在支援從 C 類型定義生成 Dart 類型定義。</li>
+</ul>
+<h3 id="重大變更"><a href="#重大變更" class="headerlink" title="重大變更"></a>重大變更</h3><p>Dart 2.14 還包含一些較小的、<a href="https://github.com/dart-lang/sdk/blob/master/docs/process/breaking-changes.md">先前已宣佈的</a> 重大變更。預計這些變更只會影響一些專門的用例。</p>
+<h4 id="46545：移除對-ECMAScript5-的支援"><a href="#46545：移除對-ECMAScript5-的支援" class="headerlink" title="#46545：移除對 ECMAScript5 的支援"></a><a href="https://github.com/dart-lang/sdk/issues/46545">#46545</a>：移除對 ECMAScript5 的支援</h4><p><a href="https://caniuse.com/es6">所有現代瀏覽器</a> 都支援最新的 ECMAScript 版本，因此兩年前我們 <a href="https://groups.google.com/a/dartlang.org/g/announce/c/x7eDinVT6fM/m/ZSFl2a9tEAAJ?pli=1">宣佈</a> 了棄用 ECMAScript 5 (ES5) 支援的計劃。這使我們能夠利用最新 ECMAScript 中的改進並生成更小的輸出。在 Dart 2.14 中，這項工作已完成，Dart Web 編譯器不再支援 ES5。因此，不再支援舊版瀏覽器——例如 IE11。</p>
+<h4 id="46100：棄用-stagehand、dartfmt-和-dart2native"><a href="#46100：棄用-stagehand、dartfmt-和-dart2native" class="headerlink" title="#46100：棄用 stagehand、dartfmt 和 dart2native"></a><a href="https://github.com/dart-lang/sdk/issues/46100">#46100</a>：棄用 stagehand、dartfmt 和 dart2native</h4><p>在 2020 年 10 月的 <a href="https://medium.com/dartlang/announcing-dart-2-10-350823952bd5">Dart 2.10 部落格文章</a> 中，我們宣佈了將所有 Dart CLI 開發人員工具合併到一個單一的、組合的 dart 工具（類似於 flutter 工具）中的工作。作為該演進的一部分，Dart 2.14 棄用了以前的 <code>dartfmt</code> 和 <code>dart2native</code> 命令，並停止了 <code>stagehand</code>。這些工具在 <a href="https://dart.dev/tools/dart-tool">統一的 dart 工具</a> 中都有等效的替代品。</p>
+<h4 id="45451：棄用-VM-原生擴展"><a href="#45451：棄用-VM-原生擴展" class="headerlink" title="#45451：棄用 VM 原生擴展"></a><a href="https://github.com/dart-lang/sdk/issues/45451">#45451</a>：棄用 VM 原生擴展</h4><p>我們棄用了 Dart VM 的原生擴展，這是我們從 Dart 程式碼調用原生程式碼的舊機制。Dart <a href="https://dart.dev/guides/libraries/c-interop">FFI</a>（外部函數介面）是我們目前用於此用例的機制，我們正在積極地 <a href="https://medium.com/dartlang/announcing-dart-2-13-c6d547b57067">發展</a> 它，使其更加強大和易於使用。</p>
+<h3 id="Null-safety-更新"><a href="#Null-safety-更新" class="headerlink" title="Null safety 更新"></a>Null safety 更新</h3><p>我們在 3 月的 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 版本中推出了健全的 null safety。Null safety 是 Dart 的最新主要生產力功能，旨在幫助您避免 null 錯誤——這是一類通常難以發現的錯誤。</p>
+<p>自從我們的上次更新以來，我們在將現有套件和應用程式遷移到啟用 null safety 的健全檢查優點方面取得了巨大進展。對於 pub.dev 上的套件，前 250 個套件中的 100% 現在支援 null safety，前 1000 個套件中的 94% 支援它。這意味著更多開發人員可以以完全 <a href="https://dart.dev/null-safety/unsound-null-safety#sound-and-unsound-null-safety">健全的 null safety</a> 運行他們的應用程式。分析顯示，56% 的 <code>flutter run</code> 會話以完全健全的方式執行。感謝生態系統中的所有開發人員的遷移工作！</p>
+<h3 id="2-14-的可用性和持續的發展勢頭"><a href="#2-14-的可用性和持續的發展勢頭" class="headerlink" title="2.14 的可用性和持續的發展勢頭"></a>2.14 的可用性和持續的發展勢頭</h3><p>包含上述變更的增強型 Dart SDK 現在已在 Dart 2.14.1 和 <a href="https://medium.com/flutter/whats-new-in-flutter-2-5-6f080c3f3dc">Flutter 2.5</a> SDK 中提供。我們希望您會喜歡新的增強功能和特性。</p>
+<p>此外，我們也想藉此機會感謝出色的 Dart 社群。正如在最近對程式語言調查的多次更新中所見，Dart 的發展勢頭強勁。備受尊敬的 <a href="https://redmonk.com/sogrady/2021/08/05/language-rankings-6-21/">RedMonk 排名</a> 提到了“Dart 的顯著上升”，並首次將 Dart 排在前 20 名。StackOverflow 全面的 <a href="https://insights.stackoverflow.com/survey/2021#technology-most-loved-dreaded-and-wanted">2021 年開發人員調查</a> 同樣令人高興：據報導，Dart 是開發人員第七喜歡的程式語言。我們真的很高興看到 Dart 平台持續增長和發展勢頭。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b48b9bb2fb67" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-14-b48b9bb2fb67">宣佈 Dart 2.14</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/aa7c2387.html" rel="prev" title="【文章翻譯】What’s new in Flutter 2.5">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】What’s new in Flutter 2.5
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9effe491.html" rel="next" title="【文章翻譯】Flutter: What’s next on the Web?">
+      【文章翻譯】Flutter: What’s next on the Web? <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-14"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.14</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-SDK-%E4%B8%AD%E7%9A%84-Apple-Silicon-%E6%94%AF%E6%8F%B4"><span class="nav-number">1.1.</span> <span class="nav-text">Dart SDK 中的 Apple Silicon 支援</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA-Dart-%E5%92%8C-Flutter-%E5%85%B1%E4%BA%AB%E7%9A%84%E6%A8%99%E6%BA%96-lints"><span class="nav-number">1.2.</span> <span class="nav-text">為 Dart 和 Flutter 共享的標準 lints</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7%E5%92%8C-cascades"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 格式化工具和 cascades</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-%E6%94%AF%E6%8F%B4%E5%BF%BD%E7%95%A5%E6%AA%94%E6%A1%88"><span class="nav-number">1.4.</span> <span class="nav-text">Pub 支援忽略檔案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-%E5%92%8C-dart-test-%E6%95%88%E8%83%BD"><span class="nav-number">1.5.</span> <span class="nav-text">Pub 和 dart test 效能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">新的語言功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%97%E4%BB%B6%E5%92%8C%E6%A0%B8%E5%BF%83%E5%87%BD%E5%BC%8F%E5%BA%AB%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.7.</span> <span class="nav-text">套件和核心函式庫變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%A7%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.8.</span> <span class="nav-text">重大變更</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#46545%EF%BC%9A%E7%A7%BB%E9%99%A4%E5%B0%8D-ECMAScript5-%E7%9A%84%E6%94%AF%E6%8F%B4"><span class="nav-number">1.8.1.</span> <span class="nav-text">#46545：移除對 ECMAScript5 的支援</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#46100%EF%BC%9A%E6%A3%84%E7%94%A8-stagehand%E3%80%81dartfmt-%E5%92%8C-dart2native"><span class="nav-number">1.8.2.</span> <span class="nav-text">#46100：棄用 stagehand、dartfmt 和 dart2native</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#45451%EF%BC%9A%E6%A3%84%E7%94%A8-VM-%E5%8E%9F%E7%94%9F%E6%93%B4%E5%B1%95"><span class="nav-number">1.8.3.</span> <span class="nav-text">#45451：棄用 VM 原生擴展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Null-safety-%E6%9B%B4%E6%96%B0"><span class="nav-number">1.9.</span> <span class="nav-text">Null safety 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-14-%E7%9A%84%E5%8F%AF%E7%94%A8%E6%80%A7%E5%92%8C%E6%8C%81%E7%BA%8C%E7%9A%84%E7%99%BC%E5%B1%95%E5%8B%A2%E9%A0%AD"><span class="nav-number">1.10.</span> <span class="nav-text">2.14 的可用性和持續的發展勢頭</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

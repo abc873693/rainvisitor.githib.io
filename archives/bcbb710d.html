@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 與 GitHub 合作，為 Dart 套件提供供應鏈安全性從今天開始，GitHub 在其諮詢資料庫、相依關係圖和 Dependabot 中支援 Dart。這表示 GitHub 現在為 Dart 和 Flutter 應用程式的供應鏈安全性提供全面支援。 要了解這些新功能，請查看 GitHub 部落格文章。要了解這對身為 Dart 開發人員">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Partnering with GitHub on supply chain security for Dart packages">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/bcbb710d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 與 GitHub 合作，為 Dart 套件提供供應鏈安全性從今天開始，GitHub 在其諮詢資料庫、相依關係圖和 Dependabot 中支援 Dart。這表示 GitHub 現在為 Dart 和 Flutter 應用程式的供應鏈安全性提供全面支援。 要了解這些新功能，請查看 GitHub 部落格文章。要了解這對身為 Dart 開發人員">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*MdOSko9W_PJA0KwuQ_mu6w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*AVm9C0qX5t-FhYp8lJzU4Q.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*oPBNmrTaMOB_etyNOp9JJA.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=485eed1fc388">
+<meta property="article:published_time" content="2022-10-06T10:11:55.000Z">
+<meta property="article:modified_time" content="2024-12-18T15:00:29.246Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="gi̇thub">
+<meta property="article:tag" content="security">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*MdOSko9W_PJA0KwuQ_mu6w.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/bcbb710d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Partnering with GitHub on supply chain security for Dart packages | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bcbb710d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Partnering with GitHub on supply chain security for Dart packages
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-10-06 18:11:55" itemprop="dateCreated datePublished" datetime="2022-10-06T18:11:55+08:00">2022-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 23:00:29" itemprop="dateModified" datetime="2024-12-18T23:00:29+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="與-GitHub-合作，為-Dart-套件提供供應鏈安全性"><a href="#與-GitHub-合作，為-Dart-套件提供供應鏈安全性" class="headerlink" title="與 GitHub 合作，為 Dart 套件提供供應鏈安全性"></a>與 GitHub 合作，為 Dart 套件提供供應鏈安全性</h2><p>從今天開始，GitHub 在其<a href="https://github.com/advisories">諮詢資料庫</a>、<a href="https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph">相依關係圖</a>和 <a href="https://docs.github.com/en/code-security/dependabot/dependabot-alerts/about-dependabot-alerts">Dependabot</a> 中支援 Dart。這表示 GitHub 現在為 Dart 和 Flutter 應用程式的供應鏈安全性提供全面支援。</p>
+<p>要了解這些新功能，請查看 <a href="https://github.blog/2022-10-06-githubs-supply-chain-security-features-now-support-dart">GitHub 部落格文章</a>。要了解這對身為 Dart 開發人員的您意味著什麼，請繼續閱讀。</p>
+<blockquote>
+<p>“隨著 Dart 現在加入我們的供應鏈安全生態系統，GitHub 擴展了其對快速成長的開源社群的支援，”GitHub 資深產品經理 Courtney Claessens 表示。“透過將安全性左移，我們不僅幫助開發人員，還幫助數百萬依賴於 Dart 開發的應用程式的使用者。”</p>
+</blockquote>
+<h3 id="了解套件安全問題"><a href="#了解套件安全問題" class="headerlink" title="了解套件安全問題"></a>了解套件安全問題</h3><p>想像一下，您正在構建一個很棒的 Flutter 應用程式。您在 pubspec 中使用了許多非常好的套件（例如 <a href="https://github.com/gskinnerTeam/flutter-wonderous-app/blob/master/pubspec.yaml">像這樣</a>），並將您的應用程式發佈到多個商店。如果其中一個套件有一個重要的更新來修復安全漏洞，會發生什麼事？您如何才能知道這一點？除了定期手動檢查數十個套件的 CHANGELOG 之外，您無法做到這一點。這是一個真正的挑戰。</p>
+<p>這就是 Dependabot 的用武之地。如果您在 GitHub 儲存庫中管理您的原始碼，相依關係圖和 Dependabot 會監控您的 pubspec 相依關係，並讓您知道是否錯過了更新。Dependabot 會提交一個拉取請求，代表您將 <code>pubspec.yaml</code> 更新到套件的最新版本。這一切都是透過 GitHub 中新的 Dart 特定改進實現的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*MdOSko9W_PJA0KwuQ_mu6w.png" />
+<figcaption>Dependabot 發送一個 PR 來提升（更新）套件相依關係到更新的版本。</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*AVm9C0qX5t-FhYp8lJzU4Q.png" />
+<figcaption>相依關係圖顯示 Dart 套件的相依關係集合。</figcaption>
+</figure>
+
+
+<h3 id="Dart-套件的諮詢資料庫"><a href="#Dart-套件的諮詢資料庫" class="headerlink" title="Dart 套件的諮詢資料庫"></a>Dart 套件的諮詢資料庫</h3><p>此場景依賴於一個高品質的開放安全諮詢資料庫，其中列出了 Dart 套件中已知的漏洞。為此功能，我們與 GitHub 合作，將 Dart 支援加入到他們熱門的 <a href="https://github.com/advisories">GitHub 諮詢資料庫</a> 中。該資料庫已經包含了數千個其他生態系統（如 npm、NuGet 和 Maven）的諮詢。</p>
+<p>從今天開始，您現在可以在為已發佈的 Dart 套件建立諮詢時選擇 <strong>Pub</strong> 生態系統。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*oPBNmrTaMOB_etyNOp9JJA.png" />
+<figcaption>為發佈在 pub.dev 上的 Dart 套件建立新的安全諮詢。</figcaption>
+</figure>
+
+<p>如果您在 <a href="https://pub.dev/">pub.dev</a> 上發佈套件，我們建議兩個新的最佳實務。</p>
+<ol>
+<li>使用 GitHub 的 <a href="https://docs.github.com/en/code-security/repository-security-advisories/creating-a-repository-security-advisory">安全諮詢</a> 功能在您的 GitHub 儲存庫中建立新的諮詢。GitHub 會將這些諮詢納入到中央 GitHub 諮詢資料庫中。</li>
+<li>設定您的 <a href="https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository">安全策略</a>，包括詳細說明使用者如何回報漏洞。</li>
+</ol>
+<h3 id="立即保護您的-Dart-儲存庫"><a href="#立即保護您的-Dart-儲存庫" class="headerlink" title="立即保護您的 Dart 儲存庫"></a>立即保護您的 Dart 儲存庫</h3><p>新的安全功能現已推出。如果您的原始碼位於公共儲存庫中，Dependabot 已開始監控安全問題。如果您的程式碼位於私有的 GitHub 儲存庫中，您需要更多 <a href="https://github.blog/2022-10-06-githubs-supply-chain-security-features-now-support-dart">設定</a> 才能啟用此功能。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=485eed1fc388" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/partnering-with-github-on-an-supply-chain-security-485eed1fc388">與 GitHub 合作，為 Dart 套件提供供應鏈安全性</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/gi%CC%87thub/" rel="tag"># gi̇thub</a>
+              <a href="/tags/security/" rel="tag"># security</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/200c707b.html" rel="prev" title="【文章翻譯】Studying developer’s usage of IDEs for Flutter development">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Studying developer’s usage of IDEs for Flutter development
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/3cd611f6.html" rel="next" title="【文章翻譯】Google Summer of Code 2022 Results">
+      【文章翻譯】Google Summer of Code 2022 Results <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%88%87-GitHub-%E5%90%88%E4%BD%9C%EF%BC%8C%E7%82%BA-Dart-%E5%A5%97%E4%BB%B6%E6%8F%90%E4%BE%9B%E4%BE%9B%E6%87%89%E9%8F%88%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">與 GitHub 合作，為 Dart 套件提供供應鏈安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E5%A5%97%E4%BB%B6%E5%AE%89%E5%85%A8%E5%95%8F%E9%A1%8C"><span class="nav-number">1.1.</span> <span class="nav-text">了解套件安全問題</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%A5%97%E4%BB%B6%E7%9A%84%E8%AB%AE%E8%A9%A2%E8%B3%87%E6%96%99%E5%BA%AB"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 套件的諮詢資料庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E4%BF%9D%E8%AD%B7%E6%82%A8%E7%9A%84-Dart-%E5%84%B2%E5%AD%98%E5%BA%AB"><span class="nav-number">1.3.</span> <span class="nav-text">立即保護您的 Dart 儲存庫</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

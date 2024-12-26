@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的 built_value 序列化功能上週我介紹了使用 built_value 建立不可變物件模型。我們看到了如何在 built_value 中定義物件模型；它們是不可變的，易於使用，而且，如果您喜歡這種東西，會有很多樂趣。 本文涵蓋了 built_value 套件的其餘部分。最大的項目是，正如您可能從標題中猜到的那樣，它們也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart’s built_value for Serialization">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/f1831e03.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的 built_value 序列化功能上週我介紹了使用 built_value 建立不可變物件模型。我們看到了如何在 built_value 中定義物件模型；它們是不可變的，易於使用，而且，如果您喜歡這種東西，會有很多樂趣。 本文涵蓋了 built_value 套件的其餘部分。最大的項目是，正如您可能從標題中猜到的那樣，它們也">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f5db9d0f4159">
+<meta property="article:published_time" content="2016-12-07T06:23:29.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:46:39.730Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="immutability">
+<meta property="article:tag" content="json">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f5db9d0f4159">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/f1831e03.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart’s built_value for Serialization | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/f1831e03.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart’s built_value for Serialization
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-12-07 14:23:29" itemprop="dateCreated datePublished" datetime="2016-12-07T14:23:29+08:00">2016-12-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:46:39" itemprop="dateModified" datetime="2024-12-18T15:46:39+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-的-built-value-序列化功能"><a href="#Dart-的-built-value-序列化功能" class="headerlink" title="Dart 的 built_value 序列化功能"></a>Dart 的 built_value 序列化功能</h2><p>上週我介紹了<a href="https://medium.com/@davidmorgan_14314/darts-built-value-for-immutable-object-models-83e2497922d4">使用 built_value 建立不可變物件模型</a>。我們看到了如何在 built_value 中定義物件模型；它們是不可變的，易於使用，而且，如果您喜歡這種東西，會有很多樂趣。</p>
+<p>本文涵蓋了 built_value 套件的其餘部分。最大的項目是，正如您可能從標題中猜到的那樣，它們也是可序列化的。</p>
+<p>以下是 built_value 序列化的使用方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 built_value 定義的值類型。</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Login</span> <span class="keyword">implements</span> <span class="title">Built</span>&lt;<span class="title">Login</span>, <span class="title">LoginBuilder</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// 透過定義此靜態 getter 來加入序列化支援。</span></span><br><span class="line">  <span class="keyword">static</span> Serializer&lt;Login&gt; <span class="keyword">get</span> serializer =&gt; _$loginSerializer;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 每個應用程式一次，定義一個頂級的「Serializer」來收集所有生成的序列化器。</span></span><br><span class="line">Serializers serializers = _$serializers;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用它！</span></span><br><span class="line"><span class="keyword">var</span> login = Login((b) =&gt; b</span><br><span class="line">  ..username = <span class="string">&#x27;johnsmith&#x27;</span></span><br><span class="line">  ..password = <span class="string">&#x27;123456&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(JSON.encode(serializers.serialize(login)));</span><br><span class="line">--&gt;</span><br><span class="line">[<span class="string">&quot;Login&quot;</span>, <span class="string">&quot;username&quot;</span>, <span class="string">&quot;johnsmith&quot;</span>, <span class="string">&quot;password&quot;</span>, <span class="string">&quot;123456&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>注意到「JSON.encode」了嗎？序列化器實際上並沒有序列化為字串；而是轉換為 Dart 內建的 JSON 序列化知道如何處理的原始類型。因此，如果您願意，可以使用 JSON 以外的其他格式。</p>
+<p>您可能認為序列化應該「正常工作」，但其中涉及一些微妙的權衡。讓我們深入研究 built_value 的序列化。</p>
+<h3 id="多型性"><a href="#多型性" class="headerlink" title="多型性"></a>多型性</h3><p>built_value 序列化的最重要的一個方面是它支援多型性。具體來說，您可以擁有<em>抽象</em>類型的欄位，並且</p>
+<ul>
+<li>該抽象類型的任何可序列化實作都可以被序列化；</li>
+<li>足夠的資訊將被寫入網路，以便反序列化為正確的類型。</li>
+</ul>
+<p>最簡單的例子是它可以序列化一個 Object 列表：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">serializers.serialize(BuiltList&lt;<span class="built_in">Object</span>&gt;([<span class="number">1</span>, <span class="string">&#x27;two&#x27;</span>, <span class="number">3</span>]));</span><br><span class="line">--&gt;</span><br><span class="line">[<span class="string">&#x27;list&#x27;</span>, [<span class="string">&#x27;int&#x27;</span>, <span class="number">1</span>, <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;int&#x27;</span>, <span class="number">3</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>僅在反序列化時需要消除歧義時，才會在網路上加入額外資訊。因此，如果您有一個類型為「BuiltList<int>」的欄位，它將被序列化為「[1, 2, 3]」，而不是「[‘int’, 1, ‘int’, 2, ‘int’, 3]」。</p>
+<p>底線是您可以隨意定義您的物件模型，built_value 將對其進行序列化。如果您想更詳細地了解這一點，<a href="https://github.com/google/built_value.dart/blob/master/built_value/test/built_map_serializer_test.dart">map 序列化器測試</a> 探索了所有可能性。</p>
+<h3 id="多種實作"><a href="#多種實作" class="headerlink" title="多種實作"></a>多種實作</h3><p>所有序列化機制都必須面對的另一個問題是以某種方式定義可序列化類型的<em>範圍</em>。這裡 built_json 做了一些不尋常的事情，允許一個「類型」的<em>多種實作</em>。</p>
+<p>這是可行的，因為類型在網路上是僅透過其<em>類別名稱</em>來定義的。例如，沒有嘗試區分不同的名為「Login」的類別；假設發送方和接收方都有一個名為「Login」的類別的相容序列化器可用。</p>
+<p>這增加了有用的靈活性。例如，如果您在伺服器和客戶端上使用 Dart，那麼您可以在物件模型中為每個類別進行<em>選擇</em>：</p>
+<ul>
+<li>您可以在客戶端和伺服器上使用相同的類別。</li>
+<li>或者，您可以使用不同的類別。這些實作必須具有相同的名稱和相容的欄位。</li>
+</ul>
+<p>例如，您可以為客戶端擁有一個處理渲染和解析的「Login」類別；以及為伺服器擁有一個處理驗證和資料庫的單獨的「Login」類別。當然，僅限伺服器的實作可以自由使用「dart:io」等套件，僅限客戶端的實作可以使用「dart:html」等套件。</p>
+<h3 id="多種語言"><a href="#多種語言" class="headerlink" title="多種語言"></a>多種語言</h3><p>由於 built_value 序列化僅透過類別名稱來識別類型，因此序列化資料可以很好地映射到任何物件導向語言。透過 <a href="https://github.com/google/auto/tree/master/value">AutoValue</a> 計劃支援 Java。</p>
+<h3 id="多個版本"><a href="#多個版本" class="headerlink" title="多個版本"></a>多個版本</h3><p>序列化 built_value 資料以一種非常簡單的方式向後&#x2F;向前相容：它依賴於類別名稱和欄位名稱。類別名稱變更和必要的欄位名稱變更會導致不相容。</p>
+<p>可為空的欄位更靈活：在序列化時，只有在非空時才會寫入它們；在反序列化時，如果找不到它們，則預設為空。因此，可以加入、移除或重新命名可為空的欄位，這不是一個不相容的變更。</p>
+<p>無法辨識的欄位將被忽略。</p>
+<h3 id="無反射"><a href="#無反射" class="headerlink" title="無反射"></a>無反射</h3><p>最後，對於效能至關重要的一點是，built_value 不以任何形式使用反射。所有分析都在程式碼生成時完成，為您留下最少、高效能的序列化程式碼。</p>
+<p>這就是使用 built_value 進行序列化。您可以坐下來編寫物件模型，它可以直接序列化以用於 RPC 或長期儲存。</p>
+<h3 id="EnumClass"><a href="#EnumClass" class="headerlink" title="EnumClass"></a>EnumClass</h3><p>最後，built_value 還附帶一個功能：EnumClass。Dart 列舉<a href="https://www.dartlang.org/guides/language/language-tour#enumerated-types">不是類別</a>，但一個強大的物件模型需要像類別一樣運作的列舉。顯而易見的模式是建立一個帶有「static const」欄位的類別，而 EnumClass 使這更容易做到。它提供：</p>
+<ul>
+<li>為「values」和「valueOf」生成的程式碼。</li>
+<li>透過 built_value 序列化器進行序列化。</li>
+<li>給 Angular 或 Angular2 使用者的額外獎勵：程式碼生成可以選擇性地生成一個 mixin，以幫助您在模板中使用列舉。</li>
+</ul>
+<p>所有這些功能都可以在<a href="https://github.com/google/built_value.dart/blob/master/example/lib/enums.dart">範例</a> 中看到。</p>
+<p>本週就到這裡了！在介紹了 built_value 的基礎知識之後，我準備在下週詳細介紹聊天範例。敬請關注！</p>
+<p>編輯：<a href="https://medium.com/@davidmorgan_14314/building-a-chat-app-in-dart-815fcd0e5a31#.ncnhb2fh0">下一篇文章</a>。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f5db9d0f4159" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/darts-built-value-for-serialization-f5db9d0f4159">Dart 的 built_value 序列化功能</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">dartlang</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/immutability/" rel="tag"># immutability</a>
+              <a href="/tags/json/" rel="tag"># json</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/a24b7fe8.html" rel="prev" title="【文章翻譯】Dart’s built_value for Immutable Object Models">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart’s built_value for Immutable Object Models
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/1b3316c0.html" rel="next" title="【文章翻譯】Dart-on-LLVM">
+      【文章翻譯】Dart-on-LLVM <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E7%9A%84-built-value-%E5%BA%8F%E5%88%97%E5%8C%96%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">Dart 的 built_value 序列化功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%9E%8B%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">多型性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%A8%AE%E5%AF%A6%E4%BD%9C"><span class="nav-number">1.2.</span> <span class="nav-text">多種實作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E7%A8%AE%E8%AA%9E%E8%A8%80"><span class="nav-number">1.3.</span> <span class="nav-text">多種語言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%80%8B%E7%89%88%E6%9C%AC"><span class="nav-number">1.4.</span> <span class="nav-text">多個版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%84%A1%E5%8F%8D%E5%B0%84"><span class="nav-number">1.5.</span> <span class="nav-text">無反射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EnumClass"><span class="nav-number">1.6.</span> <span class="nav-text">EnumClass</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

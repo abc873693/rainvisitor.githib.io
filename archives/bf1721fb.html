@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.17：提升生產力和整合能力今天在 Google I&#x2F;O 上，我們宣布推出新的 Dart SDK，版本 2.17。此版本基於我們提升生產力和平台可攜性的核心主題而構建。它提供了新的語言特性：支援成員的列舉、改進了向父類別轉發參數的功能，以及更靈活的命名參數。我們改進了工具，推出了 package:lints 的一個">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart 2.17: Productivity and integration">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/bf1721fb.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.17：提升生產力和整合能力今天在 Google I&#x2F;O 上，我們宣布推出新的 Dart SDK，版本 2.17。此版本基於我們提升生產力和平台可攜性的核心主題而構建。它提供了新的語言特性：支援成員的列舉、改進了向父類別轉發參數的功能，以及更靈活的命名參數。我們改進了工具，推出了 package:lints 的一個">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*eJKM-4rFprGXyxNd5w2m-Q.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*hGKUdu4DT9v2IZGj">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*ypTj-6zzDBoqnpRL">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*gMf1J56vEgV96z1l">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b216bfc80c5d">
+<meta property="article:published_time" content="2022-05-11T11:48:43.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:26:47.962Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="productivity">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*eJKM-4rFprGXyxNd5w2m-Q.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/bf1721fb.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart 2.17: Productivity and integration | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bf1721fb.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart 2.17: Productivity and integration
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-05-11 19:48:43" itemprop="dateCreated datePublished" datetime="2022-05-11T19:48:43+08:00">2022-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:26:47" itemprop="dateModified" datetime="2024-12-20T02:26:47+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-2-17：提升生產力和整合能力"><a href="#Dart-2-17：提升生產力和整合能力" class="headerlink" title="Dart 2.17：提升生產力和整合能力"></a>Dart 2.17：提升生產力和整合能力</h2><p>今天在 <a href="https://io.google/2022/products/flutter/">Google I&#x2F;O</a> 上，我們宣布推出新的 Dart SDK，版本 2.17。此版本基於我們提升生產力和平台可攜性的核心主題而構建。它提供了新的語言特性：支援成員的列舉、改進了向父類別轉發參數的功能，以及更靈活的命名參數。我們改進了工具，推出了 package:lints 的一個新的主要版本——我們的工具支援根據我們的最佳實務檢查 Dart 程式碼——並廣泛更新了核心函式庫 API 文件，其中包含豐富的程式碼範例。為了改進平台整合，我們提供了在 Flutter 外掛中使用 dart:ffi（原生 C 互通性）的新範本、對 RISC-V 處理器的實驗性支援，以及對簽署 macOS 和 Windows 可執行檔的支援。</p>
+<figure>
+<img alt="Dart 2.17 reease banner" src="https://cdn-images-1.medium.com/max/1024/1*eJKM-4rFprGXyxNd5w2m-Q.png" />
+</figure>
+
+<h3 id="新的語言特性以提高生產力"><a href="#新的語言特性以提高生產力" class="headerlink" title="新的語言特性以提高生產力"></a>新的語言特性以提高生產力</h3><p>我們不斷改進 Dart 語言，以提高您的生產力——透過新增新特性和改進現有特性。Dart 2.17 新增了對列舉成員的主要新支援，改進了您在建構函式中使用命名參數的方式，並使將參數轉發給父類別的程式碼更加簡潔，減少了重複。</p>
+<h4 id="增強的列舉支援成員"><a href="#增強的列舉支援成員" class="headerlink" title="增強的列舉支援成員"></a>增強的列舉支援成員</h4><p>列舉非常適合表示一組離散的狀態。例如，我們可以將水建模為列舉 <code>Water &#123; frozen, lukewarm, boiling &#125;</code>。但是，如果我們想要在列舉上新增一些方法——例如，將每個狀態轉換為溫度，並支援將列舉轉換為字串，該怎麼辦？我們或許可以使用擴充方法來新增 <code>waterToTemp()</code> 方法，但我們必須小心地使其與列舉保持同步。對於字串轉換，我們更希望覆寫 <code>toString()</code>，但這一直不受支援。</p>
+<p>在 Dart 2.17 中，我們現在全面支援列舉成員。這意味著我們可以新增儲存狀態的欄位、設定該狀態的建構函式、具有功能的方法，甚至覆寫現有的成員。你們中的許多人一直在要求此功能；這是我們在語言追蹤器中 <a href="https://github.com/dart-lang/language/issues?q=is:issue+sort:reactions-+1-desc+">投票數第三高的議題</a>。</p>
+<p>對於我們的 <code>water</code> 範例，我們可以新增一個儲存溫度的 <code>int</code> 欄位和一個接受 <code>int</code> 的預設建構函式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Water &#123;</span><br><span class="line">…</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> tempInFahrenheit;</span><br><span class="line">  <span class="keyword">const</span> Water(<span class="keyword">this</span>.tempInFahrenheit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>為了確保在建立列舉時調用建構函式，我們需要為每個列舉值調用它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Water &#123;</span><br><span class="line">  frozen(<span class="number">32</span>),</span><br><span class="line">  lukewarm(<span class="number">100</span>),</span><br><span class="line">  boiling(<span class="number">212</span>);</span><br><span class="line">…</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>為了支援轉換為字串，我們只需覆寫從 <code>Object</code> 繼承的 <code>toString()</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="built_in">String</span> toString() =&gt; <span class="string">&quot;The <span class="subst">$name</span> water is <span class="subst">$tempInFahrenheit</span> F.&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>這樣，您就有一個完整的列舉，可以輕鬆地實例化，並且可以在其上調用方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(Water.frozen); <span class="comment">// 輸出 “The frozen water is 32 F.”</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這兩種方法的完整範例如下圖所示；我們發現新的 Dart 2.17 版本更易於閱讀和維護。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hGKUdu4DT9v2IZGj" />
+</figure>
+
+<h4 id="父類別初始化器"><a href="#父類別初始化器" class="headerlink" title="父類別初始化器"></a>父類別初始化器</h4><p>當您有一個類別繼承階層時，一種常見的模式是將一些建構函式參數傳遞給父類別的建構函式。為此，子類別需要 1) 在其自身的建構函式中列出每個參數，以及 2) 使用這些參數調用父類別建構函式。這會導致程式碼樣板化：大量重複，使程式碼更難閱讀，維護起來也更麻煩。</p>
+<p>一些 Dart 社群成員幫助實現了這一點。GitHub 使用者 @roy-sianez 大約半年前提交了一個關於此的 <a href="https://github.com/dart-lang/language/issues/1855">語言議題</a>；建議使用類似於 GitHub 使用者 <a href="http://twitter.com/apps">@apps</a>-transround <a href="https://github.com/dart-lang/language/issues/493#issuecomment-879624528">先前建議</a> 的內容：我們或許可以透過引入一個新的結構來表示參數是在父類別中指定的來解決這個問題。我們認為這是一個很棒的主意，所以這已經新增到 Dart 2.17 中。從下面的範例中可以看出，這與 Flutter widget 程式碼特別相關。事實上，當我們將新特性應用於 Flutter 架構時，我們發現程式碼總共減少了 <a href="https://github.com/flutter/flutter/pull/100905/files">近兩千行</a>！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ypTj-6zzDBoqnpRL" />
+</figure>
+
+<h4 id="任何地方的命名參數"><a href="#任何地方的命名參數" class="headerlink" title="任何地方的命名參數"></a>任何地方的命名參數</h4><p>最後，我們改進了當您調用方法時命名參數的工作方式。以前，這些參數必須出現在方法的參數列表的最後。如果您希望將位置參數放在最後以使程式碼更具可讀性，這會很煩人。例如，請參閱以下對 <code>List&lt;T&gt;.generate</code> 建構函式的調用——以前，<code>growable</code> 參數必須放在最後，這使得它很容易在包含產生器本身的大型位置參數下方被遺漏。現在您可以按照自己的喜好排序它們，讓您可以將小型命名參數放在最前面，將產生器放在最後。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*gMf1J56vEgV96z1l" />
+</figure>
+
+
+<p>欲了解更多關於這三個特性的實際應用範例，請參閱我們更新的 <a href="https://github.com/dart-lang/samples/blob/master/enhanced_enums/lib/members.dart">列舉</a>、<a href="https://github.com/dart-lang/samples/blob/master/parameters/lib/super_initalizer.dart">父類別初始化器</a> 和 <a href="https://github.com/dart-lang/samples/blob/master/parameters/lib/named_parameters.dart">命名參數</a> 的範例。</p>
+<h3 id="生產力工具"><a href="#生產力工具" class="headerlink" title="生產力工具"></a>生產力工具</h3><p>繼續生產力主題，我們在核心工具中進行了多項改進。</p>
+<p>在 Dart 2.14 中，我們引入了 package:lints，它與 Dart 分析器一起工作，幫助您編寫 Dart 程式碼，以防止錯誤，並使用規範的風格，從而更有效地進行程式碼審查。從那時起，分析器中提供了許多新的 lint，我們仔細地對其進行了分類，並從中為所有 Dart 程式碼選擇了 <a href="https://github.com/dart-lang/lints/blob/main/CHANGELOG.md#200">十個新的 lint</a>，並專門為 Flutter 程式碼選擇了 <a href="https://github.com/flutter/packages/blob/master/packages/flutter_lints/CHANGELOG.md#200">兩個新的 lint</a>。這些 lint 包括確保您的導入包含在您的 pubspec 檔案中，防止在類型參數上誤用 null 檢查，以及確保子屬性具有一致的風格。您可以使用一個簡單的命令升級到新的 lint：</p>
+<ul>
+<li>對於 Dart 套件：<br><code>dart pub upgrade --major-versions lints</code></li>
+<li>對於 Flutter 套件：<br><code>flutter pub upgrade --major-versions flutter_lints</code></li>
+</ul>
+<p>SecureSockets 通常用於啟用透過 TLS 和 SSL 保護的 TCP sockets。在 Dart 2.17 之前，在開發過程中除錯這些 sockets 非常棘手，因為沒有辦法檢查安全資料流量。我們現在新增了對指定 keyLog 檔案的支援。指定後，當與伺服器交換新的 TLS 金鑰時，<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS/Key_Log_Format">NSS 金鑰日誌格式</a> 的一行文字會附加到檔案中。這使得網路流量分析器工具（例如 <a href="https://gitlab.com/wireshark/wireshark/-/wikis/TLS#tls-decryption">Wireshark</a>）能夠解密透過 socket 傳送的內容。有關詳細資訊，請參閱 <a href="https://api.dart.dev/stable/2.17.0/dart-io/SecureSocket/connect.html">SecureSocket.connect()</a> 的 API 文件。</p>
+<p>由 dart doc 工具產生的 API 文件是大多數 Dart 開發人員學習新 API 的關鍵資產。雖然我們的 <a href="https://dart.dev/guides/libraries">核心函式庫 API</a> 長期以來都有豐富的文字描述，但許多開發人員告訴我們，他們更喜歡透過閱讀使用 API 的範例程式碼來學習 API。在 Dart 2.17 中，我們徹底修改了所有主要的程式碼函式庫，在瀏覽量最高的 200 個頁面中新增了範例程式碼，因此它們現在都有全面的範例程式碼。例如，比較 Dart 2.16 中 <a href="https://api.dart.dev/stable/2.16.2/dart-convert/dart-convert-library.html">dart:convert 的文件</a> 與 Dart 2.17 中更新的 <a href="https://api.dart.dev/stable/2.17.0/dart-convert/dart-convert-library.html">頁面</a>；希望這能使文件更易於使用。</p>
+<p>生產力的提高不僅僅來自於我們為平台新增新特性，還來自於我們清理堆疊並移除不再使用的特性。這有助於保持我們平台的精簡，這對於新開發人員尤其重要。為此，我們從 dart:io 函式庫中移除了 <a href="https://dart-review.googlesource.com/c/sdk/+/236840">231 行棄用的程式碼</a>——如果您仍在使用這些棄用的 API，您可以使用 <a href="https://dart.dev/tools/dart-fix">dart fix</a> 升級到它們的替代品。我們也繼續努力移除 <a href="https://github.com/dart-lang/sdk/issues/46100">棄用的 Dart 命令列工具</a>，這次移除了 dartdoc 工具（改用 dart doc）和 pub 工具（改用 dart pub 或 flutter pub）。</p>
+<h3 id="擴大我們的平台整合和支援"><a href="#擴大我們的平台整合和支援" class="headerlink" title="擴大我們的平台整合和支援"></a>擴大我們的平台整合和支援</h3><p>第二個核心主題是平台整合和支援。Dart 是一種真正的跨平台語言。雖然我們已經支援 <a href="https://dart.dev/overview#platform">各種平台</a>，但我們仍在不斷改進，以確保您可以與每個支援的平台深度整合，並支援新興平台。</p>
+<p>Dart FFI——我們與 <a href="https://dart.dev/guides/libraries/c-interop">C&#x2F;原生程式碼互通的核心機制</a>——是一種將 Dart 程式碼與現有原生平台程式碼整合的常用方法。在 Flutter 上，這可能是構建使用主機平台原生 API（例如 Windows win32 API）的 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages">外掛</a> 的好方法。在 Dart 2.17 和 Flutter 3 中，我們在 flutter 工具中新增了範本，因此您現在可以輕鬆建立 FFI 外掛，這些外掛具有由 dart:ffi 調用到原生程式碼的 Dart API。有關詳細資訊，請參閱 flutter.dev 上更新的 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages#dart-only-platform-implementations">開發套件和外掛</a> 頁面。</p>
+<p>為了能夠在具有特定於其 ABI（<a href="https://en.wikipedia.org/wiki/Application_binary_interface">應用程式二進位介面</a>）的類型的平台上使用 FFI，FFI 現在支援特定於 ABI 的類型。例如，您現在可以使用 <a href="https://api.dart.dev/stable/2.17.0/dart-ffi/Long-class.html">Long</a>（C 語言中的 long）來正確表示具有特定於 ABI 大小的長整數，根據 CPU 架構，它可能是 32 位或 64 位。有關支援類型的完整列表，請參閱 <a href="https://api.dart.dev/stable/2.17.0/dart-ffi/AbiSpecificInteger-class.html">AbiSpecificInteger</a> API 頁面中的「實作者」列表。</p>
+<p>當使用 Dart FFI 與原生平台深度整合時，您有時需要調整由 Dart 和原生程式碼分配的記憶體或其他資源（埠、檔案等）的清理。從歷史上看，這一直非常棘手，因為 Dart 是一種垃圾回收語言，會自動處理清理工作。Dart 2.17 透過引入 Finalizer 的概念來解決這個問題，Finalizer 包括一個 Finalizable 標記介面，用於「標記」不應過早完成或丟棄的物件，以及一個 NativeFinalizer 類別，可以附加到 Dart 物件上，以便在物件即將被垃圾回收時提供一個回調執行。這些一起允許在原生程式碼和 Dart 程式碼中執行清理程式碼。有關詳細資訊，請參閱 <a href="https://api.dart.dev/stable/2.17.0/dart-ffi/NativeFinalizer-class.html">NativeFinalizer</a> 的 API 文件中的描述和範例，或 <a href="https://api.dart.dev/stable/2.17.0/dart-core/WeakReference-class.html">WeakReferences</a> 和 <a href="https://api.dart.dev/stable/2.17.0/dart-core/Finalizer-class.html">Finalizer</a> 的文件，以了解在常規 Dart 程式碼中的類似支援。</p>
+<p>我們對將 Dart 編譯為原生程式碼的支援是使 Flutter 應用程式具有出色的啟動效能和快速渲染的核心推動因素。第二個用例是使用 <a href="https://dart.dev/tools/dart-compile">dart compile</a> 將 Dart 編譯為可執行檔的能力。這些可執行檔可以在任何機器上獨立執行，而無需安裝 Dart SDK。Dart 2.17 中的另一個新功能是支援 <a href="https://dart.dev/tools/dart-compile#exe">簽署可執行檔</a>，這使得在 Windows 和 macOS 上進行部署成為可能，因為在這些平台上通常需要簽署。</p>
+<p>我們也繼續透過保持在新興平台的最前沿來擴大我們支援的平台集。<a href="https://riscv.org/about/">RISC-V</a> 是一種新的創新處理器指令集。RISC-V International 是一個全球非營利組織，擁有 RISC-V 規範，使指令集免費且開源。這仍然是一個新興平台，但我們對其潛力感到興奮，因此我們的 2.17.0-266.1.beta Linux 版本（或我們 <a href="https://dart.dev/get-dart/archive#beta-channel">beta 頻道</a> 的更高版本）包含對它的實驗性支援。我們很樂意聽到您的回饋，所以請 <a href="https://github.com/dart-lang/sdk/issues">提交議題</a> 或 <a href="https://groups.google.com/a/dartlang.org/g/misc">發布</a> 關於您的體驗！</p>
+<h3 id="開始使用-Dart-2-17！"><a href="#開始使用-Dart-2-17！" class="headerlink" title="開始使用 Dart 2.17！"></a>開始使用 Dart 2.17！</h3><p>我們希望今天的 Dart 2.17 版本能讓您興奮，提高您的生產力，並為您的應用程式實現更多的平台整合。要開始使用，您可以直接下載 Dart <a href="https://dart.dev/get-dart">2.17</a> 版本，或者將其作為今天 <a href="https://docs.flutter.dev/get-started/install">Flutter 3</a> SDK 版本的一部分嵌入。</p>
+<p>我們也邀請您查看我們為 Google I&#x2F;O 提供的 <a href="https://io.google/2022/products/flutter/">新內容</a>！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b216bfc80c5d" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-2-17-b216bfc80c5d">Dart 2.17：生產力和整合</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/productivity/" rel="tag"># productivity</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/8e1574a8.html" rel="prev" title="【文章翻譯】I/O Pinball Powered by Flutter and Firebase">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】I/O Pinball Powered by Flutter and Firebase
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/a17d9997.html" rel="next" title="【文章翻譯】What’s new in Flutter 3">
+      【文章翻譯】What’s new in Flutter 3 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-2-17%EF%BC%9A%E6%8F%90%E5%8D%87%E7%94%9F%E7%94%A2%E5%8A%9B%E5%92%8C%E6%95%B4%E5%90%88%E8%83%BD%E5%8A%9B"><span class="nav-number">1.</span> <span class="nav-text">Dart 2.17：提升生產力和整合能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E8%AA%9E%E8%A8%80%E7%89%B9%E6%80%A7%E4%BB%A5%E6%8F%90%E9%AB%98%E7%94%9F%E7%94%A2%E5%8A%9B"><span class="nav-number">1.1.</span> <span class="nav-text">新的語言特性以提高生產力</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A2%9E%E5%BC%B7%E7%9A%84%E5%88%97%E8%88%89%E6%94%AF%E6%8F%B4%E6%88%90%E5%93%A1"><span class="nav-number">1.1.1.</span> <span class="nav-text">增強的列舉支援成員</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%88%B6%E9%A1%9E%E5%88%A5%E5%88%9D%E5%A7%8B%E5%8C%96%E5%99%A8"><span class="nav-number">1.1.2.</span> <span class="nav-text">父類別初始化器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E4%BD%95%E5%9C%B0%E6%96%B9%E7%9A%84%E5%91%BD%E5%90%8D%E5%8F%83%E6%95%B8"><span class="nav-number">1.1.3.</span> <span class="nav-text">任何地方的命名參數</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E7%94%A2%E5%8A%9B%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">生產力工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%B4%E5%A4%A7%E6%88%91%E5%80%91%E7%9A%84%E5%B9%B3%E5%8F%B0%E6%95%B4%E5%90%88%E5%92%8C%E6%94%AF%E6%8F%B4"><span class="nav-number">1.3.</span> <span class="nav-text">擴大我們的平台整合和支援</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%96%8B%E5%A7%8B%E4%BD%BF%E7%94%A8-Dart-2-17%EF%BC%81"><span class="nav-number">1.4.</span> <span class="nav-text">開始使用 Dart 2.17！</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

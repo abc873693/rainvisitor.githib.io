@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 介紹 Dart 3 alpha12 月，我們發表了第一篇關於 Dart 3 的部落格文章，讓我們得以一窺未來。今天，在肯亞奈洛比舉行的 Flutter Forward 開發者活動現場，我們分享了 Dart 下一個主要版本的更廣泛願景，以及我們的第一個預覽版本 Dart 3 alpha。     我們的 Dart 使命是創造最好的程式語言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Introducing Dart 3 alpha">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/2c2a6b9f.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 介紹 Dart 3 alpha12 月，我們發表了第一篇關於 Dart 3 的部落格文章，讓我們得以一窺未來。今天，在肯亞奈洛比舉行的 Flutter Forward 開發者活動現場，我們分享了 Dart 下一個主要版本的更廣泛願景，以及我們的第一個預覽版本 Dart 3 alpha。     我們的 Dart 使命是創造最好的程式語言">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*evGHZJd_7cahb08X">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*dB-NsWj2y3JljZZh">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f1458fb9d232">
+<meta property="article:published_time" content="2023-01-25T08:01:06.000Z">
+<meta property="article:modified_time" content="2024-12-18T15:03:50.463Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*evGHZJd_7cahb08X">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/2c2a6b9f.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Introducing Dart 3 alpha | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2c2a6b9f.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Introducing Dart 3 alpha
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-25 16:01:06" itemprop="dateCreated datePublished" datetime="2023-01-25T16:01:06+08:00">2023-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 23:03:50" itemprop="dateModified" datetime="2024-12-18T23:03:50+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="介紹-Dart-3-alpha"><a href="#介紹-Dart-3-alpha" class="headerlink" title="介紹 Dart 3 alpha"></a>介紹 Dart 3 alpha</h2><p>12 月，我們發表了第一篇關於 Dart 3 的部落格文章，讓我們得以一窺未來。今天，在肯亞奈洛比舉行的 <a href="https://flutter.dev/events/flutter-forward">Flutter Forward</a> 開發者活動現場，我們分享了 Dart 下一個主要版本的更廣泛願景，以及我們的第一個預覽版本 <strong>Dart 3 alpha</strong>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*evGHZJd_7cahb08X" />
+</figure>
+
+<p>我們的 Dart 使命是創造最好的程式語言，以便在任何應用程式平台上構建高品質的應用程式。Dart <strong>易於上手</strong>、易於學習，避免不必要的複雜性，並且內部一致。Dart <strong>生產力高</strong>；應用程式開發人員面臨著持續的壓力，需要在更短的時間內交付具有不斷變化的需求的應用程式，同時還要保證品質和完成度。因此，我們在構建 Dart 時，非常注重實現快速開發、快速迭代和高品質。Dart 還具有 <strong>可移植性</strong>，涵蓋最廣泛的平台，使您能夠將應用程式部署到現在和未來的設備上。</p>
+<p>多年來，我們一直致力於建立這些品質。藉由 Dart 3，我們打算邁出更大的一步，以顯著的方式改進和擴展易用性、生產力和可移植性。</p>
+<p>Dart 3 是一個全新的 <em>主要</em> 版本。部分原因是為了表示新功能的重大進展，部分原因是就語義版本控制而言，它是一個 <em>重大變更版本</em>：我們正在將類型系統更改為 <em>僅</em> 支援 <strong>完善的空值安全</strong>（在 Dart 2.12 及更高版本中，這是 <em>可選的</em>），並在 Dart 的核心函式庫中進行了相應的重大變更。讓我們深入了解細節！</p>
+<h3 id="Dart-3-生產力提升"><a href="#Dart-3-生產力提升" class="headerlink" title="Dart 3 生產力提升"></a>Dart 3 生產力提升</h3><h4 id="更具表現力的-Dart-語言：記錄、模式和存取控制"><a href="#更具表現力的-Dart-語言：記錄、模式和存取控制" class="headerlink" title="更具表現力的 Dart 語言：記錄、模式和存取控制"></a>更具表現力的 Dart 語言：記錄、模式和存取控制</h4><p>過去幾年，我們以飛快的速度發展 Dart 語言，自 2.0 版以來 <a href="https://dart.dev/guides/language/evolution">新增了 23 項新功能</a>。在 Dart 3 中，我們預計會新增兩項主要功能，即記錄和模式，目標是讓使用結構化資料更有效率。</p>
+<p>記錄允許您有效且簡潔地從任何現有資料建立匿名複合值，而無需宣告類別來儲存這些值的思維負擔。使用記錄，您可以輕鬆構建組合現有資料的新資料結構。例如，要返回一對值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">int</span>, <span class="built_in">int</span>) geoLocation(<span class="built_in">String</span> address) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span> (lat, long);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>記錄允許您組合資料，而模式可以將複合資料解構為其組成部分。例如，要將上面 <code>geoLocation</code> 的返回值（由一對整數組成的記錄）解構為兩個單獨的整數變數 <code>lat</code> 和 <code>long</code>，您可以使用如下模式宣告：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (lat, long) = geoLocation(address);</span><br></pre></td></tr></table></figure>
+
+<p>模式是完全類型安全的，並在開發過程中進行檢查。</p>
+<p>您還可以根據值的類型進行模式匹配，例如從類別的階層結構中匹配。<code>switch</code> 可以使用與類型匹配的模式，以及每種類型的單獨欄位，如下所示 <code>calculateArea</code> 的主體：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">double</span> calculateArea(Shape shape) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">switch</span> (shape) &#123;</span><br><span class="line">    Square(side: <span class="keyword">var</span> s) =&gt; s * s,</span><br><span class="line">    Circle(radius: <span class="keyword">var</span> r) =&gt; pi * r * r,</span><br><span class="line">    Rectangle(</span><br><span class="line">      width: <span class="keyword">var</span> w, </span><br><span class="line">      height: <span class="keyword">var</span> h</span><br><span class="line">    ) =&gt; w * h,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>總體而言，我們正在添加大量模式，這些模式組合在一起使 Dart 在處理結構化資料時更具表現力。</p>
+<p>結合模式，我們還透過幾個新的修飾符為類別新增了 <a href="https://github.com/dart-lang/language/blob/master/accepted/future-releases/class-modifiers/feature-specification.md">能力控制</a>：</p>
+<ul>
+<li><strong>interface class</strong>：不能被繼承。</li>
+<li><strong>base class</strong>：禁用隱式介面，因此不能被實作。</li>
+<li><strong>final class</strong>：不能繼承、實作或混合使用該類別（在目前的函式庫之外）。</li>
+<li><strong>sealed class</strong>：與 <code>abstract + final</code> 相同，並且該類型被視為密封類型族的根，用於窮盡性檢查。例如，以上面的 <code>Shape</code> 類別階層為例。在 <code>Shape</code> 類型的 <code>switch</code> 語句中（如 <code>calculateArea</code> 函數），如果 <code>switch</code> 語句未處理密封類型的所有可能子類型，分析器將觸發錯誤。</li>
+<li><strong>mixin class</strong>：可以用作 mixin 的類別。</li>
+</ul>
+<p>每個新功能都會增加語言的複雜性。為了確保 Dart 保持易於上手，類別預設是完全允許的，就像今天一樣，只有一個小例外，即打算用作 mixin 的類別現在必須使用 <code>mixin</code> 關鍵字。</p>
+<h4 id="透過直接平台函式庫互操作實現高效的平台整合"><a href="#透過直接平台函式庫互操作實現高效的平台整合" class="headerlink" title="透過直接平台函式庫互操作實現高效的平台整合"></a>透過直接平台函式庫互操作實現高效的平台整合</h4><p>我們正在努力擴展 Dart 語言的互操作性，以便 <strong>直接從 Dart 調用平台函式庫</strong>。在 Apple 平台上，我們正在基於我們在 <a href="https://dart.dev/guides/libraries/c-interop">FFI for C interoperability</a> 上的工作，它支援從 Dart 調用任何遵循 C 調用約定的 C 模組。到目前為止，它支援 C、Go 和 Rust 等語言。現在，我們正在為 <a href="https://dart.dev/guides/libraries/objective-c-interop">iOS&#x2F;macOS</a> 上的 Swift 和 Objective-C 新增支援。在 Android 上，您可以利用 FFI 和 Android 的 Java Native Interface (JNI) 調用以 Kotlin 編寫的 Jetpack 函式庫和以 Java 編寫的 Android 函式庫。</p>
+<p>在新的工具的支持下，Dart 可以根據原始 C&#x2F;ObjC&#x2F;Swift&#x2F;Java&#x2F;Kotlin 程式碼的標題&#x2F;介面檔案自動建立具有 Dart 介面的繫結，以及這些繫結背後的跨語言互操作程式碼。有關使用此方法調用 Apple 的 <a href="https://developer.apple.com/documentation/coremotion">Core Motion API</a> 和 Android 的 <a href="https://developer.android.com/guide/health-and-fitness/health-connect">HealthConnect API</a> 的示範，請查看 <a href="https://github.com/flutter/samples/blob/main/experimental/pedometer/README.md">範例應用程式</a>。</p>
+<p>這些新的互操作機制目前尚處於實驗階段，但我們希望它們至少能在 Dart 3.0 穩定版中達到 beta 品質。我們歡迎您在 <a href="https://github.com/dart-lang/jnigen">Java&#x2F;Kotlin</a> 或 <a href="https://github.com/dart-lang/ffigen">C&#x2F;ObjectiveC&#x2F;Swift</a> 的問題追蹤器中提供回饋。最後，我們也在努力改進 Dart 與 JavaScript 的互操作性；我們將在以後的部落格文章中提供更多相關資訊。</p>
+<h3 id="可移植性方面的進展"><a href="#可移植性方面的進展" class="headerlink" title="可移植性方面的進展"></a>可移植性方面的進展</h3><p>Dart 已經透過我們的原生和網路編譯器支援廣泛的目標平台。在 Web 上，我們目前編譯為 JavaScript。在原生設備上，我們目前支援 Intel 32 位和 64 位，以及 ARM 32 位和 64 位架構。我們正在努力為許多新興的設備和標準新增支援，以確保 Dart 為未來的設備做好準備。</p>
+<p>對於 Web，我們正在努力支援 <a href="https://webassembly.org/">WebAssembly</a> (Wasm)，它作為一個平台中立的二進制指令格式，在 <a href="https://caniuse.com/wasm">所有現代瀏覽器</a> 中都日趨成熟。我們希望 Wasm 能夠使 Dart Web 應用程式的啟動速度與原生設備上的應用程式一樣快。</p>
+<p>另一個越來越受關注的平台架構是 <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V</a>，這是一種為廣泛使用而設計的開放標準指令集架構 (ISA)。Android 團隊最近就 <a href="https://www.youtube.com/watch?v=70O_RmTWP58">他們對 RISC-V 的支援工作</a> 進行了演講，我們認為它也將廣泛應用於嵌入式設備。Dart 3 alpha 中提供了對 RISC-V 的預覽支援。</p>
+<p>最後，我們正在努力擴展我們目前對 ARM 設備的支援，使其也涵蓋 Windows 上的 ARM64 支援。</p>
+<h3 id="Dart-3-的重大變更"><a href="#Dart-3-的重大變更" class="headerlink" title="Dart 3 的重大變更"></a>Dart 3 的重大變更</h3><p>介紹了新的 Dart 3 功能後，讓我們來看看我們為了更一致且更易於上手的 Dart 而進行的重大變更。</p>
+<h4 id="Dart-3-類型系統：100-完善的空值安全"><a href="#Dart-3-類型系統：100-完善的空值安全" class="headerlink" title="Dart 3 類型系統：100% 完善的空值安全"></a>Dart 3 類型系統：100% 完善的空值安全</h4><p>我們在 2021 年的 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 中引入了完善的空值安全。在完善的類型系統中，您可以信任類型，這意味著當類型聲明變數不為空時，它就 <em>永遠</em> 不為空。這提高了生產力，因為可以在開發過程中而不是在生產環境中發現問題，並且使 Dart 編譯器能夠產生 <a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">更小、更優化的程式碼</a>。正如我們在 <a href="https://medium.com/dartlang/the-road-to-dart-3-afdd580fbefa">12 月</a> 所討論的，Dart 的獨特之處在於將 100% 完善的空值安全引入到現有語言中。</p>
+<p>自 Dart 2.12 起，空值安全一直是一個可以 <em>開啟</em> 或 <em>關閉</em> 的設定選項。<strong>在 Dart 3 中，所有程式碼都以 <em>開啟</em> 完善的空值安全運行</strong>。不再可以運行沒有空值安全的應用程式或在部分空值安全的混合模式下運行應用程式。</p>
+<p>我們意識到停止支援不使用空值安全的運行可能會給現有的應用程式和套件帶來問題。但是，我們覺得現在是推進這一變更的合適時機。擁有一個單一的類型系統，其中空值安全始終開啟，可以減少開銷和複雜性。每當開發人員讀取一段 Dart 3 程式碼時，他們都可以放心，所有變數預設都不為空。在實作方面，Dart 的編譯器和運行時可以專注於支援單一的 Dart 程式碼運行方式，從而降低新增新功能的成本和複雜性。</p>
+<p>Dart 生態系統已經展現出將現有程式碼遷移到空值安全的堅定決心和意願。截至今天，</p>
+<ul>
+<li>pub.dev 上排名前 250 位的套件中有 100% 支援空值安全</li>
+<li>pub.dev 上排名前 1000 位的套件中有 98% 支援空值安全</li>
+<li>只有 14% 的 <code>flutter run</code> 階段仍然在沒有空值安全的情況下運行</li>
+</ul>
+<p>感謝生態系統為遷移所做的努力！</p>
+<h4 id="清理-Dart-3-核心函式庫和語言"><a href="#清理-Dart-3-核心函式庫和語言" class="headerlink" title="清理 Dart 3 核心函式庫和語言"></a>清理 Dart 3 核心函式庫和語言</h4><p>隨著 Dart 語言和類型系統的發展，我們核心函式庫中的一些 API 變得冗餘或不夠理想。為了確保 Dart 保持易於上手，我們進行了一些重大變更以清理不必要的 API。有關詳細資訊，請參閱 GitHub 問題，<a href="https://github.com/dart-lang/sdk/issues/34233">#34233</a> 和 <a href="https://github.com/dart-lang/sdk/issues/49529">#49529</a>。我們還移除了一個歷史語法，用於預設參數值（<a href="https://github.com/dart-lang/language/issues/2357">#2357</a>）。</p>
+<p>隨著 Dart 3 alpha 的完成，我們的注意力現在轉向了 Dart 3 beta。在那裡，我們希望透過新增一些新的 API 來進一步改進 Dart 核心函式庫。您可以在 <a href="https://github.com/dart-lang/sdk/issues/49928">回饋問題</a> 中提供意見。</p>
+<h4 id="準備您的程式碼以迎接-Dart-3-穩定版"><a href="#準備您的程式碼以迎接-Dart-3-穩定版" class="headerlink" title="準備您的程式碼以迎接 Dart 3 穩定版"></a>準備您的程式碼以迎接 Dart 3 穩定版</h4><p>一般來說，我們相信大多數已經遷移到使用空值安全（使用 Dart 2.12 或更高版本）的程式碼都可以在 Dart 3 上運行。但是，一小部分套件和應用程式可能會受到上面討論的重大變更的影響。因此，為了讓您有時間準備今年晚些時候發佈的 Dart 3 穩定版，我們沒有計劃在 Dart 3 alpha 之後對 Dart 語言和核心函式庫進行任何進一步的重大變更。</p>
+<p>為了利用已經遷移到使用空值安全的程式碼，我們在 Dart 3 中實作了向後相容性，這將允許遷移的套件在 Dart 3 中使用 <code>pub get</code> 解析，即使它們的 SDK 版本限制為 <code>&gt;=2.12 &lt;3.0.0</code>，只要它們不依賴於其他已停止使用的核心函式庫 API 或語言功能。有關更多詳細資訊，包括如何使用本地安裝的 <a href="https://dart.dev/get-dart/archive#dart-3-alpha">Dart 3 alpha SDK</a> 進行測試，請參閱我們的 <a href="https://dart.dev/null-safety#dart-3-and-null-safety">Dart 3 空值安全文件</a>。</p>
+<p>對於發佈在 <a href="https://pub.dev/">pub.dev</a> 儲存庫上的套件，我們使用 Dart 3 alpha 進行了分析，並使用 <strong>“Dart 3 ready”</strong> 標籤標記了通過的套件。這表示該套件很可能在今年晚些時候 Dart 3 穩定版發佈時可以運行。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*dB-NsWj2y3JljZZh" />
+</figure>
+
+<h4 id="Dart-3-工具清理"><a href="#Dart-3-工具清理" class="headerlink" title="Dart 3 工具清理"></a>Dart 3 工具清理</h4><p>在 Dart 3 發佈之前，我們進行了 <a href="https://github.com/dart-lang/sdk/issues/46100">許多變更</a>，將我們所有的終端開發者工具都移動到一個統一的 <code>dart</code> 開發者工具中，這使得 Dart 對新開發者來說更容易上手。我們計劃在接下來的幾個月中進行 <a href="https://github.com/dart-lang/sdk/issues/50707">額外的工具變更</a> 以進一步清理。希望這些變更不會造成太大的破壞，但在 Dart 3 beta 中，工具可能會出現一些小的損壞。</p>
+<h3 id="後續步驟"><a href="#後續步驟" class="headerlink" title="後續步驟"></a>後續步驟</h3><p>Dart 3 alpha <a href="https://dart.dev/get-dart/archive#dart-3-alpha">今天已在 Dart 開發頻道和 Flutter master 頻道中提供</a>。我們邀請您試用它，無論是嘗試記錄和模式等新語言功能，還是嘗試我們新的直接存取平台互操作，或者測試您的應用程式和套件的 <a href="https://dart.dev/null-safety#dart-3-and-null-safety">Dart 3 相容性</a>。</p>
+<p>我們將在接下來的幾個月中繼續改進 Dart 3，並希望在今年晚些時候發佈完整的 Dart 3 穩定版。請注意，大多數功能仍在開發中，因此在穩定版發佈之前可能會有所變更。在此之前，祝您使用 Dart 程式碼愉快！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f1458fb9d232" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-alpha-f1458fb9d232">介紹 Dart 3 alpha</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/50409cfb.html" rel="prev" title="【文章翻譯】Announcing the Flutter News Toolkit">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing the Flutter News Toolkit
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/dac042d8.html" rel="next" title="【文章翻譯】Adapting Wonderous to larger device formats">
+      【文章翻譯】Adapting Wonderous to larger device formats <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%B4%B9-Dart-3-alpha"><span class="nav-number">1.</span> <span class="nav-text">介紹 Dart 3 alpha</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-%E7%94%9F%E7%94%A2%E5%8A%9B%E6%8F%90%E5%8D%87"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 3 生產力提升</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E5%85%B7%E8%A1%A8%E7%8F%BE%E5%8A%9B%E7%9A%84-Dart-%E8%AA%9E%E8%A8%80%EF%BC%9A%E8%A8%98%E9%8C%84%E3%80%81%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">更具表現力的 Dart 語言：記錄、模式和存取控制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E9%81%8E%E7%9B%B4%E6%8E%A5%E5%B9%B3%E5%8F%B0%E5%87%BD%E5%BC%8F%E5%BA%AB%E4%BA%92%E6%93%8D%E4%BD%9C%E5%AF%A6%E7%8F%BE%E9%AB%98%E6%95%88%E7%9A%84%E5%B9%B3%E5%8F%B0%E6%95%B4%E5%90%88"><span class="nav-number">1.1.2.</span> <span class="nav-text">透過直接平台函式庫互操作實現高效的平台整合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7%E6%96%B9%E9%9D%A2%E7%9A%84%E9%80%B2%E5%B1%95"><span class="nav-number">1.2.</span> <span class="nav-text">可移植性方面的進展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-%E7%9A%84%E9%87%8D%E5%A4%A7%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 3 的重大變更</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dart-3-%E9%A1%9E%E5%9E%8B%E7%B3%BB%E7%B5%B1%EF%BC%9A100-%E5%AE%8C%E5%96%84%E7%9A%84%E7%A9%BA%E5%80%BC%E5%AE%89%E5%85%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">Dart 3 類型系統：100% 完善的空值安全</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%85%E7%90%86-Dart-3-%E6%A0%B8%E5%BF%83%E5%87%BD%E5%BC%8F%E5%BA%AB%E5%92%8C%E8%AA%9E%E8%A8%80"><span class="nav-number">1.3.2.</span> <span class="nav-text">清理 Dart 3 核心函式庫和語言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BA%96%E5%82%99%E6%82%A8%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC%E4%BB%A5%E8%BF%8E%E6%8E%A5-Dart-3-%E7%A9%A9%E5%AE%9A%E7%89%88"><span class="nav-number">1.3.3.</span> <span class="nav-text">準備您的程式碼以迎接 Dart 3 穩定版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dart-3-%E5%B7%A5%E5%85%B7%E6%B8%85%E7%90%86"><span class="nav-number">1.3.4.</span> <span class="nav-text">Dart 3 工具清理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.4.</span> <span class="nav-text">後續步驟</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

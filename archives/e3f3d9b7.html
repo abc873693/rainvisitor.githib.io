@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.7：更安全、更具表現力的 Dart今天，我們宣布 Dart 2.7 SDK 的穩定版本發布，它為開發人員提供了額外的功能。對於 Dart（我們針對任何平台上的快速應用程式進行客戶端優化的語言）來說，這是忙碌的一年。我們發布了六個新版本，其中包含數十項新功能。看到 Dart 社群使用這些功能是非常有益的，我們很高興最近">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.7: A safer, more expressive Dart">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/e3f3d9b7.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.7：更安全、更具表現力的 Dart今天，我們宣布 Dart 2.7 SDK 的穩定版本發布，它為開發人員提供了額外的功能。對於 Dart（我們針對任何平台上的快速應用程式進行客戶端優化的語言）來說，這是忙碌的一年。我們發布了六個新版本，其中包含數十項新功能。看到 Dart 社群使用這些功能是非常有益的，我們很高興最近">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/0*G-I1kyYJFCTCiAUk">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*YFTJUSwsYzsHTY4b">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/667/0*xCGEGkntNxnM1XAh">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a3710ec54e97">
+<meta property="article:published_time" content="2019-12-11T07:05:15.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:34:42.901Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="mobile">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/960/0*G-I1kyYJFCTCiAUk">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/e3f3d9b7.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.7: A safer, more expressive Dart | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/e3f3d9b7.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.7: A safer, more expressive Dart
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-12-11 15:05:15" itemprop="dateCreated datePublished" datetime="2019-12-11T15:05:15+08:00">2019-12-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:34:42" itemprop="dateModified" datetime="2024-12-18T22:34:42+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-7：更安全、更具表現力的-Dart"><a href="#宣佈-Dart-2-7：更安全、更具表現力的-Dart" class="headerlink" title="宣佈 Dart 2.7：更安全、更具表現力的 Dart"></a>宣佈 Dart 2.7：更安全、更具表現力的 Dart</h2><p>今天，我們宣布 Dart 2.7 SDK 的穩定版本發布，它為開發人員提供了額外的功能。對於 Dart（我們針對任何平台上的快速應用程式進行客戶端優化的語言）來說，這是忙碌的一年。我們發布了六個新版本，其中包含數十項新功能。看到 Dart 社群使用這些功能是非常有益的，我們很高興最近的 <a href="https://octoverse.github.com/">GitHub Octoverse</a> 報告將 Dart 列為 <a href="https://octoverse.github.com/#top-languages">增長最快的語言</a>（按貢獻者人數排名）。</p>
+<p>Dart 2.7 新增了對擴展方法的支援，以及一個用於處理包含特殊字元的字串的新套件。我們對空安全（類型安全的可空和不可空類型）進行了更新，並在 DartPad 中提供了一個全新的空安全遊樂場體驗。在生態系統層級，pub.dev 有一個新的「喜歡」功能，用於向您喜歡的套件提供回饋。Dart 2.7 現在可以從 <a href="http://dart.dev/">dart.dev</a> 以 SDK 下載方式取得，它也內建於今天的 <a href="https://medium.com/@csells_18027/flutter-1-12-release-blog-22c256ba525d">Flutter 1.12 版本</a> 中。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/0*G-I1kyYJFCTCiAUk" />
+</figure>
+
+<h3 id="擴展方法"><a href="#擴展方法" class="headerlink" title="擴展方法"></a>擴展方法</h3><p>Dart 2.7 新增了一個期待已久、功能強大的新語言特性：<strong>擴展方法</strong>。這些方法使您能夠向任何類型（即使是您無法控制的類型）添加新功能，並具有常規方法調用的簡潔性和自動完成體驗。</p>
+<p>讓我們看一個小例子：新增對從字串解析整數和雙精度浮點數的支援。作為應用程式開發人員，我們無法更改 String 類別，因為它是在 <code>dart:core</code> 函式庫中定義的，但使用擴展方法，我們可以擴展它！定義此擴展後，我們可以在 String 上調用新的 <code>parseInt</code> 方法，就像該方法是在 String 類別本身上定義的一樣：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> ParseNumbers <span class="keyword">on</span> <span class="built_in">String</span> &#123;</span><br><span class="line">  <span class="built_in">int</span> parseInt() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>.parse(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">double</span> parseDouble() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">double</span>.parse(<span class="keyword">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  <span class="built_in">int</span> i = <span class="string">&#x27;42&#x27;</span>.parseInt();</span><br><span class="line">  <span class="built_in">print</span>(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="擴展方法是靜態的"><a href="#擴展方法是靜態的" class="headerlink" title="擴展方法是靜態的"></a>擴展方法是靜態的</h3><p>擴展方法是靜態解析和分派的，這表示您無法在類型為 <code>dynamic</code> 的值上調用它們。這裡的調用會在執行階段拋出異常：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dynamic</span> d = <span class="string">&#x27;2&#x27;</span>;</span><br><span class="line">d.parseInt();</span><br><span class="line"></span><br><span class="line">→ Runtime exception: NoSuchMethodError</span><br></pre></td></tr></table></figure>
+
+<p>擴展方法與 Dart 的 <a href="https://dart.dev/guides/language/sound-dart#type-inference">類型推斷</a> 配合良好，因此在以下變數 <code>v</code> 中，推斷類型為 String，並且 String 上的擴展可用：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v = <span class="string">&#x27;1&#x27;</span>;</span><br><span class="line">v.parseInt(); <span class="comment">// Works!</span></span><br></pre></td></tr></table></figure>
+
+<p>因為擴展方法是靜態解析的，所以它們的速度與調用靜態函數或輔助方法一樣快，但調用語法更友好。</p>
+<h3 id="擴展可以具有類型變數"><a href="#擴展可以具有類型變數" class="headerlink" title="擴展可以具有類型變數"></a>擴展可以具有類型變數</h3><p>假設我們想要在 List 上定義一個擴展，用於獲取偶數索引處的元素。我們希望這個擴展適用於任何類型的列表，返回與輸入列表相同類型的新列表。我們可以透過使擴展泛型並將其類型參數應用於它擴展的類型和擴展方法來做到這一點：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> FancyList&lt;T&gt; <span class="keyword">on</span> <span class="built_in">List</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="built_in">List</span>&lt;T&gt; <span class="keyword">get</span> evenElements &#123;</span><br><span class="line">    <span class="keyword">return</span> &lt;T&gt;[<span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.length; i += <span class="number">2</span>) <span class="keyword">this</span>[i]];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="擴展方法實際上是擴展成員"><a href="#擴展方法實際上是擴展成員" class="headerlink" title="擴展方法實際上是擴展成員"></a>擴展方法實際上是擴展成員</h3><p>我們將此功能稱為「擴展方法」，因為如果您在其他程式語言中使用過相應的語言功能，那麼這是熟悉的術語。但在 Dart 中，此功能更通用：它還支援使用新的 getter、setter 和運算子來擴展類別。在上面的 FancyList 範例中，<code>evenElements</code> 是一個 getter。以下是一個新增用於移位字串的運算子的範例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> ShiftString <span class="keyword">on</span> <span class="built_in">String</span> &#123;</span><br><span class="line">  <span class="built_in">String</span> <span class="keyword">operator</span> &lt;&lt;(<span class="built_in">int</span> shift) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.substring(shift, <span class="keyword">this</span>.length) + <span class="keyword">this</span>.substring(<span class="number">0</span>, shift);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="社群中的絕佳範例"><a href="#社群中的絕佳範例" class="headerlink" title="社群中的絕佳範例"></a>社群中的絕佳範例</h3><p>我們已經看到 Dart 社群中的許多開發人員試驗擴展方法。以下是一些我們目前看到的酷炫用法。</p>
+<p>Jeremiah Ogbomo 建立了 <a href="https://pub.dev/packages/time">time 套件</a>，它在 num（整數和雙精度浮點數的基類）上使用擴展，以便輕鬆建立 Duration 物件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 透過 num 上的 `minutes` 擴展建立 Duration。</span></span><br><span class="line"><span class="built_in">Duration</span> tenMinutes = <span class="number">10.</span>minutes;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 透過 num 上的 `hours` 擴展建立 Duration。</span></span><br><span class="line"><span class="built_in">Duration</span> oneHourThirtyMinutes = <span class="number">1.5</span>.hours;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 DateTime 上的 `+` 運算子擴展建立 DateTime。</span></span><br><span class="line"><span class="keyword">final</span> <span class="built_in">DateTime</span> afterTenMinutes = <span class="built_in">DateTime</span>.now() + <span class="number">10.</span>minutes;</span><br></pre></td></tr></table></figure>
+
+<p>Marcelo Glasberg 建立了一個 <a href="https://www.reddit.com/r/FlutterDev/comments/dm288s/dart_extensions_applied_to_i18n_you_have/">i18n（國際化）套件</a>，它使用擴展方法來簡化字串本地化：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Text(<span class="string">&#x27;Hello&#x27;</span>.i18n) <span class="comment">// 以英文顯示 Hello，以西班牙文顯示 Hola，依此類推。</span></span><br></pre></td></tr></table></figure>
+
+<p>Simon Leier 建立了 <a href="https://pub.dev/packages/dartx">dartx 套件</a>，其中包含許多核心 Dart 類型的擴展。一些範例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> allButFirstAndLast = list.slice(<span class="number">1</span>, <span class="number">-2</span>);    <span class="comment">// [1, 2, 3, 4]</span></span><br><span class="line"><span class="keyword">var</span> notBlank = <span class="string">&#x27; .&#x27;</span>.isBlank;                   <span class="comment">// false</span></span><br><span class="line"><span class="keyword">var</span> file = File(<span class="string">&#x27;some/path/testFile.dart&#x27;</span>);</span><br><span class="line"><span class="built_in">print</span>(file.name);                              <span class="comment">// testFile.dart</span></span><br><span class="line"><span class="built_in">print</span>(file.nameWithoutExtension);              <span class="comment">// testFile</span></span><br></pre></td></tr></table></figure>
+
+<p>Brian Egan 正在使用擴展方法 <a href="https://github.com/ReactiveX/rxdart/pull/368">更新</a> 熱門的 <a href="https://pub.dev/packages/rxdart">RxDart 套件</a>，以重新定義用於處理串流的 API。</p>
+<h3 id="安全的子字串處理"><a href="#安全的子字串處理" class="headerlink" title="安全的子字串處理"></a>安全的子字串處理</h3><p>Dart 的標準 String 類別使用 <a href="https://en.wikipedia.org/wiki/UTF-16">UTF-16</a> 編碼。這是程式語言中的常見選擇，尤其是那些同時提供在設備上原生運行和在 Web 上運行的支援的語言。</p>
+<p>UTF-16 字串通常運作良好，並且編碼對開發人員是透明的。但是，在操作字串時，尤其是在操作使用者輸入的字串時，您可能會遇到使用者認為的字元與 UTF-16 中編碼為程式碼單位的字元之間的差異。讓我們看一個小例子，提取使用者輸入的字串的前三個字元：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> input = [<span class="string">&#x27;Resume&#x27;</span>];</span><br><span class="line">input.forEach((s) =&gt; <span class="built_in">print</span>(s.substring(<span class="number">0</span>, <span class="number">3</span>)));</span><br><span class="line"></span><br><span class="line">$ dart main.dart</span><br><span class="line">Res</span><br></pre></td></tr></table></figure>
+
+<p>到目前為止沒有問題；我們列印了輸入列表中字串的前三個字元，結果是 Res。現在讓我們考慮來自不同地區的使用者，他們可能會輸入包含重音符號、諺文（韓文）甚至表情符號組合的字串來表示「簡歷」的概念：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 新的更長的輸入列表：</span></span><br><span class="line"><span class="keyword">var</span> input = [<span class="string">&#x27;Resume&#x27;</span>, <span class="string">&#x27;Résumé&#x27;</span>, <span class="string">&#x27;이력서&#x27;</span>, <span class="string">&#x27;💼📃&#x27;</span>, <span class="string">&#x27;Currículo&#x27;</span>];</span><br><span class="line"></span><br><span class="line">$ dart main.dart</span><br><span class="line">Res</span><br><span class="line">Ré</span><br><span class="line">이력서</span><br><span class="line">💼�</span><br><span class="line">Cur</span><br></pre></td></tr></table></figure>
+
+<p>嗯，其中一些有效，但 Résumé 和 💼📃 元素發生了什麼事？對於 Résumé，為什麼我們得到一個「兩個字元」的字串？對於 💼📃，奇怪的問號是什麼意思？這裡的問題在於 <a href="https://eev.ee/blog/2015/09/12/dark-corners-of-unicode/">Unicode 的黑暗角落</a>。Résumé 中的重音 é 實際上是兩個程式碼點：一個 <em>e</em> 和一個 <a href="https://unicode.org/cldr/utility/character.jsp?a=0301">組合尖音符</a>。而 📃，<a href="https://emojipedia.org/emoji/%F0%9F%93%83/">捲曲頁面</a> 表情符號，是一個單獨的程式碼點，碰巧使用 U+d83d U+dcc3 的代理對進行編碼。困惑了嗎？</p>
+<p>正如我們所說，您通常不需要擔心字元和程式碼點。如果您所做的只是接收、傳遞和處理整個字串，則內部編碼是透明的。但是，如果您需要迭代字串中的字元或操作字串的內容，則可能會遇到問題。好消息是 Dart 2.7 <a href="https://pub.dev/packages/characters">引入了一個新套件 <strong>characters</strong></a> 來處理這些情況。此套件支援將字串視為使用者感知字元的序列，也稱為 Unicode <a href="https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">字素叢集</a>。使用 characters 套件，我們可以透過對縮短文字的程式碼進行少量更改來修復我們的程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 之前：</span></span><br><span class="line">input.forEach((s) =&gt; <span class="built_in">print</span>(s.substring(<span class="number">0</span>, <span class="number">3</span>)));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 之後，使用 characters 套件：</span></span><br><span class="line">input.forEach((s) =&gt; <span class="built_in">print</span>(s.characters.take(<span class="number">3</span>)));</span><br></pre></td></tr></table></figure>
+
+<p>首先，我們從 <code>s</code> 中的字串建立一個新的 Characters 實例（使用方便的 <code>.characters</code> 擴展方法）。然後，我們使用巧妙的 <code>take()</code> 方法來提取前 3 個字元。</p>
+<p>此新套件的技術預覽版 <a href="https://pub.dev/packages/characters">可在 pub.dev 上取得</a>。我們很樂意聽到您對此套件的想法。如果您發現任何問題，請 <a href="https://github.com/dart-lang/characters/issues">回報</a>。</p>
+<h3 id="空安全預覽"><a href="#空安全預覽" class="headerlink" title="空安全預覽"></a>空安全預覽</h3><p>幾個月前，我們 <a href="https://medium.com/dartlang/announcing-dart-2-5-super-charged-development-328822024970#0391">宣布</a> 了我們在 Dart 中支援<strong>空安全</strong>的意圖，新增了安全存取物件參考而不會觸發空參考異常的支援。今天，我們將為您提供預覽空安全靜態分析的方法。讓我們看一個小的激勵範例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  Person(<span class="string">&#x27;Larry&#x27;</span>, birthday: <span class="built_in">DateTime</span>(<span class="number">1973</span>, <span class="number">03</span>, <span class="number">26</span>)).describe();</span><br><span class="line">  Person(<span class="string">&#x27;Sergey&#x27;</span>).describe();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> firstName;</span><br><span class="line">  <span class="built_in">DateTime</span> birthday;</span><br><span class="line">  Person(<span class="keyword">this</span>.firstName, &#123;<span class="keyword">this</span>.birthday&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> describe() &#123;</span><br><span class="line">    <span class="built_in">print</span>(firstName);</span><br><span class="line">    <span class="built_in">int</span> birthyear = birthday?.year;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Born <span class="subst">$&#123;DateTime.now().year - birthyear&#125;</span> years ago&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果我們執行此程式碼，它會在描述第二個人時因空指標異常而崩潰，因為該個人沒有設定生日。我們犯了一個編碼錯誤：雖然我們確實預料到有些人透過在建構函數中將 <code>birthday</code> 欄位設為可選，並透過在 <code>birthday?.year</code> 中測試空生日來處理生日未知的情況，但我們忘記了處理 <code>birthyear</code> 為空的情況。</p>
+<p>讓我們嘗試將此程式碼貼上到我們新的 <a href="https://nullsafety.dartpad.dev/">空安全遊樂場</a> 中，這是 DartPad 的一個特殊版本，其中包含空安全功能的靜態分析部分的技術預覽。即使不執行程式碼，我們也可以看到三個問題：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*YFTJUSwsYzsHTY4b" />
+<figcaption>DartPad with null safety showing three analysis errors related to nulls</figcaption>
+</figure>
+
+<p>透過修復這些分析錯誤，我們可以開始利用空安全。嘗試在空安全遊樂場中進行以下編輯（最終得到 <a href="https://gist.github.com/mit-mit/c210bfb088545e69ba9231ee459615ba">此安全程式碼</a>）：</p>
+<ol>
+<li>若要宣告 <code>birthday</code> 可能為空，請將  <code>DateTime birthday</code> 更改為 <code>DateTime? birthday</code></li>
+<li>若要宣告當 <code>birthday</code> 為空時 <code>birthyear</code> 可能為空，請將 <code>int birthyear</code> 更改為 <code>int? birthyear</code></li>
+<li>將最後一個列印調用包裝在空測試中： <code>if (birthyear != null)</code> {…}</li>
+</ol>
+<p>我們希望此範例能讓您很好地了解我們希望使用空安全的體驗。如前所述，這個遊樂場只是空安全部分的早期技術預覽，因為它正在構建中。我們正在努力完成 Dart SDK 中空安全的第一個測試版本。以下是我們正在為測試版本進行的工作：</p>
+<ol>
+<li>完成可空和不可空參考的完整實作</li>
+<li>將空安全整合到 Dart 的類型推斷和智慧提升中（例如，在賦值或空檢查後允許安全存取可空變數）</li>
+<li>移植 Dart <a href="https://dart.dev/guides/libraries">核心函式庫</a> 以宣告哪些類型是可空的，哪些類型是不可空的</li>
+<li>加入一個遷移工具，它可以自動執行大多數移植 Dart 應用程式和套件的升級任務</li>
+</ol>
+<p>一旦這項工作完成，我們將在測試版 SDK 中提供它，您可以開始在您的應用程式和套件中利用此功能。我們還計劃隨著新功能的實作而持續更新空安全遊樂場。</p>
+<p>雖然我們確信許多開發人員會希望在空安全可用後立即使用它，但您可以在方便時進行遷移，在您準備好時選擇加入此功能。尚未選擇加入此功能的函式庫和套件將能夠依賴 <em>已選擇加入</em> 的函式庫，反之亦然。</p>
+<p>在接下來的幾個月中，我們將會更多地討論空安全，包括關於如何為轉換做準備的更詳細建議。</p>
+<h3 id="在-pub-dev-上喜歡-👍-套件"><a href="#在-pub-dev-上喜歡-👍-套件" class="headerlink" title="在 pub.dev 上喜歡 👍 套件"></a>在 pub.dev 上喜歡 👍 套件</h3><p>今天在 pub.dev 上也推出了一個套件的全新<strong>喜歡功能</strong>。這引入了一個新的「人為信號」來表示您喜歡的套件。若要喜歡一個套件，只需點擊套件詳細資訊旁邊的豎起大拇指圖示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/667/0*xCGEGkntNxnM1XAh" />
+<figcaption>pub.dev package detail page with new Like-feature voting button</figcaption>
+</figure>
+
+<p>目前，我們並未將喜歡次數納入我們的整體評分模型中，但我們計劃在以後的版本中這樣做。我們還計劃對我們的一般搜尋使用者介面和列表頁面進行視覺上的修改，以突顯套件的受歡迎程度。</p>
+<h3 id="謝謝"><a href="#謝謝" class="headerlink" title="謝謝"></a>謝謝</h3><p>代表 Dart 團隊，我們要感謝您以及 Dart 社群中的每個人一直以來的支援！請繼續向我們提供回饋，並參與 Dart <a href="https://dart.dev/community">討論和社群</a>。沒有 Dart 社群的支援，我們將無法成為一個運作良好的開源專案。</p>
+<p>2019 年對於 Dart 來說是令人難以置信的激動人心的一年，但我們並不止步於此。我們對 2020 年有著大膽的計劃，包括發布諸如 <a href="https://dart.dev/guides/libraries/c-interop">dart:ffi</a> 和 <a href="https://github.com/dart-lang/language/issues/110">空安全</a> 之類功能的穩定版本，以及引入新功能。我們邀請您立即開始使用 Dart 2.7。它可以從 <a href="http://dart.dev/">dart.dev</a> 取得，在今天的 <a href="https://medium.com/@csells_18027/flutter-1-12-release-blog-22c256ba525d">Flutter 1.12</a> 版本中，以及在最近 <a href="https://medium.com/dartlang/a-brand-new-dartpad-dev-with-flutter-support-16fe6027784">重新設計的 DartPad</a> 上取得。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a3710ec54e97" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-2-7-a3710ec54e97">宣佈 Dart 2.7：更安全、更具表現力的 Dart</a> 最初發佈在 Medium 上的 <a href="https://medium.com/dartlang">Dart</a> 中，人們在那裡透過突出顯示和回應這個故事來繼續對話。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/mobile/" rel="tag"># mobile</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/9ea1f18e.html" rel="prev" title="【文章翻譯】A brand new DartPad.dev with Flutter support">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】A brand new DartPad.dev with Flutter support
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/fd608ecf.html" rel="next" title="【文章翻譯】Life as a Dart intern">
+      【文章翻譯】Life as a Dart intern <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-7%EF%BC%9A%E6%9B%B4%E5%AE%89%E5%85%A8%E3%80%81%E6%9B%B4%E5%85%B7%E8%A1%A8%E7%8F%BE%E5%8A%9B%E7%9A%84-Dart"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.7：更安全、更具表現力的 Dart</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">擴展方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95%E6%98%AF%E9%9D%9C%E6%85%8B%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">擴展方法是靜態的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%B4%E5%B1%95%E5%8F%AF%E4%BB%A5%E5%85%B7%E6%9C%89%E9%A1%9E%E5%9E%8B%E8%AE%8A%E6%95%B8"><span class="nav-number">1.3.</span> <span class="nav-text">擴展可以具有類型變數</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%B4%E5%B1%95%E6%96%B9%E6%B3%95%E5%AF%A6%E9%9A%9B%E4%B8%8A%E6%98%AF%E6%93%B4%E5%B1%95%E6%88%90%E5%93%A1"><span class="nav-number">1.4.</span> <span class="nav-text">擴展方法實際上是擴展成員</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BE%E7%BE%A4%E4%B8%AD%E7%9A%84%E7%B5%95%E4%BD%B3%E7%AF%84%E4%BE%8B"><span class="nav-number">1.5.</span> <span class="nav-text">社群中的絕佳範例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%9A%84%E5%AD%90%E5%AD%97%E4%B8%B2%E8%99%95%E7%90%86"><span class="nav-number">1.6.</span> <span class="nav-text">安全的子字串處理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%AE%89%E5%85%A8%E9%A0%90%E8%A6%BD"><span class="nav-number">1.7.</span> <span class="nav-text">空安全預覽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-pub-dev-%E4%B8%8A%E5%96%9C%E6%AD%A1-%F0%9F%91%8D-%E5%A5%97%E4%BB%B6"><span class="nav-number">1.8.</span> <span class="nav-text">在 pub.dev 上喜歡 👍 套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AC%9D%E8%AC%9D"><span class="nav-number">1.9.</span> <span class="nav-text">謝謝</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

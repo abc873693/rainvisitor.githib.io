@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 診斷訊息您是否曾經看到一條錯誤訊息，卻不知道它的含義以及您應該如何處理？實際上，可能比您想像的更多資訊可以幫助您回答這些問題。 讓我們舉一個相當常見的例子。以下程式碼中存在一個問題：     在 IntelliJ IDEA 中，該訊息顯示在 Dart Analysis 視圖中：     在 Visual Studio Code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart diagnostic messages">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/6ad9049d.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 診斷訊息您是否曾經看到一條錯誤訊息，卻不知道它的含義以及您應該如何處理？實際上，可能比您想像的更多資訊可以幫助您回答這些問題。 讓我們舉一個相當常見的例子。以下程式碼中存在一個問題：     在 IntelliJ IDEA 中，該訊息顯示在 Dart Analysis 視圖中：     在 Visual Studio Code">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*KDUXUtf0E8hb0kZBeIUdSA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*mjwyDt_bsYpTZBPwLbFhwg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*XTJeTrWGGKzxfQv41qVfug.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*m2K6XXsAfB7gK0oBPGNwag.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*KUQaTyshPTkO9eF0Rdxe2w.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*qsXBZQMBgk6W5WaUBOQ_bA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*kUNsHzJZkZNRysNJmbNTdw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*GtSPY3IoZDeGkfkolrXO7A.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=ae302aa398e8">
+<meta property="article:published_time" content="2021-11-11T09:03:16.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:42:06.818Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="tooling">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/300/1*KDUXUtf0E8hb0kZBeIUdSA.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/6ad9049d.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart diagnostic messages | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6ad9049d.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart diagnostic messages
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-11 17:03:16" itemprop="dateCreated datePublished" datetime="2021-11-11T17:03:16+08:00">2021-11-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:42:06" itemprop="dateModified" datetime="2024-12-19T10:42:06+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-診斷訊息"><a href="#Dart-診斷訊息" class="headerlink" title="Dart 診斷訊息"></a>Dart 診斷訊息</h2><p>您是否曾經看到一條錯誤訊息，卻不知道它的含義以及您應該如何處理？實際上，可能比您想像的更多資訊可以幫助您回答這些問題。</p>
+<p>讓我們舉一個相當常見的例子。以下程式碼中存在一個問題：</p>
+<figure>
+<img alt="一個簡單的類別，在 `values.length` 中的 “length” 下方有一條紅色波浪線" src="https://cdn-images-1.medium.com/max/300/1*KDUXUtf0E8hb0kZBeIUdSA.png" />
+</figure>
+
+<p>在 IntelliJ IDEA 中，該訊息顯示在 Dart Analysis 視圖中：</p>
+<figure>
+<img alt="IntelliJ IDEA 螢幕截圖，顯示錯誤訊息：屬性 `length` 無法無條件存取，因為接收器可以是 `null`。" src="https://cdn-images-1.medium.com/max/1024/1*mjwyDt_bsYpTZBPwLbFhwg.png" />
+</figure>
+
+<p>在 Visual Studio Code 中，問題訊息顯示在「問題」面板中：</p>
+<figure>
+<img alt="Visual Studio Code 中顯示與 IntelliJ IDEA 螢幕截圖相同的錯誤訊息" src="https://cdn-images-1.medium.com/max/1024/1*XTJeTrWGGKzxfQv41qVfug.png" />
+</figure>
+
+<p>看起來很奇怪，因為我們剛剛在上一行檢查了 <code>values</code> 不是 <code>null</code>。</p>
+<p>該訊息告訴我們出了什麼問題，但並沒有真正幫助我們理解為什麼檢查不充分或如何回應錯誤。這些額外資訊實際上是可用的；只是可能不清楚如何找到它。本文的其餘部分將向您展示如何在 IntelliJ IDEA、Visual Studio Code 和 <code>dart analyze</code> 命令列工具的輸出中找到這些額外資訊的位置。</p>
+<h3 id="IntelliJ-IDEA"><a href="#IntelliJ-IDEA" class="headerlink" title="IntelliJ IDEA"></a>IntelliJ IDEA</h3><p>如果您將滑鼠懸停在突出顯示的文字上，您可以獲得更多資訊：</p>
+<figure>
+<img alt="IntelliJ IDEA 的螢幕截圖，其中包含以下文字中描述的內容" src="https://cdn-images-1.medium.com/max/1024/1*m2K6XXsAfB7gK0oBPGNwag.png" />
+</figure>
+
+<p>懸停包含我們上面看到的訊息（我們稱之為 <em>問題訊息</em>），但也包含其他有用的資訊：</p>
+<ul>
+<li>指向<a href="https://dart.dev/tools/diagnostic-messages#unchecked_use_of_nullable_value">有關診斷的外部文件</a>的連結</li>
+<li>一條 <em>上下文訊息</em>，解釋為什麼 <code>null</code> 比較不足以將屬性的類型提升為非空類型</li>
+<li>一條 <em>修正訊息</em>，描述您可以採取的一些措施來修正程式碼</li>
+</ul>
+<p>上下文訊息包含與類型提升相關的額外文件的 URL，並告訴您欄位定義的行和檔案。遺憾的是，您無法從懸停導航到上下文位置，但您可以從 Dart Analysis 視圖導航。</p>
+<p>雖然 Dart Analysis 視圖僅顯示問題訊息，但雙擊該訊息會將您導航到報告問題的帶有紅色波浪線的文字。對於其他有用的功能，請顯示上下文選單：</p>
+<figure>
+<img alt="錯誤訊息的上下文選單的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*KUQaTyshPTkO9eF0Rdxe2w.png" />
+</figure>
+
+<p>使用上下文選單，您可以導航到報告診斷的位置（使用 <strong>跳轉到來源</strong>，其工作方式與雙擊問題訊息相同）或導航到 <code>values</code> 的宣告（使用上下文訊息標記的選單項）。選擇 <strong>打開文件</strong> 將打開有關診斷的外部文件。</p>
+<h3 id="Visual-Studio-Code"><a href="#Visual-Studio-Code" class="headerlink" title="Visual Studio Code"></a>Visual Studio Code</h3><p>在 Visual Studio Code 中，有兩種方法可以查看額外資訊。第一種是展開「問題」面板中的條目：</p>
+<figure>
+<img alt="VS Code 的「問題」面板的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*qsXBZQMBgk6W5WaUBOQ_bA.png" />
+</figure>
+
+<p>第一行是我們之前看到的訊息（我們稱之為 <em>問題訊息</em>）。雙擊第一行或第二行會將您導航到出現問題的帶有紅色波浪線的文字。</p>
+<p>第二行是一條 <em>修正訊息</em>，描述您可以採取的一些措施來修正程式碼。它還包含一個由診斷 ID 標記的連結，該連結會打開<a href="https://dart.dev/tools/diagnostic-messages#unchecked_use_of_nullable_value">有關診斷的外部文件</a>。</p>
+<p>第三行是一條 <em>上下文訊息</em>，解釋為什麼 <code>null</code> 比較不足以將類型提升為非空類型。雙擊上下文訊息會將您導航到 <code>values</code> 的宣告。上下文訊息包含與類型提升相關的額外文件的 URL。</p>
+<p>您也可以透過將滑鼠懸停在突出顯示的文字上來查看此資訊，這會導致打開懸停文字：</p>
+<figure>
+<img alt="VS Code 懸停文字的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*kUNsHzJZkZNRysNJmbNTdw.png" />
+</figure>
+
+<p>懸停文字包含與「問題」面板相同的資訊。它包含一個連結，可將您帶到外部文件，以及另一個連結，可導航到 <code>values</code> 的宣告。</p>
+<h3 id="dart-analyze"><a href="#dart-analyze" class="headerlink" title="dart analyze"></a>dart analyze</h3><p>命令列分析器 <code>dart analyze</code> 可以顯示與 IDE 相同的資訊，但您需要使用 <code>--verbose</code> 旗標才能查看所有資訊。</p>
+<figure>
+<img alt="`dart analyze --verbose demo.dart` 輸出的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*GtSPY3IoZDeGkfkolrXO7A.png" />
+</figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>我希望本文能幫助您更輕鬆地找到理解分析器診斷所需的資訊。</p>
+<p>如果您發現仍然難以理解的診斷訊息（因為訊息不清楚、需要上下文訊息來幫助您找到其他相關程式碼位置，或者文件不夠完整），請透過<a href="https://github.com/dart-lang/sdk/issues/new">建立 dart-lang&#x2F;sdk 議題</a>告知我們。我們一直有興趣改進工具。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=ae302aa398e8" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-diagnostic-messages-ae302aa398e8">Dart 診斷訊息</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/tooling/" rel="tag"># tooling</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/cae614af.html" rel="prev" title="【文章翻譯】Google Summer of Code 2021 results">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Google Summer of Code 2021 results
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/8bf0b04c.html" rel="next" title="【文章翻譯】About web, community, and code samples — Q3 2021 survey results">
+      【文章翻譯】About web, community, and code samples — Q3 2021 survey results <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E8%A8%BA%E6%96%B7%E8%A8%8A%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">Dart 診斷訊息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IntelliJ-IDEA"><span class="nav-number">1.1.</span> <span class="nav-text">IntelliJ IDEA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Visual-Studio-Code"><span class="nav-number">1.2.</span> <span class="nav-text">Visual Studio Code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dart-analyze"><span class="nav-number">1.3.</span> <span class="nav-text">dart analyze</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

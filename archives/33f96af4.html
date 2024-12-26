@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2 穩定版和 Dart Web 平台今天，我們宣佈 Dart 2 穩定版正式發佈，其中包括 Dart Web 平台的重寫，它提供了生產力、效能和可擴展性的獨特組合。     Flutter 開發者已經享受 Dart 2 的許多優點，因為 Flutter 幾個月來一直在捆綁 Dart 2 SDK 的預發佈版本。然而，由於框">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/33f96af4.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2 穩定版和 Dart Web 平台今天，我們宣佈 Dart 2 穩定版正式發佈，其中包括 Dart Web 平台的重寫，它提供了生產力、效能和可擴展性的獨特組合。     Flutter 開發者已經享受 Dart 2 的許多優點，因為 Flutter 幾個月來一直在捆綁 Dart 2 SDK 的預發佈版本。然而，由於框">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/589/1*xV5sN0ycM2OxY5BbGDhdmg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/762/0*s3bqLPad7xh_nFH-">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*YX3CcH4He_IIEhzx">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/353/1*Zf8U7ODhydytCsOn6_pQcw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/316/0*drInYm1m0XD2vGZS">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3775d5f8eac7">
+<meta property="article:published_time" content="2018-08-07T08:14:17.000Z">
+<meta property="article:modified_time" content="2024-12-18T08:07:34.404Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="mobile-app-development">
+<meta property="article:tag" content="web-development">
+<meta property="article:tag" content="programming-languages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/589/1*xV5sN0ycM2OxY5BbGDhdmg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/33f96af4.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/33f96af4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-08-07 16:14:17" itemprop="dateCreated datePublished" datetime="2018-08-07T16:14:17+08:00">2018-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 16:07:34" itemprop="dateModified" datetime="2024-12-18T16:07:34+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-穩定版和-Dart-Web-平台"><a href="#宣佈-Dart-2-穩定版和-Dart-Web-平台" class="headerlink" title="宣佈 Dart 2 穩定版和 Dart Web 平台"></a>宣佈 Dart 2 穩定版和 Dart Web 平台</h2><p>今天，我們宣佈 Dart 2 穩定版正式發佈，其中包括 Dart Web 平台的重寫，它提供了生產力、效能和可擴展性的獨特組合。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/589/1*xV5sN0ycM2OxY5BbGDhdmg.png" />
+</figure>
+
+<p>Flutter 開發者已經享受 Dart 2 的許多優點，因為 Flutter 幾個月來一直在捆綁 Dart 2 SDK 的預發佈版本。然而，由於框架和語言之間的緊密耦合，Dart 2 的穩定版是 Flutter 穩定版發佈的另一個重要里程碑。如果您還沒有安裝 Flutter，請<a href="https://flutter.io/get-started/install/">由此開始</a>。</p>
+<p>隨著 Dart 2 的發佈，Web 開發者現在可以利用相同的語言、函式庫和工具以及許多 Web 專用的增強功能。Web 開發者應從<a href="https://webdev.dartlang.org/guides/get-started">開始使用</a>頁面開始，以獲取有關安裝工具和建立第一個應用程式的說明。</p>
+<h3 id="Dart：越來越受歡迎"><a href="#Dart：越來越受歡迎" class="headerlink" title="Dart：越來越受歡迎"></a>Dart：越來越受歡迎</h3><p>Dart 2 標誌著 Dart 作為一種主流程式語言的重生，專注於為行動和 Web 應用程式實現快速開發和出色的使用者體驗。我們希望讓構建客戶端應用程式的開發人員提高生產力，使用一種語言、框架和組件來減少樣板程式碼，讓他們專注於業務邏輯，並使用能夠及早識別錯誤、實現強大除錯功能並提供小型、快速執行時程式碼的工具。</p>
+<p>在過去的一年中，Dart 經歷了巨大的成長。我們自己的分析表明，外部使用量成長了十倍。在上個季度，根據拉取請求的衡量標準，Dart 是 GitHub 上<a href="https://madnight.github.io/githut/#/pull_requests/2018/2">成長最快的語言之一</a>；<a href="http://sotagtrends.com/?tags=%5Bdart,perl,haskell,rust%5D&amp;relative=false">StackOverflow 問題</a>的成長也生動地展示了 Dart 的發展勢頭：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/762/0*s3bqLPad7xh_nFH-" />
+</figure>
+
+<p>在內部，Dart 是 Google 用於 Web 應用程式開發的少數幾種語言之一，擁有來自數十個不同專案的數百萬行程式碼，包括 Google Ads、Google Shopping 和我們自己的內部基礎架構團隊。</p>
+<p>事實上，您可能已經在使用 Dart 而沒有意識到：流行的 <a href="https://sass-lang.com/">Sass 樣式表預處理器</a> 最近<a href="http://sass.logdown.com/posts/7045860-dart-sass-100-is-released">用 Dart 重寫</a>，使其更快、更可攜帶且更容易編寫。Sass 現在作為 Homebrew 和 Chocolatey 上的獨立可執行檔發佈，並在 npm 上編譯為純 JavaScript。Dart 可以輕鬆地在任何地方安裝應用程式，而無需外部相依性，並且可以融入使用 Dart 和不使用 Dart 的人的工作流程中。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*YX3CcH4He_IIEhzx" />
+</figure>
+
+<p>Dart 2 專注於三個領域：強化和收緊語言、開發我們對 Web 和行動框架的支援，以及將支援 Google 使用 Dart 的一些工具和組件帶到外部世界。本文的其餘部分將探討這些主題。</p>
+<h3 id="Dart-2：客戶端優化的語言"><a href="#Dart-2：客戶端優化的語言" class="headerlink" title="Dart 2：客戶端優化的語言"></a>Dart 2：客戶端優化的語言</h3><p>正如我們在<a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">二月</a> <a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">強調的</a>，<a href="https://www.dartlang.org/guides/language/sound-dart">Dart 類型系統</a>是<em>健全的</em>。這意味著在使用者執行您的應用程式之前（在分析和編譯期間）就會發現一大類問題。當我們將 Dart 擴展到 Google 內部極其龐大的應用程式時，類型系統在開發週期的早期捕獲了更多錯誤，從而提高了生產程式碼的品質。</p>
+<p>使用 Dart 2，您無法進入表達式求值結果與表達式的靜態類型不符的狀態。這意味著您可以將程式碼庫擴展到數百萬行，處理大型重構專案，並自信地部署程式碼。</p>
+<p>別擔心：健全性並不意味著大量的樣板程式碼。類型系統包括進階推斷，即使是泛型類型參數。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> _field = [<span class="number">3.14</span>, <span class="number">6.28</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 沒有提供類型參數，但推斷為 &lt;int&gt;</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].runtimeType); <span class="comment">// List&lt;int&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果類型不匹配，則使用它們的共同基類型</span></span><br><span class="line">  <span class="comment">// int (1) 和 double (3.14) 都是 `num`</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">3.14</span>].runtimeType); <span class="comment">// List&lt;num&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 推斷超越了變數。</span></span><br><span class="line">  <span class="comment">// 您也可以省略欄位上的類型。</span></span><br><span class="line">  <span class="built_in">print</span>(_field.runtimeType); <span class="comment">// List&lt;double&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要了解更多關於 Dart 2 類型系統的資訊，請查看<a href="https://www.dartlang.org/guides/language/sound-dart">此頁面</a>。</p>
+<p>如先前的部落格文章所述，Dart 2 還減少了幾個關鍵領域的語言儀式：例如，<code>new</code> 關鍵字現在是可選的，而 <code>const</code> 關鍵字在常數環境中是可選的。</p>
+<p>最後，我們在幕後做了很多工作來統一各種支援工具，使用一個共同的前端，現在支援我們的編譯器和執行時。這確保了我們使用者的現在的一致性，並承諾在 Dart 持續發展的過程中提高新功能的速度和品質。</p>
+<h3 id="Web-上的-Dart：豐富而強大的框架"><a href="#Web-上的-Dart：豐富而強大的框架" class="headerlink" title="Web 上的 Dart：豐富而強大的框架"></a>Web 上的 Dart：豐富而強大的框架</h3><p>Web 應用程式從一開始就是 Dart 使命的核心。事實上，Google 的大多數 Dart 開發都是針對 Web 應用程式。其中最大的一個是 Google Ads，它為數十億美元的網路經濟提供動力。在將他們的程式碼遷移到 Dart 的過程中，他們將 UI 程式碼庫的大小減少了 40%，同時提高了開發人員的生產力和應用程式品質。</p>
+<p>雖然核心 Dart SDK 提供了存取現代瀏覽器 API 的函式庫，但我們也支援一個強大的受 Angular 啟發的框架，用於構建複雜的 Web 應用程式。作為 Dart 2 的一部分發佈的 <a href="https://webdev.dartlang.org/angular">AngularDart 5</a> 利用了 Dart 的健全類型系統和<a href="https://github.com/dart-lang/build">新的構建系統</a>（如下所述）在開發過程中提供快速增量構建，並在您準備部署時提供更小的已編譯 JavaScript。</p>
+<p>此版本的一個主要重點領域是改進在頁面加載時處理的程式碼量，顯著減少了網頁的「互動時間」。與 AngularDart 4 相比，許多應用程式的程式碼大小減少了一半以上。</p>
+<p>為了展示 Dart Web 平台的改進，我們構建了一個<a href="https://hnpwa.dartlang.org/">基於 Dart 的 HackerNews 網站客戶端實作</a>，作為一個漸進式 Web 應用程式；這與其他範例實作一起發佈在流行的 <a href="https://hnpwa.com/">HNPWA 網站</a>上。使用構建 Dart Web 應用程式的最佳實務，我們能夠提供功能齊全的體驗，在現代設備上在一秒鐘內即可完全互動，在中等行動設備上在緩慢的 3G 網路上在五秒鐘內即可完全互動。即使與針對較小型應用程式進行優化的輕量級 Web 框架相比，這也具有競爭力。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/353/1*Zf8U7ODhydytCsOn6_pQcw.png" />
+<figcaption><a href="https://hnpwa.dartlang.org/">hnpwa.dartlang.org</a></figcaption>
+</figure>
+
+<p>我們的框架投資延伸到我們的<a href="https://pub.dartlang.org/packages/angular_components">核心組件</a>，我們也更新了這些組件。您現在可以存取 100 個新的類別，包括許多日期、時間和選單 <a href="https://material.io/">Material 組件</a>。您可以在<a href="https://dart-lang.github.io/angular_components_example/">組件庫</a>中瀏覽我們的所有組件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/316/0*drInYm1m0XD2vGZS" />
+<figcaption><em>Material 日期選擇器 - Web 應用程式可用的豐富組件之一</em></figcaption>
+</figure>
+
+<h3 id="Dart-2-的彈性工具"><a href="#Dart-2-的彈性工具" class="headerlink" title="Dart 2 的彈性工具"></a>Dart 2 的彈性工具</h3><p>使用 Dart 2，Dart 成為一流的編譯為 JavaScript 的語言，具有 Web 開發人員期望的開發週期和出色的執行時效能特徵。這是同時提供大多數以 JS 為目標的語言不提供的優點：健全的類型系統和出色的原生行動應用程式支援。</p>
+<p>使用 Dart 2，我們的 Web 工具採用 100% JavaScript 開發模型，並使用兩個互補的 JavaScript 編譯器。開發編譯器 <a href="https://webdev.dartlang.org/tools/dartdevc">dartdevc</a> 提供快速增量編譯，同時產生易於閱讀和除錯的 JavaScript。這讓我們的生產編譯器 <a href="https://webdev.dartlang.org/tools/dart2js">dart2js</a> 可以專注於為行動裝置的漸進式 Web 應用程式和桌面的複雜企業體驗產生高度優化的 JavaScript。這兩種編譯器都利用 Dart 的健全類型系統來優化它們的輸出。</p>
+<p>我們的 Web 工具基於<a href="https://github.com/dart-lang/build">新的構建系統</a>構建，該系統旨在快速、可除錯且可擴展。現在，諸如產生序列化程式碼、將 Sass 編譯為 CSS 以及將 Dart 編譯為 JavaScript 之類的任務都發生在一個工具鏈中，該工具鏈支援在您變更應用程式部分內容時進行快速增量更新。構建系統也被設計為支援 Web 以外的用途。例如：Flutter 開發人員正在使用它來產生 <a href="https://flutter.io/json/#serializing-json-using-code-generation-libraries">JSON 序列化程式碼</a>。</p>
+<p>使用 Dart 2，我們還擁有一套擴展的開發人員工具。除了支援 <a href="https://developer.android.com/studio/">Android Studio</a> 和 JetBrains 套件工具（包括 <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a> 和 <a href="https://www.jetbrains.com/webstorm/">WebStorm</a>）之外，我們還支援 <a href="https://code.visualstudio.com/">Visual Studio Code</a> 和 <a href="https://dartcode.org/">Dart Code 擴展</a>。我們也有一個很棒的實驗暫存區：<a href="https://dartpad.dartlang.org/">DartPad</a>，它已針對 Dart 2 進行了完全更新。</p>
+<p>最後，Dart SDK 還附帶了一套其他有用的工具：與我們的<a href="https://pub.dartlang.org/">套件網站</a>一起使用的套件管理器、<a href="https://www.dartlang.org/tools/analyzer">靜態分析器</a>、您可以從命令列或作為套件使用的 linter，以及用於<a href="https://pub.dartlang.org/packages/dartdoc">Web 文件</a>和符合 <a href="https://www.dartlang.org/guides/language/effective-dart/style">Dart 樣式指南</a>的<a href="https://pub.dartlang.org/packages/dart_style">程式碼格式化</a>的工具。</p>
+<h3 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h3><p>查看開始使用 <a href="https://flutter.io/get-started/install/">Flutter</a> 和 <a href="https://webdev.dartlang.org/guides/get-started">Dart Web 工具集</a>的說明。</p>
+<p><a href="https://groups.google.com/a/dartlang.org/forum/#!topic/announce/IUWWXwL7QB4">發行說明</a>提供了自 Dart 1 以來進行的許多其他較小改進的詳細技術說明，其中一些是對舊 Dart 程式碼的重大變更。如果您遇到 Google 搜尋無法解決的問題，我們建議您從 <a href="https://stackoverflow.com/questions/tagged/dart">StackOverflow</a>開始。訂閱 <a href="https://groups.google.com/a/dartlang.org/forum/#!forum/announce">Dart 公告</a>郵件列表並在 <a href="https://twitter.com/dart_lang">Twitter 上關注我們</a>以獲取更新。我們也希望在我們的社群中看到您，例如 <a href="https://gitter.im/dart-lang/home">Gitter</a>聊天室和 <a href="https://www.reddit.com/r/dartlang/">r&#x2F;dartlang subreddit</a>。</p>
+<h3 id="謝謝"><a href="#謝謝" class="headerlink" title="謝謝"></a>謝謝</h3><p>Dart 已成為一種針對 Web 和行動開發進行優化的通用語言。我們已經開發 Dart 2 多年，在此期間，它觸及了我們生態系統的各個方面，並且需要遷移數百萬行程式碼和數百個套件。</p>
+<p>我們感謝 <a href="https://www.dartlang.org/">Dart</a> 和 <a href="https://flutter.io/">Flutter</a>社群以及數百名幫助我們完成這段旅程的 Google 工程師。沒有你們，我們不可能做到這一點！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3775d5f8eac7" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-2-stable-and-the-dart-web-platform-3775d5f8eac7">宣佈 Dart 2 穩定版和 Dart Web 平台</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/mobile-app-development/" rel="tag"># mobile-app-development</a>
+              <a href="/tags/web-development/" rel="tag"># web-development</a>
+              <a href="/tags/programming-languages/" rel="tag"># programming-languages</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/c2d0618c.html" rel="prev" title="【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/b0c060c4.html" rel="next" title="window 10 安裝 docker 無法開啟 問題">
+      window 10 安裝 docker 無法開啟 問題 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-%E7%A9%A9%E5%AE%9A%E7%89%88%E5%92%8C-Dart-Web-%E5%B9%B3%E5%8F%B0"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2 穩定版和 Dart Web 平台</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart%EF%BC%9A%E8%B6%8A%E4%BE%86%E8%B6%8A%E5%8F%97%E6%AD%A1%E8%BF%8E"><span class="nav-number">1.1.</span> <span class="nav-text">Dart：越來越受歡迎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2%EF%BC%9A%E5%AE%A2%E6%88%B6%E7%AB%AF%E5%84%AA%E5%8C%96%E7%9A%84%E8%AA%9E%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 2：客戶端優化的語言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-%E4%B8%8A%E7%9A%84-Dart%EF%BC%9A%E8%B1%90%E5%AF%8C%E8%80%8C%E5%BC%B7%E5%A4%A7%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="nav-number">1.3.</span> <span class="nav-text">Web 上的 Dart：豐富而強大的框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-%E7%9A%84%E5%BD%88%E6%80%A7%E5%B7%A5%E5%85%B7"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 2 的彈性工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%86%E8%A7%A3%E6%9B%B4%E5%A4%9A"><span class="nav-number">1.5.</span> <span class="nav-text">了解更多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AC%9D%E8%AC%9D"><span class="nav-number">1.6.</span> <span class="nav-text">謝謝</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

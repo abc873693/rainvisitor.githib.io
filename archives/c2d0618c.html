@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！我們發佈了 Dart 套件庫 Pub 的新版本！這次我們專注於為 Dart 2 穩定版發佈做準備。     將您的套件遷移到 Dart 2我們預計 Dart 2 版本將在不久的將來升級到穩定版！因此，至關重要的是您要遷移您的程式碼——尤其是您已發佈的任何套件——以使其與">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/c2d0618c.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！我們發佈了 Dart 套件庫 Pub 的新版本！這次我們專注於為 Dart 2 穩定版發佈做準備。     將您的套件遷移到 Dart 2我們預計 Dart 2 版本將在不久的將來升級到穩定版！因此，至關重要的是您要遷移您的程式碼——尤其是您已發佈的任何套件——以使其與">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*zpVgP0W04QFmqqaJO9fzhg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*LatYAFujtrM2yebc">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Fq4FHYc9N5aHmYBK">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=118464d7f59d">
+<meta property="article:published_time" content="2018-07-20T12:33:00.000Z">
+<meta property="article:modified_time" content="2024-12-18T08:08:08.167Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="github">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*zpVgP0W04QFmqqaJO9fzhg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/c2d0618c.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site! | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c2d0618c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-20 20:33:00" itemprop="dateCreated datePublished" datetime="2018-07-20T20:33:00+08:00">2018-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 16:08:08" itemprop="dateModified" datetime="2024-12-18T16:08:08+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！"><a href="#準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！" class="headerlink" title="準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！"></a>準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</h2><p>我們發佈了 Dart 套件庫 <a href="https://pub.dartlang.org/">Pub</a> 的新版本！這次我們專注於為 Dart 2 穩定版發佈做準備。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zpVgP0W04QFmqqaJO9fzhg.png" />
+</figure>
+
+<h3 id="將您的套件遷移到-Dart-2"><a href="#將您的套件遷移到-Dart-2" class="headerlink" title="將您的套件遷移到 Dart 2"></a>將您的套件遷移到 Dart 2</h3><p>我們預計 Dart 2 版本將在不久的將來升級到穩定版！因此，至關重要的是您要<a href="https://www.dartlang.org/dart-2#migration">遷移您的程式碼</a>——尤其是您已發佈的任何套件——以使其與 Dart 2 相容。這主要有三個方面：</p>
+<ul>
+<li>確保您的程式碼通過 Dart 2 分析（<a href="https://www.dartlang.org/dart-2#general-process">詳情</a>）。我們建議您也要注意提示——例如，為棄用做準備。</li>
+<li>運行程式碼測試，以確保您的程式碼通過 Dart 2 運行程式碼檢查（<a href="https://www.dartlang.org/guides/language/sound-problems#runtime-errors">詳情</a>）。</li>
+<li>將套件的 SDK 約束上限更新為 &lt;3.0.0（<a href="https://www.dartlang.org/dart-2#upper-constraints-on-the-sdk-version">詳情</a>）。</li>
+</ul>
+<p>我們強烈建議所有套件作者完成這項工作，我們也將在接下來的幾天內努力完成我們擁有的套件。</p>
+<h3 id="Pub-網站上改進的分析介面"><a href="#Pub-網站上改進的分析介面" class="headerlink" title="Pub 網站上改進的分析介面"></a>Pub 網站上改進的分析介面</h3><p>為了幫助您進行遷移，我們更新了 Pub 網站的分析標籤頁，使程式碼分析結果更易於閱讀。首先，在分析頁面的頂部，我們加入了進度條，讓您可以快速查看套件的狀態：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LatYAFujtrM2yebc" />
+<figcaption>Pub 網站上顯示的套件評分</figcaption>
+</figure>
+
+<p>進度條下方是詳細的分析結果，按嚴重程度分組：錯誤（紅色圖示）、警告（黃色圖示）和建議問題（藍色圖示），如下圖所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Fq4FHYc9N5aHmYBK" />
+<figcaption>Pub 網站上顯示的分析問題</figcaption>
+</figure>
+
+<h3 id="更新的分析評分"><a href="#更新的分析評分" class="headerlink" title="更新的分析評分"></a>更新的分析評分</h3><p>我們還對分析評分進行了一些調整。如果符合以下任何條件，我們現在會降低套件的評分：</p>
+<ul>
+<li>套件未通過 Dart 2 分析。</li>
+<li>SDK 約束上限不小於 &lt;3.0.0。</li>
+<li>API 參考生成（<a href="https://www.dartlang.org/guides/language/effective-dart/documentation">dartdoc</a>）失敗。</li>
+</ul>
+<p>對於我們的下一個 Pub 網站版本，我們預計將進一步完善評分，並加入一些關於評分計算方式的文件。</p>
+<h3 id="搜尋套件的-API-介面"><a href="#搜尋套件的-API-介面" class="headerlink" title="搜尋套件的 API 介面"></a>搜尋套件的 API 介面</h3><p>搜尋是 Pub 網站上最受歡迎的功能——這並不奇怪。在過去的幾個季度中，我們在這一領域進行了許多改進，重點是加入平台過濾器和更好的排名。新版本擴展了搜尋功能，支援搜尋套件的 API 介面。除了目前對套件描述和 README.md 內容的搜尋索引外，搜尋現在還涵蓋了套件的所有公共 API 成員，以及這些成員的 API 文件！當您想要找到描述和 README.md 檔案中未提及的內容時，這非常棒。</p>
+<p>例如，假設您正在尋找一個可以使用 <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> 貨幣格式格式化字串的套件。在描述和 README.md 檔案中搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217&api=0">一個結果</a>，但包含 API 文件的搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217">幾個結果</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">4217 的 10 個結果</span><br><span class="line"></span><br><span class="line">intl</span><br><span class="line">包含處理國際化/本地化訊息、日期和數字格式化和解析、雙向文字和其他國際化問題的程式碼。</span><br><span class="line">v 0.15.2 • 更新時間：2017 年 10 月 19 日 FLUTTER WEB OTHER</span><br><span class="line">API 結果：</span><br><span class="line">intl/NumberFormat-class.html</span><br><span class="line"></span><br><span class="line">flutter_billing</span><br><span class="line">一個 flutter plugin，用於與 iOS 和 Android 上的計費系統進行通訊。</span><br><span class="line">v 0.1.2 • 更新時間：2018 年 2 月 10 日 FLUTTER</span><br><span class="line">API 結果：</span><br><span class="line">flutter_billing/BillingProduct-class.html</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結…"><a href="#總結…" class="headerlink" title="總結…"></a>總結…</h3><p>Dart 2 穩定頻道版本即將發佈，我們已經對 Pub 網站進行了一系列與 Dart 2、排名和搜尋相關的改進。</p>
+<p>如果您已經發佈了套件，<em>現在</em> 是時候更新它們以適應 Dart 2 了：</p>
+<ol>
+<li>確保您的套件通過 Dart 2 分析。</li>
+<li>在 pubspec.yaml 中將 SDK 約束上限更新為 &lt;3.0.0。</li>
+<li>重新發佈您更新的套件。</li>
+</ol>
+<p>然後前往您在 <a href="https://pub.dartlang.org/">pub.dartlang.org</a> 上的套件分析頁面，看看您還可以做些什麼來提高您的排名！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=118464d7f59d" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/getting-ready-for-dart-2-and-making-your-packages-look-great-on-the-pub-site-118464d7f59d">準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/github/" rel="tag"># github</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/4f8c39d9.html" rel="prev" title="【文章翻譯】Announcement: IDE Tooling for AngularDart 5">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcement: IDE Tooling for AngularDart 5
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/33f96af4.html" rel="next" title="【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform">
+      【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BA%96%E5%82%99%E8%BF%8E%E6%8E%A5-Dart-2%EF%BC%8C%E4%B8%A6%E8%AE%93%E6%82%A8%E7%9A%84%E5%A5%97%E4%BB%B6%E5%9C%A8-Pub-%E7%B6%B2%E7%AB%99%E4%B8%8A%E7%9C%8B%E8%B5%B7%E4%BE%86%E6%9B%B4%E6%A3%92%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87%E6%82%A8%E7%9A%84%E5%A5%97%E4%BB%B6%E9%81%B7%E7%A7%BB%E5%88%B0-Dart-2"><span class="nav-number">1.1.</span> <span class="nav-text">將您的套件遷移到 Dart 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-%E7%B6%B2%E7%AB%99%E4%B8%8A%E6%94%B9%E9%80%B2%E7%9A%84%E5%88%86%E6%9E%90%E4%BB%8B%E9%9D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">Pub 網站上改進的分析介面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%9A%84%E5%88%86%E6%9E%90%E8%A9%95%E5%88%86"><span class="nav-number">1.3.</span> <span class="nav-text">更新的分析評分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E5%B0%8B%E5%A5%97%E4%BB%B6%E7%9A%84-API-%E4%BB%8B%E9%9D%A2"><span class="nav-number">1.4.</span> <span class="nav-text">搜尋套件的 API 介面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90%E2%80%A6"><span class="nav-number">1.5.</span> <span class="nav-text">總結…</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

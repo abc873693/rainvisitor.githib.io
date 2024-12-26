@@ -146,6 +146,235 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/f19218e4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/f19218e4.html" class="post-title-link" itemprop="url">【文章翻譯】New in Dart 3.3: Extension Types, JavaScript Interop, and More</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-02-15 19:01:49" itemprop="dateCreated datePublished" datetime="2024-02-15T19:01:49+08:00">2024-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:24:22" itemprop="dateModified" datetime="2024-12-18T15:24:22+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Dart-3-3-來了，帶來效能和跨平台開發的重大變革！"><a href="#Dart-3-3-來了，帶來效能和跨平台開發的重大變革！" class="headerlink" title="Dart 3.3 來了，帶來效能和跨平台開發的重大變革！"></a>Dart 3.3 來了，帶來效能和跨平台開發的重大變革！</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*p4TBp0I66rJTq0LvnSuE7g.png" />
+</figure>
+
+<p><strong>Dart 3.3 已經推出，它將徹底改變效能和跨平台開發！</strong> 準備好使用 <strong>擴展類型</strong> 為您的應用程式增強能量，徹底改變效能優化，以及您與原生程式碼互動的方式。此外，我們改版後的 <strong>JavaScript 互操作</strong> 模型引入了強大的類型安全性，以及一種開發人員友好的方式來利用 Web 平台的強大功能。所有這些都為 <strong>WebAssembly</strong> 支援鋪平了道路。哦，還有 <strong>在您的 Dart 應用程式中使用 Google AI</strong>？當然可以！這一切都在 Dart 3.3 中。讓我們深入了解！</p>
+<h3 id="介紹擴展類型"><a href="#介紹擴展類型" class="headerlink" title="介紹擴展類型"></a>介紹擴展類型</h3><p>擴展類型為類型引入了零成本封裝。使用它們來優化效能敏感的程式碼，特別是在與主機平台進行互操作時。擴展類型提供了自訂類型的便利性，這些自訂類型具有特定的成員，同時消除了典型的封裝分配開銷。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> type Wrapper(<span class="built_in">int</span> i) &#123;</span><br><span class="line">  <span class="keyword">void</span> showValue() &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;my value is <span class="subst">$i</span>&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> wrapper = Wrapper(<span class="number">42</span>);</span><br><span class="line">  wrapper.showValue(); <span class="comment">// Prints &#x27;my value is 42&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上範例將 <strong>Wrapper</strong> 定義為擴展類型，但將其用於像一個簡單的 Dart 類型。您可以實例化它並呼叫函數。Dart 將其編譯為一個正常的 Dart <strong>int</strong>，這才是關鍵的差別。擴展類型允許您在不產生分配典型封裝類型的間接成本的情況下，建立一個具有獨特成員的類型。因此，雖然 <a href="https://dart.dev/language/extension-methods">擴展成員</a> 功能（自 Dart 2.7 以來可用）允許您為現有類型新增函數和屬性，但擴展類型功能可以做同樣的事情，<em>而且還可以</em> 定義一個隱藏底層表示的新 API。</p>
+<p>這對於與主機平台的互操作性特別有用。原生類型可以直接使用，而無需建立封裝器和相關的間接成本，同時仍然提供乾淨的生產 Dart API。在 <a href="http://dart.dev/language/extension-types">新的擴展類型文件</a> 中了解更多資訊。</p>
+<h3 id="改進-JavaScript-互操作"><a href="#改進-JavaScript-互操作" class="headerlink" title="改進 JavaScript 互操作"></a>改進 JavaScript 互操作</h3><p>Dart 3.3 引入了一個新的模型，用於與 JavaScript 函式庫和 Web 進行互操作。它從一組與 JavaScript 互動的新 API 開始：<a href="https://api.dart.dev/dart-js_interop/dart-js_interop-library.html">dart:js_interop</a> 函式庫。現在 Dart 開發人員可以使用類型化的 API 與 JavaScript 進行交互。此 API 清晰地定義了兩種語言之間的界限，並進行了靜態強制。這消除了 <em>在</em> 編譯時間之前的一整類問題。除了存取 JavaScript 程式碼的新 API 之外，Dart 現在還包括一個使用擴展類型在 Dart 中表示 JavaScript 類型的模型。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:js_interop&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">Represents the <span class="code">`console`</span> browser API.</span></span></span><br><span class="line"><span class="keyword">extension</span> type MyConsole(JSObject _) <span class="keyword">implements</span> JSObject &#123;</span><br><span class="line">  <span class="keyword">external</span> <span class="keyword">void</span> log(JSAny? value);</span><br><span class="line">  <span class="keyword">external</span> <span class="keyword">void</span> debug(JSAny? value);</span><br><span class="line">  <span class="keyword">external</span> <span class="keyword">void</span> info(JSAny? value);</span><br><span class="line">  <span class="keyword">external</span> <span class="keyword">void</span> warn(JSAny? value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>基於擴展類型的語法允許比擴展成員更具表現力和健全性。這簡化了從 Dart 利用 JavaScript API。在 <a href="https://dart.dev/interop/js-interop">新的 JS 互操作文件</a> 中了解更多資訊。</p>
+<h3 id="改進瀏覽器函式庫"><a href="#改進瀏覽器函式庫" class="headerlink" title="改進瀏覽器函式庫"></a>改進瀏覽器函式庫</h3><p>自 1.0 版本以來，Dart SDK 已包含一組全面的瀏覽器函式庫。其中包括核心 <a href="https://api.dart.dev/dart-html/dart-html-library.html">dart:html</a> 函式庫，以及用於 SVG、WebGL 和其他功能的函式庫。</p>
+<p>改進的 JavaScript 互操作模型提供了重新構想這些函式庫的機會。展望未來，我們的瀏覽器函式庫支援將專注於 <a href="https://pub.dev/packages/web">package:web</a>。這簡化了版本控制，加速了更新，並與 <a href="https://developer.mozilla.org/">MDN</a> 資源保持一致。</p>
+<p>這條改進鏈引導我們走向下一件大事：將 Dart 編譯為 <a href="https://webassembly.org/">WebAssembly</a>。</p>
+<h3 id="立即開始，為-WebAssembly-的未來做好準備"><a href="#立即開始，為-WebAssembly-的未來做好準備" class="headerlink" title="立即開始，為 WebAssembly 的未來做好準備"></a>立即開始，為 WebAssembly 的未來做好準備</h3><p>有了 Dart 3.3，套件和應用程式作者可以為編譯為 <a href="https://webassembly.org/">WebAssembly</a> 的 Web 應用程式奠定基礎。雖然 Flutter Web 中的 WebAssembly 支援仍然是實驗性的，但團隊正在努力穩定實作。若要使用 WebAssembly 在 Web 上運行 Flutter 應用程式，您需要遷移所有程式碼——從應用程式和所有相依項——以使用新的 JavaScript 互操作機制和 <a href="https://pub.dev/packages/web">package:web</a>。傳統的 JavaScript 和瀏覽器函式庫保持不變，並支援編譯為 JavaScript 程式碼。但是，編譯為 WebAssembly 需要遷移。</p>
+<p>我們創建了一個 <a href="https://dart.dev/go/package-web">遷移指南</a> 來幫助作者開始包含 Wasm。我們希望在將其納入穩定版本時，最受歡迎的套件都支援 Wasm。</p>
+<h3 id="另外一件事：介紹-Google-AI-Dart-SDK"><a href="#另外一件事：介紹-Google-AI-Dart-SDK" class="headerlink" title="另外一件事：介紹 Google AI Dart SDK"></a>另外一件事：介紹 Google AI Dart SDK</h3><p>Google 已將 Google AI Dart SDK 發佈到測試版。您可以將生成式 AI 功能構建到您的 Dart 或 Flutter 應用程式中。這些應用程式使用 Gemini，這是 Google 最新一代的 AI 模型。查看 <a href="https://pub.dev/packages/google_generative_ai">package:google_generative_ai</a>。在 <a href="https://medium.com/flutter/harness-gemini-in-your-dart-and-flutter-apps-00573e560381">這篇部落格文章</a> 中了解如何使用 Google AI Dart SDK 進行構建，或者直接跳到 <a href="https://ai.google.dev/tutorials/dart_quickstart">快速入門</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*0DiCLVhk_ipZIHKd" />
+</figure>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=325bf2bf6c13" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-3-325bf2bf6c13">Dart 3.3 的新功能：擴展類型、JavaScript 互操作等等</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p>undefined</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/777cb561.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/777cb561.html" class="post-title-link" itemprop="url">【文章翻譯】Harness the Gemini API in your Dart and Flutter Apps</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-02-15 14:51:44" itemprop="dateCreated datePublished" datetime="2024-02-15T14:51:44+08:00">2024-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="介紹-Google-AI-Dart-SDK"><a href="#介紹-Google-AI-Dart-SDK" class="headerlink" title="介紹 Google AI Dart SDK"></a>介紹 Google AI Dart SDK</h2><p>我們很興奮地宣布推出 Google AI Dart SDK，用於 Gemini API。新的 pub.dev 套件，<a href="https://pub.dev/packages/google_generative_ai">google_generative_ai</a>，以及 <a href="https://ai.google.dev/tutorials/dart_quickstart">支援資源</a> 讓您可以透過與 Gemini API 的慣用 Dart 整合，將您自己的基於生成式 AI 的功能建立到 Dart 和 Flutter 應用程式中。它為從單一程式碼庫為 Android、iOS、網頁、macOS、Windows 和 Linux 建立智慧、高效能的應用程式開闢了廣泛的可能性。</p>
+<p>使用 Google AI Dart SDK，您可以：</p>
+<ul>
+<li><strong>輕鬆整合生成式 AI 功能：</strong>透過最少的設定，將進階文字生成、摘要、聊天等功能添加到您的 Dart 或 Flutter 應用程式中。</li>
+<li><strong>利用 Google 目前最具能力和通用性的模型：</strong>Gemini 模型汲取了 Google 在機器學習方面的廣泛研究和開發成果，讓您可以使用持續改進的生成式 AI 功能。</li>
+<li><strong>加速您的 AI 驅動應用程式開發：</strong>專注於您的應用程式邏輯和使用者體驗，而 SDK 則處理與 AI 模型互動的複雜細節。</li>
+<li><strong>建立跨平台的 AI 驅動應用程式：</strong>使用 Flutter，輕鬆地在桌面、網頁和行動應用程式中建立生成式 AI 功能。</li>
+<li><strong>在 180 多個國家和地區使用 Gemini API：</strong>查看 <a href="https://ai.google.dev/available_regions#available_regions">可用區域</a> 以獲取 Gemini API 和 Google AI Studio（以下將進一步說明）目前可用的國家和地區清單。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-KkJmzvv3jNhh88TWxIBJg.png" />
+</figure>
+
+<p><strong>您可以建立什麼？</strong></p>
+<p>我們相信生成式 AI 具有巨大潛力，可以幫助您實現應用程式和業務目標。由於 Gemini 模型是多模態的（它能夠處理來自多種方式的資訊，包括圖片和文字），因此它讓您發揮極大的創造力。然而，我們經常從應用程式開發人員那裡（甚至從我們自己的團隊內部）得到的第一个問題是「我實際上可以使用 Gemini API 做些什麼？」以下是一些您可能為您的 Dart 或 Flutter 應用程式建立的功能範例：</p>
+<ul>
+<li><strong>文字摘要：</strong>從文字輸入中生成長文章、研究論文或網站內容的簡潔摘要。</li>
+<li><strong>智慧聊天機器人：</strong>建立更具吸引力且更像人類的對話介面，增強您的應用程式中的使用者體驗。</li>
+<li><strong>視覺搜尋引擎：</strong>使用者可以上傳圖片，應用程式使用 Gemini API 傳回圖片中內容、樣式，甚至如何製作圖片中內容的描述。</li>
+<li><strong>為無障礙使用生成圖片描述：</strong>生成上傳圖片的詳細文字描述，以幫助視障使用者。</li>
+<li><strong>圖表和圖表解析：</strong>使用者可以上傳圖表、圖表或圖形的圖片，Gemini API 可以提供資料的文字分析和說明。</li>
+</ul>
+<p>這個清單可以一直列下去，因為可能性幾乎是無限的！</p>
+<figure>
+<img alt="A screenshot of the Flutter sample app that uses the Google AI Dart SDK" src="https://cdn-images-1.medium.com/max/1024/0*7Zvr0YiN7O22wTOy" />
+<figcaption>使用 Google AI Dart SDK 的 Flutter 範例應用程式的螢幕截圖</figcaption>
+</figure>
+
+<p><strong>入門</strong></p>
+<p>查看 <a href="https://ai.google.dev/tutorials/dart_quickstart">Dart 快速入門</a> 以獲取有關如何建立設定的詳細分步指南。總體而言，以下是您將執行的操作：</p>
+<ol>
+<li>從 Google AI Studio 獲取 Gemini API 金鑰。確保此金鑰安全。我們強烈建議您不要將金鑰直接包含在您的程式碼中，也不要將包含金鑰的文件检入版本控制系統。在開發過程中，我們建議使用 <code>flutter run -d [DEVICE NAME] — dart-define=API_KEY=[YOUR API KEY]</code> 在模擬器&#x2F;模擬器中運行應用程式，使用您的 API 金鑰作為環境變數。</li>
+<li>透過分別運行 <code>dart pub add google_generative_ai</code> 或 <code>flutter pub add google_generative_ai</code>，將 Google AI Dart SDK 添加到您的 Dart 或 Flutter 應用程式中。這會將 <code>google_generative_ai</code> 添加為 <code>pubspec.yaml</code> 檔案中的相依性。</li>
+<li>在您的程式碼中初始化生成式模型：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;package:google_generative_ai/google_generative_ai.dart&#x27;;</span><br><span class="line"></span><br><span class="line">// 將您的 API 金鑰作為環境變數存取（見上述第一步）</span><br><span class="line">final apiKey = Platform.environment[&#x27;API_KEY&#x27;];</span><br><span class="line">if (apiKey == null) &#123;</span><br><span class="line">  print(&#x27;No $API_KEY environment variable&#x27;);</span><br><span class="line">  exit(1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">final model = GenerativeModel(model: &#x27;MODEL_NAME&#x27;, apiKey: apiKey);</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>現在您可以開始探索使用 Gemini API 實作不同的用例。例如，當提示輸入包含文字和圖片時，使用 gemini-pro-vision 模型和 generateContent 方法，以生成文字輸出：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:io&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:google_generative_ai/google_generative_ai.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() async &#123;</span><br><span class="line">  // 將您的 API 金鑰作為環境變數存取（見上述第一步）</span><br><span class="line">  final apiKey = Platform.environment[&#x27;API_KEY&#x27;];</span><br><span class="line">  if (apiKey == null) &#123;</span><br><span class="line">    print(&#x27;No $API_KEY environment variable&#x27;);</span><br><span class="line">    exit(1);</span><br><span class="line">  &#125;</span><br><span class="line">  // 對於文字和圖片輸入（多模態），使用 gemini-pro-vision 模型</span><br><span class="line">  final model = GenerativeModel(model: &#x27;gemini-pro-vision&#x27;, apiKey: apiKey);</span><br><span class="line">  final (firstImage, secondImage) = await (</span><br><span class="line">    File(&#x27;image0.jpg&#x27;).readAsBytes(),</span><br><span class="line">    File(&#x27;image1.jpg&#x27;).readAsBytes()</span><br><span class="line">  ).wait;</span><br><span class="line">  final prompt = TextPart(&quot;What&#x27;s different between these pictures?&quot;);</span><br><span class="line">  final imageParts = [</span><br><span class="line">    DataPart(&#x27;image/jpeg&#x27;, firstImage),</span><br><span class="line">    DataPart(&#x27;image/jpeg&#x27;, secondImage),</span><br><span class="line">  ];</span><br><span class="line">  final response = await model.generateContent([</span><br><span class="line">    Content.multi([prompt, ...imageParts])</span><br><span class="line">  ]);</span><br><span class="line">  print(response.text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>探索 <a href="https://ai.google.dev/docs">Gemini API 文檔</a>，並查看 GitHub 儲存庫中的 <a href="https://github.com/google/generative-ai-dart/tree/main/samples">Dart 和 Flutter 範例應用程式</a>，以獲取有關如何為各種用例使用 SDK 的詳細指南和範例，或者在 <a href="https://dartpad.dev/?id=341bc46b2ed1d2055d357ab987ed5fc2">DartPad 中的此範例應用程式</a> 中查看，DartPad 是用於 Dart 和 Flutter 片段的免費開源線上編輯器，現在使用 Flutter 建立。請在 <a href="https://github.com/google/generative-ai-dart/issues/new/choose">generative-ai-dart GitHub 儲存庫</a> 中報告任何問題，或告訴我們有關功能要求。</p>
+<p><strong>Google AI Studio</strong></p>
+<p>除了 SDK 之外，<a href="https://aistudio.google.com/?utm_source=flutter&utm_medium=referral&utm_campaign=blog_gaidartsdk_announcment&utm_content=">Google AI Studio</a> 是一個基於瀏覽器的 IDE，用於使用生成式模型進行原型設計。它讓您可以快速迭代以開發用例的提示，然後獲取 API 金鑰以在您的應用程式開發中使用。您可以使用您的 Google 帳戶登入 Google AI Studio，並利用免費配額，允許每分鐘 60 次請求。為了幫助我們提高產品品質，當您使用免費配額時，您的 Google AI Studio 輸入和輸出可能會被訓練有素的審閱者存取。這些資料會與您的 Google 帳戶和 API 金鑰脱钩。</p>
+<p>我們將很快將 Dart 添加到 Google AI Studio，請密切關注我們的公告！這將讓您可以簡單地點擊「取得程式碼」，選擇新的 Dart 標籤（它將與現有支援的語言並列），然後「複製」Dart 程式碼以將您的工作傳輸到您選擇的 IDE。</p>
+<figure>
+<img alt="A screenshot of Google AI Studio" src="https://cdn-images-1.medium.com/max/1024/0*xhBJ20OLOQDtQ2xi" />
+<figcaption>Google AI Studio</figcaption>
+</figure>
+
+<p><strong>分享您的成果！</strong></p>
+<p>我們期待看到您使用 Gemini 建立的成果，例如 LeanCode 團隊使用 Gemini API 建立的 <a href="https://leancode.co/arb_translate">arb_translate</a>。它是一個套件，可以幫助開發人員自動執行語言翻譯，簡化 Flutter 應用程式中的本地化。</p>
+<p>在 Twitter&#x2F;X 上使用標籤 #BuildWithGemini 告訴我們您正在建立什麼！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=00573e560381" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/harness-the-gemini-api-in-your-dart-and-flutter-apps-00573e560381">在您的 Dart 和 Flutter 應用程式中利用 Gemini API</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/5afe0dbd.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -841,7 +1070,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:41:48" itemprop="dateModified" datetime="2024-09-30T01:41:48+08:00">2024-09-30</time>
+                <time title="Modified: 2024-12-18 15:24:22" itemprop="dateModified" datetime="2024-12-18T15:24:22+08:00">2024-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1420,271 +1649,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8339b987.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/8339b987.html" class="post-title-link" itemprop="url">【文章翻譯】Major steps this year on the journey to multiplatform development</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-11-15 21:29:36" itemprop="dateCreated datePublished" datetime="2023-11-15T21:29:36+08:00">2023-11-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="今年邁向跨平台開發的重要里程碑"><a href="#今年邁向跨平台開發的重要里程碑" class="headerlink" title="今年邁向跨平台開發的重要里程碑"></a>今年邁向跨平台開發的重要里程碑</h2><p>今天，我們很高興宣布兩個新的 SDK 版本——Dart 3.2 和 Flutter 3.16——以及 Flutter 休閒遊戲工具包的重大更新。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*r2pc1eaUCaAe21EK-OlGpg.png" />
-<figcaption>Flutter 3.16</figcaption>
-</figure>
-
-<h3 id="Flutter-和-Dart-的價值主張"><a href="#Flutter-和-Dart-的價值主張" class="headerlink" title="Flutter 和 Dart 的價值主張"></a>Flutter 和 Dart 的價值主張</h3><p>在今年年初肯亞內羅畢舉行的 Flutter Forward 上，我們介紹了 Flutter 和 Dart 的新路線圖。兩份路線圖都側重於四個高級主題：突破性圖形體驗、與 Web 和行動平台的無縫整合、早期採用新興架構，以及持續關注開發者體驗。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*iomk4DoJwIXI44jX" />
-<figcaption>Flutter Forward 的四個高級主題</figcaption>
-</figure>
-
-<p>在 5 月份的 Google I&#x2F;O 上，我們 <a href="https://www.youtube.com/watch?v=yRlwOdCK7Ho&amp;t=11s">宣布</a> 我們在實現這一願景方面取得了重大進展，包括（但不限於）改進 iOS 上的渲染效能（使用 Impeller），支援 Web 上的元素嵌入，以及完成 Dart 3 中 100% 空安全之旅。</p>
-<p>隨著我們接近年終，以下是自那以來的進展更新。</p>
-<h3 id="使用-Flutter-和-Dart-提供使用者價值"><a href="#使用-Flutter-和-Dart-提供使用者價值" class="headerlink" title="使用 Flutter 和 Dart 提供使用者價值"></a>使用 Flutter 和 Dart 提供使用者價值</h3><p>隨著每個新功能、改進或錯誤修復，整體目標保持不變：提供強大的語言和框架配對，讓您能夠建立美麗、豐富且快速的應用程式。您可以從單一的共享程式碼庫進行開發，為行動、Web 和桌面上面的應用程式使用者提供服務，而無需碎片化您的產品路線圖。我們也致力於開源，沒有授權成本，並致力於開發由開放性和協作驅動的豐富生態系統。</p>
-<p>這個目標繼續引起 Google 內部和全球 Flutter 廣泛生態系統中開發者的共鳴。今年發佈了許多使用 Flutter 建立的 Google 應用程式：</p>
-<ul>
-<li>正如我們在 Flutter Forward 上宣布的那樣，<strong>Google Classroom</strong> 團隊在其行動應用程式中使用 Flutter，這些應用程式現在已在 iOS 上推出，並且在 Android 上處於 Beta 測試階段。他們正在看到由新的 <a href="https://docs.flutter.dev/perf/impeller">Impeller</a> 渲染引擎驅動的 <a href="https://www.youtube.com/watch?v=_5CIATSDSPI&amp;t=5s">顯著效能提升</a>。</li>
-<li><strong>YouTube Create</strong> 是一款由 Google 發佈的全新 Flutter 應用程式，它在 8 個國家&#x2F;地區中提供 <a href="https://t.co/rn0yN2Sk9X">Beta 測試</a>。此應用程式利用 Flutter Widget 函式庫的靈活性，提供完整的影片編輯體驗，包括濾鏡、效果以及音樂和配音編輯。</li>
-<li>使用Flutter驅動的 <strong>Google Earth</strong> 10 版本，使用者可以輕鬆地建立、協作和組織地圖和地理空間資料，不僅可以在 Web 上使用，還可以在 Android 和 iOS 行動裝置和平板電腦上使用！查看 <a href="https://medium.com/google-earth/a-fresh-look-for-google-earth-507d218b42d3">Google Earth 發文</a> 以獲取有關新設計的更多詳細資訊，並繼續關注我們將在未來的部落格文章中詳細介紹 Earth 團隊如何使用 Flutter 構建他們的應用程式。</li>
-</ul>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Vd72-ykzg8BadAGp" />
-<figcaption><em>Classroom（左）、YouTube Create（中）和 Google Earth（右）的螢幕截圖</em></figcaption>
-</figure>
-
-<p>Flutter 的採用也持續在 Google 之外、全球範圍內增長：</p>
-<ul>
-<li>今年發佈的應用程式包括瑞典的 <a href="https://flutter.dev/showcase/skandia">Skandia</a> 和波蘭的 <a href="https://flutter.dev/showcase/credit-agricole">Credit Agricole</a> 等銀行應用程式，美國的 <a href="https://flutter.dev/showcase/dow-jones">MarketWatch</a> 虛擬股票交易所投資教育應用程式，荷蘭的 <a href="https://www.youtube.com/watch?v=OTn8Ngp2X8Q">CZ</a> 健康保險應用程式，以及加拿大的 <a href="https://flutter.dev/showcase/kijiji1">Kijiji</a> 分類廣告市場應用程式。一個共同的主題是，這些團隊選擇 Flutter 來實現 Android 和 iOS 之間一致的功能集，同時仍然提供豐富且引人入勝的 UI 體驗。</li>
-<li>繼續朝東前進，騰訊發佈了 <a href="https://flutter.dev/showcase/tencent-cloud-chat">Cloud Chat</a>，這是一款豐富的全新聊天 SDK 和 UI 函式庫，目前在中國的聊天服務市場排名第一，並且正在擴展到國際市場。</li>
-<li>在巴西，SOMA 時尚集團啟動了其 Farm 品牌的重大數位更新，並在此過程中意識到 Flutter 的靈活性讓他們能夠將其擴展到該集團的其他品牌。在美國，Caribou Coffee 將 Flutter 與 Firebase 結合，以加速其生產力，而 Lucid Motors 報告稱，Flutter 不僅讓他們可以使用一個小型團隊交付兩個行動應用程式，而且 Flutter 的 Web 支援還讓他們能夠在內部分享原型。</li>
-</ul>
-<p>我們很高興見證這些應用程式的演變。繼續閱讀，了解我們在核心框架中取得的持續進展。</p>
-<h3 id="突破性圖形效能"><a href="#突破性圖形效能" class="headerlink" title="突破性圖形效能"></a>突破性圖形效能</h3><p>我們堅信，多平台開發不應意味著開發者或終端使用者體驗的下降。因此，我們竭盡全力實現這一願景。在 Flutter Forward 上，我們推出了 Impeller 引擎，這是對圖形渲染架構的全面重新設計和重新實作，旨在提高速度和效能。在 Flutter 3.10 中，我們宣布 Impeller 在 iOS 上預設啟用。今天，在 Flutter 3.16 中，我們很高興地分享，Impeller 在 Android 上已準備好在 stable channel 上接受預覽回饋。效能在一整年都得到了顯著提升；與一年前相比，在 Flutter Gallery 基準測試中測量的光柵化效能大約是使用 Impeller 在 Vulkan 上的效能的兩倍。有關如何啟用 Impeller 的詳細信息，請參閱 <a href="https://medium.com/flutter/whats-new-in-flutter-3-16-dba6cb1015d1">Flutter 3.16 發文</a>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*vtUIXYkW6Bt9fvaI" />
-<figcaption>Flutter Gallery 基準測試顯示，過去一年中使用 Impeller 在 Vulkan 上的效能提高了 2 倍以上</figcaption>
-</figure>
-
-<h4 id="休閒遊戲工具包"><a href="#休閒遊戲工具包" class="headerlink" title="休閒遊戲工具包"></a>休閒遊戲工具包</h4><p>特別受益於快速且強大的圖形渲染的應用程式類別是遊戲。在 2022 年，我們發佈了最初的 Flutter <a href="https://docs.flutter.dev/resources/games-toolkit">休閒遊戲工具包</a>。今天，我們宣布重大更新，其中包括從紙牌遊戲到跑酷遊戲的全新模板選項，以及針對排行榜、變現和遙測等主題的一組遊戲服務開發者資源。有關更多詳細信息，請查看 <a href="https://medium.com/flutter/building-your-next-casual-game-with-flutter-716ef457e440">休閒遊戲工具包部落格發文</a>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/942/0*3DmGJe1yD4eKdnfs.gif" />
-<figcaption>一個動畫 GIF，顯示了在行動裝置、Web 和桌面設備上運行的多款基於 Flutter 的遊戲，例如 Trivia Crack、Debertz 和 Landover。</figcaption>
-</figure>
-
-<h3 id="無縫整合"><a href="#無縫整合" class="headerlink" title="無縫整合"></a>無縫整合</h3><p>雖然 Flutter 應用程式通常在不同平台間具有非常高的共享程式碼比例（許多開發者報告共享比例為 95-99%），但我們仍然認為支援平台特定功能非常重要。在 iOS 上，<a href="https://developer.apple.com/app-extensions/">應用程式擴展</a> 提供了一種方式，讓使用者可以從手機上的其他應用程式中與應用程式的縮小版本進行互動。在我們上一個穩定版本中，我們發佈了 <a href="https://codelabs.developers.google.com/flutter-home-screen-widgets#0">新資源</a> 來幫助您為 Flutter 應用程式構建主畫面和鎖定螢幕 Widget。在 Flutter 3.16 中，我們加入了對使用 Flutter 渲染 <a href="https://docs.flutter.dev/platform-integration/ios/app-extensions">某些 iOS 應用程式擴展的 UI</a> 的支援，例如 <a href="https://developer.apple.com/library/archive/documentation/General/Conceptual/ExtensibilityPG/Share.html">共享擴展</a>。Android 14 推出了新的 <a href="https://developer.android.com/guide/navigation/custom-back/predictive-back-gesture">預測式返回手勢</a>，它讓使用者可以在使用返回手勢（向左滑動）時瞥見應用程式背後的系統 UI。Flutter 3.16 支援此手勢。</p>
-<h3 id="持續關注開發者體驗"><a href="#持續關注開發者體驗" class="headerlink" title="持續關注開發者體驗"></a>持續關注開發者體驗</h3><p>現代裝置具有各種外形尺寸（例如手機、摺疊式手機和平板電腦），這些裝置具有各種螢幕尺寸，並支援外部輸入裝置，例如鍵盤和滑鼠。為了確保您的使用者擁有良好的使用者體驗，考慮這些因素非常重要。我們最近與 Android 團隊合作，加入了對其 <a href="https://developer.android.com/docs/quality-guidelines/large-screen-app-quality">大型螢幕指南</a> 的支援。我們已經發佈了 <a href="https://medium.com/flutter/developing-flutter-apps-for-large-screens-53b7b0e17f10">在加入大型螢幕支援方面的經驗</a>，更新了我們的參考應用程式 <a href="https://wonderous.app/">Wonderous</a> 以支援多種螢幕尺寸，並在 Flutter 框架中進行了一些修復，以更好地支援鍵盤、滑鼠和觸控板輸入。新的 API 讓您可以確定顯示器的尺寸和像素比率，並支援多視窗渲染。</p>
-<p>在一年中，我們一直致力於完成對 <a href="https://m3.material.io/get-started">Material 3</a> 的支援，這是 Material Design 設計系統的最新版本。Flutter 的 Material Widget 現在完全支援 Material 3，並且在 Flutter 3.16 中，Material 3 現在是預設樣式。我們發現 Material 為應用程式增添了煥然一新的外觀；新的配色方案既美觀又符合無障礙的對比度要求。若要獲得實際體驗，請查看 <a href="https://flutter.github.io/samples/material_3.html">Material 3 圖庫</a>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*ZACl0_Sm8xPguexZrc4vKA.png" />
-<figcaption>Material 3 演示的螢幕截圖</figcaption>
-</figure>
-
-<p>開發者工具的兩個重大改進包括 VS Code 的新側邊欄和對 DevTools 中添加擴展的支援。側邊欄可以輕鬆發現核心 Flutter 工具操作，例如建立新專案、調用熱重裝、打開 DevTools 或選擇目標設備。DevTools 擴展提供了一個框架，<a href="https://medium.com/p/c8bc1aaf8e5f/edit">讓您可以建立</a>新的自定義工具，這些工具可以插入 DevTools，並提供額外的框架特定功能。<a href="https://pub.dev/packages/provider">Provider</a>，<a href="https://pub.dev/packages/patrol">Patrol</a> 和 <a href="https://pub.dev/packages/serverpod">ServerPod</a> 是開發 DevTools 擴展的幾個框架範例。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*IWHCMv72Wj3NVy4f" />
-<figcaption><em>Serverpod 框架的 DevTools 擴展的螢幕截圖</em></figcaption>
-</figure>
-
-<p>我們重新啟動了 <a href="https://docs.flutter.dev/packages-and-plugins/favorites">Flutter Favorite</a> 程式，並將 <a href="https://pub.dev/packages/flame">flame</a>，<a href="https://pub.dev/packages/flutter_animate">flutter_animate</a>，<a href="https://pub.dev/packages/flutter_rust_bridge">flutter_rust_bridge</a>，<a href="https://pub.dev/packages/riverpod">riverpod</a>，<a href="https://pub.dev/packages/video_player">video_player</a>，<a href="https://pub.dev/packages/macos_ui">macos_ui</a> 和 <a href="https://pub.dev/packages/fpdart">fpdart</a> 指定為新的 Flutter Favorite。在 8 月份，我們為套件生態系統舉辦了首次虛擬峰會，超過 50 位非 Google 員工和 Google 員工貢獻者參加了 <a href="https://pub.dev/">pub.dev</a> 的峰會。</p>
-<p>我們還見證了幾個強大的新套件和 Plugin 的到來。我最喜歡的幾個是 <a href="https://github.com/flutter/packages/tree/main/packages/camera/camera_android_camerax#usage">camera Plugin 中的 CameraX 支援</a>，高效能的 <a href="https://pub.dev/packages/two_dimensional_scrollables">2D 可捲軸 TableView</a> 以及 <a href="https://pub.dev/packages/flutterflow_ui">flutterflow_ui</a> 套件，它允許設計師和開發者使用拖放功能建立 UI 組件，然後將它們導出到 Flutter Widget 程式碼（<a href="https://www.youtube.com/watch?v=yopCfhepAsM">演示影片</a>）。此外，google_maps 套件現在支援 <a href="https://developers.google.com/maps/documentation/cloud-customization/overview">雲地圖樣式</a>，因此開發者可以從 Google Cloud Console 中更新他們的樣式，而 <a href="https://pub.dev/packages/home_widget">home_widget</a> 套件現在支援建立 <a href="https://medium.com/@ABausG/interactive-homescreen-widgets-with-flutter-using-home-widget-83cb0706a417">互動式 iOS 主畫面 Widget</a>。</p>
-<h3 id="新興架構"><a href="#新興架構" class="headerlink" title="新興架構"></a>新興架構</h3><h4 id="Dart-互操作性"><a href="#Dart-互操作性" class="headerlink" title="Dart 互操作性"></a>Dart 互操作性</h4><p>Dart 基於核心承諾，讓跨平台 Dart 程式碼可以在 <a href="https://dart.dev/overview#platform">廣泛的平台</a> 上運行。但是，這通常需要補充以與現有程式碼進行互操作的能力，無論這些程式碼來自舊的專案還是其他函式庫或系統 API 中提供的 API。為了實現這一點，Dart 提供了 <a href="https://dart.dev/guides/libraries/c-interop">與原生 C API 的互操作性</a>，並且正在努力擴展它以支援與 <a href="https://dart.dev/guides/libraries/java-interop">Java + Kotlin</a> 和 <a href="https://dart.dev/guides/libraries/objective-c-interop">Objective C + Swift</a> 的互操作性。有關更多詳細信息，請查看今天的 <a href="https://medium.com/dartlang/dart-3-2-c8de8fe1b91f">Dart 3.2 部落格發文</a>。</p>
-<h4 id="WebAssembly-之路"><a href="#WebAssembly-之路" class="headerlink" title="WebAssembly 之路"></a>WebAssembly 之路</h4><p>Wasm（也稱為 <a href="https://webassembly.org/">WebAssembly</a>）是一種 Web 瀏覽器的令人興奮的新指令格式，它提供了一種可移植的、平台中立的、二進位程式碼格式，可以在現代瀏覽器中執行。像 Dart 這樣的高級受控語言使用垃圾收集，而垃圾收集正在被加入到 WebAssembly 標準中。截至 Chrome 119，<a href="https://developer.chrome.com/blog/wasmgc/">WebAssembly 的垃圾收集支援</a>（Wasm-GC）預設啟用。Wasm-GC 支援也將在 Firefox 120（他們的下一個穩定版本）中推出。</p>
-<p>Dart 編譯器對 Wasm 的支援幾乎已完成，而 Flutter Web 現在使用了一個新的渲染引擎，它可以讓所有渲染都在 WebAssembly 程式碼中進行。雖然還有更多工作要做，支援仍然被認為是實驗性的，但我們已經能夠運行一些應用程式，例如 <a href="https://flutterweb-wasm.web.app/">Material 3 演示</a>。<a href="https://medium.com/dartlang/dart-3-2-c8de8fe1b91f">Dart 3.2 部落格發文</a> 中有更多詳細信息。</p>
-<h3 id="生動社群的力量"><a href="#生動社群的力量" class="headerlink" title="生動社群的力量"></a>生動社群的力量</h3><p>今天的部落格發文僅僅是過去幾個季度中數千個改進的示例。更重要的是，越來越多的改進來自Google以外的開發者貢獻——最近發佈的 <a href="https://github.blog/2023-11-08-the-state-of-open-source-and-ai/">2023 年 GitHub Octoverse 報告</a> 關於開源活動，將 Flutter 專案列為所有 GitHub 開源專案中的前 3 名。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*PY9bV7cnRCdxV2jU" />
-</figure>
-
-<p>感謝您的非凡支援，我們度過了美好的一年。對於 Dart 和 Flutter 社群的多樣性、熱情和友善精神，我們表示感謝，他們在產品成功中發揮了至關重要的作用。我們迫不及待地想看看您接下來會建立什麼。在下次更新之前，感謝您的支援 🙏，並祝您編碼愉快！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b9218b17f0f7" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/major-steps-this-year-on-the-journey-to-multiplatform-development-b9218b17f0f7">今年邁向跨平台開發的重要里程碑</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/43e7a3d0.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/43e7a3d0.html" class="post-title-link" itemprop="url">【文章翻譯】Building your next casual game with Flutter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-11-15 20:35:49" itemprop="dateCreated datePublished" datetime="2023-11-15T20:35:49+08:00">2023-11-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="在-Flutter-中進行免費且開源的跨平台-2D-遊戲開發"><a href="#在-Flutter-中進行免費且開源的跨平台-2D-遊戲開發" class="headerlink" title="在 Flutter 中進行免費且開源的跨平台 2D 遊戲開發"></a>在 Flutter 中進行免費且開源的跨平台 2D 遊戲開發</h2><p>今天，我很興奮地向您介紹 <a href="http://flutter.dev/games">Flutter 休閒遊戲工具包</a> 的重大更新，它是一組新的範本和新的開發者資源，旨在讓遊戲開發者在 Flutter 上提高生產力。</p>
-<p>Flutter 是 Google 的開源 UI 架構，用於建立美觀的跨平台應用程式。如今，從早期階段的創業公司到 ByteDance、騰訊、BMW 和 Google 等大型公司，Flutter 被用於超過一百萬個應用程式，從單一程式碼庫提供美觀、高效能且可移植的跨平台體驗。</p>
-<p>在過去的幾年中，我們目睹了圍繞休閒遊戲開發的社群不斷增長。使用 Flutter 發佈了數以萬計的遊戲，從簡單卻有趣的益智遊戲到更複雜的街機遊戲。我們最喜歡的遊戲包括 Etermax 的 <a href="https://triviacrack.com/">Trivia Crack</a>、Lotum 的 <a href="https://flutter.dev/showcase/lotum">4 Pics 1 Word</a>（猜詞遊戲）、Dong Digital 的 <a href="https://play.google.com/store/apps/details?id=net.countrymania.brick&amp;hl=en">Brick Mania</a>（街機遊戲）、Onrizon 的 <a href="https://play.google.com/store/apps/details?id=com.gartic.StopotS&amp;hl=en">StopotS</a>（分類遊戲）、我們在 I&#x2F;O 為 Flutter 建立的 <a href="https://pinball.flutter.dev/">復古彈珠台遊戲</a>，以及在社交和選單螢幕中使用 Flutter 的 <a href="https://flutter.dev/showcase/pubg-mobile">PUBG</a> 行動版。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/942/0*3DmGJe1yD4eKdnfs.gif" />
-<figcaption>一個動畫的 GIF，展示了多款基於 Flutter 的遊戲，例如 Trivia Crack、Debertz 和 Landover 在行動裝置、網頁和桌面設備上運行。</figcaption>
-</figure>
-
-<h3 id="為什麼選擇-Flutter-來開發休閒遊戲"><a href="#為什麼選擇-Flutter-來開發休閒遊戲" class="headerlink" title="為什麼選擇 Flutter 來開發休閒遊戲"></a>為什麼選擇 Flutter 來開發休閒遊戲</h3><p>Flutter 是遊戲開發者的絕佳選擇。首先，它是免費且開源的，讓您能夠對遊戲的渲染和輸入處理邏輯進行精細的控制。這讓您能夠在核心問題上進行除錯，並根據需要自訂引擎。Flutter 的開放性也體現在我們的生態系統中。所有 <a href="http://pub.dev/">Flutter Plugin 和套件</a> 也可供免費整合。</p>
-<p>其次，在 Flutter 中進行開發效率很高。Flutter 引入了革命性的功能，稱為 <a href="https://docs.flutter.dev/tools/hot-reload#how-to-perform-a-hot-reload">熱重裝</a>，允許開發者在進行程式碼更改後立即看到 UI 更新，從而使開發過程更加反覆和高效。此外，Flutter 支援跨平台遊戲開發，因此您可以從單一共享程式碼庫為 <strong>iOS 和 Android、網頁以及桌面</strong> 建立遊戲。這可以節省您的時間和精力，並讓您的遊戲從第一天起就能接觸到更廣泛的受眾。</p>
-<p>最後，Flutter 遊戲載入速度快，並且通常效能非常好，即使是在低端設備或瀏覽器中也是如此。捆綁包大小可以更小，因為 Flutter 引擎只會為您的遊戲增加幾兆位元組。</p>
-<h3 id="更新後的-Flutter-休閒遊戲工具包"><a href="#更新後的-Flutter-休閒遊戲工具包" class="headerlink" title="更新後的 Flutter 休閒遊戲工具包"></a>更新後的 Flutter 休閒遊戲工具包</h3><p>自 2022 年發佈工具包的第一個版本以來，我們看到了 Flutter 社群的熱烈反響，但我們也收到了強烈的回饋，表明您需要更多開發成功遊戲的資源和指導。因此，我們正在使用新的遊戲範本和資源更新 Flutter 休閒遊戲工具包，以幫助您在 Flutter 中輕鬆建立休閒遊戲。僅僅列舉幾個更新：</p>
-<h4 id="多種類型遊戲的範本"><a href="#多種類型遊戲的範本" class="headerlink" title="多種類型遊戲的範本"></a>多種類型遊戲的範本</h4><p>我們新增了三個新的遊戲範本，為建立休閒遊戲提供起點。首先，您會找到一個 <a href="https://github.com/flutter/games/tree/main/templates/basic">基本範本</a>，它具有用於主選單、設定螢幕、簡單關卡選擇和音訊整合的簡單 UI。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/600/0*_MYAbH0pmAhJ3D6B" />
-<figcaption>一個展示基本範本的動畫 GIF</figcaption>
-</figure>
-
-<p>其次，您會找到一個 <a href="https://github.com/flutter/games/tree/main/templates/card">卡牌遊戲範本</a>，它建立在基本範本之上，並新增了基本的卡片拖放功能，並已準備好整合多人遊戲。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/600/0*0GvQrqyBDG2NVb42" />
-<figcaption>一個展示卡牌範本的動畫 GIF</figcaption>
-</figure>
-
-<p>第三，我們與開源遊戲引擎 <a href="http://flame-engine.org/">Flame</a>（基於 Flutter 建造）合作，提供了一個 <a href="https://github.com/flutter/games/tree/main/templates/endless_runner">無限跑酷範本</a>。雖然您已經可以使用 <em>僅</em> Flutter 來建立許多回合制遊戲，例如卡牌遊戲、文字謎題和棋盤遊戲，這些遊戲對簡單的使用者輸入做出反應，但您可能也想要建立實時遊戲，例如無限跑酷、射擊遊戲和賽車遊戲，這些遊戲需要遊戲循環。在這些情況下，您可以使用 Flame 來實作遊戲方向、碰撞偵測、視差、生成和不同的視覺效果。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/600/0*SDayAkeAnC_NtiLU" />
-<figcaption>一個展示無限跑酷範本的動畫 GIF</figcaption>
-</figure>
-
-<p>若要使用這些範本，請查看 <a href="https://github.com/flutter/games">儲存庫</a>，並使用最符合您需求的範本開始建立遊戲。</p>
-<h4 id="遊戲服務整合的開發者資源"><a href="#遊戲服務整合的開發者資源" class="headerlink" title="遊戲服務整合的開發者資源"></a>遊戲服務整合的開發者資源</h4><p>工具包包含用於整合必需服務的開發者指南，以使您的遊戲更成功。例如，我們包含了幾個新的食譜和 codelab，以向您展示如何：</p>
-<ul>
-<li>使用 Cloud Firestore 建立 <a href="https://docs.flutter.dev/cookbook/games/firestore-multiplayer">多人遊戲</a>。</li>
-<li>使用 <a href="https://docs.flutter.dev/cookbook/games/achievements-leaderboard">排行榜和成就</a> 使您的遊戲更具吸引力。</li>
-<li>使用 <a href="https://docs.flutter.dev/cookbook/games/google-mobile-ads">遊戲內廣告</a> 和 <a href="https://codelabs.developers.google.com/codelabs/flutter-in-app-purchases#0">應用內購買</a> 為您的遊戲變現。</li>
-<li>使用 <a href="https://firebase.google.com/codelabs/firebase-auth-in-flutter-apps#0">Firebase 驗證</a> 添加使用者驗證流程。</li>
-<li>使用 <a href="https://firebase.flutter.dev/docs/crashlytics/overview/">Firebase Crashlytics</a> 收集有關崩潰和錯誤的分析。</li>
-</ul>
-<p>Flutter 休閒遊戲工具包，與 Flutter 一樣，是免費的（<a href="https://github.com/flutter/flutter/blob/master/LICENSE">BSD 3 授權</a>）且開源的。您可以在 flutter.dev&#x2F;games 上了解更多資訊並開始使用。我們希望透過更多類型專用的範本和開發者資源，為工具包發佈進一步的更新。請發送電子郵件至 <a href="mailto:flutter-games@google.com">flutter-games@google.com</a> 告知我們還有哪些可以讓您的遊戲開發體驗更輕鬆！</p>
-<h3 id="在-Flutter-中開始建立您的遊戲"><a href="#在-Flutter-中開始建立您的遊戲" class="headerlink" title="在 Flutter 中開始建立您的遊戲"></a>在 Flutter 中開始建立您的遊戲</h3><p>我們很興奮地看到您使用 Flutter 休閒遊戲工具包建立的內容。無論您是經驗豐富的遊戲開發者還是剛剛起步，我們都擁有您創建出色的休閒遊戲所需的工具和資源。您還在等什麼？今天就開始建立吧！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=716ef457e440" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/building-your-next-casual-game-with-flutter-716ef457e440">使用 Flutter 建立您的下一個休閒遊戲</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1750,7 +1718,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1759,7 +1727,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

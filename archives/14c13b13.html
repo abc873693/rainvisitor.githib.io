@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.5 以及 Dart 路線圖更新是時候發布我們另一個季度性的 Dart SDK 版本了。我們在互操作性方面有所改進，在 pub.dev 套件管理器中增加了新功能，並且將新的 Web 整合 API 提升到穩定版本 1.0。 我們的大部分時間都致力於更大的、跨越多個季度的項目，因此我們也對 Dart 路線圖進行了更新，詳細說明">
+  <meta name="description" content="【文章內容使用 Gemini 2.0 自動翻譯產生】 宣布 Dart 3.5 和 Dart 路線圖更新我們又到了季度 Dart SDK 發佈的時間。我們在互操作性方面進行了改進，在我們的 pub.dev 套件管理器中加入了新功能，並且我們已將新的 Web 整合 API 升級到穩定版和 1.0 版。 我們的大部分時間都花在更大、跨多個季度的努力上，因此我們也更新了 Dart 路線圖，詳細說明了我們希">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap">
 <meta property="og:url" content="https://blog.rainvisitor.me/archives/14c13b13.html">
 <meta property="og:site_name" content="RainVisitor Blog">
-<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.5 以及 Dart 路線圖更新是時候發布我們另一個季度性的 Dart SDK 版本了。我們在互操作性方面有所改進，在 pub.dev 套件管理器中增加了新功能，並且將新的 Web 整合 API 提升到穩定版本 1.0。 我們的大部分時間都致力於更大的、跨越多個季度的項目，因此我們也對 Dart 路線圖進行了更新，詳細說明">
+<meta property="og:description" content="【文章內容使用 Gemini 2.0 自動翻譯產生】 宣布 Dart 3.5 和 Dart 路線圖更新我們又到了季度 Dart SDK 發佈的時間。我們在互操作性方面進行了改進，在我們的 pub.dev 套件管理器中加入了新功能，並且我們已將新的 Web 整合 API 升級到穩定版和 1.0 版。 我們的大部分時間都花在更大、跨多個季度的努力上，因此我們也更新了 Dart 路線圖，詳細說明了我們希">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*PVj9TIzP50I00tavJqAg_Q.gif">
 <meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ca36259fa2f">
 <meta property="article:published_time" content="2024-08-06T10:02:40.000Z">
-<meta property="article:modified_time" content="2024-12-12T03:14:10.899Z">
+<meta property="article:modified_time" content="2024-12-18T04:36:40.089Z">
 <meta property="article:author" content="Rainvisitor">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*PVj9TIzP50I00tavJqAg_Q.gif">
@@ -184,7 +184,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-12 11:14:10" itemprop="dateModified" datetime="2024-12-12T11:14:10+08:00">2024-12-12</time>
+                <time title="Modified: 2024-12-18 12:36:40" itemprop="dateModified" datetime="2024-12-18T12:36:40+08:00">2024-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -207,41 +207,40 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布-Dart-3-5-以及-Dart-路線圖更新"><a href="#宣布-Dart-3-5-以及-Dart-路線圖更新" class="headerlink" title="宣布 Dart 3.5 以及 Dart 路線圖更新"></a>宣布 Dart 3.5 以及 Dart 路線圖更新</h2><p>是時候發布我們另一個季度性的 Dart SDK 版本了。我們在互操作性方面有所改進，在 pub.dev 套件管理器中增加了新功能，並且將新的 Web 整合 API 提升到穩定版本 1.0。</p>
-<p>我們的大部分時間都致力於更大的、跨越多個季度的項目，因此我們也對 Dart 路線圖進行了更新，詳細說明了我們希望在未來幾個季度取得進展的目標。</p>
+        <p>【文章內容使用 Gemini 2.0 自動翻譯產生】</p>
+<h2 id="宣布-Dart-3-5-和-Dart-路線圖更新"><a href="#宣布-Dart-3-5-和-Dart-路線圖更新" class="headerlink" title="宣布 Dart 3.5 和 Dart 路線圖更新"></a>宣布 Dart 3.5 和 Dart 路線圖更新</h2><p>我們又到了季度 Dart SDK 發佈的時間。我們在互操作性方面進行了改進，在我們的 pub.dev 套件管理器中加入了新功能，並且我們已將新的 Web 整合 API 升級到穩定版和 1.0 版。</p>
+<p>我們的大部分時間都花在更大、跨多個季度的努力上，因此我們也更新了 Dart 路線圖，詳細說明了我們希望在未來幾個季度取得的進展。</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*PVj9TIzP50I00tavJqAg_Q.gif" />
-<figcaption>Dart 3.5 發布影像。</figcaption>
+<figcaption>Dart 3.5 發佈圖片。</figcaption>
 </figure>
 
-<h3 id="Dart-3-5-中的新功能"><a href="#Dart-3-5-中的新功能" class="headerlink" title="Dart 3.5 中的新功能"></a>Dart 3.5 中的新功能</h3><p>Dart 3.5 包含許多下面討論的新功能。核心函式庫 API 也有一些較小的變更，以及大約 10 個非常小的重大變更，這些都在 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#350">變更日誌</a> 中說明 。</p>
-<h3 id="Web-平台和-JS-互操作性"><a href="#Web-平台和-JS-互操作性" class="headerlink" title="Web 平台和 JS 互操作性"></a>Web 平台和 JS 互操作性</h3><p>在 Dart 3.4 和 Flutter 3.22 中，我們引入了對 <a href="https://docs.flutter.dev/platform-integration/web/wasm">將 Flutter Web 應用程式編譯到 WebAssembly</a> 的支援。編譯到 WebAssembly 需要使用我們新的 <a href="https://dart.dev/interop/js-interop">Dart 到 JS 互操作模型</a>，該模型之前處於預覽狀態。從 Dart 3.5 開始，它現在被視為穩定且完整，我們已將 <a href="https://pub.dev/packages/web">package:web</a>（它取代了舊的 dart:html 函式庫）中的瀏覽器 API 綁定更新到版本 1.0。</p>
-<p>我們鼓勵所有 Web 套件作者 <a href="https://dart.dev/interop/js-interop/package-web">遷移到 package:web</a>。我們計劃在我們的下一個 Dart 版本中棄用舊的互操作 API（dart:html、dart:js、package:js 等），並在明年晚些時候完全停用它們。我們邀請您在 <a href="https://github.com/dart-lang/sdk/issues/56358">追蹤議題</a> 中提供您對此計劃的回饋。我們還計劃更新 pub.dev 套件管理器的 <a href="https://pub.dev/help/scoring">評分</a>，為支援新互操作模型的 Web 套件頒發積分。</p>
-<p>我們還增加了一個 <a href="https://dart.dev/tools/linter-rules/invalid_runtime_check_with_js_interop_types">新的 Lint</a>，它驗證您的程式碼是否正確使用了新的 JS 互操作類型。我們建議您將此 Lint 加入到您的 analysis_options.yaml 檔案中，作為遷移您的 Web 套件的一部分。</p>
-<h3 id="Dart-原生互操作性"><a href="#Dart-原生互操作性" class="headerlink" title="Dart 原生互操作性"></a>Dart 原生互操作性</h3><p>我們還對原生互操作性進行了一系列改進，這些改進支援從 Dart 直接調用 C、Java、Kotlin、Objective-C 和 Swift。</p>
-<p>C 互操作性由我們的 <a href="https://dart.dev/interop/c-interop">FFI</a>（外部函數介面）函式庫啟用，我們已經支援了幾年。在 Dart 3.5 中，我們進行了增量改進，以支援將指標從 Dart TypedData 物件直接傳遞到 FFI，避免需要先將記憶體從 Dart 複製到原生（<a href="https://github.com/dart-lang/sdk/issues/44589">詳細資訊</a>）。</p>
-<p>Java 和 Kotlin 互操作性由 <a href="https://pub.dev/packages/jnigen">JNIgen</a> 生成器（目前處於預覽狀態）啟用，它自動建立綁定程式碼，以便透過 Java 原生介面（<a href="https://developer.android.com/training/articles/perf-jni">JNI</a>）從 Dart 調用 Java 和 Kotlin。我們改進了效能，並增加了對 Java 異常和 Kotlin 頂級函式的支援。我們還停用了以前的 <a href="https://github.com/dart-lang/native/issues/660">基於 C 的綁定</a>，因為替代的僅 Dart 綁定現在具有相當的效能和功能，並且更易於使用。如需詳細資訊，請查看 <a href="https://pub.dev/packages/jnigen/changelog">變更日誌</a>。</p>
-<p>Objective-C 互操作性建立在 FFI 和我們的 <a href="https://pub.dev/packages/ffigen">FFIgen</a> 生成器（目前處於預覽狀態）的基礎之上。我們增加了對 Objective-C 協定的支援，以及 NSString 等常見類型。如需使用 FFIgen 建立的套件的一個大型範例，請查看 <a href="https://github.com/dart-lang/http/tree/master/pkgs/cupertino_http">cupertino_http</a>，它與 Apple 的 URL 載入系統網路函式庫進行互操作。</p>
-<p>在未來的版本中，我們將繼續投資於進一步的互操作性 - 既包括完成上述函式庫，也包括支援 Swift。請參閱下面的路線圖部分以獲取詳細資訊。</p>
-<h3 id="pub-dev-套件儲存庫"><a href="#pub-dev-套件儲存庫" class="headerlink" title="pub.dev 套件儲存庫"></a>pub.dev 套件儲存庫</h3><p>pub.dev 是我們的套件儲存庫，社群可以在其中分享和查找具有豐富功能的套件。我們在此處進行了一些改進。首先，我們改進了對 <a href="https://dart.dev/tools/pub/pubspec#topics">主題</a> 的支援：套件作者可以使用此機制使用套件所屬的類別（例如 Widget）對其套件進行標記。我們現在 <a href="https://github.com/dart-lang/pub-dev/blob/master/doc/topics.yaml">彙整</a> 涵蓋相同類別但使用略微不同的措辭的常見主題（例如 Widget 與 Widget）。</p>
-<p>其次，我們新增了一個新的 pub unpack 命令。這提供了一種在檔案系統中快速下載套件的簡單方法。例如，如果您要運行套件的範例程式並在您的本地機器上運行程式，則可以使用它：</p>
+<h3 id="Dart-3-5-的新功能"><a href="#Dart-3-5-的新功能" class="headerlink" title="Dart 3.5 的新功能"></a>Dart 3.5 的新功能</h3><p>Dart 3.5 具有以下討論的許多新功能。核心函式庫 API 也有一些較小的變更，以及大約 10 個非常小的重大變更，這些變更涵蓋在 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#350">變更日誌</a> 中。</p>
+<h3 id="Web-平台和-JS-互操作性"><a href="#Web-平台和-JS-互操作性" class="headerlink" title="Web 平台和 JS 互操作性"></a>Web 平台和 JS 互操作性</h3><p>在 Dart 3.4 和 Flutter 3.22 中，我們引入了對 <a href="https://docs.flutter.dev/platform-integration/web/wasm">將 Flutter Web 應用程式編譯為 WebAssembly</a> 的支援。編譯為 WebAssembly 需要使用我們新的 <a href="https://dart.dev/interop/js-interop">Dart 到 JS 互操作模型</a>，該模型之前處於預覽階段。從 Dart 3.5 開始，它現在被認為是穩定且完整的，我們已將 <a href="https://pub.dev/packages/web">package:web</a>（它取代了舊的 dart:html 函式庫）中的瀏覽器 API 繫結更新到 1.0 版。</p>
+<p>我們鼓勵所有 Web 套件作者 <a href="https://dart.dev/interop/js-interop/package-web">遷移到 package:web</a>。我們計劃在下一個 Dart 版本中棄用舊的互操作 API（dart:html、dart:js、package:js 等），並在明年晚些時候完全停止使用它們。我們邀請您在 <a href="https://github.com/dart-lang/sdk/issues/56358">追蹤議題</a> 中就此計劃提供回饋。我們還計劃更新 pub.dev 套件管理器上的 <a href="https://pub.dev/help/scoring">評分</a>，以獎勵支援新互操作模型的 Web 套件。</p>
+<p>我們還加入了 <a href="https://dart.dev/tools/linter-rules/invalid_runtime_check_with_js_interop_types">一個新的 lint</a>，它驗證您的程式碼是否正確使用了新的 JS 互操作類型。我們建議您在遷移 Web 套件時將此 lint 加入到您的 analysis_options.yaml 檔案中。</p>
+<h3 id="Dart-原生互操作性"><a href="#Dart-原生互操作性" class="headerlink" title="Dart 原生互操作性"></a>Dart 原生互操作性</h3><p>我們還對原生互操作性進行了一系列改進，它支援從 Dart 直接調用到 C、Java、Kotlin、Objective-C 和 Swift。</p>
+<p>C 互操作由我們的 <a href="https://dart.dev/interop/c-interop">FFI</a>（外部函式介面）函式庫啟用，我們已經支援了幾年。在 Dart 3.5 中，我們進行了漸進式改進，以支援將 Dart TypedData 物件的指標直接傳遞給 FFI，避免必須先將記憶體從 Dart 複製到原生（<a href="https://github.com/dart-lang/sdk/issues/44589">詳細資訊</a>）。</p>
+<p>Java 和 Kotlin 互操作由 <a href="https://pub.dev/packages/jnigen">JNIgen</a> 生成器（目前處於預覽階段）啟用，它自動建立繫結程式碼，以透過 Java 原生介面 (<a href="https://developer.android.com/training/articles/perf-jni">JNI</a>) 從 Dart 調用到 Java 和 Kotlin。我們改進了效能，並加入了對 Java 異常和 Kotlin 頂層函式的支援。我們還停止了以前的 <a href="https://github.com/dart-lang/native/issues/660">基於 C 的繫結</a>，因為現在替代的僅 Dart 繫結具有相當的效能和功能，並且更容易使用。有關詳細資訊，請參閱 <a href="https://pub.dev/packages/jnigen/changelog">變更日誌</a>。</p>
+<p>Objective-C 互操作建立在 FFI 和我們的 <a href="https://pub.dev/packages/ffigen">FFIgen</a> 生成器（目前處於預覽階段）之上。我們加入了對 Objective-C 協議和常見類型（例如 NSString）的支援。有關使用 FFIgen 建立的套件的大型範例，請參閱 <a href="https://github.com/dart-lang/http/tree/master/pkgs/cupertino_http">cupertino_http</a>，它與 Apple 的 URL Loading System 網路函式庫互操作。</p>
+<p>我們將繼續在未來的版本中進一步投資互操作性——無論是在完成上述函式庫方面，還是在支援 Swift 方面。有關詳細資訊，請參閱下面的路線圖部分。</p>
+<h3 id="Pub-dev-套件儲存庫"><a href="#Pub-dev-套件儲存庫" class="headerlink" title="Pub.dev 套件儲存庫"></a>Pub.dev 套件儲存庫</h3><p>Pub.dev 是我們的套件儲存庫，社群可以在其中分享和找到具有豐富功能的套件。我們在這裡進行了一些改進。首先，我們改進了對 <a href="https://dart.dev/tools/pub/pubspec#topics">主題</a> 的支援：套件作者可以透過這種機制使用它們所屬的類別（例如 widget）來標記他們的套件。我們現在 <a href="https://github.com/dart-lang/pub-dev/blob/master/doc/topics.yaml">整合</a> 涵蓋相同類別但措辭略有不同的常見主題（例如 widgets vs widget）。</p>
+<p>其次，我們加入了一個新的 <code>pub unpack</code> 命令。這提供了一種快速簡便的方法來將套件下載到您的檔案系統。例如，如果您想在本地機器上運行套件的範例程式，可以使用此命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub unpack path</span><br><span class="line">Downloading path 1.9.0 to `./path-1.9.0`...</span><br><span class="line"></span><br><span class="line">$ cd path-1.9.0/example/</span><br><span class="line"></span><br><span class="line">$ dart run example.dart</span><br><span class="line">Current path style: posix</span><br><span class="line">Current process path: /Users/mit/tmp/path-1.9.0/example</span><br></pre></td></tr></table></figure>
 
-<p>第三，我們新增了一個新的 pub downgrade –tighten 命令。這可以用於檢查套件相依關聯中的所有版本約束。運行時，它會將下限約束更新到 pub 成功進行解析的最低版本。</p>
-<h3 id="Dart-路線圖更新"><a href="#Dart-路線圖更新" class="headerlink" title="Dart 路線圖更新"></a>Dart 路線圖更新</h3><p>除了上述已完成的功能外，我們還在許多領域進行了工作，以使我們的長期路線圖取得進展。</p>
-<h3 id="大型-Monorepo-的-IDE-和分析器效能"><a href="#大型-Monorepo-的-IDE-和分析器效能" class="headerlink" title="大型 Monorepo 的 IDE 和分析器效能"></a>大型 Monorepo 的 IDE 和分析器效能</h3><p>「Monorepo」是對一組相關套件和應用程式進行建構的常見方式，將所有程式碼都放在同一個儲存庫中，例如 Flutter 的 <a href="https://github.com/flutter/packages/tree/main">套件儲存庫</a>。Monorepo 不僅僅是將所有程式碼「放在一起」的便利性，而且還是確保儲存庫中單獨的套件和應用程式相互相容的關鍵工具。</p>
-<p>我們從在大型 Monorepo 中工作的開發人員那裡收到了持續的回饋，表示我們的工具（特別是分析器）的效能可能存在缺陷。我們對這些問題的分析表明，根本問題在於我們最終會為每個套件及其 <strong>所有</strong> 相依關聯載入多個重疊的分析內容，導致儲存庫中每個套件的多次分析同時在記憶體中。我們認為根本的解決方案是在此類儲存庫中建立每個相依關聯版本的單一、共用解析，並且正在透過一個稱為 <a href="https://github.com/dart-lang/sdk/issues/53875">工作區</a> 的新 pub 功能來實現此功能。我們將在下一個 Dart 版本中分享更多關於此功能的資訊，但現在您可以先看看它是如何 <a href="https://github.com/flutter/engine/pull/54157/files">最近應用於 Flutter 引擎儲存庫的</a>。</p>
-<h3 id="pub-dev-套件儲存庫-1"><a href="#pub-dev-套件儲存庫-1" class="headerlink" title="pub.dev 套件儲存庫"></a>pub.dev 套件儲存庫</h3><p>pub.dev 套件儲存庫的使用者長期以來一直要求改進 <a href="https://github.com/dart-lang/pub-dev/issues/2714">每個套件的使用次數&#x2F;下載次數</a> 指標。這對於套件作者來說很有幫助，可以作為他們的工作產生多少使用者效益的信號，對於套件使用者來說也有幫助，可以作為其他開發人員在使用哪些套件的信號。我們很高興地分享我們在這個功能方面取得了良好的進展，並且希望在年底前提供預覽版本。</p>
-<h3 id="Dart-原生互操作性-1"><a href="#Dart-原生互操作性-1" class="headerlink" title="Dart 原生互操作性"></a>Dart 原生互操作性</h3><p>對於使用 JNIgen 的 Java 和 Kotlin 互操作性，我們預計在未來的兩個季度內完成核心支援，並從實驗性版本升級到穩定版本 1.0。如需詳細資訊，請參閱 <a href="https://github.com/orgs/dart-lang/projects/69/">JNIgen 追蹤器</a>。對於 ObjectiveC 互操作性，我們也有類似的目標；請參閱 <a href="https://github.com/orgs/dart-lang/projects/87/">Objective-C 追蹤器</a>。</p>
-<p>接下來，我們將調查與 Swift 程式碼的直接互操作性。初步實驗看起來很有前景，我們希望在明年年初新增實驗性支援。</p>
-<h3 id="原生互操作性和原生原始碼的捆綁"><a href="#原生互操作性和原生原始碼的捆綁" class="headerlink" title="原生互操作性和原生原始碼的捆綁"></a>原生互操作性和原生原始碼的捆綁</h3><p>在許多情況下，直接互操作性用於調用存在於作業系統中的 API，這意味著這些 API 始終在這些主機平台上可用。但是，在某些情況下，Dart 正在與其進行互操作的程式碼是原生 <em>原始碼</em>，而不是直接包含在主機上，這對使用此互操作性的套件作者來說是一個實際挑戰：如何將這些原生原始碼捆綁和構建，而無需將大量手動步驟推送到套件的使用者？為了支援這一點，我們正在探索一個 <a href="https://github.com/dart-lang/sdk/issues/50565">原生資產系統</a>，它可以支援發佈包含原生原始碼的 Dart 套件，以及一個標準化協定，允許 dart 和 flutter CLI 工具自動化這些原始碼的構建和捆綁。我們設想這將啟用一組新的互操作性用例，同時為使用依賴於原生原始碼的套件的開發人員提供簡化的使用者體驗。</p>
-<h3 id="Dart-語言和宏"><a href="#Dart-語言和宏" class="headerlink" title="Dart 語言和宏"></a>Dart 語言和宏</h3><p>Dart 語言和編譯器團隊目前的大部分時間都花在了非常大型的語言功能宏的進展上，我們在 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 部落格文章</a> 中介紹了這個功能。正如我們當時所說，這是一項巨大的工作，有可能會導致我們的一些核心用例（例如熱重載）出現回歸，因此我們正在採取徹底的方法，並且可能需要幾個季度的進一步工作才能分享下一步的詳細資訊。</p>
-<p>除了宏之外，我們還同時探索了許多其他的較小的語言功能，如 <a href="https://github.com/orgs/dart-lang/projects/90/views/1">Dart 語言漏斗</a> 中所記錄的那樣。</p>
-<p>從去年秋天開始，我們一直在重寫 Dart 格式化程式。舊的設計在過去的幾年裡運行良好，但是隨著 Flutter 的成功，我們希望遷移到 <a href="https://github.com/dart-lang/dart_style/issues/1253">一種新的風格</a>，以便更好地適應 Flutter 使用者經常編寫的聲明式程式碼類型。舊的格式化程式無法產生那種輸出。重寫工作即將完成，並且很快就會發佈。如果您想嘗試一下，請使用 experiment 標誌 tall-style（<a href="https://dart.dev/tools/experiment-flags">標誌說明</a>）。如果您看到奇怪的輸出，歡迎您 <a href="https://github.com/dart-lang/dart_style/issues">提供回饋</a>。</p>
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這就是我們今天要分享的內容。我們歡迎您提供回饋，無論是關於討論的路線圖項目，還是關於 Dart 3.5 中的新功能，這些功能可以在 <a href="https://dart.dev/get-dart">Dart.dev</a> 上獲得，或者捆綁在今天的 <a href="https://medium.com/flutter/whats-new-in-flutter-3-24-6c040f87d1e4">Flutter 3.24 版本</a> 中。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ca36259fa2f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-5-6ca36259fa2f">宣布 Dart 3.5 以及 Dart 路線圖更新</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p>undefined</p>
+<p>第三，我們加入了一個新的 <code>pub downgrade --tighten</code> 命令。這可以用於檢查套件相依中的所有版本限制。運行時，它會將較低的限制更新為 pub 能夠解析的最低版本。</p>
+<h3 id="Dart-路線圖更新"><a href="#Dart-路線圖更新" class="headerlink" title="Dart 路線圖更新"></a>Dart 路線圖更新</h3><p>除了上述已完成的功能外，我們還在許多領域開展了工作，以推進我們的長期路線圖。</p>
+<h3 id="大型-monorepos-的-IDE-和分析器效能"><a href="#大型-monorepos-的-IDE-和分析器效能" class="headerlink" title="大型 monorepos 的 IDE 和分析器效能"></a>大型 monorepos 的 IDE 和分析器效能</h3><p>「monorepo」是一種常見的程式碼結構方式，用於將一組相關套件和應用程式的程式碼放在單個儲存庫中，例如 Flutter 的 <a href="https://github.com/flutter/packages/tree/main">套件儲存庫</a>。monorepo 不僅僅是為了方便將所有程式碼「放在一起」，而且還可以作為確保儲存庫中的各個套件和應用程式相互相容的關鍵工具。</p>
+<p>我們一直收到在大型 monorepos 中工作的開發人員的回饋，認為我們的工具，尤其是分析器的效能可能不足。我們對這些問題的分析表明，根本原因是我們最終為每個套件及其所有相依載入了多個重疊的分析上下文，導致記憶體中同時存在多個套件分析副本。我們相信根本的解決方案是在此類儲存庫中建立每個相依版本的單個共用解析，並正在透過一個名為 <a href="https://github.com/dart-lang/sdk/issues/53875">workspaces</a> 的新 pub 功能來開發此功能。我們將在下一個 Dart 版本中分享更多關於此的資訊，但現在您可以先看看這是如何 <a href="https://github.com/flutter/engine/pull/54157/files">最近應用</a> 於 Flutter 引擎儲存庫的。</p>
+<h3 id="Pub-dev-套件儲存庫-1"><a href="#Pub-dev-套件儲存庫-1" class="headerlink" title="Pub.dev 套件儲存庫"></a>Pub.dev 套件儲存庫</h3><p>pub.dev 套件儲存庫的使用者長期以來一直要求改進 <a href="https://github.com/dart-lang/pub-dev/issues/2714">每個套件的使用&#x2F;下載</a> 指標。這對於套件作者來說，可以作為一個指標，表明有多少使用者從他們的工作中受益；對於套件使用者來說，可以作為一個指標，表明其他開發人員正在使用哪些套件。我們很高興地與大家分享，我們在這項功能上取得了良好的進展，並希望在年底前推出預覽版。</p>
+<h3 id="Dart-原生互操作"><a href="#Dart-原生互操作" class="headerlink" title="Dart 原生互操作"></a>Dart 原生互操作</h3><p>對於使用 JNIgen 的 Java 和 Kotlin 互操作，我們預計將在接下來的兩個季度內完成核心支援，並從實驗版升級到穩定版 1.0。有關詳細資訊，請參閱 <a href="https://github.com/orgs/dart-lang/projects/69/">JNIgen 追蹤器</a>。對於 ObjectiveC 互操作，我們有一個類似的目標；請參閱 <a href="https://github.com/orgs/dart-lang/projects/87">Objective-C 追蹤器</a>。</p>
+<p>接下來，我們正在研究與 Swift 程式碼的直接互操作。初步實驗看起來很有希望，我們希望在明年年初加入實驗性支援。</p>
+<h3 id="原生互操作和原生程式碼的捆綁"><a href="#原生互操作和原生程式碼的捆綁" class="headerlink" title="原生互操作和原生程式碼的捆綁"></a>原生互操作和原生程式碼的捆綁</h3><p>在許多情況下，直接互操作用於調用到作業系統中存在的 API，這意味著這些 API 在這些主機平台上始終可用。但是，在某些情況下，Dart 互操作的程式碼是主機上未直接包含的原生<em>程式碼</em>，這對使用此類互操作的套件作者提出了一個實際挑戰：如何在不將大量手動步驟推給套件使用者的情況下捆綁和構建該原生程式碼？為了支援這一點，我們正在探索一個 <a href="https://github.com/dart-lang/sdk/issues/50565">原生資源系統</a>，它可以支援發佈包含原生程式碼的 Dart 套件，以及一個標準化協議，以啟用 dart 和 flutter CLI 工具自動構建和捆綁該程式碼。我們預計這將啟用一組新的互操作使用案例，同時為使用依賴原生程式碼的套件的開發人員提供簡單的使用者體驗。</p>
+<h3 id="Dart-語言和巨集"><a href="#Dart-語言和巨集" class="headerlink" title="Dart 語言和巨集"></a>Dart 語言和巨集</h3><p>Dart 語言和編譯器團隊目前的大部分時間都花在推進大型語言功能巨集上，我們在 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 部落格文章</a> 中介紹了巨集。正如我們當時所說，這是一項巨大的任務，可能會在我們的一些核心使用案例（例如熱重載）中造成回歸，因此我們正在採取一種徹底的方法，並且在我們能夠分享下一步的詳細資訊之前，可能需要幾個季度的進一步工作。</p>
+<p>除了巨集之外，我們還同時探索許多其他較小的語言功能，如 <a href="https://github.com/orgs/dart-lang/projects/90/views/1">Dart 語言漏斗</a> 中所述。</p>
+<p>自去年秋季以來，我們一直在重寫 Dart 格式化程式。舊的設計在很多年裡都運行良好，但隨著 Flutter 的成功，我們希望轉向 <a href="https://github.com/dart-lang/dart_style/issues/1253">一種新風格</a>，這種風格更適合 Flutter 使用者經常撰寫的宣告式程式碼。舊的格式化程式無法產生這種輸出。重寫工作接近完成，很快就會發佈。如果您想試用它，請傳遞實驗旗標 tall-style（<a href="https://dart.dev/tools/experiment-flags">旗標說明</a>）。如果您看到奇怪的輸出，歡迎提供 <a href="https://github.com/dart-lang/dart_style/issues">回饋</a>。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這就是我們今天要分享的全部內容。我們歡迎您提供回饋，無論是關於討論的路線圖項目，還是關於 Dart 3.5 中的新功能，這些功能可以從 <a href="https://dart.dev/get-dart">Dart.dev</a> 獲取，或捆綁在今天的 <a href="https://medium.com/flutter/whats-new-in-flutter-3-24-6c040f87d1e4">Flutter 3.24 版本</a> 中。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ca36259fa2f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-5-6ca36259fa2f">宣布 Dart 3.5 和 Dart 路線圖更新</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
 
     </div>
 
@@ -261,8 +260,8 @@
       <i class="fa fa-chevron-left"></i> 【文章翻譯】Getting started with Flutter GPU
     </a></div>
       <div class="post-nav-item">
-    <a href="/archives/bf2dc4e6.html" rel="next" title="【文章翻譯】Prospera: using Flutter to bring AI to the frontline of sales">
-      【文章翻譯】Prospera: using Flutter to bring AI to the frontline of sales <i class="fa fa-chevron-right"></i>
+    <a href="/archives/4fcc687c.html" rel="next" title="【文章翻譯】Google Summer of Code 2024 Results">
+      【文章翻譯】Google Summer of Code 2024 Results <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -322,7 +321,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%B8%83-Dart-3-5-%E4%BB%A5%E5%8F%8A-Dart-%E8%B7%AF%E7%B7%9A%E5%9C%96%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">宣布 Dart 3.5 以及 Dart 路線圖更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-5-%E4%B8%AD%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 3.5 中的新功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-%E5%B9%B3%E5%8F%B0%E5%92%8C-JS-%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">Web 平台和 JS 互操作性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 原生互操作性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E5%A5%97%E4%BB%B6%E5%84%B2%E5%AD%98%E5%BA%AB"><span class="nav-number">1.4.</span> <span class="nav-text">pub.dev 套件儲存庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E8%B7%AF%E7%B7%9A%E5%9C%96%E6%9B%B4%E6%96%B0"><span class="nav-number">1.5.</span> <span class="nav-text">Dart 路線圖更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B-Monorepo-%E7%9A%84-IDE-%E5%92%8C%E5%88%86%E6%9E%90%E5%99%A8%E6%95%88%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">大型 Monorepo 的 IDE 和分析器效能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E5%A5%97%E4%BB%B6%E5%84%B2%E5%AD%98%E5%BA%AB-1"><span class="nav-number">1.7.</span> <span class="nav-text">pub.dev 套件儲存庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7-1"><span class="nav-number">1.8.</span> <span class="nav-text">Dart 原生互操作性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7%E5%92%8C%E5%8E%9F%E7%94%9F%E5%8E%9F%E5%A7%8B%E7%A2%BC%E7%9A%84%E6%8D%86%E7%B6%81"><span class="nav-number">1.9.</span> <span class="nav-text">原生互操作性和原生原始碼的捆綁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E8%AA%9E%E8%A8%80%E5%92%8C%E5%AE%8F"><span class="nav-number">1.10.</span> <span class="nav-text">Dart 語言和宏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.11.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%B8%83-Dart-3-5-%E5%92%8C-Dart-%E8%B7%AF%E7%B7%9A%E5%9C%96%E6%9B%B4%E6%96%B0"><span class="nav-number">1.</span> <span class="nav-text">宣布 Dart 3.5 和 Dart 路線圖更新</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-5-%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 3.5 的新功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-%E5%B9%B3%E5%8F%B0%E5%92%8C-JS-%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">Web 平台和 JS 互操作性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 原生互操作性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-dev-%E5%A5%97%E4%BB%B6%E5%84%B2%E5%AD%98%E5%BA%AB"><span class="nav-number">1.4.</span> <span class="nav-text">Pub.dev 套件儲存庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E8%B7%AF%E7%B7%9A%E5%9C%96%E6%9B%B4%E6%96%B0"><span class="nav-number">1.5.</span> <span class="nav-text">Dart 路線圖更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B-monorepos-%E7%9A%84-IDE-%E5%92%8C%E5%88%86%E6%9E%90%E5%99%A8%E6%95%88%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">大型 monorepos 的 IDE 和分析器效能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pub-dev-%E5%A5%97%E4%BB%B6%E5%84%B2%E5%AD%98%E5%BA%AB-1"><span class="nav-number">1.7.</span> <span class="nav-text">Pub.dev 套件儲存庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C"><span class="nav-number">1.8.</span> <span class="nav-text">Dart 原生互操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%94%9F%E4%BA%92%E6%93%8D%E4%BD%9C%E5%92%8C%E5%8E%9F%E7%94%9F%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%9A%84%E6%8D%86%E7%B6%81"><span class="nav-number">1.9.</span> <span class="nav-text">原生互操作和原生程式碼的捆綁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E8%AA%9E%E8%A8%80%E5%92%8C%E5%B7%A8%E9%9B%86"><span class="nav-number">1.10.</span> <span class="nav-text">Dart 語言和巨集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.11.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -336,7 +335,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -345,7 +344,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

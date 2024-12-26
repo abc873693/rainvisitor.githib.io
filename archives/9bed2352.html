@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Isolate.run() 更好地管理 IsolateDart 2.19 引入了一個新函數，可以讓您僅用一行代碼即可輕鬆實現併發。   展示新 Isolate.run() 函數速度的基準測試   所有 Dart 程式碼都在 isolate 中運行。是否要實作多個 isolate 以在 Dart 程式中啟用 併發 取決於您。如何實作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Better isolate management with Isolate.run()">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/9bed2352.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Isolate.run() 更好地管理 IsolateDart 2.19 引入了一個新函數，可以讓您僅用一行代碼即可輕鬆實現併發。   展示新 Isolate.run() 函數速度的基準測試   所有 Dart 程式碼都在 isolate 中運行。是否要實作多個 isolate 以在 Dart 程式中啟用 併發 取決於您。如何實作">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/597/0*Bt-V4nlGjNKquFhK">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/613/0*eCogwJXZtpbg5Hbq.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=547ef3d6459b">
+<meta property="article:published_time" content="2023-01-24T11:46:19.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:37:01.221Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="asynchronous-programming">
+<meta property="article:tag" content="concurrency">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/597/0*Bt-V4nlGjNKquFhK">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/9bed2352.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Better isolate management with Isolate.run() | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9bed2352.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Better isolate management with Isolate.run()
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-24 19:46:19" itemprop="dateCreated datePublished" datetime="2023-01-24T19:46:19+08:00">2023-01-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:37:01" itemprop="dateModified" datetime="2024-12-20T02:37:01+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-Isolate-run-更好地管理-Isolate"><a href="#使用-Isolate-run-更好地管理-Isolate" class="headerlink" title="使用 Isolate.run() 更好地管理 Isolate"></a>使用 Isolate.run() 更好地管理 Isolate</h2><p>Dart 2.19 引入了一個新函數，可以讓您僅用一行代碼即可輕鬆實現併發。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/597/0*Bt-V4nlGjNKquFhK" />
+<figcaption>展示新 Isolate.run() 函數速度的基準測試</figcaption>
+</figure>
+
+<p>所有 Dart 程式碼都在 isolate 中運行。是否要實作多個 isolate 以在 Dart 程式中啟用 <a href="https://dart.dev/guides/language/concurrency">併發</a> 取決於您。<em>如何</em>實作多個 isolate 則取決於 Dart 團隊，在 Dart 2.19 中，我們對此流程進行了巨大的升級，我們很興奮能與大家分享。來認識一下 <code>Isolate.run()</code> 吧！</p>
+<p><code>run()</code> 將設定和管理 isolate 的所有複雜性完全抽象成單個函數調用。使用一些基本元素來使用 isolate 已經有一段時間了。但是，即使 isolate 有了所有<a href="https://medium.com/dartlang/dart-2-15-7e7a598e508a#:~:text=publishers%2C%20and%20more.-,Fast%20concurrency%20with%20worker%20isolates,-Just%20about%20all">最近的效能改進</a>，這個過程充其量也只是繁瑣的，最糟糕的情況下則容易出錯。</p>
+<p>為了讓您了解 <code>run()</code> 的改進程度，本文將逐步分解先前使用低階基本元素建構功能的方法。然後，我們將其與使用 <code>Isolate.run()</code> 進行對比，並向您展示它在內部的運作方式。即使您以前從未使用過 isolate，我們也相信 <code>run()</code> 會讓您興奮地想要嘗試它們！</p>
+<h3 id="Isolate"><a href="#Isolate" class="headerlink" title="Isolate"></a>Isolate</h3><p>Isolate 是一個相當簡單的概念。<a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">Isolate</a> 本質上是 Dart 中的單個執行緒。它們讓您可以並行執行部分程式碼。您可以啟動新的並行執行（數量不限），並直接從 <code>main</code>（主執行緒或 <a href="https://dart.dev/guides/language/concurrency#the-main-isolate">main isolate</a>）告訴它們要做什麼。Isolate 不共享記憶體；相反，它們透過來回傳遞訊息來進行通訊。因此，您不必擔心典型的多執行緒問題，例如競爭條件或互斥鎖和鎖。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/613/0*eCogwJXZtpbg5Hbq.png" />
+</figure>
+
+<p>聽起來很棒！但是如何使用它們呢？在 <code>Isolate.run()</code> 之前，事情變得棘手起來。</p>
+<p><a href="https://api.dart.dev/stable/dart-isolate/Isolate-class.html">Isolate API</a> 由低階基本元素組成，這些基本元素提供了廣泛的功能。當您需要自訂 isolate 的功能時，這種粒度非常棒。但是，當 <em>必須</em> 使用 isolate 時，這種粒度就不那麼好了。特別是因為幾乎所有 isolate 的使用案例都需要相同的設定和管理基本配置。這基本上意味著要將每個實作細節都公開給 Dart 的使用者自行處理。</p>
+<p>讓我們來看看典型的 isolate 設定，以更好地理解 <code>Isolate.run()</code> 所解決的繁瑣過程。</p>
+<h3 id="使用-Isolate（之前）"><a href="#使用-Isolate（之前）" class="headerlink" title="使用 Isolate（之前）"></a>使用 Isolate（之前）</h3><p>您可以將 <a href="https://api.dart.dev/stable/dart-isolate/Isolate/spawn.html">Isolate.spawn()</a> 視為 isolate 的舊起點。Flutter 的 <code>compute</code> 函數就是建立在 <code>spawn()</code> 之上的。它接受一個方法作為其入口點參數，以及該方法的任何參數，以及 isolate 本身的其他配置。過去，此入口點只能是頂級或靜態方法。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Isolate.spawn(_readAndParseJson, filename);</span><br></pre></td></tr></table></figure>
+
+<p>Isolate 建立完成！開玩笑的。還差得遠呢。</p>
+<p>調用 <code>spawn</code> 不會返回任何實際可用的東西。它只返回一個 isolate 物件，該物件只是確認 isolate 已啟動。</p>
+<p>除了建立時傳遞的初始參數之外，main isolate 和 spawned isolate（由 <code>spawn</code> 建立的 isolate）無法直接通訊。實際上，即使您不需要從 spawned isolate 返回任何計算結果，您仍然需要某種驗證來確認計算成功，因此您總是需要返回一條訊息。</p>
+<p>為了啟用通訊，您必須設定埠。在調用 <code>spawn</code> 之前，您需要建立一個 <code>ReceivePort</code> 物件。<code>ReceivePort</code> 物件的 <code>sendPort</code> 成員作為 <code>spawn</code> 的另一個參數傳遞給 spawned isolate。</p>
+<p>這意味著您傳遞給 <code>spawn</code> 的函數必須 <em>專門</em> 配置為使用該 <code>sendPort</code> 執行某些操作。換句話說，您不能僅將現有函數與 isolate 一起使用。因此，您不要將僅讀取和解析 JSON 檔案的常規函數傳遞給 <code>spawn</code>，而是建立如下內容：</p>
+<p>您的專用、isolate 友好型 JSON 解碼函數可以簡單地「返回結果」，然後就完成了，對嗎？不完全是。結果需要透過 <code>responsePort</code> 傳送。這就是 isolate 與埠通訊的方式。您可以使用另一個基本元素 <a href="https://api.dart.dev/stable/dart-isolate/Isolate/exit.html">Isolate.exit()</a> 來有效地返回結果並同時關閉 spawned isolate：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Isolate.exit(responsePort, result);</span><br></pre></td></tr></table></figure>
+
+<p><code>exit()</code> 函數將儲存 spawned isolate 中訊息的記憶體 <em>傳輸</em> 到 main isolate（而不是複製它），並安全地關閉 isolate。</p>
+<p>讓我們把這些都串在一起。由於此範例中的 <code>result</code> 是解析的 JSON，您可能想要稍微解構它才能實際使用它。為了程式碼的簡潔性，我們應該將建立 <code>receivePort</code> 和 isolate 並等待它們的回應的三行程式碼放在它們自己的函數中，而不是直接放在 <code>main()</code> 中。</p>
+<p>正在完成的工作相對簡單。正是實作細節的暴露讓它 <em>感覺</em> 起來很複雜，例如用於訊息傳遞的埠，以及需要一個專用函數來處理埠，而該函數與 isolate 無關。</p>
+<h3 id="錯誤處理"><a href="#錯誤處理" class="headerlink" title="錯誤處理"></a>錯誤處理</h3><p>到目前為止的範例 <em>仍然</em> 不是一個真正的「完整」、可投入生產的實作。如果您不做任何錯誤處理，那將對您自己不利，但它通常在已經相當多的流程中被遺忘為一個額外的步驟。例如，如果沒有任何錯誤處理，未捕獲的異步錯誤導致 isolate 崩潰，您將不知道導致錯誤的原因，甚至不知道 <em>發生了什麼事</em>。</p>
+<p>涵蓋 isolate 的所有錯誤處理可能性將會很廣泛，但通常需要對程式碼進行一些額外的補充。</p>
+<p>您至少可以將 <code>errorsAreFatal</code>、<code>onExit</code> 和 <code>onError</code> 參數加入到 <code>spawn</code> 調用中：</p>
+<p>這可以確保即使 spawned isolate 在沒有傳送結果的情況下終止，或者發生任何未捕獲的錯誤，<code>resultPort</code> 都會收到一條訊息。將錯誤設定為致命意味著未捕獲的錯誤會退出 isolate 作為安全預防措施，以確保它一定會終止。</p>
+<p><code>onExit</code> 參數使 isolate 在退出時向埠傳送 <code>null</code>。<code>onError</code> 參數使未捕獲的錯誤向埠傳送兩個字串的列表（錯誤和堆疊追蹤的 <code>toString</code>）。</p>
+<p>重複使用結果埠可以避免建立更多埠，因此您只需在一个地方查找訊息。但這也意味著您需要區分 <code>onExit</code> 和 <code>onError</code> 訊息與結果值。在這裡，我們假設 JSON 必須是一個 <code>Map</code>，因此它不能是列表或 <code>null</code>。否則，您還必須將結果包裝在可以識別的內容中。您必須在埠訊息之上建立一個（微不足道的）訊息協定。</p>
+<p>除此之外，您還可以檢查回應中的特定錯誤。其中一種情況是檢查 <code>resultPort</code> 是否為 <code>null</code>，這意味著 isolate 在沒有傳送結果的情況下終止：</p>
+<p>另一種情況是檢查結果是否為列表，這意味著發生了未捕獲的錯誤：</p>
+<p>然後，最後，處理實際的結果：</p>
+<p>無論如何，您都希望將 <code>spawn</code> 放在 <code>try</code> 塊中，以檢查將入口點傳送到新的 isolate 是否失敗。如果失敗了，結果埠將不會收到任何訊息，並且需要關閉：</p>
+<p>提供最基本的錯誤處理可以確保結果埠始終關閉，並且 *<code>spawnAndReceieve</code> 始終完成，無論 spawned isolate 如何退出。您還可以做得 <em>更好</em>，例如，透過捕獲錯誤和堆疊追蹤並將它們作為實際物件傳送回去，而不僅僅是像 <code>onError</code> 處理程式那樣的字串。</p>
+<p>錯誤處理顯然會引入很多變化，以及決定如何處理它以及要考慮哪些因素的心理開銷。可以理解的是，它通常被忽略在基本 isolate 設定之外。</p>
+<h3 id="使用-Isolate（之後）"><a href="#使用-Isolate（之後）" class="headerlink" title="使用 Isolate（之後）"></a>使用 Isolate（之後）</h3><p><code>Isolate.run()</code> 使用您以前必須自己使用的基本元素，在單個函數調用中設定 isolate 實作的所有部分：</p>
+<p>沒有埠、沒有單獨的生成、退出或錯誤處理，也沒有特殊的返回結構。也許最好的部分是，您傳遞給 <code>run</code> 的入口點可以是任何現有函數：</p>
+<p>此範例顯示了一個 <em>異步</em> 函數，但 <code>run</code> 可以同樣輕鬆地執行 <em>同步</em> 函數。<code>run</code> 函數本身始終異步返回，這才是最重要的。</p>
+<p>入口點也可以是 <em>函數表達式</em>，直接在您調用 <code>run</code> 的位置內聯編寫。Isolate 和在其上編寫的任何更高級別的 API 不再局限於僅運行靜態或頂級函數。</p>
+<p>不再需要額外的訊息參數，您可以避免在列表等資料結構中打包和解包參數。</p>
+<p>您根本不需要考慮太多錯誤處理。<code>run</code> 函數結合了本地和遠端錯誤捕獲、處理和跨 isolate 通訊，並將結果公開為單個普通的（異步）錯誤，您可以在標準的 <code>try</code>&#x2F;<code>catch</code> 中捕獲它。您可以忘記 isolate，並將其視為普通的函數。</p>
+<p><code>Isolate.run()</code> 可以讓程式碼更加簡潔和符合人體工程學。Flutter 的 <code>compute</code> 函數甚至也轉而使用 <code>run</code> 而不是 <code>spawn</code>！</p>
+<h3 id="Isolate-run-內部"><a href="#Isolate-run-內部" class="headerlink" title="Isolate.run() 內部"></a>Isolate.run() 內部</h3><p>看看 <a href="https://api.dart.dev/dev/3.0.0-125.0.dev/dart-isolate/Isolate/run.html#implementation:~:text=isolate%20for%20debugging.-,Implementation,-%40Since(%222.19%22">run</a> 的實作。它深入研究了所有與 isolate 相關的低階 API（這在以前是您的工作），以構建一個「完美」、全面的 isolate 設定。它接受要執行的 <code>computation</code> 方法，並設定所有埠及其返回值，以考慮 isolate 之間的有效訊息傳遞。</p>
+<p>對每個潛在情況都進行了 <em>徹底的</em> 錯誤處理。<code>run</code> 函數會檢查 isolate 是否在完成計算之前就已終止。如果計算拋出錯誤，則 isolate 將終止，並將相同的錯誤拋出到 main isolate。</p>
+<p>如果發生未捕獲的異步錯誤，則 isolate 將終止，並將錯誤異步報告給 main isolate。如果 main isolate 首先終止，則 spawned isolate 將終止，並將情況視為未捕獲的異步錯誤。</p>
+<p>最後，<code>run</code> 總是使用 <code>exit</code> 來安全地關閉。這意味著資料可以有效地在 isolate 之間傳輸，而無需實際複製它。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p><code>run</code> 函數非常適合啟動一個計算並等待結果。如果您想為 <code>run</code> 未涵蓋的內容（例如可以多次傳送和接收訊息的 <a href="https://github.com/dart-lang/samples/blob/master/isolates/bin/long_running_isolate.dart">長時間運行的 isolate</a>）建構自己的 isolate 設定，則基本元素仍然可用。但是，在大多數情況下，應該使用單個 <code>run</code> 語句替換 <code>spawn</code> 及其所有支援配置，而不是任何其他配置。</p>
+<p>如果您在 <code>run</code> 之前從未嘗試過 isolate 管理，那麼很難相信所有這些功能以前都必須由使用者來實作！<code>Isolate.run()</code>（在 Dart 2.19 和 Flutter 3.7 中可用）使程式碼更加符合人體工程學，並使 isolate 更易於使用。您將如何利用 <code>run</code> 節省的時間呢？</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=547ef3d6459b" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/better-isolate-management-with-isolate-run-547ef3d6459b">使用 Isolate.run() 更好地管理 Isolate</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/asynchronous-programming/" rel="tag"># asynchronous-programming</a>
+              <a href="/tags/concurrency/" rel="tag"># concurrency</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/45b0289c.html" rel="prev" title="【文章翻譯】What’s new in Flutter 3.7">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】What’s new in Flutter 3.7
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/50409cfb.html" rel="next" title="【文章翻譯】Announcing the Flutter News Toolkit">
+      【文章翻譯】Announcing the Flutter News Toolkit <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Isolate-run-%E6%9B%B4%E5%A5%BD%E5%9C%B0%E7%AE%A1%E7%90%86-Isolate"><span class="nav-number">1.</span> <span class="nav-text">使用 Isolate.run() 更好地管理 Isolate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Isolate"><span class="nav-number">1.1.</span> <span class="nav-text">Isolate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Isolate%EF%BC%88%E4%B9%8B%E5%89%8D%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">使用 Isolate（之前）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%8C%AF%E8%AA%A4%E8%99%95%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">錯誤處理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Isolate%EF%BC%88%E4%B9%8B%E5%BE%8C%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">使用 Isolate（之後）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Isolate-run-%E5%85%A7%E9%83%A8"><span class="nav-number">1.5.</span> <span class="nav-text">Isolate.run() 內部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.6.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

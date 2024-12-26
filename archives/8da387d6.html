@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣布 GitHub Actions 支援 DartGitHub Actions 是一個熱門的 GitHub 儲存庫持續整合 (CI) 服務。今天，我們宣布由 Dart 團隊提供的官方 setup-dart action。此 action 支援下載、安裝和設定 Dart SDK，讓您可以在 GitHub Actions 上輕鬆執行 Dar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart support for GitHub Actions">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/8da387d6.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣布 GitHub Actions 支援 DartGitHub Actions 是一個熱門的 GitHub 儲存庫持續整合 (CI) 服務。今天，我們宣布由 Dart 團隊提供的官方 setup-dart action。此 action 支援下載、安裝和設定 Dart SDK，讓您可以在 GitHub Actions 上輕鬆執行 Dar">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*5E8_aBC9TBl9oBUwN3jAJw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*IA24lXOJ0Zy1uwXF">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*tz1_DLk4qI1MpI4z">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Wm1ERed37w-oyoDq">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3d892642104">
+<meta property="article:published_time" content="2021-03-24T07:06:20.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:47:39.836Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="continuous-integration">
+<meta property="article:tag" content="github-actions">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*5E8_aBC9TBl9oBUwN3jAJw.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/8da387d6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart support for GitHub Actions | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8da387d6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart support for GitHub Actions
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-03-24 15:06:20" itemprop="dateCreated datePublished" datetime="2021-03-24T15:06:20+08:00">2021-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:47:39" itemprop="dateModified" datetime="2024-12-18T22:47:39+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣布-GitHub-Actions-支援-Dart"><a href="#宣布-GitHub-Actions-支援-Dart" class="headerlink" title="宣布 GitHub Actions 支援 Dart"></a>宣布 GitHub Actions 支援 Dart</h2><p><a href="https://github.com/features/actions">GitHub Actions</a> 是一個熱門的 GitHub 儲存庫持續整合 (CI) 服務。今天，我們宣布由 Dart 團隊提供的官方 <a href="https://github.com/marketplace/actions/setup-dart-sdk">setup-dart action</a>。此 action 支援下載、安裝和設定 Dart SDK，讓您可以在 GitHub Actions 上輕鬆執行 Dart 建置和測試工作。</p>
+<p>如果您為 pub.dev 製作 Dart 套件，我們鼓勵您使用 GitHub Actions 為您的儲存庫啟用 CI 測試，以便為您（和套件使用者）提供有關套件是否健康的訊號。GitHub Actions 上的 CI 工作對 <a href="https://github.com/pricing">公開儲存庫</a> 是免費的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*5E8_aBC9TBl9oBUwN3jAJw.png" />
+</figure>
+
+<h3 id="介紹-setup-dart"><a href="#介紹-setup-dart" class="headerlink" title="介紹 setup-dart"></a>介紹 setup-dart</h3><p>如果您有一個包含 Dart 應用程式的 GitHub 儲存庫，您只需點擊幾下即可使用 GitHub Actions 和 setup-dart action 啟用 CI 測試。這裡我們有一個名為 <a href="https://github.com/mit-mit/myapp">myapp</a> 的新 GitHub 儲存庫，其中包含使用 Dart 工具產生的小型應用程式的起點，<a href="https://dart.dev/tutorials/server/get-started#3-create-a-small-app">透過執行</a><br><code>dart create --template console-full myapp</code>。</p>
+<p>接下來，打開 GitHub 網頁 UI，然後點擊 <strong>Actions</strong> 標籤：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*IA24lXOJ0Zy1uwXF" />
+</figure>
+
+<p>在介紹下方，您應該會看到一個建議 Dart 儲存庫工作流程的區段：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*tz1_DLk4qI1MpI4z" />
+</figure>
+
+<p>點擊 <strong>設定此工作流程</strong> 按鈕，您將進入 GitHub UI，以新增一個新的 <code>.github/workflow/dart.yml</code> 檔案。這是一個 YAML 檔案，定義了要在儲存庫中執行的 GitHub Actions 工作流程。讓我們回顧一下範本 <a href="https://github.com/dart-lang/characters/blob/master/.github/workflows/test-package.yml">工作流程</a> 檔案建議的每個組成部分。</p>
+<p>首先，我們定義工作流程的名稱，該名稱將顯示在 Actions 管理 UI 中：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Dart</span></span><br></pre></td></tr></table></figure>
+
+<p>接下來，我們定義何時應該執行工作流程（觸發工作流程的<a href="https://docs.github.com/en/actions/learn-github-actions/introduction-to-github-actions">事件</a>）。這裡，工作流程設定為在每次推送到 main 分支或 main 分支的 PR 時執行。我個人發現，當我難以讓工作流程執行時，通常是因為我拼錯了分支名稱。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">main</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">main</span> ]</span><br></pre></td></tr></table></figure>
+
+<p>然後是一個作業列表，每個作業都有一個名稱（這裡是測試）。每個作業都有自己的定義，包括在哪裡執行作業（此作業在 Ubuntu Linux 上執行）以及要執行的步驟：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">test:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br></pre></td></tr></table></figure>
+
+<p>至於具體的測試，我們首先檢出正在測試的儲存庫，然後執行新的 setup-dart action。這會下載並安裝 Dart SDK，然後將 dart CLI 和 pub 全局目录添加到路徑中。這裡我們沒有指定要安裝哪個 Dart SDK，因此 action 將安裝最新的穩定通道 SDK。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">dart-lang/setup-dart@v1</span></span><br></pre></td></tr></table></figure>
+
+<p>然後，我們可以繼續執行我們想要的測試，例如格式化、分析和單元測試：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">安裝相依性</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">dart</span> <span class="string">pub</span> <span class="string">get</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">驗證格式</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">dart</span> <span class="string">format</span> <span class="string">--output=none</span> <span class="string">--set-exit-if-changed</span> <span class="string">.</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">分析專案原始碼</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">dart</span> <span class="string">analyze</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">執行測試</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">dart</span> <span class="string">test</span></span><br></pre></td></tr></table></figure>
+
+<p>有關完整範例，請參閱我們的 <a href="https://github.com/dart-lang/characters/blob/master/.github/workflows/test-package.yml">package:characters 工作流程</a>。</p>
+<h3 id="指定-SDK-版本"><a href="#指定-SDK-版本" class="headerlink" title="指定 SDK 版本"></a>指定 SDK 版本</h3><p>setup-dart action 支援指定您想要安裝的 Dart 版本。這可以採用兩種形式之一：</p>
+<ul>
+<li>特定版本，例如 2.9.0 或 2.12.0–259.12.beta</li>
+<li>來自 <a href="https://dart.dev/get-dart#release-channels">發佈通道</a> 的最新版本，例如 stable 或 beta</li>
+</ul>
+<p>要指定版本，請使用 <code>sdk</code> 參數，直接使用或作為 <a href="https://docs.github.com/en/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix">測試矩陣</a> 的一部分：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">matrix:</span></span><br><span class="line">    <span class="attr">os:</span> [<span class="string">ubuntu-latest</span>, <span class="string">macos-latest</span>, <span class="string">windows-latest</span>]</span><br><span class="line">    <span class="attr">sdk:</span> [<span class="number">2.10</span><span class="number">.0</span>, <span class="string">stable</span>, <span class="string">beta</span>]</span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.os</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">dart-lang/setup-dart@v1.0</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">sdk:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.sdk</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>此矩陣的結果是九個單獨執行的作業：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Wm1ERed37w-oyoDq" />
+</figure>
+
+<p>現在一切都通過了，您可能想要 <a href="https://docs.github.com/en/actions/managing-workflow-runs/adding-a-workflow-status-badge">在您的 README.md 檔案中加入一個狀態徽章</a> 以顯示測試狀態。</p>
+<h3 id="其他解決方案"><a href="#其他解決方案" class="headerlink" title="其他解決方案"></a>其他解決方案</h3><p>GitHub Actions 是持續整合的幾種熱門解決方案之一。其他支援 Dart SDK 的解決方案包括 <a href="https://docs.travis-ci.com/user/languages/dart/">Travis</a>、<a href="https://www.appveyor.com/">AppVeyor</a> 和 <a href="https://documentation.codeship.com/basic/languages-frameworks/dart/">CodeShip</a>。對於 <a href="https://flutter.dev/">Flutter</a> 應用程式的測試，選項包括 Nevercode 的 <a href="https://developer.nevercode.io/docs/building-flutter-apps">Codemagic</a>、<a href="https://cirrus-ci.org/examples/#flutter">Cirrus CI</a> 和 <a href="https://devcenter.bitrise.io/getting-started/getting-started-with-flutter-apps/">Bitrise</a>。Flutter 應用程式的 GitHub Actions 由社群貢獻的 action 啟用，例如 <a href="https://github.com/marketplace/actions/flutter-action">flutter-action</a>。</p>
+<p>目前就這樣。我們希望您喜歡 <a href="https://github.com/marketplace/actions/setup-dart-sdk">Dart 的這個新的 CI 支援</a>，如果您對 setup-dart 有任何回饋或問題，請在 <a href="https://github.com/dart-lang/setup-dart/issues">議題追蹤器</a> 中告知我們。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3d892642104" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-support-for-github-actions-3d892642104">宣布 GitHub Actions 支援 Dart</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/continuous-integration/" rel="tag"># continuous-integration</a>
+              <a href="/tags/github-actions/" rel="tag"># github-actions</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/b6393301.html" rel="prev" title="【文章翻譯】Dart in Google Summer of Code 2021">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart in Google Summer of Code 2021
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/4c254af9.html" rel="next" title="【文章翻譯】Announcing XD to Flutter v2.0!">
+      【文章翻譯】Announcing XD to Flutter v2.0! <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%B8%83-GitHub-Actions-%E6%94%AF%E6%8F%B4-Dart"><span class="nav-number">1.</span> <span class="nav-text">宣布 GitHub Actions 支援 Dart</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8B%E7%B4%B9-setup-dart"><span class="nav-number">1.1.</span> <span class="nav-text">介紹 setup-dart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A-SDK-%E7%89%88%E6%9C%AC"><span class="nav-number">1.2.</span> <span class="nav-text">指定 SDK 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%A1%88"><span class="nav-number">1.3.</span> <span class="nav-text">其他解決方案</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

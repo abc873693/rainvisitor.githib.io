@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 從零到一學習 Flutter，第二部分如何在跨平台行動應用程式的環境中製作複合圖形物件的動畫？加入一位熱衷於概念挖掘者的行列，學習如何將 tween 概念應用於結構化值的動畫，例如長條圖。提供完整的程式碼範例，電池已包含在內。     您如何進入一個新的程式設計領域？實驗顯然是關鍵，學習和模仿更有經驗的同行編寫的程式也是如此。我個人喜歡">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Zero to One with Flutter, Part Two">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/bb02b5b4.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 從零到一學習 Flutter，第二部分如何在跨平台行動應用程式的環境中製作複合圖形物件的動畫？加入一位熱衷於概念挖掘者的行列，學習如何將 tween 概念應用於結構化值的動畫，例如長條圖。提供完整的程式碼範例，電池已包含在內。     您如何進入一個新的程式設計領域？實驗顯然是關鍵，學習和模仿更有經驗的同行編寫的程式也是如此。我個人喜歡">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*OSc2sFHg8KH4ZQR2ymytKg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*kCvpZWFivphnjDnOiIoaIw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*aiUQNf70oukpvNf6sVw3GA.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*dN9og1kRYpRsL-cFIgO23w.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*MuSAOLktwY8bTJdPGuoNqA.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*qKUFM56S-ZonH1amVDDXTw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*YiojxPiaWY7lB5v9iZVgDg.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/300/1*9ObVOKbos4DoQsmsqbMnRQ.gif">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5aa2f06655cb">
+<meta property="article:published_time" content="2017-03-30T22:15:43.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:37:14.014Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="mobile-app-development">
+<meta property="article:tag" content="animation">
+<meta property="article:tag" content="data-visualization">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*OSc2sFHg8KH4ZQR2ymytKg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/bb02b5b4.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Zero to One with Flutter, Part Two | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bb02b5b4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Zero to One with Flutter, Part Two
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-31 06:15:43" itemprop="dateCreated datePublished" datetime="2017-03-31T06:15:43+08:00">2017-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:37:14" itemprop="dateModified" datetime="2024-12-18T15:37:14+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="從零到一學習-Flutter，第二部分"><a href="#從零到一學習-Flutter，第二部分" class="headerlink" title="從零到一學習 Flutter，第二部分"></a>從零到一學習 Flutter，第二部分</h2><p>如何在跨平台行動應用程式的環境中製作複合圖形物件的動畫？加入一位熱衷於概念挖掘者的行列，學習如何將 tween 概念應用於結構化值的動畫，例如長條圖。提供完整的程式碼範例，電池已包含在內。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*OSc2sFHg8KH4ZQR2ymytKg.png" />
+</figure>
+
+<p>您如何進入一個新的程式設計領域？實驗顯然是關鍵，學習和模仿更有經驗的同行編寫的程式也是如此。我個人喜歡用概念挖掘來補充這些方法：試圖從基本原則出發，識別概念，探索它們的優勢，刻意尋求它們的指導。這是一種理性主義的方法，它不能獨立存在，但它會激發智慧，並可能更快地引導您獲得更深層次的見解。</p>
+<p>這是 Flutter 及其 Widget 和 tween 概念介紹的第二部分，也是最後一部分。在 <a href="https://medium.com/dartlang/zero-to-one-with-flutter-43b13fd7b354">第一部分</a> 的結尾，我們得到了一個 Widget 樹，其中包含各種佈局和狀態處理 Widget，</p>
+<ul>
+<li>一個用於使用自訂、動畫感知繪圖程式碼繪製單個長條的 Widget，</li>
+<li>一個用於啟動長條高度動畫變化的浮動動作按鈕 Widget。</li>
+</ul>
+<p>動畫是使用 <code>BarTween</code> 實現的，我聲稱 tween 概念可以擴展以處理更複雜的情況。在第二部分中，我將通過將設計推廣到具有更多屬性的長條，以及包含各種配置的多個長條的長條圖來實現這一主張。</p>
+<p>讓我們從為單個長條添加顏色開始。我們在 <code>Bar</code> 類別的 <code>height</code> 欄位旁邊添加一個 <code>color</code> 欄位，並更新 <code>Bar.lerp</code> 以對它們進行 lerp。這種模式很典型：</p>
+<p><em>通過對應的組件進行 lerp 來在複合值之間進行 lerp。</em></p>
+<p>回想一下第一部分，「lerp」是「線性插值」的縮寫。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e1113c39e49373466143181e9ea2eff2/href">https://medium.com/media/e1113c39e49373466143181e9ea2eff2/href</a></iframe>
+
+<p>請注意這裡靜態 <code>lerp</code> 方法慣用語法的效用。沒有 <code>Bar.lerp</code>、<code>lerpDouble</code>（在道德上是 <code>double.lerp</code>）和 <code>Color.lerp</code>，我們就必須通過為高度建立一個 <code>Tween&lt;double&gt;</code> 和為顏色建立一個 <code>Tween&lt;Color&gt;</code> 來實現 <code>BarTween</code>。這些 tween 將是 <code>BarTween</code> 的實例欄位，由其建構函式初始化，並在其 <code>lerp</code> 方法中使用。我們將在 <code>Bar</code> 類別之外多次複製關於 <code>Bar</code> 屬性的知識。我們的程式碼的維護者可能會覺得這不太理想。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*kCvpZWFivphnjDnOiIoaIw.gif" />
+<figcaption>為長條高度和顏色製作動畫。</figcaption>
+</figure>
+
+
+<p>為了在我們的應用程式中使用彩色長條，我們將更新 <code>BarChartPainter</code> 以從 <code>Bar</code> 獲取長條顏色。在 <code>main.dart</code> 中，我們需要能夠建立一個空的 <code>Bar</code> 和一個隨機的 <code>Bar</code>。我們將為前者使用完全透明的顏色，為後者使用隨機顏色。顏色將取自一個簡單的 <code>ColorPalette</code>，我們將在它自己的檔案中快速介紹它。我們將使 <code>Bar.empty</code> 和 <code>Bar.random</code> 成為 <code>Bar</code> 上的工廠建構函式（<a href="https://gist.github.com/mravn-google/90bda9c82df356338b3fe3f733066f6c">程式碼清單</a>）。</p>
+<p>長條圖涉及各種配置中的多個長條。為了慢慢引入複雜性，我們的第一個實作將適用於顯示固定類別集的數量的長條圖。範例包括每週的訪客數或每季的銷售額。對於此類圖表，將資料集更改為另一週或另一年不會更改使用的類別，只會更改每個類別顯示的長條。</p>
+<p>我們這次將首先更新 <code>main.dart</code>，用 <code>BarChart</code> 替換 <code>Bar</code>，用 <code>BarChartTween</code> 替換 <code>BarTween</code>（<a href="https://gist.github.com/mravn-google/029930ddb613b00b6f5df7179d76fdc4">程式碼清單</a>）。</p>
+<p>為了讓 Dart 分析器滿意，我們在 <code>bar.dart</code> 中建立 <code>BarChart</code> 類別，並使用固定長度的 <code>Bar</code> 實例列表來實現它。我們將使用五個長條，每個長條代表一週中的一天。然後，我們需要將建立空實例和隨機實例的職責從 <code>Bar</code> 移動到 <code>BarChart</code>。對於固定類別，一個空的長條圖合理地被視為一個空長條的集合。另一方面，讓隨機長條圖成為隨機長條的集合會使我們的圖表變得相當像萬花筒。相反，我們將為圖表選擇一個隨機顏色，並讓每個長條（仍然是隨機高度）繼承該顏色。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/97aa77017bd4cbc10ca6834abdb9dc61/href">https://medium.com/media/97aa77017bd4cbc10ca6834abdb9dc61/href</a></iframe>
+
+
+<p><code>BarChartPainter</code> 將可用寬度均勻分佈在各個長條之間，並使每個長條佔用其可用寬度的 75%。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*aiUQNf70oukpvNf6sVw3GA.gif" />
+<figcaption>固定類別長條圖。</figcaption>
+</figure>
+
+<p>請注意 <code>BarChart.lerp</code> 是如何根據 <code>Bar.lerp</code> 實現的，動態重新生成列表結構。固定類別長條圖是複合值，對其進行直接的組件式 lerp 是有意義的，就像對具有多個屬性的單個長條一樣。</p>
+<p>這裡有一個模式在起作用。當 Dart 類別的建構函式接受多個參數時，您通常可以單獨對每個參數進行 lerp，並且組合也會看起來不錯。而且您可以任意嵌套此模式：儀表板將通過對其組成長條圖進行 lerp 來進行 lerp，而長條圖將通過對其長條進行 lerp 來進行 lerp，而長條將通過對其高度和顏色進行 lerp 來進行 lerp。顏色是通過對其 RGB 和 alpha 組件進行 lerp 來進行 lerp 的。在這個遞迴的葉子上，我們對數字進行 lerp。</p>
+<p>具有數學傾向的人可能會表達這一點，即 lerp 與結構的可交換性，因為對於複合值 <em>C</em>( <em>x</em>,  <em>y</em>)，我們有</p>
+<p> <em>lerp</em>( <em>C</em>( <em>x</em> 1,  <em>y</em> 1),  <em>C</em>( <em>x</em> 2,  <em>y</em> 2),  <em>t</em>) &#x3D;&#x3D;  <em>C</em>( <em>lerp</em>( <em>x</em> 1,  <em>x</em> 2,  <em>t</em>),  <em>lerp</em>( <em>y</em> 1,  <em>y</em> 2,  <em>t</em>))</p>
+<p>正如我們所見，這可以很好地從兩個組件（長條的高度和顏色）推廣到任意多個組件（固定類別長條圖的 <em>n</em> 個長條）。</p>
+<p>然而，在某些情況下，這幅美麗的畫面會崩潰。我們可能希望在兩個並非以完全相同的方式組成的值之間製作動畫。舉一個簡單的例子，考慮從一個包含五個工作日資料的長條圖到一個包含週末的圖表之間的動畫。</p>
+<p>您可能會很容易地想出幾種不同的臨時解決方案，然後可能會詢問您的 UX 設計師在它們之間進行選擇。這是一種有效的方法，儘管我認為在討論過程中牢記這些不同解決方案的共同基本結構是有好處的：tween。回想一下第一部分：</p>
+<p><em>通過在動畫值從零到一的過程中描繪所有 T 的空間中的路徑來為 T 製作動畫。使用 Tween<T> 對路徑進行建模。</em></p>
+<p>與 UX 設計師要回答的核心問題是：五個長條的圖表和七個長條的圖表之間的中間值是什麼？一個顯而易見的選擇是使用六個長條，但我們需要比這更多的中間值才能使動畫平滑地進行。我們需要以不同的方式繪製長條，超越等寬、均勻間距、適合 200 像素的領域。換句話說，T 值的空間必須被推廣。</p>
+<p><em>通過將具有不同結構的值嵌入到更通用的值空間中來對它們進行 lerp，將兩個動畫端點和所有需要的中間值都包含在內。</em></p>
+<p>我們可以分兩步完成這項工作。首先，我們將 <code>Bar</code> 推廣到包含其 x 坐標和寬度作為屬性：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/62ee88878e7322d237b1368e5e59f5fb/href">https://medium.com/media/62ee88878e7322d237b1368e5e59f5fb/href</a></iframe>
+
+<p>其次，我們使 <code>BarChart</code> 支援具有不同長條數的圖表。我們的新圖表將適用於長條 <em>i</em> 代表產品發佈後第 <em>i</em> 天的銷售額等系列中的第 <em>i</em> 個值的資料集。<a href="https://www.cs.utexas.edu/users/EWD/transcriptions/EWD08xx/EWD831.html">作為程式設計師計數</a>，任何此類圖表都涉及一個長條，用於每個整數值 0.._n_，但長條數 <em>n</em> 可能在不同圖表之間有所不同。</p>
+<p>考慮兩個分別有五個和七個長條的圖表。它們五個共同類別 0..5 的長條可以像我們上面看到的那樣組合地進行動畫製作。索引為 5 和 6 的長條在另一個動畫端點中沒有對應的長條，但由於我們現在可以自由地為每個長條指定其自己的位置和寬度，我們可以引入兩個不可見的長條來扮演這個角色。視覺效果是長條 5 和 6 在動畫進行時逐漸變為最終外觀。以相反的方向製作動畫，長條 5 和 6 將會縮小或淡出到不可見。</p>
+<p><em>通過 lerping 相應的組件在複合值之間進行 lerp。如果一個端點中缺少一個組件，請在其位置使用一個不可見的組件。</em></p>
+<p>通常有多種方法可以選擇不可見的組件。假設我們友好的 UX 設計師決定使用零寬度、零高度的長條，其 x 坐標和顏色繼承自它們的可見對應物。我們將向 <code>Bar</code> 添加一個方法，用於建立給定實例的這種摺疊版本。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/d85dd55de3c77897881d0445450801b2/href">https://medium.com/media/d85dd55de3c77897881d0445450801b2/href</a></iframe>
+
+
+<p>將上述程式碼整合到我們的應用程式中涉及為此新設定重新定義 <code>BarChart.empty</code> 和 <code>BarChart.random</code>。一個空的長條圖現在可以合理地被視為包含零個長條，而一個隨機的長條圖可能包含一個隨機數量的長條，所有長條都具有相同的隨機選擇的顏色，並且每個長條都具有隨機選擇的高度。但由於位置和寬度現在是 <code>Bar</code> 定義的一部分，因此我們需要 <code>BarChart.random</code> 也指定這些屬性。向 <code>BarChart.random</code> 提供圖表 <code>Size</code> 參數，然後減輕 <code>BarChartPainter.paint</code> 的大部分計算似乎是合理的（<a href="https://gist.github.com/mravn-google/cac095296074b8b1b7ad6c91a21a5f1a">程式碼清單</a>）。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*dN9og1kRYpRsL-cFIgO23w.gif" />
+<figcaption>Lerp 到/從不可見的長條。</figcaption>
+</figure>
+
+
+<p>敏銳的讀者可能已經注意到我們上面對 <code>BarChart.lerp</code> 的定義中存在潛在的效率低下問題。我們建立摺疊的 <code>Bar</code> 實例只是為了將它們作為參數提供給 <code>Bar.lerp</code>，並且對於動畫參數 <code>t</code> 的每個值都會重複發生這種情況。以每秒 60 幀的速度，即使對於相對較短的動畫，這也可能意味著大量 <code>Bar</code> 實例被饋送到垃圾收集器。有一些替代方案：</p>
+<ul>
+<li>通過在 <code>Bar</code> 類別中只建立一次摺疊的 <code>Bar</code> 實例，而不是在每次調用 <code>collapsed</code> 時都建立一次，可以重複使用它們。這種方法在這裡有效，但並不普遍適用。</li>
+<li>可以由 <code>BarChartTween</code> 代為處理重複使用，方法是讓其建構函式建立一個 <code>BarTween</code> 實例列表 <code>_tween</code>，在建立 lerp 長條圖時使用：(i) &#x3D;&gt; <code>_tweens[i].lerp(t)</code>。這種方法打破了始終使用靜態 lerp 方法的慣例。在靜態 <code>BarChart.lerp</code> 中沒有涉及物件來儲存動畫期間的 tween 列表。相比之下，<code>BarChartTween</code> 物件非常適合於此。</li>
+<li>可以使用 <code>null</code> 長條來表示摺疊的長條，假設 <code>Bar.lerp</code> 中有適當的條件邏輯。這種方法很巧妙且高效，但確實需要一些小心以避免取消引用或誤解 <code>null</code>。它通常用於 Flutter SDK 中，其中靜態 lerp 方法傾向於接受 <code>null</code> 作為動畫端點，通常將其解釋為某種不可見的元素，例如完全透明的顏色或零大小的圖形元素。作為最基本的例子，<code>lerpDouble</code> 將 <code>null</code> 視為零，除非兩個動畫端點都是 <code>null</code>。</li>
+</ul>
+<p>下面的程式碼片段顯示了我們按照 <code>null</code> 方法編寫的程式碼：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/fc7e7027b28152dda198b3c30e536e6e/href">https://medium.com/media/fc7e7027b28152dda198b3c30e536e6e/href</a></iframe>
+
+
+<p>我認為可以公平地說，Dart 的 <code>?</code> 語法非常適合這項任務。但請注意，使用摺疊（而不是例如透明）長條作為不可見元素的決定現在被埋藏在 <code>Bar.lerp</code> 的條件邏輯中。這就是我之前選擇看似效率較低的解決方案的主要原因。與往常一樣，在效能與可維護性的問題上，您的選擇應基於測量結果。</p>
+<p>在我們能夠完全概括地處理長條圖動畫之前，還有一步要做。考慮一個使用長條圖來顯示給定年份按產品類別劃分的銷售額的應用程式。使用者可以選擇另一</p>
+<p>年，然後應用程式應動畫到該年份的長條圖。如果兩個年份的產品類別相同，或者恰好相同，只是其中一個圖表中右側顯示了一些額外的類別，我們可以使用我們現有的程式碼。但是，如果公司在 2016 年擁有產品類別 A、B、C 和 X，但在 2017 年停止使用 B 並引入了 D，該怎麼辦？我們現有的程式碼將如下所示製作動畫：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2016  2017</span><br><span class="line">  A -&gt; A</span><br><span class="line">  B -&gt; C</span><br><span class="line">  C -&gt; D</span><br><span class="line">  X -&gt; X</span><br></pre></td></tr></table></figure>
+
+<p>動畫可能很漂亮且流暢，但對使用者來說仍然會感到困惑。為什麼？因為它沒有保留語義。它將代表產品類別 B 的圖形元素轉換為代表類別 C 的圖形元素，而 C 的圖形元素則移動到其他位置。僅僅因為 2016 年的 B 恰好繪製在 2017 年的 C 後來出現的相同位置並不意味著前者應該變形為後者。相反，2016 年的 B 應該消失，2016 年的 C 應該向左移動並變形為 2017 年的 C，而 2017 年的 D 應該出現在它的右側。我們可以使用書中最古老的演算法之一來實現這種混合：合併排序列表。</p>
+<p><em>通過對語義上對應的組件進行 lerp 來在複合值之間進行 lerp。當組件形成排序列表時，合併演算法可以使此類組件處於同等地位，根據需要使用不可見的組件來處理單側合併。</em></p>
+<p>我們只需要使 <code>Bar</code> 實例在線性順序中相互可比較即可。然後我們可以如下所示合併它們：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/163fc08e689ba1474e063e1c0657064e/href">https://medium.com/media/163fc08e689ba1474e063e1c0657064e/href</a></iframe>
+
+
+<p>具體來說，我們將為每個長條分配一個排序鍵，形式為整數等級屬性。然後，等級也可以方便地用於從調色板中為每個長條分配顏色，從而使我們能夠在動畫演示中跟蹤各個長條的移動。</p>
+<p>現在，隨機長條圖將基於要包含的等級的隨機選擇（<a href="https://gist.github.com/mravn-google/4f7194e8c1f875eba189856eb40e6b1e">程式碼清單</a>）。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*MuSAOLktwY8bTJdPGuoNqA.gif" />
+<figcaption>任意類別。基於合併的 lerp。</figcaption>
+</figure>
+
+<p>這很有效，但可能不是最有效的解決方案。我們在 <code>BarChart.lerp</code> 中重複執行合併演算法，每次都是針對 <code>t</code> 的每個值。為了解決這個問題，我們將實現前面提到的將可重複使用的資訊儲存在 <code>BarChartTween</code> 中的想法。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/a17319978532c6255412fdab5cfe3c2e/href">https://medium.com/media/a17319978532c6255412fdab5cfe3c2e/href</a></iframe>
+
+
+<p>我們現在可以移除靜態 <code>BarChart.lerp</code> 方法。</p>
+<p>讓我們總結一下到目前為止我們所學到的關於 tween 概念的知識：</p>
+<p><em>通過在動畫值從零到一的過程中描繪所有 T 的空間中的路徑來為 T 製作動畫。使用 Tween<T> 對路徑進行建模。</em></p>
+<p><em>根據需要推廣 T 概念，直到它包含所有動畫端點和中間值。</em></p>
+<p><em>通過對應的組件進行 lerp 來在複合值之間進行 lerp。</em></p>
+<ul>
+<li><em>對應關係應基於語義，而不是偶然的圖形共置。</em></li>
+<li><em>如果一個動畫端點中缺少一個組件，請在其位置使用一個不可見的組件，該組件可能源自另一個端點。</em></li>
+<li><em>當組件形成排序列表時，使用合併演算法使語義上對應的組件處於同等地位，根據需要引入不可見的組件來處理單側合併。</em></li>
+</ul>
+<p><em>考慮使用靜態 Xxx.lerp 方法實現 tween，以方便在複合 tween 實現中重複使用。如果在對單個動畫路徑的 Xxx.lerp 的調用中發生大量重新計算，請考慮將計算移動到 XxxTween 類別的建構函式中，並讓其實例託管計算結果。</em></p>
+<p>有了這些見解，我們終於可以為更複雜的圖表製作動畫了。我們將快速連續地製作堆疊長條圖、分組長條圖和堆疊 + 分組長條圖：</p>
+<ul>
+<li>堆疊長條圖用於類別是二維的資料集，並且將長條高度表示的數值相加是有意義的。一個例子可能是每個產品和地理區域的收入。按產品堆疊可以輕鬆比較全球市場中的產品效能。按區域堆疊顯示哪些區域很重要。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*qKUFM56S-ZonH1amVDDXTw.gif" />
+<figcaption>堆疊長條圖。</figcaption>
+</figure>
+
+
+
+
+<ul>
+<li>分組長條圖也用於具有二維類別的資料集，但在這種情況下，堆疊長條沒有意義或不可取。例如，如果數值是每個產品和區域的市場份額百分比，則按產品堆疊沒有意義。即使在堆疊有意義的情況下，分組也可能更可取，因為它可以更輕鬆地同時跨兩個類別維度進行定量比較。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*YiojxPiaWY7lB5v9iZVgDg.gif" />
+<figcaption>分組長條圖。</figcaption>
+</figure>
+
+
+
+
+<ul>
+<li>堆疊 + 分組長條圖支援三維類別，例如每個產品、地理區域和銷售管道的收入。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/300/1*9ObVOKbos4DoQsmsqbMnRQ.gif" />
+<figcaption>堆疊 + 分組長條圖。</figcaption>
+</figure>
+
+<p>在所有三個變體中，都可以使用動畫來視覺化資料集的變化，從而引入額外的維度（通常是時間），而不會使圖表變得混亂。</p>
+<p>為了使動畫有用而不仅仅是漂亮，我们需要确保我们只在语义上对应的组件之间进行 lerp。因此，用于表示 2016 年特定产品&#x2F;区域&#x2F;管道的收入的条形段应变形为表示 2017 年相同产品&#x2F;区域&#x2F;管道收入的条形段（如果存在）。</p>
+<p>可以使用合并算法来确保这一点。正如您可能从前面的讨论中猜到的那样，合并将在多个级别上进行，反映类别的维度。我们将在堆叠图中合并堆叠和条形，在分组图中合并组和条形，并在堆叠 + 分组图中合并所有三个。</p>
+<p>为了在不大量重复代码的情况下实现这一点，我们将合并算法抽象为一个通用实用程序，并将其放在它自己的文件中 <code>tween.dart</code> 中：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/30c0ab2c4e57fb77ff3d28f2e93dc58b/href">https://medium.com/media/30c0ab2c4e57fb77ff3d28f2e93dc58b/href</a></iframe>
+
+
+
+<p><code>MergeTweenable&lt;T&gt;</code> 接口精確地捕獲了通過合併建立兩個 T 的排序列表的 tween 所需的內容。我們將使用 <code>Bar</code>、<code>BarStack</code> 和 <code>BarGroup</code> 實例化類型參數 T，並使所有這些類型都實現 <code>MergeTweenable&lt;T&gt;</code>。</p>
+<p><a href="https://gist.github.com/mravn-google/78326296c59f0544d280a987d9ba39e2">堆疊</a>、<a href="https://gist.github.com/mravn-google/d3f0f2a93cb478ab3a50dab03437a5d5">分組</a> 和 <a href="https://gist.github.com/mravn-google/cbd4a89e7b9e5431898a16727f7642b6">堆疊 + 分組</a> 實作已編寫為可以直接比較。我鼓勵您使用程式碼進行試驗：</p>
+<ul>
+<li>更改 <code>BarChart.random</code> 建立的組、堆疊和長條的數量。</li>
+<li>更改調色板。對於堆疊 + 分組長條，我使用了單色調色板，因為我認為這樣看起來更好。您和您的 UX 設計師可能不同意。</li>
+<li>將 <code>BarChart.random</code> 和浮動動作按鈕替換為年份選擇器，並從實際資料集中建立 <code>BarChart</code> 實例。</li>
+<li>實現水平長條圖。</li>
+<li>實現其他圖表類型（餅圖、折線圖、堆疊面積圖）。使用 <code>MergeTweenable&lt;T&gt;</code> 或類似方法為它們製作動畫。</li>
+<li>添加圖表圖例和&#x2F;或標籤和軸，然後也為它們製作動畫。</li>
+</ul>
+<p>最後兩個要點的任務非常具有挑戰性。祝您玩得開心。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=5aa2f06655cb" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/zero-to-one-with-flutter-part-two-5aa2f06655cb">從零到一學習 Flutter，第二部分</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/mobile-app-development/" rel="tag"># mobile-app-development</a>
+              <a href="/tags/animation/" rel="tag"># animation</a>
+              <a href="/tags/data-visualization/" rel="tag"># data-visualization</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/1bb66f07.html" rel="prev" title="【文章翻譯】Making a Dart web app offline-capable: 3 lines of code">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Making a Dart web app offline-capable: 3 lines of code
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/c2baa1c1.html" rel="next" title="【文章翻譯】Evolving the Dart REPL PoC">
+      【文章翻譯】Evolving the Dart REPL PoC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%9E%E9%9B%B6%E5%88%B0%E4%B8%80%E5%AD%B8%E7%BF%92-Flutter%EF%BC%8C%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">從零到一學習 Flutter，第二部分</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

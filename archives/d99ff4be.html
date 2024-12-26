@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 大型 Dart 專案的漸進式空安全遷移    對於一個簡單的小套件來說，Dart 空安全遷移 需要 1-2 個小時的工作量，但對於一個大型專案來說，這可能是一場長達數月的馬拉松。理想情況下，您希望逐步遷移您的專案——在馬拉松期間，您希望保持您的專案可擴展、可維護且易於發佈。 我已經將一個大型專案遷移到空安全，並決定整理一些步驟和技巧，以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Gradual null safety migration for large Dart projects">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/d99ff4be.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 大型 Dart 專案的漸進式空安全遷移    對於一個簡單的小套件來說，Dart 空安全遷移 需要 1-2 個小時的工作量，但對於一個大型專案來說，這可能是一場長達數月的馬拉松。理想情況下，您希望逐步遷移您的專案——在馬拉松期間，您希望保持您的專案可擴展、可維護且易於發佈。 我已經將一個大型專案遷移到空安全，並決定整理一些步驟和技巧，以">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*6-SfhIoFLl1NPaNi8Ld8Og.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=85acb10b64a9">
+<meta property="article:published_time" content="2022-03-31T13:47:06.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:35:47.193Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="flutter-app-development">
+<meta property="article:tag" content="null-safety">
+<meta property="article:tag" content="migration">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*6-SfhIoFLl1NPaNi8Ld8Og.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/d99ff4be.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Gradual null safety migration for large Dart projects | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/d99ff4be.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Gradual null safety migration for large Dart projects
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-03-31 21:47:06" itemprop="dateCreated datePublished" datetime="2022-03-31T21:47:06+08:00">2022-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:35:47" itemprop="dateModified" datetime="2024-12-20T02:35:47+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="大型-Dart-專案的漸進式空安全遷移"><a href="#大型-Dart-專案的漸進式空安全遷移" class="headerlink" title="大型 Dart 專案的漸進式空安全遷移"></a>大型 Dart 專案的漸進式空安全遷移</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*6-SfhIoFLl1NPaNi8Ld8Og.png" />
+</figure>
+
+<p>對於一個簡單的小套件來說，<a href="https://dart.dev/null-safety/migration-guide">Dart 空安全遷移</a> 需要 1-2 個小時的工作量，但對於一個大型專案來說，這可能是一場長達數月的馬拉松。理想情況下，您希望逐步遷移您的專案——在馬拉松期間，您希望保持您的專案可擴展、可維護且易於發佈。</p>
+<p>我已經將一個大型專案遷移到空安全，並決定整理一些步驟和技巧，以說明如何使遷移過程可靠且高效，希望它能節省您的時間。</p>
+<h3 id="步驟-1：轉換為非健全的空安全"><a href="#步驟-1：轉換為非健全的空安全" class="headerlink" title="步驟 1：轉換為非健全的空安全"></a>步驟 1：轉換為非健全的空安全</h3><p>首先，將您的專案遷移到<a href="https://dart.dev/null-safety/unsound-null-safety">非健全的空安全</a>。</p>
+<p>首先將您的依賴項升級到空安全版本。非健全的空安全並不要求所有依賴項都是空安全的。但是，強烈建議等到所有上游依賴項都遷移完畢後再進行遷移，因為遷移依賴項可能會迫使您重新審視您自己程式碼中的遷移決策。對於相互依賴的套件，您可能被迫無序遷移，或者同時遷移這些套件（許多相互依賴的套件大多只在測試中相互引用）。請遵循 <a href="https://dart.dev/null-safety/migration-guide#update-dependencies">dart.dev 上的指南</a> 在遷移程式碼之前盡可能升級更多依賴項。</p>
+<p>接下來，更新套件的 Dart SDK，並使用以下步驟將每個未遷移的函式庫標記為 legacy：</p>
+<ol>
+<li>確保您的 IDE（VSCode、IntelliJ &#x2F; Android Studio）已安裝 Dart 外掛。</li>
+<li>在 IDE 中打開您的套件，並確保沒有編譯錯誤。</li>
+<li>更新 pubspec.yaml 檔案中的 dart_sdk 依賴項，以要求版本範圍：<code>&gt;=2.12.0 &lt;3.0.0</code>。</li>
+<li>IDE 將突出顯示尚未啟用空安全的函式庫中的空安全相關錯誤。透過在每個受影響檔案的頂部加入註釋 <code>// @dart=2.9</code> 來移除錯誤。即使您的 main.dart 檔案沒有錯誤，也要將註釋加入其中，以保持應用程式以非健全模式運行，直到您準備好切換為止。</li>
+<li>驗證所有測試是否通過，並將變更提交到您的主分支。如果您的測試已經是空安全的，您將需要命令列標誌 <code>--no-sound-null-safety</code> 來抑制空安全錯誤。</li>
+</ol>
+<p>啟動應用程式時，請確保您在控制台中看到「以非健全的空安全模式運行」。</p>
+<p>現在您已準備好一次遷移一個函式庫到健全的空安全。</p>
+<h3 id="步驟-2：迭代到健全的空安全"><a href="#步驟-2：迭代到健全的空安全" class="headerlink" title="步驟 2：迭代到健全的空安全"></a>步驟 2：迭代到健全的空安全</h3><p>選擇一個或一組要遷移的函式庫。</p>
+<blockquote>
+<p><strong>專業提示</strong>：如果您選擇的函式庫很大，您可能希望在遷移之前將其分解成較小的函式庫。</p>
+</blockquote>
+<p>使用 <code>dart pub deps</code> 建立專案的依賴圖。最好自下而上地遷移套件；從依賴樹中的葉子開始，然後向上迭代到根。但是，如果您的專案具有依賴循環，這可能是不可能的，而且不遵循此順序也沒關係。</p>
+<p>使用 <a href="https://dart.dev/null-safety/migration-guide">遷移工具</a> 遷移函式庫（或一組函式庫）：</p>
+<ol>
+<li>透過執行 <code>dart migrate --skip-import-check</code> 啟動互動式遷移工具。您可能希望 <code>cd</code> 到包含所選函式庫的目錄，以便在樹中更容易導航。</li>
+<li>透過取消選取左側面板中檔案視圖樹的根來取消選取所有內容。（如有興趣，請投票支持新增 <a href="https://github.com/dart-lang/sdk/issues/48314"><strong>取消選取所有</strong> 按鈕</a>。）</li>
+<li>使用 Control+F 找到您要遷移的檔案。</li>
+<li>選取檔案，然後點擊 <strong>應用遷移</strong>。您可以透過兩種方式進行調整：(1) 在應用遷移之前使用註釋來調整工具的選擇，或 (2) 在應用遷移之後使用 IDE 來評估欄位、參數和變數的可空性。</li>
+<li>在 IDE 中打開套件。修復錯誤，並在檔案中搜尋工具可能不準確的情況（請參見下面的潛在問題列表）。進行更正並使用 lint 警告以互動方式清理上游和下游程式碼。</li>
+</ol>
+<p>您將無法修復兩個 lint 錯誤：</p>
+<ol>
+<li><code>import_of_legacy_library_into_null_safe</code>（在已遷移的函式庫中）</li>
+<li><code>avoid_redundant_argument_values</code>（在 legacy 函式庫中）</li>
+</ol>
+<p>現在，使用註釋停用這些錯誤。您將在遷移完成後清理這些錯誤。</p>
+<p>需要注意的潛在工具不準確性：</p>
+<ol>
+<li>加入的類型 <code>dynamic</code> 或 <code>num</code>。您很可能知道應該使用哪種特定類型來代替。</li>
+<li>在大多數情況下，<code>bool?</code> 可以透過預設值變為 <code>bool</code>。</li>
+<li>類型轉換（搜尋 <code>as</code>）可能意味著該工具沒有加入泛型類型參數。加入之後，lint 會指示轉換已變得不必要，可以移除。</li>
+<li>在某些情況下，該工具會使泛型參數上的界限可空，而最好將其設為不可空（搜尋 <code>?&gt;</code> 和 <code>?,</code>）。</li>
+<li>該工具可能會使某些內容可空，而使用 <code>late</code> 或 <code>late final</code> 可以更好地表達，或者可以重構以允許在建構函式的初始化列表中進行初始化。（如有興趣，請投票支持新增 <a href="https://github.com/dart-lang/linter/issues/3267">lint</a>。）</li>
+<li>使用空斷言運算子 <code>!</code> 而不先檢查空值可能意味著變數或參數實際上應該是非空的。（如有興趣，請投票支持新增 <a href="https://github.com/dart-lang/linter/issues/3266">lint</a>。）</li>
+<li>該工具以 <code>collection as Iterable&lt;TheType&gt;</code> 的形式為集合加入轉換。有時，此變更只是使已經隱式的轉換變得明確。但是，在其他情況下，由於泛型引數的可空性不匹配，這些轉換可能會引入 <a href="https://stackoverflow.com/questions/72252891">執行時錯誤</a>。如有疑問，請考慮將轉換替換為每個元素的顯式轉換（例如，<code>collection.cast&lt;TheType&gt;()</code>），或考慮使用 <a href="https://pub.dev/documentation/collection/latest/collection/IterableNullableExtension/whereNotNull.html">package:collection 中的 whereNotNull 擴展方法</a>。</li>
+<li>如果變數、欄位或參數是可空的，但可空性僅在測試中使用，則可能應該重構程式碼以移除該標識符的可空性。</li>
+</ol>
+<p>（感謝 <a href="https://github.com/kenzieschmoll">Kenzie Davisson</a> 幫助我識別出這些情況。）</p>
+<h3 id="步驟-3：清理"><a href="#步驟-3：清理" class="headerlink" title="步驟 3：清理"></a>步驟 3：清理</h3><p>遷移所有函式庫後，請執行一些最終清理：</p>
+<ol>
+<li>清理禁用 lint 的註釋。</li>
+<li>將剩餘的依賴項升級到空安全版本。</li>
+<li>確保您的應用程式中沒有剩餘的 <code>//@dart = 2.9</code> 註釋。此時，啟動應用程式時，您應該在控制台中看到「以健全的空安全模式運行」。如果您沒有看到此訊息，則可能是您的函式庫尚未遷移（搜尋 <code>// @dart = 2.9</code>），或者依賴項尚未遷移。</li>
+<li>確保應用程式仍然可以正常運行，並且測試通過。由於健全模式啟用了更強的執行時保證，因此當您啟用健全空安全時，您可能會看到新的執行時錯誤，您需要修復這些錯誤（儘管不太可能）。通常這是將可空集合（例如 <code>List&lt;int?&gt;</code>）轉換為不可空集合類型（例如 <code>List&lt;int&gt;</code>）的結果。</li>
+</ol>
+<p>祝您遷移順利！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=85acb10b64a9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/gradual-null-safety-migration-for-large-dart-projects-85acb10b64a9">大型 Dart 專案的漸進式空安全遷移</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/flutter-app-development/" rel="tag"># flutter-app-development</a>
+              <a href="/tags/null-safety/" rel="tag"># null-safety</a>
+              <a href="/tags/migration/" rel="tag"># migration</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/3cf2645d.html" rel="prev" title="【文章翻譯】Hosting a private Dart package repository">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Hosting a private Dart package repository
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/7c1bbf4.html" rel="next" title="【文章翻譯】Contributors for Google Summer of Code 2022">
+      【文章翻譯】Contributors for Google Summer of Code 2022 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E5%9E%8B-Dart-%E5%B0%88%E6%A1%88%E7%9A%84%E6%BC%B8%E9%80%B2%E5%BC%8F%E7%A9%BA%E5%AE%89%E5%85%A8%E9%81%B7%E7%A7%BB"><span class="nav-number">1.</span> <span class="nav-text">大型 Dart 專案的漸進式空安全遷移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-1%EF%BC%9A%E8%BD%89%E6%8F%9B%E7%82%BA%E9%9D%9E%E5%81%A5%E5%85%A8%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.1.</span> <span class="nav-text">步驟 1：轉換為非健全的空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-2%EF%BC%9A%E8%BF%AD%E4%BB%A3%E5%88%B0%E5%81%A5%E5%85%A8%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">步驟 2：迭代到健全的空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%A9%9F-3%EF%BC%9A%E6%B8%85%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">步驟 3：清理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

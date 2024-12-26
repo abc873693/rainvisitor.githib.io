@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Dart 和 WebAssembly 進行實驗作者：Liam Appelbe 和 Michael Thomsen WebAssembly（通常縮寫為 Wasm）是一種「基於堆疊的虛擬機器的二進制指令格式」。儘管 Wasm 最初設計用於在 Web 上運行原生程式碼，但後來發展成為一種跨多個平台運行編譯程式碼的通用技術。Dart 已經">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Experimenting with Dart and Wasm">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/bdf84212.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Dart 和 WebAssembly 進行實驗作者：Liam Appelbe 和 Michael Thomsen WebAssembly（通常縮寫為 Wasm）是一種「基於堆疊的虛擬機器的二進制指令格式」。儘管 Wasm 最初設計用於在 Web 上運行原生程式碼，但後來發展成為一種跨多個平台運行編譯程式碼的通用技術。Dart 已經">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/685/1*UqHnD9vyTvndgJpz8gOv7Q.png">
+<meta property="article:published_time" content="2021-07-27T10:25:17.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:35:03.046Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="interoperability">
+<meta property="article:tag" content="webassembly">
+<meta property="article:tag" content="wasm">
+<meta property="article:tag" content="computer-science">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/685/1*UqHnD9vyTvndgJpz8gOv7Q.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/bdf84212.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Experimenting with Dart and Wasm | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bdf84212.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Experimenting with Dart and Wasm
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-07-27 18:25:17" itemprop="dateCreated datePublished" datetime="2021-07-27T18:25:17+08:00">2021-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:35:03" itemprop="dateModified" datetime="2024-12-19T10:35:03+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-Dart-和-WebAssembly-進行實驗"><a href="#使用-Dart-和-WebAssembly-進行實驗" class="headerlink" title="使用 Dart 和 WebAssembly 進行實驗"></a>使用 Dart 和 WebAssembly 進行實驗</h2><p><em>作者：Liam Appelbe 和 Michael Thomsen</em></p>
+<p><a href="https://webassembly.org/">WebAssembly</a>（通常縮寫為 Wasm）是一種「基於堆疊的虛擬機器的二進制指令格式」。儘管 Wasm 最初設計用於在 Web 上運行原生程式碼，但後來發展成為一種跨多個平台運行編譯程式碼的通用技術。Dart 已經是一種高度可移植和跨平台的語言，因此我們非常感興趣 Wasm 如何讓我們擴展 Dart 的這些特性。</p>
+<h3 id="為什麼要嘗試-Wasm？"><a href="#為什麼要嘗試-Wasm？" class="headerlink" title="為什麼要嘗試 Wasm？"></a>為什麼要嘗試 Wasm？</h3><p>Wasm 已經獲得了瀏覽器供應商（例如 Chrome、Edge、Firefox 和 WebKit）的<a href="https://webassembly.org/roadmap/">廣泛支援</a>。這使得 Wasm 成為在瀏覽器中運行二進制程式碼的一個非常有趣的方案。然而，Wasm 最初並不是為具有垃圾回收 (GC) 的程式語言（例如 Dart 和 Java&#x2F;Kotlin）設計的，這使得將基於 GC 的語言有效地編譯為 Wasm 變得困難。透過參與 Wasm 專案最近的 <a href="https://github.com/WebAssembly/gc/blob/master/README.md">GC 建議</a>，我們希望既能對建議提供技術回饋，又能了解更多關於透過 Wasm 程式碼運行基於 Dart 的 Web 應用程式可能獲得的收益。</p>
+<p>Wasm 的第二個特性是二進制 Wasm 模組與平台無關。這可能使與現有程式碼的互操作性變得更加實用：如果現有程式碼可以編譯為 Wasm，那麼所有平台上的 Dart 應用程式都可以依賴於單個共享的二進制 Wasm 模組。</p>
+<p>在這篇文章的其餘部分，我們將討論我們使用 Wasm 和 Dart 進行的兩種形式的實驗：</p>
+<ol>
+<li><p><strong>Dart 到 Wasm 編譯</strong>：擴展我們的 AOT 編譯器，以支援將 Dart 原始程式碼編譯為 Wasm 二進制程式碼（問題 <a href="https://github.com/dart-lang/sdk/issues/32894">32894</a>）。</p>
+</li>
+<li><p><strong>Dart 到 Wasm 互操作</strong>：支援從 Dart 程式碼調用到編譯的 Wasm 模組（問題 <a href="https://github.com/dart-lang/sdk/issues/37355">37355</a> 和 <a href="https://github.com/dart-lang/sdk/issues/37882">37882</a>）。</p>
+</li>
+</ol>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/685/1*UqHnD9vyTvndgJpz8gOv7Q.png" />
+<figcaption>使用 Dart 的 Wasm 的兩種潛在用途的說明</figcaption>
+</figure>
+
+<h3 id="將-Dart-編譯為-Wasm"><a href="#將-Dart-編譯為-Wasm" class="headerlink" title="將 Dart 編譯為 Wasm"></a>將 Dart 編譯為 Wasm</h3><p>如前所述，Wasm 最初是作為在 Web 上運行原生程式碼的一種方式。Web 傳統上由 JavaScript 程式碼提供支援，這些程式碼在虛擬機器 (VM) 中運行，該虛擬機器在 Web 應用程式運行時對 JavaScript 程式碼執行即時 (JIT) 編譯為原生程式碼。在目前以 Web 為目標的 Dart 架構中，例如 <a href="https://flutter.dev/web">Flutter Web</a>，Dart 應用程式程式碼會被編譯為<a href="https://dart.dev/web/deployment">優化的</a> JavaScript 以進行部署，然後當應用程式運行時，這個 JavaScript 會被 Web 平台 JIT 編譯為原生程式碼。</p>
+<p>我們正在研究將 Dart 程式碼直接編譯為 Wasm 原生程式碼，以查看是否可以獲得在 Web 上運行原生程式碼的更直接途徑。Wasm 組合語言格式是低階的，並且比 JavaScript 更接近機器程式碼的抽象級別，這可以縮短啟動時間，並且通常可以提高效率的可預測性。</p>
+<p>Dart 對編譯為 Wasm 的支援還處於早期研究階段，編譯器尚不完整，但我們正在進行實驗以學習。我們一直對 Wasm 作為 Dart 的編譯目標感興趣，但它的原始形式不適用於具有垃圾回收的語言。Wasm 缺乏內建的垃圾回收支援，因此像 Dart 這樣的語言必須在編譯的 Wasm 模組中包含垃圾回收實作。包含 GC 實作將非常複雜，會增加編譯的 Wasm 程式碼的大小並損害啟動時間，並且不利於與瀏覽器系統其餘部分的物件級別互操作。</p>
+<p>幸運的是，WebAssembly 社群正在進行一項名為 <a href="https://github.com/WebAssembly/gc/blob/master/README.md">Wasm GC</a> 的工作，正在探索透過對垃圾回收語言的直接和高效能支援來擴展 Wasm 的可能性。鑑於我們長期以來對 Wasm 的興趣，我們看到了參與社群並透過編寫將 Dart 翻譯為 Wasm GC 的編譯器來提供實務經驗的機會。</p>
+<p>現在預測這可能會帶我們走向何方還為時過早，但我們最初的原型設計顯示出非常積極的結果，初步基準測試顯示，第一幀的時間和平均幀時間&#x2F;吞吐量都更快。如果您有興趣了解更多關於該專案的資訊，請查看 <a href="https://github.com/askeksa-google/sdk/blob/wasm_prototype/dart2wasm.md">wasm_prototype</a> 原始程式碼。</p>
+<h3 id="與-Wasm-程式碼的互操作性-package-wasm"><a href="#與-Wasm-程式碼的互操作性-package-wasm" class="headerlink" title="與 Wasm 程式碼的互操作性 (package:wasm)"></a>與 Wasm 程式碼的互操作性 (package:wasm)</h3><p>除了編譯為 Wasm 之外，我們還有興趣研究 Wasm 是否可以用於以更跨平台的方式與現有程式碼整合。幾種語言支援編譯為遵循 C 調用約定的模組，並且使用 <a href="https://dart.dev/guides/libraries/c-interop">Dart FFI</a>，您可以與這些模組進行互操作。Dart FFI 可以成為利用現有原始程式碼和函式庫的好方法，而不必在 Dart 中重新實作程式碼。</p>
+<p>然而，由於 C 模組是平台特定的，因此使用原生 C 模組分發共享套件很複雜：它需要通用建構系統，或分發多個二進制模組（每個所需平台一個）。如果可以在所有平台上使用單個 Wasm 二進制組合語言格式，那麼分發將會更容易。然後，您不必將函式庫編譯為每個目標平台的特定於平台的二進制程式碼，而可以將其一次編譯為 Wasm 二進制模組並在任何地方運行。這可能為在 <a href="https://pub.dev/">pub.dev</a> 上輕鬆分發包含原生程式碼的套件打開了大門。</p>
+<p>我們正在使用一個新的套件 <a href="https://pub.dev/packages/wasm">package:wasm</a> 來實驗 Wasm 互操作支援。這個原型是建立在 <a href="https://wasmer.io/">Wasmer</a> 運行時之上的，它支援 <a href="https://wasi.dev/">WASI</a> 進行作業系統互動。請注意，我們目前的原型尚不完整，僅支援桌面平台（Windows、Linux 和 macOS）。</p>
+<h3 id="範例：調用到-Brotli-壓縮函式庫"><a href="#範例：調用到-Brotli-壓縮函式庫" class="headerlink" title="範例：調用到 Brotli 壓縮函式庫"></a>範例：調用到 Brotli 壓縮函式庫</h3><p>讓我們來看一個使用 package:wasm 來利用編譯為 Wasm 模組的 <a href="https://github.com/google/brotli">Brotli 壓縮函式庫</a> 的範例。在範例中，我們將讀取一個輸入檔案，壓縮它，報告其壓縮率，然後解壓縮它並驗證我們是否得到了輸入。請參閱 GitHub 儲存庫以獲取完整的 <a href="https://github.com/dart-lang/wasm/tree/main/example">範例原始程式碼</a>。由於 package:wasm 建立在 <a href="https://dart.dev/guides/libraries/c-interop">dart:ffi</a> 之上，如果您有 FFI 的經驗，您可能會發現這些步驟很熟悉。</p>
+<p>有幾種方法可以將 C 程式碼編譯為 Wasm，但在這種情況下，我們使用了 <a href="https://github.com/wasienv/wasienv">wasienv</a>。完整的詳細資訊可在 <a href="https://github.com/dart-lang/wasm/blob/main/README.md">README</a> 中找到。</p>
+<p>對於此範例，我們將嘗試調用這些 Brotli 函數來壓縮和解壓縮資料：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">BrotliEncoderCompress</span><span class="params">(</span></span><br><span class="line"><span class="params">  <span class="type">int</span> quality, <span class="type">int</span> lgwin, <span class="type">int</span> mode, <span class="type">size_t</span> input_size,</span></span><br><span class="line"><span class="params">  <span class="type">const</span> <span class="type">uint8_t</span>* input_buffer, <span class="type">size_t</span>* output_size,</span></span><br><span class="line"><span class="params">  <span class="type">uint8_t</span>* output_buffer)</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">BrotliDecoderDecompress</span><span class="params">(</span></span><br><span class="line"><span class="params">  <span class="type">size_t</span> encoded_size, <span class="type">const</span> <span class="type">uint8_t</span>* encoded_buffer,</span></span><br><span class="line"><span class="params">  <span class="type">size_t</span>* output_size, <span class="type">uint8_t</span>* output_buffer)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>quality</code>、<code>lgwin</code> 和 <code>mode</code> 參數是編碼器的調整參數。這些細節與範例無關，因此我們將僅使用這些參數的預設值。另一件需要注意的事情是 <code>output_size</code> 是一個輸入輸出參數。當我們調用這些函數時，<code>output_size</code> 必須使用我們分配的 <code>output_buffer</code> 的大小進行初始化，之後它將被設定為實際使用的緩衝區的數量。</p>
+<p>第一步是使用我們編譯的 Wasm 二進制檔案來構造一個 <code>WasmModule</code> 物件。二進制資料應該是一個 <code>Uint8List</code>，我們可以使用 <code>file.readAsBytesSync()</code> 從檔案中讀取它來獲取。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> brotliPath = Platform.script.resolve(<span class="string">&#x27;libbrotli.wasm&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> moduleData = File(brotliPath.path).readAsBytesSync();</span><br><span class="line"><span class="keyword">var</span> module = WasmModule(moduleData);</span><br></pre></td></tr></table></figure>
+
+<p>一個非常有用的除錯工具，用於確保我們的 Wasm 模組具有我們期望的 API，是 <code>module.describe()</code>。這將返回一個列出所有模組的導入和導出的字串。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(module.describe());</span><br></pre></td></tr></table></figure>
+
+<p>對於我們的 Brotli 函式庫，這是輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import function: int32 wasi_unstable::fd_close(int32)</span><br><span class="line">import function: int32 wasi_unstable::fd_write(int32, int32, int32, int32)</span><br><span class="line">import function: int32 wasi_unstable::fd_fdstat_get(int32, int32)</span><br><span class="line">import function: int32 wasi_unstable::fd_seek(int32, int64, int32, int32)</span><br><span class="line">import function: void wasi_unstable::proc_exit(int32)</span><br><span class="line"></span><br><span class="line">export memory: memory</span><br><span class="line">export function: int32 BrotliDecoderSetParameter(int32, int32, int32)</span><br><span class="line">export function: int32 BrotliDecoderCreateInstance(int32, int32, int32)</span><br><span class="line">export function: void BrotliDecoderDestroyInstance(int32)</span><br><span class="line">export function: int32 BrotliDecoderDecompress(int32, int32, int32, int32)</span><br><span class="line">…</span><br><span class="line">export function: int32 BrotliEncoderSetParameter(int32, int32, int32)</span><br><span class="line">export function: int32 BrotliEncoderCreateInstance(int32, int32, int32)</span><br><span class="line">export function: void BrotliEncoderDestroyInstance(int32)</span><br><span class="line">export function: int32 BrotliEncoderMaxCompressedSize(int32)</span><br><span class="line">export function: int32 BrotliEncoderCompress(int32, int32, int32, int32, int32, int32, int32)</span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+
+<p>我們可以看到該模組導入了一些 WASI 函數，並導出其記憶體和一堆 Brotli 函數。我們感興趣的兩個函數已導出，但它們的簽章看起來有點不同。這是因為 Wasm 只支援 32 位和 64 位整數和浮點數。指標已成為導出記憶體中的 int32 索引。</p>
+<p>下一步是實例化模組。在實例化期間，我們必須填寫模組期望的每個導入。實例化使用建構器模式 (<code>module.instantiate().initialization… .build()</code>）。我們的函式庫只導入 WASI 函數，因此我們可以只調用 <code>enableWasi()</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> instance = module.instantiate().enableWasi().build();</span><br></pre></td></tr></table></figure>
+
+<p>如果我們有額外的非 WASI 函數導入，我們可以使用 <code>addFunction()</code> 將 Dart 函數導入到 Wasm 函式庫中。</p>
+<p>現在我們有了一個 <code>WasmInstance</code>，我們可以查詢它的任何導出函數，或檢查它的記憶體：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> memory = instance.memory;</span><br><span class="line"><span class="keyword">var</span> compress = instance.lookupFunction(<span class="string">&quot;BrotliEncoderCompress&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> decompress = instance.lookupFunction(<span class="string">&quot;BrotliDecoderDecompress&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>接下來我們要做的是在我們的輸入檔案上使用 <code>compress</code> 和 <code>decompress</code> 函數。但是我們不能直接將資料傳遞給這些函數。C 函數採用指向資料的 <code>uint8_t</code> 指標，但在 Wasm 程式碼中，這些指標成為實例記憶體中的 <code>int32</code> 索引。Brotli 還使用 <code>size_t</code> 指標報告壓縮和解壓縮資料的大小，這些指標也變成了 <code>int32</code>。</p>
+<p>因此，要將我們的資料傳遞給函數，我們必須將其複製到實例的記憶體中，並將其索引傳遞給函數。我們需要 5 個記憶體區域：輸入資料、壓縮資料、壓縮大小、解壓縮資料和解壓縮大小。為了簡單起見，我們只獲取一些未使用的記憶體區域，但您也可以在函式庫中導出 <code>malloc()</code> 和 <code>free()</code>。</p>
+<p>為了確保我們將資料放入未使用的記憶體中，我們將增加實例記憶體並將新區域用於我們的資料：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> inputPtr = memory.lengthInBytes;</span><br><span class="line">memory.grow((<span class="number">3</span> * inputData.length /</span><br><span class="line">    WasmMemory.kPageSizeInBytes).ceil());</span><br><span class="line"><span class="keyword">var</span> memoryView = memory.view;</span><br><span class="line"><span class="keyword">var</span> outputPtr = inputPtr + inputData.length;</span><br><span class="line"><span class="keyword">var</span> outSizePtr = outputPtr + inputData.length;</span><br><span class="line"><span class="keyword">var</span> decodedPtr = outSizePtr + <span class="number">4</span>;</span><br><span class="line"><span class="keyword">var</span> decSizePtr = decodedPtr + inputData.length;</span><br></pre></td></tr></table></figure>
+
+<p>我們的記憶體區域如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[初始實例記憶體][輸入][輸出][輸出大小][解碼][解碼大小]</span><br></pre></td></tr></table></figure>
+
+<p>接下來，我們將輸入資料載入到記憶體中，並調用我們的壓縮函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">memoryView.setRange(</span><br><span class="line">    inputPtr, inputPtr + inputData.length, inputData);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> status = compress(kDefaultQuality, kDefaultWindow, kDefaultMode,</span><br><span class="line">    inputData.length, inputPtr, outSizePtr, outputPtr);</span><br></pre></td></tr></table></figure>
+
+<p>範例的其餘部分也類似。結果如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">載入 lipsum.txt</span><br><span class="line">輸入大小：3210 位元組</span><br><span class="line"></span><br><span class="line">壓縮中…</span><br><span class="line">壓縮狀態：1</span><br><span class="line">壓縮大小：1198 位元組</span><br><span class="line">空間節省：62.68%</span><br><span class="line"></span><br><span class="line">解壓縮中…</span><br><span class="line">解壓縮狀態：1</span><br><span class="line">解壓縮大小：3210 位元組</span><br><span class="line"></span><br><span class="line">驗證解壓縮…</span><br><span class="line">解壓縮成功 :)</span><br></pre></td></tr></table></figure>
+
+<h3 id="試用-package-wasm"><a href="#試用-package-wasm" class="headerlink" title="試用 package:wasm"></a>試用 package:wasm</h3><p>如果您有興趣嘗試 Wasm 互操作，請查看 package:wasm 的 <a href="https://pub.dev/packages/wasm">README</a> 以獲取說明。</p>
+<h3 id="路線圖"><a href="#路線圖" class="headerlink" title="路線圖"></a>路線圖</h3><p>Wasm 編譯和 Wasm 互操作都是實驗。如果這些實驗證明 fruitful，我們計劃繼續開發它們，並最終將它們產品化為穩定、受支援的版本。但是，如果我們了解到某些東西沒有按預期工作，或者看到缺乏興趣，我們將停止實驗。</p>
+<p>我們正在進行這些實驗以學習，其中包含兩個主要組成部分。首先，我們想了解技術上支援 Wasm 的可行性，以及這種支援的特性可能是什麼。它可以使 Dart 程式碼更快、更小或更可預測嗎？其次，我們有興趣探索 Wasm 可能解鎖哪些新的技術功能，以及這些功能可能為 Dart 開發人員帶來哪些新的使用案例。我們可以使與原生程式碼的互操作更具可移植性嗎？</p>
+<p>您認為 Wasm 如何應用於您的需求？您認為您將用它做什麼？我們很樂意聽到您的想法。請在 <a href="https://groups.google.com/a/dartlang.org/g/misc/">Dart misc 討論群組</a> 上告訴我們。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/interoperability/" rel="tag"># interoperability</a>
+              <a href="/tags/webassembly/" rel="tag"># webassembly</a>
+              <a href="/tags/wasm/" rel="tag"># wasm</a>
+              <a href="/tags/computer-science/" rel="tag"># computer-science</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/faf6e4ac.html" rel="prev" title="【文章翻譯】Google I/O spotlight: Flutter in action at ByteDance">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Google I/O spotlight: Flutter in action at ByteDance
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/ba84fd2d.html" rel="next" title="【文章翻譯】Adding Flutter to your existing iOS and Android codebases">
+      【文章翻譯】Adding Flutter to your existing iOS and Android codebases <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dart-%E5%92%8C-WebAssembly-%E9%80%B2%E8%A1%8C%E5%AF%A6%E9%A9%97"><span class="nav-number">1.</span> <span class="nav-text">使用 Dart 和 WebAssembly 進行實驗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E5%98%97%E8%A9%A6-Wasm%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼要嘗試 Wasm？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%87-Dart-%E7%B7%A8%E8%AD%AF%E7%82%BA-Wasm"><span class="nav-number">1.2.</span> <span class="nav-text">將 Dart 編譯為 Wasm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%88%87-Wasm-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%9A%84%E4%BA%92%E6%93%8D%E4%BD%9C%E6%80%A7-package-wasm"><span class="nav-number">1.3.</span> <span class="nav-text">與 Wasm 程式碼的互操作性 (package:wasm)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AF%84%E4%BE%8B%EF%BC%9A%E8%AA%BF%E7%94%A8%E5%88%B0-Brotli-%E5%A3%93%E7%B8%AE%E5%87%BD%E5%BC%8F%E5%BA%AB"><span class="nav-number">1.4.</span> <span class="nav-text">範例：調用到 Brotli 壓縮函式庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A9%A6%E7%94%A8-package-wasm"><span class="nav-number">1.5.</span> <span class="nav-text">試用 package:wasm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E7%B7%9A%E5%9C%96"><span class="nav-number">1.6.</span> <span class="nav-text">路線圖</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

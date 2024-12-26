@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Google Summer of Code 2021 成果Google Summer of Code (GSoC) 是一個全球性的計劃，旨在讓學生開發人員參與開放原始碼軟體開發。Google 贊助學生在夏季與一個指導性的開放原始碼組織合作進行一個為期 10 週的編程專案。在過去的 16 年中，已有超過 16,000 名學生參與了 Goo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Google Summer of Code 2021 results">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/cae614af.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Google Summer of Code 2021 成果Google Summer of Code (GSoC) 是一個全球性的計劃，旨在讓學生開發人員參與開放原始碼軟體開發。Google 贊助學生在夏季與一個指導性的開放原始碼組織合作進行一個為期 10 週的編程專案。在過去的 16 年中，已有超過 16,000 名學生參與了 Goo">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*QswESHAF6CO9UNYCcRVKXA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/573/1*wB7F9CgvSn7yt2Rgoj75pw.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e514cce50fc">
+<meta property="article:published_time" content="2021-10-14T08:16:44.000Z">
+<meta property="article:modified_time" content="2024-12-19T18:15:56.164Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="google-summer-of-code">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="open-source">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*QswESHAF6CO9UNYCcRVKXA.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/cae614af.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Google Summer of Code 2021 results | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/cae614af.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Google Summer of Code 2021 results
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-10-14 16:16:44" itemprop="dateCreated datePublished" datetime="2021-10-14T16:16:44+08:00">2021-10-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-20 02:15:56" itemprop="dateModified" datetime="2024-12-20T02:15:56+08:00">2024-12-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Google-Summer-of-Code-2021-成果"><a href="#Google-Summer-of-Code-2021-成果" class="headerlink" title="Google Summer of Code 2021 成果"></a>Google Summer of Code 2021 成果</h2><p><a href="https://summerofcode.withgoogle.com/">Google Summer of Code</a> (GSoC) 是一個全球性的計劃，旨在讓學生開發人員參與開放原始碼軟體開發。Google 贊助學生在夏季與一個指導性的開放原始碼組織合作進行一個為期 10 週的編程專案。在過去的 16 年中，已有超過 16,000 名學生參與了 Google Summer of Code。</p>
+<p>2021 年是 Dart 組織第二次作為指導性組織參與 Google Summer of Code。繼我們在 3 月份 <a href="https://medium.com/dartlang/dart-in-google-summer-of-code-2021-e89eaf1d177a">徵集學生提案</a> 之後，我們收到了來自世界各地學生的 92 份專案提案，其中我們非常興奮地接受了 3 個專案。今天，我們很高興與大家分享我們的成果，由參與這些專案的學生進行描述。</p>
+<h3 id="Dart-的基於-Cronet-的-HTTP-Client"><a href="#Dart-的基於-Cronet-的-HTTP-Client" class="headerlink" title="Dart 的基於 Cronet 的 HTTP Client"></a>Dart 的基於 Cronet 的 HTTP Client</h3><p><em>作者：Soumyadip Mondal</em></p>
+<p><a href="https://pub.dev/packages/cronet">cronet</a> 套件是一個用於 Dart 原生平台的 HTTP 套件，由 <a href="https://chromium.googlesource.com/chromium/src/+/refs/heads/main/components/cronet">Chromium 的網路引擎</a> 支援。</p>
+<p>當 Dart 已經在 <code>dart:io</code> 中支援 HTTP 時，您可能會問「為什麼要加入一個 HTTP 套件？」。其中一個原因是 <code>package:cronet</code> 可以使用 QUIC&#x2F;HTTP3 協議，這是社群 <a href="https://github.com/dart-lang/sdk/issues/38595">強烈要求</a> 的功能。除此之外，在許多情況下，<code>package:cronet</code> 比 <code>dart:io</code> <a href="https://github.com/google/cronet.dart/blob/main/dart_io_comparison.md#performance-comparison">更快</a>。</p>
+<p>Cronet 的 Dart 繫結讓我們可以輕鬆存取其 <a href="https://www.chromium.org/developers/design-documents/network-stack#TOC-Connection-Management">功能</a>，例如：socket 的可重用性、強大的快取和壓縮演算法、請求優先順序，以及 <a href="https://www.youtube.com/watch?v=YWiRef3wOYY">更可靠的</a> 網路連線。各種 Google 產品——包括 YouTube、Chrome、Google 地圖、Google 相簿和 Google 應用程式——都已經依賴 Cronet 函式庫來滿足其網路需求。使用 <code>package:cronet</code>，您可以使用與 <code>dart:io</code> <a href="https://github.com/google/cronet.dart/blob/main/dart_io_comparison.md#api-comparison">類似</a> 的 API 存取 Cronet 函式庫，只需對現有的 Dart&#x2F;Flutter 應用程式進行很少或不進行程式碼更改。</p>
+<p>查看 <a href="https://github.com/google/cronet.dart">github.com&#x2F;google&#x2F;cronet.dart</a> 以獲得 <a href="https://github.com/google/cronet.dart/blob/main/dart_io_comparison.md#performance-comparison">基準測試</a>、<a href="https://github.com/google/cronet.dart/tree/main/example">範例</a> 以及與 <code>dart:io</code> 的 <a href="https://github.com/google/cronet.dart/blob/main/dart_io_comparison.md">比較</a>。另請查看關於 <code>package:cronet</code> 的<a href="https://unsuitable001.medium.com/package-cronet-an-http-dart-flutter-package-with-dart-ffi-84f9b69c8a24">這篇部落格文章</a>，以獲得技術概述和我們面臨的挑戰的討論。</p>
+<h3 id="Flutter-桌面工具"><a href="#Flutter-桌面工具" class="headerlink" title="Flutter 桌面工具"></a>Flutter 桌面工具</h3><p><em>作者：Abdullah Deshmukh</em></p>
+<p>在 Flutter 2 中桌面支援的 Beta 版發佈後，我們需要一個範例應用程式來示範如何編寫可以在 Windows、macOS 和 Linux 上運行的 Flutter 應用程式。我參與了該範例的開發，其形式是一個 <a href="https://github.com/flutter/samples/tree/master/experimental/linting_tool">Flutter linting 工具</a>，可幫助您管理 Flutter 專案的 lint 規則。應用程式的原始碼顯示了您如何實現基本的桌面應用程式技術，例如讀寫檔案、實現響應式佈局、使用持久性儲存，甚至如何處理 YAML 檔案。此外，該範例還可以用於測試 Flutter 應用程式到各種桌面應用程式商店的分發。</p>
+<p>如需更多詳細資訊，請造訪 <a href="https://medium.com/flutter/gsoc-21-creating-a-desktop-sample-for-flutter-7d77e74812d6">GSoC ‘21：為 Flutter 建立桌面範例</a>。</p>
+<figure>
+<img alt="A screenshot of the linting tool, displaying information for always_use_package_imports" src="https://cdn-images-1.medium.com/max/1024/1*QswESHAF6CO9UNYCcRVKXA.png" />
+<figcaption>Flutter linting 工具</figcaption>
+</figure>
+
+<h3 id="pub-dev-的許可證檢測"><a href="#pub-dev-的許可證檢測" class="headerlink" title="pub.dev 的許可證檢測"></a>pub.dev 的許可證檢測</h3><p><em>作者：Bharat Biradar</em></p>
+<p>在 <a href="https://pub.dev/">pub.dev</a> 上發佈的套件會根據各種指標進行評估，例如是否遵循 Dart 檔案慣例、是否有 CHANGELOG 檔案等。此分析由 <a href="https://github.com/dart-lang/pana">pana</a>（Dart 套件分析）完成。Pana 還負責檢測發佈套件的許可證識別碼。</p>
+<p>到目前為止，pub.dev 上顯示的許可證名稱是透過簡單的正則表達式啟發式方法確定的，它們僅支援檢測少數許可證，準確性較差。此專案的任務是為 pana 建立一個許可證檢測器，以根據 <a href="https://spdx.dev/license-list/matching-guidelines/">SPDX 匹配指南</a>檢測 <a href="https://spdx.org/licenses">SPDX 許可證</a>。</p>
+<p>為 pana 建立的許可證檢測器使用與 <a href="https://github.com/google/licenseclassifier">v2_licenseclassifier</a> 相同的方法，並進行了修改以更好地滿足我們的需求。</p>
+<p>給定套件的 LICENSE 檔案，pana 使用三個步驟來檢測 SPDX 許可證識別碼：</p>
+<ol>
+<li><strong>從 SPDX 語料庫中消除明顯的不匹配：</strong> 將文字拆成標記（基本上是單詞），檢查 LICENSE 檔案是否有足夠數量的標記（至少 50%）與已知許可證相比，並消除所有不滿足條件的已知許可證。此步驟允許 pana 快速排除許多許可證，允許在步驟 2 中進行更昂貴的計算。</li>
+<li><strong>在未知許可證和剩餘的 SPDX 許可證中尋找匹配的子字串：</strong> 對於剩餘的已知許可證，在未知文字中尋找與已知許可證文字匹配的子字串。我們尋找子字串，因為未知文字可能包含多個許可證。在識別匹配的子字串時，我們忽略標記少於閾值 * known_license_中的_標記數的序列，因為此類序列沒有足夠的標記密度來構成匹配。如果對於給定的已知許可證找不到具有足夠標記密度的子字串，則我們知道它不是匹配項。</li>
+<li><strong>確定置信度分數：</strong> 此步驟估計找到的子字串的置信度分數（介於 [0,1] 之間）。首先，使用 <a href="https://github.com/google/diff-match-patch/wiki/Line-or-Word-Diffs#word-mode">levenshtain 單詞差異</a> 將子字串與檢測到的 SPDX 語料庫許可證進行比較。然後，如果如下計算的置信度高於設定的閾值，則將許可證視為匹配項：</li>
+</ol>
+<figure>
+<img alt="Confidence = 1 - (levenshtain_word_diff/number_of_tokens_in_known_license)" src="https://cdn-images-1.medium.com/max/573/1*wB7F9CgvSn7yt2Rgoj75pw.png" />
+</figure>
+
+<p>我們希望這能讓您對許可證檢測過程有所了解。如果您想試用許可證檢測器，您可以在 <a href="https://github.com/dart-lang/pana/tree/master/bin">pana 儲存庫</a> 中找到它。</p>
+<p><em>非常感謝所有使用 Dart 申請 Google Summer of Code 2021 的人，感謝今年完成專案的學生，以及感謝幫助我們度過一個精彩的程式碼夏季的導師。如果您有興趣了解更多關於 Google Summer of Code 中 Dart 的資訊，請查看我們 <a href="https://medium.com/dartlang/google-summer-of-code-2020-results-a38cd072c9fe">2020 年的文章</a>。</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e514cce50fc" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/google-summer-of-code-2021-results-e514cce50fc">Google Summer of Code 2021 成果</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/google-summer-of-code/" rel="tag"># google-summer-of-code</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/open-source/" rel="tag"># open-source</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/cb65ac79.html" rel="prev" title="【文章翻譯】Learn Flutter for free with Flutter Apprentice!">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Learn Flutter for free with Flutter Apprentice!
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/6ad9049d.html" rel="next" title="【文章翻譯】Dart diagnostic messages">
+      【文章翻譯】Dart diagnostic messages <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Summer-of-Code-2021-%E6%88%90%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">Google Summer of Code 2021 成果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E7%9A%84%E5%9F%BA%E6%96%BC-Cronet-%E7%9A%84-HTTP-Client"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 的基於 Cronet 的 HTTP Client</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flutter-%E6%A1%8C%E9%9D%A2%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.</span> <span class="nav-text">Flutter 桌面工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E7%9A%84%E8%A8%B1%E5%8F%AF%E8%AD%89%E6%AA%A2%E6%B8%AC"><span class="nav-number">1.3.</span> <span class="nav-text">pub.dev 的許可證檢測</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

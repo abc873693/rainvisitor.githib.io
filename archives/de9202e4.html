@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 在 Dart FFI 中實作傳值結構體在 Dart 2.12 版本中，我們擴充了 C 語言互通功能 Dart FFI，使其能夠 傳值結構體。本文將討論將此功能加入 Dart SDK 的過程。如果您對低階語言實作細節或平台傳值結構體的慣例感興趣，請继续阅读。 本文將討論開發 API 和找出傳值結構體功能的 ABI（應用程式二進位制介面）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Implementing structs by value in Dart FFI">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/de9202e4.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 在 Dart FFI 中實作傳值結構體在 Dart 2.12 版本中，我們擴充了 C 語言互通功能 Dart FFI，使其能夠 傳值結構體。本文將討論將此功能加入 Dart SDK 的過程。如果您對低階語言實作細節或平台傳值結構體的慣例感興趣，請继续阅读。 本文將討論開發 API 和找出傳值結構體功能的 ABI（應用程式二進位制介面）。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*SfIpbC1E-Ysaewzs">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=1cb1829d11a9">
+<meta property="article:published_time" content="2021-06-08T11:17:07.000Z">
+<meta property="article:modified_time" content="2024-12-19T02:38:11.768Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="compilers">
+<meta property="article:tag" content="ffi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*SfIpbC1E-Ysaewzs">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/de9202e4.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Implementing structs by value in Dart FFI | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/de9202e4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Implementing structs by value in Dart FFI
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-06-08 19:17:07" itemprop="dateCreated datePublished" datetime="2021-06-08T19:17:07+08:00">2021-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-19 10:38:11" itemprop="dateModified" datetime="2024-12-19T10:38:11+08:00">2024-12-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="在-Dart-FFI-中實作傳值結構體"><a href="#在-Dart-FFI-中實作傳值結構體" class="headerlink" title="在 Dart FFI 中實作傳值結構體"></a>在 Dart FFI 中實作傳值結構體</h2><p>在 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 版本中，我們擴充了 <a href="https://dart.dev/guides/libraries/c-interop">C 語言互通功能 Dart FFI</a>，使其能夠 <a href="https://github.com/dart-lang/sdk/issues/36730">傳值結構體</a>。本文將討論將此功能加入 Dart SDK 的過程。如果您對低階語言實作細節或平台傳值結構體的慣例感興趣，請继续阅读。</p>
+<p>本文將討論開發 API 和找出傳值結構體功能的 ABI（應用程式二進位制介面）。在我们開發此功能（以及其他 Dart FFI 功能）的兩年中，我們發現了許多需要變更 API 的限制。ABI 的過程同樣有趣，它說明了您可以採取多種方法來確定一個難題的細節。</p>
+<h3 id="C-C-中的傳值和傳址"><a href="#C-C-中的傳值和傳址" class="headerlink" title="C&#x2F;C++ 中的傳值和傳址"></a>C&#x2F;C++ 中的傳值和傳址</h3><p>如果您不是每天都撰寫 C 語言程式碼，這裡快速回顧一下。假設我們在 C 語言中有以下結構體和函數：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Coord</span> &#123;</span></span><br><span class="line">  <span class="type">double</span> x;</span><br><span class="line">  <span class="type">double</span> y;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Coord</span>* <span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Coord <span class="title function_">TranslateByValue</span><span class="params">(<span class="keyword">struct</span> Coord c)</span> &#123;</span><br><span class="line">  c.x += <span class="number">10.0</span>;</span><br><span class="line">  <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">TranslateByPointer</span><span class="params">(<span class="keyword">struct</span> Coord* c)</span> &#123;</span><br><span class="line">  c-&gt;x += <span class="number">10.0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然後，我們可以在一些簡單的 C 語言程式碼中使用這些函數。假設我們有一個局部變數 <code>c1</code>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Coord c1 = &#123;<span class="number">10.0</span>, <span class="number">10.0</span>, nullptr&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果我們將 <code>c1</code> 傳遞給 <code>TranslateByValue</code>，則參數是傳值的，這使得被調用者實際上操作結構體的副本：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Coord c2 = TranslateByValue(c1);</span><br></pre></td></tr></table></figure>
+
+<p>這表示 <code>c1</code> 保持不變。</p>
+<p>但是，如果我們使用指向包含 <code>c1</code> 的記憶體的指標傳址 <code>c1</code>，則 <code>c1</code> 將被就地修改：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TranslateByPointer(&amp;c1);</span><br></pre></td></tr></table></figure>
+
+<p><code>c1.x</code> 現在包含 <code>20.0</code>。</p>
+<h3 id="API-設計之旅"><a href="#API-設計之旅" class="headerlink" title="API 設計之旅"></a>API 設計之旅</h3><p>最初的 Dart FFI <a href="https://dart-review.googlesource.com/c/sdk/+/80124">原型</a> 已經支援傳遞結構體的指標。但是，我們多次重新設計了 API，以適應各種使用案例和限制。</p>
+<h4 id="初始設計"><a href="#初始設計" class="headerlink" title="初始設計"></a>初始設計</h4><p>我們的初始設計允許在記憶體中配置結構體，將這些指標傳遞給 C 語言，並修改結構體的欄位。透過這種方法，<code>Struct</code> 類別擴充了 <code>Pointer</code> 類別：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span> <span class="keyword">extends</span> <span class="title">Pointer</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> x;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> y;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">external</span> Pointer next;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="built_in">int</span> <span class="keyword">get</span> sizeOf =&gt; sizeOf&amp;lt;Coordinate&amp;gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Dart FFI 使用者撰寫上述程式碼片段，Dart FFI 內部會產生 <code>sizeOf</code> 的實作以及 <code>x</code>、<code>y</code> 和 <code>next</code> 的 getter 和 setter 實作。</p>
+<p>但是，兩年前我們意識到 <a href="https://github.com/dart-lang/sdk/issues/35840">這個設計存在一個問題</a>。透過讓 <code>Coordinate</code> 擴充 <code>Pointer</code>，我們無法區分 <code>Coordinate</code> 和 <code>Coordinate*</code>。</p>
+<h4 id="區分-Coordinate-和-Coordinate"><a href="#區分-Coordinate-和-Coordinate" class="headerlink" title="區分 Coordinate 和 Coordinate*"></a>區分 Coordinate 和 Coordinate*</h4><p>我們 <a href="https://dart-review.googlesource.com/c/sdk/+/101291">引入</a> 了 <code>Struct</code> 到 Dart FFI，並讓結構體擴充此類別：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span> <span class="keyword">extends</span> <span class="title">Struct</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> x;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> y;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">external</span> Pointer&amp;lt;Coordinate&amp;gt; next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>現在，Dart 中的 <code>Pointer&lt;Coordinate&gt;</code> 代表 C 語言中的 <code>Coordinate*</code>，Dart 中的 <code>Coordinate</code> 代表 C 語言中的 <code>Coordinate</code>。</p>
+<p>這表示 <code>next</code> 欄位的類型為 <code>Pointer&lt;Coordinate&gt;</code>，這使得 <code>@Pointer</code> 註釋變得冗餘。因此，我們 <a href="https://dart-review.googlesource.com/c/sdk/+/108415">擺脫了 Pointer 註釋</a>。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span> <span class="keyword">extends</span> <span class="title">Struct</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> x;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> y;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">external</span> Pointer&amp;lt;Coordinate&amp;gt; next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因為我們現在將結構體的指標表示為 <code>Pointer</code> 物件，所以我們開始在 <code>Pointer</code> 上使用 <code>allocate</code> 工廠：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> c = Pointer&amp;lt;Coordinate&amp;gt;.allocate();</span><br></pre></td></tr></table></figure>
+
+<p>為了存取 <code>Pointer&lt;Coordinate&gt;</code> 的欄位，我们需要一个 <code>Coordinate</code> 類型的物件，因為該物件具有欄位 <code>x</code>、<code>y</code> 和 <code>next</code>。為此，我們已經在 <code>Pointer</code> 上使用了 <code>load</code> 方法。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.load&amp;lt;Coordinate&amp;gt;().x = <span class="number">10.0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>當然，在調用 <code>load</code> 時必須寫 <code>&lt;Coordinate&gt;</code> 很冗長。（必須撰寫類型引數與從 <code>Pointer&lt;Uint8&gt;</code> 中載入 Dart <code>int</code> 相同。）我们需要在 <code>load</code> 上使用此類型引數的原因是向 Dart 類型系統指定此方法的返回類型。</p>
+<h4 id="擴充方法來救援"><a href="#擴充方法來救援" class="headerlink" title="擴充方法來救援"></a>擴充方法來救援</h4><p>Dart 2.7 <a href="https://medium.com/dartlang/dart-2-7-a3710ec54e97">引入了</a> 擴充方法。透過擴充方法，我們可以在 <code>Pointer&lt;T&gt;</code> 中的類型引數 <code>T</code> 上進行 <a href="https://dart-review.googlesource.com/c/sdk/+/118992/14/sdk/lib/ffi/ffi.dart">模式匹配</a>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> CoordinatePointer <span class="keyword">on</span> Pointer&amp;lt;Coordinate&amp;gt; &#123;</span><br><span class="line">  Coordinate <span class="keyword">get</span> ref =&gt; load();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在類型引數上進行模式匹配使我們能夠 <a href="https://dart-review.googlesource.com/c/sdk/+/118993/16/tests/ffi/structs_test.dart">擺脫調用站點的冗長</a>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c.ref.y = <span class="number">10.0</span>; <span class="comment">// ref 被模式匹配為 Coordinate 類型。</span></span><br></pre></td></tr></table></figure>
+
+<p>我們還可以利用擴充方法模式匹配，使 <code>Struct&lt;S&gt;</code> 的類型引數變得冗餘，將使用者結構體的定義變更為：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Coordinate</span> <span class="keyword">extends</span> <span class="title">Struct</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> x;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Double</span>()</span><br><span class="line">  <span class="keyword">external</span> <span class="built_in">double</span> y;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">external</span> Pointer&amp;lt;Coordinate&amp;gt; next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>之前，類型引數 <code>&lt;S&gt;</code> 限制了 <code>Struct</code> 欄位 <code>Pointer&lt;S&gt; addressOf</code>。相反，我們將欄位變更為擴充 getter：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span>&amp;lt;T <span class="keyword">extends</span> Struct&amp;gt; <span class="keyword">on</span> T &#123;</span><br><span class="line">  Pointer&amp;lt;T&amp;gt; <span class="keyword">get</span> addressOf =&amp;gt; ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="停止洩漏後端儲存"><a href="#停止洩漏後端儲存" class="headerlink" title="停止洩漏後端儲存"></a>停止洩漏後端儲存</h4><p>從 C 語言向 Dart 返回傳值結構體時，我們不希望使用 <code>malloc</code> 分配 C 語言記憶體來儲存結構體，因為這樣速度會很慢，<em>並且</em> 會讓使用者承擔釋放記憶體的負擔。因此，我們將結構體複製到 <code>TypedData</code> 中，<code>Coordinate</code> 可以使用 <code>Pointer</code> 或 <code>TypedData</code> 作為後端儲存。</p>
+<p>但是，在第一次重新設計中引入的 <code>addressOf</code> 的類型為 <code>Pointer</code>。此類型表示它始終由 C 語言記憶體支援，但現在已不再如此。</p>
+<p>因此，我們 <a href="https://github.com/dart-lang/sdk/issues/40667">棄用了</a> <code>addressOf</code>。</p>
+<h4 id="為了優化"><a href="#為了優化" class="headerlink" title="為了優化"></a>為了優化</h4><p>最後一步是要求調用各種 Dart FFI 方法，包括與結構體相關的方法，都具有 <a href="https://github.com/dart-lang/sdk/issues/44621">編譯時常數類型引數</a>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extension</span> <span class="keyword">on</span> Pointer&amp;lt;T <span class="keyword">extends</span> NativeType&amp;gt; &#123;</span><br><span class="line">  T load&amp;lt;T <span class="keyword">extends</span> NativeType&amp;gt;() =&amp;gt; ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>調用方法允許我們更好地優化程式碼，並且更符合 C 語言的語義。</p>
+<p>請注意，最後一個變更會在 Dart 2.12 中觸發棄用通知，並且此變更在 Dart 2.13 中強制執行。</p>
+<h3 id="ABI-探索之旅"><a href="#ABI-探索之旅" class="headerlink" title="ABI 探索之旅"></a>ABI 探索之旅</h3><p>現在 API 已經到位，下一個問題是：<em>在傳值或返回結構體時，C 語言期望這些結構體在哪裡？</em> 這就是所謂的應用程式二進位制介面 (ABI)。</p>
+<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><p>很自然地會去查閱文件。ARM 提供了 <a href="https://developer.arm.com/documentation/ihi0042/h">Arm 架構的程序調用標準 - ABI 2019Q1</a> 和 <a href="https://developer.arm.com/documentation/ihi0055/c/">ARM 64 位架構 (AArch64) 的程序調用標準</a>。但是，x86 和 x64 的官方文件 <a href="https://stackoverflow.com/questions/18133812/where-is-the-x86-64-system-v-abi-documented">從網路上消失了</a>，導致人們搜尋這些資訊，並求助於非官方的鏡像或 <a href="https://www.agner.org/optimize/calling_conventions.pdf">逆向工程</a>。</p>
+<p>快速瀏覽文件會顯示傳值結構體的各種位置：</p>
+<ul>
+<li>在多個 CPU 和 FPU 暫存器中。</li>
+<li>在堆疊上。</li>
+<li>指向副本的指標。（副本位於調用者的堆疊框架上。）</li>
+<li>部分在 CPU 暫存器中，部分在堆疊上。</li>
+</ul>
+<p>當在堆疊上传遞時，還有一些關於所需對齊方式以及所有未使用的 CPU 和 FPU 暫存器是否被阻塞或回填的進一步問題。</p>
+<p>當返回傳值結構體時，結構體可以在兩個位置傳回：</p>
+<ul>
+<li>在多個 CPU 和 FPU 暫存器中。</li>
+<li>由被調用者寫入記憶體位置，在這種情況下，調用者傳遞指向該記憶體位置的指標。（此預留記憶體也在調用者的堆疊框架上。）</li>
+</ul>
+<p>當傳遞指向結果位置的指標時，一個進一步的問題是，這是否與普通的 CPU 引數暫存器衝突。</p>
+<h4 id="重構-Dart-FFI-編譯"><a href="#重構-Dart-FFI-編譯" class="headerlink" title="重構 Dart FFI 編譯"></a>重構 Dart FFI 編譯</h4><p>初步調查就足以讓我們意識到，我們必須重新設計 Dart FFI 編譯器管道的一部分。我們曾經重複使用 <code>Location</code> 類型，該類型最初是用於將 Dart 程式碼編譯為組合語言的。</p>
+<p>但是，在 Dart ABI 中，我們從不使用非字對齊的堆疊位置或同時使用兩個以上的暫存器。一個嘗試擴充 <code>Location</code> 類型以支援這些額外位置的實驗最終導致了一個巨大的複雜差異，因為 <code>Location</code> 在 Dart 虛擬機器中被大量使用。</p>
+<p>因此，我們 <a href="https://dart-review.googlesource.com/c/sdk/+/129081">替換了 Dart FFI 的編譯管道</a>。</p>
+<h4 id="探索原生-ABI"><a href="#探索原生-ABI" class="headerlink" title="探索原生 ABI"></a>探索原生 ABI</h4><p>讓我們來探索一下 ABI。</p>
+<p>假設我們有以下結構體和 C 函數簽名：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Struct3Bytes</span> &#123;</span></span><br><span class="line">  <span class="type">int8_t</span> a;</span><br><span class="line">  <span class="type">int16_t</span> b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Struct3Bytes <span class="title function_">MyFunction</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct3Bytes)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>各種 ABI 如何在 <code>MyFunction</code> 中傳遞這些結構體？</p>
+<p>在 x64 上的 Linux 中，有 6 個 CPU 引數暫存器。結構體足夠小，可以放入單個暫存器中，因此前 6 個引數進入 6 個 CPU 引數暫存器，最後 2 個進入堆疊。堆疊引數以 8 位元組對齊。並且，返回值也適合放入 CPU 暫存器中（<a href="https://github.com/dart-lang/sdk/blob/9d5846b86eed777933b6c7a2a15e41f2b779c650/runtime/vm/compiler/ffi/unit_tests/struct3bytesx10/x64_linux.expect">更大的範例</a>）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov     rdi, rsi</span><br><span class="line">mov     rdx, rcx</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>那麼，在 Windows 上會發生什麼？</p>
+<p>它 <a href="https://github.com/dart-lang/sdk/blob/9d5846b86eed777933b6c7a2a15e41f2b779c650/runtime/vm/compiler/ffi/unit_tests/struct3bytesx10/x64_win.expect">完全不同</a>。Windows 只有 4 個引數暫存器。但是，第一個暫存器用於傳遞指向要將返回值寫入的記憶體位置的指標。並且，所有引數都透過指向副本的指標傳遞，因為結構體的大小為 3 位元組，這不是 2 的冪。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov     qword ptr [rsp+32], r9  ; arg8</span><br><span class="line">mov     qword ptr [rsp+24], r8  ; arg7</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>讓我們看看另一個範例：Linux 和 Android 上的 ARM32。假設我們有以下結構體和 C 函數簽名：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Struct16BytesHomogenousFloat</span> &#123;</span></span><br><span class="line">  <span class="type">float</span> a0;</span><br><span class="line">  <span class="type">float</span> a1;</span><br><span class="line">  <span class="type">float</span> a2;</span><br><span class="line">  <span class="type">float</span> a3;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Struct16BytesHomogenousFloat <span class="title function_">MyFunction</span><span class="params">(</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat,</span></span><br><span class="line"><span class="params">    <span class="keyword">struct</span> Struct16BytesHomogenousFloat)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>這些特定類型的結構體稱為同類複合類型，因為它們只包含相同的元素。並且，具有最多 4 個成員的同類浮點數的處理方式與普通結構體不同。在這種情況下，<a href="https://github.com/dart-lang/sdk/blob/9d5846b86eed777933b6c7a2a15e41f2b779c650/runtime/vm/compiler/ffi/unit_tests/struct16bytesHomogenousx10/arm_linux.expect">Linux 對結構體中的各個浮點數使用浮點暫存器</a>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vmov            s1, r2</span><br><span class="line">vmov            s0, r1</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>在 Android 上，使用 SoftFP 而不是 HardFP。這表示浮點數在整數暫存器中傳遞，而不是在浮點暫存器中傳遞。此外，我們正在傳遞一個指向結果的指標。這導致了一種 <a href="https://github.com/dart-lang/sdk/blob/9d5846b86eed777933b6c7a2a15e41f2b779c650/runtime/vm/compiler/ffi/unit_tests/struct16bytesHomogenousx10/arm_android.expect">奇怪的情況</a>，其中第一個引數部分在整數暫存器中傳遞，部分在堆疊上传遞。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str             r2, [r0, #4]</span><br><span class="line">str             r1, [r0]</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+<p>如果其中任何一個出錯，都可能導致執行階段出現區段錯誤。因此，在每個硬體和作業系統組合上正確處理 ABI 的所有邊角案例至關重要。</p>
+<h4 id="透過-godbolt-org-探索"><a href="#透過-godbolt-org-探索" class="headerlink" title="透過 godbolt.org 探索"></a>透過 godbolt.org 探索</h4><p>由於文件非常簡潔，我們透過編譯器資源管理器 <a href="https://godbolt.org/">godbolt.org</a> 找出許多邊角案例。編譯器資源管理器 <a href="https://godbolt.org/z/17jzjv">並排顯示</a> C 程式碼和編譯後的組合語言：</p>
+<figure>
+<img alt="A screenshot of godbolt.com showing that the assembly code for sizeof(Struct3Bytes) is returning 3 in the return register." src="https://cdn-images-1.medium.com/max/1024/0*SfIpbC1E-Ysaewzs" />
+</figure>
+
+
+<p>上述螢幕截圖顯示，在 Windows x86 上，<code>sizeof(Struct3Bytes)</code> 為 3 位元組，因為 3 被移入返回暫存器 <code>eax</code> 中。</p>
+<p>當我們 <a href="https://godbolt.org/z/r1rG6s">稍微變更</a> 結構體時，我們可以檢查大小是否仍然為 3：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Struct3Bytes</span> &#123;</span></span><br><span class="line">  <span class="type">uint8_t</span> a;</span><br><span class="line">  <span class="type">int16_t</span> b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>大小不是 3：<code>mov eax, 4</code>。由於 <code>int16</code> 必須為 2 位元組對齊，因此結構體必須為 2 位元組對齊。這表示，在配置這些結構體的陣列時，每個結構體之後有一個 1 位元組的填補，以確保下一個結構體為 2 位元組對齊。因此，此結構體在本機 ABI 中為 4 位元組。</p>
+<h4 id="透過產生的測試探索"><a href="#透過產生的測試探索" class="headerlink" title="透過產生的測試探索"></a>透過產生的測試探索</h4><p>不幸的是，編譯器資源管理器不支援 MacOS 和 iOS。因此，為了使手動探索更有效率（並且為此功能提供一個良好且龐大的測試套件），我們編寫了一個測試產生器。</p>
+<p>主要思想是以這樣的方式產生測試：如果測試崩潰，則可以使用 <a href="https://www.gnu.org/software/gdb/">GDB</a> 來查看問題所在。</p>
+<p>使發現 segmentation fault 時更容易看到問題的一種方法是使所有引數都具有可預測且易於識別的值。例如，以下測試使用連續的整數，以便可以在暫存器和堆疊上輕鬆發現這些整數值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Struct8Bytes</span> &#123;</span></span><br><span class="line">  <span class="type">int16_t</span> a;</span><br><span class="line">  <span class="type">int16_t</span> b;</span><br><span class="line">  <span class="type">int32_t</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">Struct8Bytes</span> <span class="title">s</span> =</span> &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>另一種簡化尋找問題的方法是在各處加入列印語句。例如，如果我們在從 Dart 轉換到 C 語言的過程中沒有遇到 segmentation fault，但我們設法損壞了所有引數，則列印引數會有所幫助：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Struct1ByteInt8</span> &#123;</span></span><br><span class="line">  <span class="type">int8_t</span> a0;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">MyFunction</span><span class="params">(<span class="keyword">struct</span> Struct1ByteInt8 a0, <span class="type">int8_t</span> a1)</span> &#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%&quot;</span> PRId8 <span class="string">&quot;\n&quot;</span>, a0.a0);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%&quot;</span> PRId8 <span class="string">&quot;\n&quot;</span>, a1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>加入測試就像在 <a href="https://dart-review.googlesource.com/c/sdk/+/168829/6/tests/ffi/generator/structs_by_value_tests_confguration.dart">組態檔案</a> 中加入函數類型一樣簡單。快速加入測試的能力導致了一個 <a href="https://dart-review.googlesource.com/c/sdk/+/168829">龐大的測試套件</a>。</p>
+<p>果然，這個測試套件在本機 ABI 中發現了另一個奇怪的案例 - 這次是在 iOS-ARM64 上。在 ARM64 上的 iOS 上，堆疊上的非結構體引數不是以字大小對齊，而是以其自身的大小對齊。結構體以字大小對齊，除非結構體是只包含浮點數的同類結構體，則 <a href="https://github.com/dart-lang/sdk/blob/b6b82dd3ac756b39e7fe9cab21f060fae74e358d/runtime/vm/compiler/ffi/native_type.cc#L180-L182">它以浮點數的大小對齊</a>。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>到此結束了我們對 API 設計和 ABI 探索的旅程。透過良好的測試套件和全面的程式碼審查，我們在 2020 年 12 月在 master 分支上 <a href="https://dart-review.googlesource.com/c/sdk/+/140290">加入了對在 Dart FFI 中傳遞傳值結構體的支援</a>，並且它在 Dart 2.12 中可用！如果您有興趣使用 Dart FFI，則可以從 <a href="https://dart.dev/guides/libraries/c-interop">dart.dev 上的 C 語言互通文件</a> 開始。如果您對 API 設計和 ABI 探索有任何問題或意見，請在下方留言。我們很想聽到您的聲音！</p>
+<p><em>感謝 Dart 語言團隊和（其餘的）Dart 虛擬機器團隊對此 Dart FFI 功能的貢獻，也感謝 Kathy Walrath 和 Michael Thomsen 對此部落格文章的塑造！</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=1cb1829d11a9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/implementing-structs-by-value-in-dart-ffi-1cb1829d11a9">在 Dart FFI 中實作傳值結構體</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/compilers/" rel="tag"># compilers</a>
+              <a href="/tags/ffi/" rel="tag"># ffi</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/9f4439db.html" rel="prev" title="【文章翻譯】Announcing Dart 2.13">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Dart 2.13
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/31aeddc4.html" rel="next" title="【文章翻譯】Improving Platform Channel Performance in Flutter">
+      【文章翻譯】Improving Platform Channel Performance in Flutter <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-Dart-FFI-%E4%B8%AD%E5%AF%A6%E4%BD%9C%E5%82%B3%E5%80%BC%E7%B5%90%E6%A7%8B%E9%AB%94"><span class="nav-number">1.</span> <span class="nav-text">在 Dart FFI 中實作傳值結構體</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-C-%E4%B8%AD%E7%9A%84%E5%82%B3%E5%80%BC%E5%92%8C%E5%82%B3%E5%9D%80"><span class="nav-number">1.1.</span> <span class="nav-text">C&#x2F;C++ 中的傳值和傳址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-%E8%A8%AD%E8%A8%88%E4%B9%8B%E6%97%85"><span class="nav-number">1.2.</span> <span class="nav-text">API 設計之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E8%A8%AD%E8%A8%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">初始設計</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%80%E5%88%86-Coordinate-%E5%92%8C-Coordinate"><span class="nav-number">1.2.2.</span> <span class="nav-text">區分 Coordinate 和 Coordinate*</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%B4%E5%85%85%E6%96%B9%E6%B3%95%E4%BE%86%E6%95%91%E6%8F%B4"><span class="nav-number">1.2.3.</span> <span class="nav-text">擴充方法來救援</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E6%B4%A9%E6%BC%8F%E5%BE%8C%E7%AB%AF%E5%84%B2%E5%AD%98"><span class="nav-number">1.2.4.</span> <span class="nav-text">停止洩漏後端儲存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%82%BA%E4%BA%86%E5%84%AA%E5%8C%96"><span class="nav-number">1.2.5.</span> <span class="nav-text">為了優化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ABI-%E6%8E%A2%E7%B4%A2%E4%B9%8B%E6%97%85"><span class="nav-number">1.3.</span> <span class="nav-text">ABI 探索之旅</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6"><span class="nav-number">1.3.1.</span> <span class="nav-text">文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E6%A7%8B-Dart-FFI-%E7%B7%A8%E8%AD%AF"><span class="nav-number">1.3.2.</span> <span class="nav-text">重構 Dart FFI 編譯</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A2%E7%B4%A2%E5%8E%9F%E7%94%9F-ABI"><span class="nav-number">1.3.3.</span> <span class="nav-text">探索原生 ABI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E9%81%8E-godbolt-org-%E6%8E%A2%E7%B4%A2"><span class="nav-number">1.3.4.</span> <span class="nav-text">透過 godbolt.org 探索</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E9%81%8E%E7%94%A2%E7%94%9F%E7%9A%84%E6%B8%AC%E8%A9%A6%E6%8E%A2%E7%B4%A2"><span class="nav-number">1.3.5.</span> <span class="nav-text">透過產生的測試探索</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.4.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

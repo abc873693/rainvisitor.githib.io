@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.10一個新的、統一的 dart 工具，適用於所有核心任務。此外，還更新了空安全時間表和遷移原則。 作者： Michael Thomsen 和 Kevin Moore 今天，我們宣佈推出 Dart 的新版本 2.10（_二點一零_）。此版本具有一個新的、統一的 Dart 開發工具：一個滿足所有開發人員需求的單一工具，例">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.10">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/64d6861.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 2.10一個新的、統一的 dart 工具，適用於所有核心任務。此外，還更新了空安全時間表和遷移原則。 作者： Michael Thomsen 和 Kevin Moore 今天，我們宣佈推出 Dart 的新版本 2.10（_二點一零_）。此版本具有一個新的、統一的 Dart 開發工具：一個滿足所有開發人員需求的單一工具，例">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*9wrenixSu1viOYLF1nWhAw.jpeg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*y-udLgjneGgP-y8UATZrlw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*wqrweNI-0SK9DB0z">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=350823952bd5">
+<meta property="article:published_time" content="2020-10-01T07:01:58.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:58:40.579Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="null-safety">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*9wrenixSu1viOYLF1nWhAw.jpeg">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/64d6861.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.10 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/64d6861.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.10
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-01 15:01:58" itemprop="dateCreated datePublished" datetime="2020-10-01T15:01:58+08:00">2020-10-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:58:40" itemprop="dateModified" datetime="2024-12-18T15:58:40+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-10"><a href="#宣佈-Dart-2-10" class="headerlink" title="宣佈 Dart 2.10"></a>宣佈 Dart 2.10</h2><p><em>一個新的、統一的 dart 工具，適用於所有核心任務。此外，還更新了空安全時間表和遷移原則。</em></p>
+<p><em>作者： <a href="https://medium.com/u/a6d788faa5e5">Michael Thomsen</a> 和 <a href="https://medium.com/u/441fe70f4b5e">Kevin Moore</a></em></p>
+<p>今天，我們宣佈推出 Dart 的新版本 2.10（_二點一零_）。此版本具有一個新的、統一的 Dart 開發工具：一個滿足所有開發人員需求的單一工具，例如建立專案、分析和格式化程式碼、執行測試以及編譯應用程式。我們還更新了空安全路線圖和時間表，並討論了將現有程式碼遷移到空安全的原則。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*9wrenixSu1viOYLF1nWhAw.jpeg" />
+</figure>
+
+<h3 id="一個新的、統一的-Dart-開發工具"><a href="#一個新的、統一的-Dart-開發工具" class="headerlink" title="一個新的、統一的 Dart 開發工具"></a>一個新的、統一的 Dart 開發工具</h3><p>Dart 構成了 Flutter SDK 的基礎：它不僅提供了支援 Flutter 應用程式的語言和執行時環境，還支援許多核心開發人員任務，例如格式化、分析和測試程式碼。然而，雖然 Flutter 有一個單一的、通用的開發人員工具（flutter 命令），但 Dart 歷來有許多較小的開發人員工具（例如，dartfmt 和 dartanalyzer）。Dart 2.10 有一個新的、統一的 dart 開發工具，它與 flutter 工具非常相似。這個新工具支援所有常見任務，例如建立新專案和套件；分析和格式化程式碼；以及執行、編譯和測試專案。要使用該工具，只需執行 dart 命令：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*y-udLgjneGgP-y8UATZrlw.png" />
+<figcaption>透過執行 dart help 了解 2.10 dart 工具。</figcaption>
+</figure>
+
+<p>Flutter 在 Flutter SDK 中包含了這個新的 Dart 工具。從今天的 <a href="https://medium.com/flutter/announcing-flutter-1-22-stable-44f146009e5f">Flutter 1.22 SDK</a> 開始，<flutter-sdk>&#x2F;bin 目錄（您可能在 PATH 中有此目錄）包含 flutter 和 dart 命令。如果您同時進行 Flutter 和通用 Dart 開發，則可以從單個 Flutter SDK 中獲得兩種開發人員體驗，而無需安裝任何其他東西。</p>
+<blockquote>
+<p><strong>注意：</strong>如果您想要下載並安裝第二個 Dart SDK（可能是因為您需要不同的版本），請確保您想要預設使用的 dart 工具的 SDK 位於 PATH 環境變數的開頭。</p>
+</blockquote>
+<p>在即將發佈的穩定版本中，我們計劃在此 dart 工具中加入更多功能，並逐步棄用較小的工具（dartdoc、dartfmt、dartanalyzer 等）。明年，我們預計將發佈僅包含單個 dart 工具的 Dart SDK。我們建議您現在執行 Dart 命令時切換到新工具，無論是在終端機中手動執行還是透過持續整合（_CI_）指令碼執行，如果缺少任何功能或功能未按預期工作，請<a href="https://github.com/dart-lang/sdk/issues/new?labels=area-dart-cli">向我們提供回饋</a>。</p>
+<h3 id="展望空安全"><a href="#展望空安全" class="headerlink" title="展望空安全"></a>展望空安全</h3><p>自從幾個月前我們推出<a href="https://medium.com/dartlang/announcing-sound-null-safety-defd2216a6f3">第一個技術預覽版</a>以來，我們對空安全產生了濃厚的興趣。我們都期待空安全作為一種避免難以發現的空錯誤的工具，此外，我們還期望看到聲音空安全帶來的效能提升。如果您渴望了解更多資訊，我們推薦您閱讀我們新的<a href="https://dart.dev/null-safety/understanding-null-safety">理解空安全</a>頁面。如果您更喜歡觀看短片，請查看幾個月前 <a href="https://events.withgoogle.com/flutter-day/#content">Flutter Day 活動</a> 中的<a href="https://www.youtube.com/watch?v=ZxSyZHq8gUg&feature=youtu.be&list=PLjxrf2q8roU1rBlI9vz01K2324nzIhYgp&t=322">空安全影片</a>。</p>
+<p>空安全何時可以使用？以下是目前的時間表：</p>
+<ol>
+<li><strong>Flutter 使用 <em>技術預覽版 2</em> 進行實驗</strong>：我們已成功遷移 Flutter 的大部分內容。很快——可能在下個月內——我們預計將遷移完整的 Flutter 架構，從而準備好與 Flutter 一起啟用實驗性使用。您將能夠在 Flutter 範例中嘗試空安全，並對您的 Flutter 應用程式和套件進行試驗性遷移。您將需要傳遞一個<a href="https://dart.dev/tools/experiment-flags">實驗標誌</a>，不應在生產環境中使用它，也不應發佈任何已遷移的套件。</li>
+<li><strong>使用 <em>測試版</em> 進行早期套件遷移</strong>：今年晚些時候，我們將完成效能調整，並擁有足夠的測試覆蓋率，讓我們確信該功能能夠按預期工作，並且向後相容性是可靠的。屆時，我們將發佈該功能的測試版，您將不需要傳遞實驗標誌。我們希望看到套件所有者開始將他們的套件遷移到空安全，並進行最後一輪驗證，以確保該功能已準備好發佈穩定版。</li>
+<li><strong>使用 <em>穩定版</em> 進行生產環境使用</strong>：根據測試版發佈的回饋，我們將修復任何剩餘問題，然後發佈到穩定版。很難說明具體的時間表，但我們認為是在明年年初。一旦該功能穩定下來，我們希望看到空安全得到廣泛採用，將空安全應用程式發佈到應用程式商店，並在 pub.dev 上發佈許多穩定版本的空安全套件。</li>
+</ol>
+<h3 id="遷移到空安全的原則"><a href="#遷移到空安全的原則" class="headerlink" title="遷移到空安全的原則"></a>遷移到空安全的原則</h3><p>我們想分享我們指導空安全遷移的原則。</p>
+<h4 id="準備好後再採用"><a href="#準備好後再採用" class="headerlink" title="準備好後再採用"></a>準備好後再採用</h4><p>空安全是 Dart 類型系統的根本性變革。它改變了變數宣告的基礎，因為<a href="https://medium.com/dartlang/announcing-sound-null-safety-defd2216a6f3">我們決定</a>預設將變數設為不可為空：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">無空安全                      有空安全</span><br><span class="line">String s; // 一個 String 或 null。      String s; // 一個 String，不可為 null。</span><br></pre></td></tr></table></figure>
+
+<p>如果我們堅持強制採用，如此根本性的變革將會極具破壞性。我們希望讓 <em>您</em> 決定何時是合適的時機，因此空安全是一個可選功能：您將能夠使用最新的 Dart 和 Flutter 版本，而無需在準備好之前強制啟用空安全。您甚至可以依賴尚未啟用空安全的應用程式或套件中已啟用空安全的套件。</p>
+<h4 id="按順序逐步採用"><a href="#按順序逐步採用" class="headerlink" title="按順序逐步採用"></a>按順序逐步採用</h4><p>我們強烈建議按順序遷移程式碼，首先遷移依賴圖的葉子。例如，如果 C 依賴於 B，而 B 依賴於 A，則首先將 A 遷移到空安全，然後是 B，然後是 C。此順序適用於 A、B 和 C 是程式庫、套件還是應用程式。</p>
+<p>為什麼順序很重要？儘管您可以在依賴項遷移之前在遷移程式碼方面取得一些進展，但如果您的依賴項在其遷移期間更改其 API，則您可能會冒險進行第二次遷移。我們將提供工具來幫助您找出哪些依賴項已遷移。如果您是套件作者，為了避免破壞 API 的風險，請等到所有依賴項都已遷移後再發佈空安全版本。</p>
+<h4 id="使用自動化工具來降低遷移成本"><a href="#使用自動化工具來降低遷移成本" class="headerlink" title="使用自動化工具來降低遷移成本"></a>使用自動化工具來降低遷移成本</h4><p>當您的依賴項準備就緒並且您選擇進行遷移時，您可以使用我們的遷移工具。該工具透過分析所有現有程式碼來工作，尋找哪些宣告可以不可為空（保持不變），哪些必須可為空（需要在宣告上加上 ? 空值標記）。</p>
+<p>遷移工具是互動式的，因此您可以檢查該工具推斷出的空值屬性。如果您不同意該工具的任何結論，您可以加入空值提示來更改推論。例如，即使需要一些重構，如果您想要使 API 不可為空，您可以告知該工具並重新執行遷移分析。加入一些遷移提示可以對遷移品質產生巨大影響。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*wqrweNI-0SK9DB0z" />
+</figure>
+
+<h4 id="充分利用才能獲得全部收益"><a href="#充分利用才能獲得全部收益" class="headerlink" title="充分利用才能獲得全部收益"></a>充分利用才能獲得全部收益</h4><p>一旦 <em>所有</em> 程式碼——以及它所依賴的套件——都已遷移，您的程式碼就可以在 <em>聲音</em> 空安全的情況下執行。在此之前，您的程式碼將繼續像今天一樣執行和編譯，但完全聲音的空安全可以啟用完整的執行時驗證和編譯器優化。使用聲音空安全執行測試可幫助您避免執行時空斷言的問題，使用聲音空安全編譯應用程式可確保您獲得目前和未來的優化，例如更小的編譯輸出和更快的執行速度。</p>
+<h3 id="後續步驟"><a href="#後續步驟" class="headerlink" title="後續步驟"></a>後續步驟</h3><p>新的 dart 開發人員工具現已在 Dart 2.10 SDK 和 Flutter 1.22 SDK 中提供。如果您已經擁有 Flutter SDK，只需執行 flutter upgrade 即可獲得帶有 dart 命令的 Dart SDK；這將為您提供嵌入 Dart 2.10 的 Flutter 1.22 SDK。我們建議您立即切換到新的 dart 工具，如果缺少任何功能或功能未按預期工作，請<a href="https://github.com/dart-lang/sdk/issues/new?labels=area-dart-cli">向我們提供回饋</a>。</p>
+<p>我們很快就會有更多關於空安全的新聞——很可能在下個月內，我們預計 Flutter 團隊的朋友們將會有一個啟用空安全的 Flutter 架構，準備用於實驗。請密切關注 <a href="https://medium.com/flutter">Flutter 部落格</a> 以獲取更新。同時，您可以使用 <a href="https://nullsafety.dartpad.dev/3d9c1769de7912c654bc5d132aff60ac">DartPad with Null Safety</a> 嘗試使用空安全的 Dart 程式碼，並透過閱讀我們的<a href="https://dart.dev/null-safety">空值安全文件</a>來了解更多關於功能設計的資訊。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=350823952bd5" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-10-350823952bd5">宣佈 Dart 2.10</a> 最初發佈在 Medium 上的 <a href="https://medium.com/dartlang">Dart</a> 中，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/null-safety/" rel="tag"># null-safety</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/687439a5.html" rel="prev" title="【文章翻譯】Announcing Flutter 1.22">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Announcing Flutter 1.22
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9f00e92f.html" rel="next" title="【文章翻譯】Performance testing on the web">
+      【文章翻譯】Performance testing on the web <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-2-10"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 2.10</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%80%8B%E6%96%B0%E7%9A%84%E3%80%81%E7%B5%B1%E4%B8%80%E7%9A%84-Dart-%E9%96%8B%E7%99%BC%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">一個新的、統一的 Dart 開發工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%95%E6%9C%9B%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">展望空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%B7%E7%A7%BB%E5%88%B0%E7%A9%BA%E5%AE%89%E5%85%A8%E7%9A%84%E5%8E%9F%E5%89%87"><span class="nav-number">1.3.</span> <span class="nav-text">遷移到空安全的原則</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%BA%96%E5%82%99%E5%A5%BD%E5%BE%8C%E5%86%8D%E6%8E%A1%E7%94%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">準備好後再採用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%89%E9%A0%86%E5%BA%8F%E9%80%90%E6%AD%A5%E6%8E%A1%E7%94%A8"><span class="nav-number">1.3.2.</span> <span class="nav-text">按順序逐步採用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%87%AA%E5%8B%95%E5%8C%96%E5%B7%A5%E5%85%B7%E4%BE%86%E9%99%8D%E4%BD%8E%E9%81%B7%E7%A7%BB%E6%88%90%E6%9C%AC"><span class="nav-number">1.3.3.</span> <span class="nav-text">使用自動化工具來降低遷移成本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%85%E5%88%86%E5%88%A9%E7%94%A8%E6%89%8D%E8%83%BD%E7%8D%B2%E5%BE%97%E5%85%A8%E9%83%A8%E6%94%B6%E7%9B%8A"><span class="nav-number">1.3.4.</span> <span class="nav-text">充分利用才能獲得全部收益</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.4.</span> <span class="nav-text">後續步驟</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

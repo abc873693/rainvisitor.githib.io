@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.16：改進的工具和平台處理今天，Dart SDK 2.16 版本正式推出。它沒有新的語言功能，但包含許多錯誤修復（包括一個安全漏洞的修復）、改進了對指定 Dart 套件支援平台的支援，以及全新的 pub.dev 搜尋體驗。 Dart 2.16今天與 Flutter 2.10 一起推出的 Dart 2.16 SDK 繼續從傳">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart 2.16: Improved tooling and platform handling">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/ac013a1a.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2.16：改進的工具和平台處理今天，Dart SDK 2.16 版本正式推出。它沒有新的語言功能，但包含許多錯誤修復（包括一個安全漏洞的修復）、改進了對指定 Dart 套件支援平台的支援，以及全新的 pub.dev 搜尋體驗。 Dart 2.16今天與 Flutter 2.10 一起推出的 Dart 2.16 SDK 繼續從傳">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*PJwhbfaIwRq3sSJi">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=dd87abd6bad1">
+<meta property="article:published_time" content="2022-02-03T10:02:12.000Z">
+<meta property="article:modified_time" content="2024-12-18T08:01:59.541Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="programming">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*PJwhbfaIwRq3sSJi">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/ac013a1a.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart 2.16: Improved tooling and platform handling | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/ac013a1a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart 2.16: Improved tooling and platform handling
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-02-03 18:02:12" itemprop="dateCreated datePublished" datetime="2022-02-03T18:02:12+08:00">2022-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 16:01:59" itemprop="dateModified" datetime="2024-12-18T16:01:59+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-2-16：改進的工具和平台處理"><a href="#Dart-2-16：改進的工具和平台處理" class="headerlink" title="Dart 2.16：改進的工具和平台處理"></a>Dart 2.16：改進的工具和平台處理</h2><p>今天，Dart SDK 2.16 版本正式推出。它沒有新的語言功能，但包含許多錯誤修復（包括一個安全漏洞的修復）、改進了對指定 Dart 套件支援平台的支援，以及全新的 <a href="https://pub.dev/">pub.dev</a> 搜尋體驗。</p>
+<h3 id="Dart-2-16"><a href="#Dart-2-16" class="headerlink" title="Dart 2.16"></a>Dart 2.16</h3><p>今天與 <a href="https://medium.com/flutter/whats-new-in-flutter-2-10-5aafb0314b12">Flutter 2.10</a> 一起推出的 Dart 2.16 SDK 繼續從傳統的 Dart CLI 工具（dartfmt、dartdoc 等）過渡到新的組合式 <a href="https://dart.dev/tools/dart-tool">dart</a> 開發者工具。新棄用的工具是 <code>dartdoc</code>（使用 <code>dart doc</code>）和 <code>dartanalyzer</code>（使用 <code>dart analyze</code>）。在 Dart 2.17 中，我們計劃完全移除 <code>dartdoc</code>、<code>dartanalyzer</code> 和 <code>pub</code> 命令（在 Dart 2.15 中已棄用；使用 <code>dart pub</code> 或 <code>flutter pub</code>）。有關詳細資訊，請參閱 <a href="https://github.com/dart-lang/sdk/issues/46100">issue #46100</a>。</p>
+<p>2.16 版本還包括一個安全漏洞的修復和兩個小的重大變更：</p>
+<ul>
+<li><code>dart:io</code> 中的 <a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-c8mh-jj22-xg5h#:~:text=https%3A//api.dart.dev/dart%2Dio/HttpClient%2Dclass.html"><code>HttpClient</code></a> API 允許您為授權、<code>www-authenticate</code>、<code>cookie</code> 和 <code>cookie2</code> 設定選用標頭。在 Dart 2.16 之前的 SDK 中，重定向邏輯的實作存在一個漏洞，即當發生跨域重定向時，這些標頭（可能包含敏感資訊）會被傳遞。在 Dart 2.16 中，這些標頭會被丟棄。有關詳細資訊，請參閱 <a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-c8mh-jj22-xg5h">CVE-2022-0451</a>。</li>
+<li><code>dart:io</code> 中的 <code>Directory.rename</code> API 在 Windows 上的行為已變更：它不再刪除與目標名稱匹配的現有目錄（issue <a href="https://github.com/dart-lang/sdk/issues/47653">#47653</a>）。</li>
+<li><code>Platform.packageRoot</code> 和 <code>Isolate.packageRoot</code> API（它們是 Dart 1.x 的遺留物，在 Dart 2.x 中不起作用）已被移除（issue <a href="https://github.com/dart-lang/sdk/issues/47769">#47769</a>）。</li>
+</ul>
+<p>若要查找有關 Dart 2.16 中變更的更多詳細資訊，請參閱 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#2160">變更日誌</a>。</p>
+<h3 id="新增對宣告-pub-dev-套件平台支援的支援"><a href="#新增對宣告-pub-dev-套件平台支援的支援" class="headerlink" title="新增對宣告 pub.dev 套件平台支援的支援"></a>新增對宣告 pub.dev 套件平台支援的支援</h3><p>Dart 的設計旨在實現可移植性，我們努力讓程式碼能夠在最多的平台上運行。但是，有時您可能會在 pub.dev 上建立和分享僅針對一個或幾個平台設計的套件。您可能有一個套件依賴於僅在特定作業系統上可用的 API，或者一個套件使用僅在原生平台上支援且在網頁上不支援的函式庫，例如 <code>dart:ffi</code>。</p>
+<p>透過 Dart 2.16，您現在可以在套件的 <code>pubspec</code> 中手動宣告支援的平台集。例如，如果您的套件僅支援 Windows 和 macOS，則其 <code>pubspec.yaml</code> 檔案可能如下所示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">mypackage</span></span><br><span class="line"><span class="attr">version:</span> <span class="number">1.0</span><span class="number">.0</span></span><br><span class="line"></span><br><span class="line"><span class="attr">platforms:</span></span><br><span class="line">  <span class="attr">windows:</span></span><br><span class="line">  <span class="attr">macos:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">dependencies:</span></span><br></pre></td></tr></table></figure>
+
+<p>新的 <code>platforms</code> 標籤適用於您正在開發 Dart 套件，並且您想要宣告對與 pub.dev 自動偵測到的平台集不同的平台集的支援的情況。如果您正在開發和分享包含主機特定程式碼（例如，Kotlin 或 Swift）的 Flutter Plugin，則 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages#plugin-platforms">Flutter Plugin 標籤</a> 通常會指定支援的平台。</p>
+<h3 id="全新的-pub-dev-搜尋-UI"><a href="#全新的-pub-dev-搜尋-UI" class="headerlink" title="全新的 pub.dev 搜尋 UI"></a>全新的 pub.dev 搜尋 UI</h3><p>為了回應開發人員的要求，我們為在 pub.dev 上搜尋套件建立了更好的支援。今天推出的變更的主要目標是幫助您識別和搜尋支援的平台集。以下是全新搜尋體驗的視圖：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*PJwhbfaIwRq3sSJi" />
+<figcaption>Pub.dev 搜尋介面，左側邊欄包含平台、SDK 和進階搜尋過濾器</figcaption>
+</figure>
+
+<p>新的搜尋 UI 在左側有一個搜尋過濾器側邊欄，您可以使用它來限制您的套件搜尋：</p>
+<ul>
+<li><strong>平台：</strong> 選擇一個或多個平台，將搜尋結果縮小到僅支援所有選定平台的套件。</li>
+<li><strong>SDK：</strong> 選擇 Dart 或 Flutter，將結果限制為分別支援 Dart SDK 或 Flutter SDK 的套件。</li>
+<li><strong>進階：</strong> 其他搜尋選項，例如過濾到 Flutter Favorite 套件。</li>
+</ul>
+<h3 id="空安全更新"><a href="#空安全更新" class="headerlink" title="空安全更新"></a>空安全更新</h3><p>自從我們上次談論空安全（一年前在 <a href="https://medium.com/dartlang/announcing-dart-2-12-499a6e689c87">Dart 2.12</a> 中推出的主要語言新增功能）以來，已經發佈了幾個版本。我們對 Dart 生態系統遷移套件以支援空安全的速度感到驚訝：截至今天，前 250 個套件中的 100% 以及前 1000 個套件中的 96% 都支援空安全！感謝所有為這一偉大成就做出貢獻的套件作者。</p>
+<p>我們也看到應用程式遷移到健全的空安全（應用程式程式碼和所有套件依賴項都已遷移的狀態）方面取得了良好進展。根據我們的分析，Flutter 工具中的所有運行會話中有 71% 現在具有完全健全的空安全。如果您是應用程式開發人員並且尚未遷移，那麼現在是絕佳時機。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>我們希望您覺得新的 pub.dev 搜尋 UI 很有用，並且我們歡迎您提供任何 <a href="https://github.com/dart-lang/pub-dev/issues/">回饋</a>。敬請期待下一個 Dart SDK 版本，計劃於 2022 年第二季度發佈。我們正在開發幾個 <a href="https://github.com/dart-lang/language/projects/1">令人興奮的語言功能</a>，我們希望在今年晚些時候發佈。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=dd87abd6bad1" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-2-16-improved-tooling-and-platform-handling-dd87abd6bad1">Dart 2.16：改進的工具和平台處理</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/8953fef9.html" rel="prev" title="【文章翻譯】How to build your own Flutter slide puzzle">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】How to build your own Flutter slide puzzle
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/288d1e20.html" rel="next" title="【文章翻譯】Announcing Flutter for Windows">
+      【文章翻譯】Announcing Flutter for Windows <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-2-16%EF%BC%9A%E6%94%B9%E9%80%B2%E7%9A%84%E5%B7%A5%E5%85%B7%E5%92%8C%E5%B9%B3%E5%8F%B0%E8%99%95%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Dart 2.16：改進的工具和平台處理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-16"><span class="nav-number">1.1.</span> <span class="nav-text">Dart 2.16</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E5%B0%8D%E5%AE%A3%E5%91%8A-pub-dev-%E5%A5%97%E4%BB%B6%E5%B9%B3%E5%8F%B0%E6%94%AF%E6%8F%B4%E7%9A%84%E6%94%AF%E6%8F%B4"><span class="nav-number">1.2.</span> <span class="nav-text">新增對宣告 pub.dev 套件平台支援的支援</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E6%96%B0%E7%9A%84-pub-dev-%E6%90%9C%E5%B0%8B-UI"><span class="nav-number">1.3.</span> <span class="nav-text">全新的 pub.dev 搜尋 UI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A9%BA%E5%AE%89%E5%85%A8%E6%9B%B4%E6%96%B0"><span class="nav-number">1.4.</span> <span class="nav-text">空安全更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.5.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

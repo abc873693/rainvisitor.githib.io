@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔Dart 已經為行動裝置和網路提供了 廣泛的編譯器集，用於建構經過生產最佳化的程式碼。這些靈活的編譯器使我們的框架合作夥伴能夠鎖定各種形式：在 Android 和 iOS 上的 Flutter 應用程式、在 網路 和 桌面 上的 Flutter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/defcb0a1.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔Dart 已經為行動裝置和網路提供了 廣泛的編譯器集，用於建構經過生產最佳化的程式碼。這些靈活的編譯器使我們的框架合作夥伴能夠鎖定各種形式：在 Android 和 iOS 上的 Flutter 應用程式、在 網路 和 桌面 上的 Flutter">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/590/0*lY0iF-neazyL0aE-">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/586/0*f5pvUnbesO4mGZmW">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a76c815e6baf">
+<meta property="article:published_time" content="2019-11-05T08:38:42.000Z">
+<meta property="article:modified_time" content="2024-12-18T14:36:17.172Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="native-code">
+<meta property="article:tag" content="compilers">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/590/0*lY0iF-neazyL0aE-">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/defcb0a1.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/defcb0a1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 2.6 with dart2native: Compile Dart to self-contained, native executables
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-11-05 16:38:42" itemprop="dateCreated datePublished" datetime="2019-11-05T16:38:42+08:00">2019-11-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 22:36:17" itemprop="dateModified" datetime="2024-12-18T22:36:17+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈推出-Dart-2-6-和-dart2native：將-Dart-編譯成獨立的原生執行檔"><a href="#宣佈推出-Dart-2-6-和-dart2native：將-Dart-編譯成獨立的原生執行檔" class="headerlink" title="宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔"></a>宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔</h2><p>Dart 已經為行動裝置和網路提供了 <a href="https://dart.dev/platforms">廣泛的編譯器集</a>，用於建構經過生產最佳化的程式碼。這些靈活的編譯器使我們的框架合作夥伴能夠鎖定各種形式：在 <a href="https://flutter.dev/docs">Android 和 iOS</a> 上的 Flutter 應用程式、在 <a href="https://flutter.dev/web">網路</a> 和 <a href="https://flutter.dev/desktop">桌面</a> 上的 Flutter 應用程式、在 <a href="https://angulardart.dev/">網路</a> 上的 AngularDart 應用程式，以及在 <a href="https://developers.googleblog.com/2019/05/Flutter-io19.html">嵌入式裝置</a> 上的 Google 助理。</p>
+<p>今天，我們宣佈推出 <strong>dart2native</strong>，它是我們現有編譯器集的擴展，能夠將 Dart 程式編譯成包含預先編譯機器碼的獨立執行檔。使用 dart2native，您可以在 <strong>macOS、Windows 或 Linux</strong> 上使用 Dart 建立命令列工具。此功能的宣佈圖片 <a href="https://gist.github.com/mit-mit/faec2bfc1d1cef7cd09df917e531c5c0">是用此功能本身實現的</a> :-)</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/590/0*lY0iF-neazyL0aE-" />
+</figure>
+
+<h3 id="Dart-Native-和-dart2native-編譯器"><a href="#Dart-Native-和-dart2native-編譯器" class="headerlink" title="Dart Native 和 dart2native 編譯器"></a>Dart Native 和 dart2native 編譯器</h3><p>Dart 多年來一直支援 AOT（提前）編譯成原生機器碼，因此 <a href="https://dart.dev/platforms">Dart Native</a> 是一項相當成熟的技術。然而，過去我們只透過 <a href="http://flutter.dev/">Flutter</a> 在 iOS 和 Android 行動裝置上公開此功能。</p>
+<p>使用 dart2native，我們正在擴展我們的原生編譯支援，以支援運行 macOS、Windows 和 Linux 的傳統桌面作業系統。由於使用 dart2native 建立的執行檔是獨立的，因此它們可以在未安裝 Dart SDK 的機器上運行。而且由於它們是使用 Dart 的 AOT 編譯器編譯的，因此執行檔只需幾毫秒即可開始運行。與其他 Dart 編譯器和運行時一樣，在編譯成原生程式碼時，Dart 中也提供了同一組豐富且一致的 <a href="https://dart.dev/guides/libraries">核心函式庫</a>。</p>
+<p>我們聽到了許多客戶要求桌面作業系統的 AOT 編譯——這是我們議題追蹤器中 <a href="https://github.com/dart-lang/sdk/issues/36915">評分第六高的議題</a>——因此我們很高興能夠提供此功能。</p>
+<blockquote>
+<p>如果您以前使用過 dart2aot，那麼從 2.6 開始，您將使用 dart2native。它提供了 dart2aot 功能的超集。</p>
+</blockquote>
+<h3 id="使用-dart2native-建構命令列應用程式"><a href="#使用-dart2native-建構命令列應用程式" class="headerlink" title="使用 dart2native 建構命令列應用程式"></a>使用 dart2native 建構命令列應用程式</h3><p>dart2native 編譯器是建構和部署 <a href="https://dart.dev/tutorials/server/cmdline">基於 Dart 的命令列應用程式</a> 的絕佳選擇。這些應用程式通常使用諸如 <a href="https://api.dart.dev/stable/dart-io/dart-io-library.html">dart:io</a>（基本 I&#x2F;O）、package:<a href="https://pub.dev/packages/http">http</a>（網路）和 package:<a href="https://pub.dev/packages/args">args</a>（參數解析）之類的函式庫。讓我們回顧一下將「hello, world」應用程式編譯成執行檔的基礎知識：</p>
+<p>原始碼 hello.dart：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Hello Dart developers&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>將 hello.dart 編譯成 hello 執行檔：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dart2native src/hello.dart -o hello</span><br><span class="line">Generated: /Users/mit/hello</span><br></pre></td></tr></table></figure>
+
+<p>運行 hello 並測量執行時間：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ time ./hello</span><br><span class="line">Hello Dart developers</span><br><span class="line"></span><br><span class="line">real    0m0.049s</span><br><span class="line">user    0m0.018s</span><br><span class="line">sys 0m0.020s</span><br></pre></td></tr></table></figure>
+
+<p>請注意命令如何啟動、列印到 stdout 並在僅 49 毫秒的組合時間內退出！</p>
+<p>我們已經看到一些 Dart 開發人員嘗試使用 dart2native 開發命令列工具：</p>
+<ul>
+<li>來自 <a href="https://sass-lang.com/">SASS</a>（一種流行的 CSS 擴展工具）團隊的 Natalie <a href="https://github.com/dart-lang/sdk/issues/32894#issuecomment-513975562">報告</a>說，在將他們基於 Dart 的 SASS 實作切換到使用 dart2native 編譯後，它的效能現在可以與基於 C++ 的實作 LibSass 相媲美。</li>
+<li>來自 Dart DevRel 團隊的 Filip 使用 dart2native 重新編譯了他的 <a href="https://github.com/filiph/linkcheck/">linkchecker</a> 工具，並在檢查小型網站時發現 <a href="https://github.com/filiph/linkcheck/issues/7#issuecomment-496308288">速度提高了 27 倍</a>。</li>
+</ul>
+<h3 id="透過-dart-ffi-與-C-程式碼互通"><a href="#透過-dart-ffi-與-C-程式碼互通" class="headerlink" title="透過 dart:ffi 與 C 程式碼互通"></a>透過 dart:ffi 與 C 程式碼互通</h3><p>原生應用程式通常需要從周圍的作業系統存取原生功能。這些系統 API 通常在基於 C 的原生函式庫中公開，而 Dart 透過 dart:ffi 支援與這些函式庫的互通性，dart:ffi 是我們用於 <a href="https://dart.dev/guides/libraries/c-interop">C 互通</a> 的新機制，我們在 <a href="https://medium.com/dartlang/announcing-dart-2-5-super-charged-development-328822024970">Dart 2.5</a> 中以預覽版推出。dart2native 編譯器與 dart:ffi 相容，因此您可以建立和編譯使用它的原生 Dart 應用程式。</p>
+<p>一位團隊成員最近使用 dart:ffi 建立了一個用於控制台應用程式開發的 <a href="https://pub.dev/packages/dart_console">dart_console</a> 函式庫，它具有獲取視窗尺寸、讀取和設定游標位置、管理顏色以及讀取鍵和控制序列等功能。使用 dart:ffi 的能力使 Dart 成為一種非常強大的控制台應用程式語言。</p>
+<h3 id="kilo：用不到-500-行-Dart-程式碼編寫的-7MB-程式碼編輯器"><a href="#kilo：用不到-500-行-Dart-程式碼編寫的-7MB-程式碼編輯器" class="headerlink" title="kilo：用不到 500 行 Dart 程式碼編寫的 7MB 程式碼編輯器"></a>kilo：用不到 500 行 Dart 程式碼編寫的 7MB 程式碼編輯器</h3><p>使用 Dart 核心函式庫、dart:ffi 和 dart_console 函式庫，我們可以建立非常有趣的控制台應用程式。dart_console 套件包含一個完整的 <em>kilo</em> 示範，這是一個僅用約 <a href="https://github.com/timsneath/dart_console/blob/master/example/kilo.dart">500 行 Dart 程式碼</a> 編寫的控制台文字編輯器。kilo 這個名稱來自它的起源，<a href="https://github.com/antirez/kilo/blob/master/kilo.c">kilo.c</a>，它是一個用大約 1000 行 C 程式碼編寫的實作。</p>
+<p>使用新的 dart2native 編譯器，我們可以輕鬆地打包它，最終得到一個 7MB 的獨立程式碼編輯器。以下是一個編譯編輯器的示範，然後使用編譯後的編輯器來編輯其自身的原始程式碼以修復錯誤：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/586/0*f5pvUnbesO4mGZmW" />
+<figcaption>用 Dart 編寫並使用 dart2native 編譯成執行檔的 kilo 編輯器正在編輯它自己的原始程式碼</figcaption>
+</figure>
+
+<h3 id="使用-dart2native-建構服務"><a href="#使用-dart2native-建構服務" class="headerlink" title="使用 dart2native 建構服務"></a>使用 dart2native 建構服務</h3><p>dart2native 編譯器的另一個潛在用途是小型服務——例如，支援使用 Flutter 編寫的前端應用程式的後端。近年來，一種日益增長的趨勢是使用在 <a href="https://zh.wikipedia.org/wiki/%E6%97%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%AE%97">無伺服器計算</a> 上運行的服務。這些是完全託管的服務，可以自動擴展，包括從零擴展到零（不運行），由於它們僅在實際運行時才計費，因此有可能大大降低成本。Google Cloud 透過 <a href="https://cloud.google.com/run/">Cloud Run</a> 提供無伺服器計算。</p>
+<p>對於無伺服器後端，服務快速啟動至關重要。傳統上，基於 Dart 的服務使用我們的 JIT（即時）編譯器運行，但 JIT 基礎的執行在啟動時延遲很高，因為程式碼需要先編譯和預熱才能開始執行。透過將服務的程式碼預先編譯為原生程式碼，您可以避免這種延遲並立即開始運行。此外，使用原生程式碼，您可以建立磁碟佔用空間小且獨立的 Dart 服務，從而大大減少 Dart 服務運行的容器的大小。Dart 開發人員 Paul Mundt 最近 <a href="https://itnext.io/experiments-with-dart-microservices-fa117aa408c7">記錄了他使用 dart2native 編譯器的經驗</a>；他能夠將 Docker 映象的大小減少 91%，從使用 JIT 編譯程式碼的 220MB 減少到使用原生程式碼的僅 20MB！有關 <a href="https://dart.dev/tutorials/server/httpserver">伺服器端應用程式</a> 和 <a href="https://dart.dev/server/libraries#server-packages">套件</a> 的更多詳細資訊，請參閱我們的文件。</p>
+<h3 id="可用性"><a href="#可用性" class="headerlink" title="可用性"></a>可用性</h3><p>dart2native 編譯器從 2.6 版開始在 Dart SDK 中提供，今天開始可以從 <a href="https://dart.dev/get-dart">dart.dev&#x2F;get-dart</a> 獲取。安裝 SDK 後，您應該會在 bin&#x2F; 目錄和 PATH 中看到新的編譯器。Dart.dev 上有 <a href="https://dart.dev/tools/dart2native">更多文件</a>。</p>
+<p>如果您透過 Flutter 獲取 Dart SDK，請注意目前的 Flutter 版本對 dart2native 的支援不完整。我們建議您從 <a href="https://dart.dev/get-dart">dart.dev&#x2F;get-dart</a> 安裝 Dart 2.6 SDK。</p>
+<h3 id="已知限制"><a href="#已知限制" class="headerlink" title="已知限制"></a>已知限制</h3><p>此初始版本的 dart2native 編譯器有一些已知的限制，如下所示。您可以透過在我們的 GitHub 議題追蹤器中為議題添加「豎起大拇指」來讓我們知道哪些議題對您很重要。</p>
+<ul>
+<li>不支援交叉編譯（<a href="https://github.com/dart-lang/sdk/issues/28617">議題 28617</a>）：dart2native 編譯器僅支援為其運行的作業系統建立機器碼。因此，如果您想為所有三個作業系統建立執行檔，則需要在 macOS、Windows 和 Linux 上運行三次編譯器。執行此操作的一種方法是使用支援所有三個作業系統的 CI（持續整合）提供程式。</li>
+<li>不支援簽名（<a href="https://github.com/dart-lang/sdk/issues/39106">議題 39106</a>）：生成的執行檔使用與標準簽名工具（例如 codesign 和 signtool）不相容的格式。</li>
+<li>不支援 dart:mirrors 和 dart:developer（請參閱 <a href="https://dart.dev/guides/libraries">Dart 核心函式庫</a>）。</li>
+</ul>
+<h3 id="Dart-2-6-中的其他變化"><a href="#Dart-2-6-中的其他變化" class="headerlink" title="Dart 2.6 中的其他變化"></a>Dart 2.6 中的其他變化</h3><p>Dart SDK 2.6 版還有一些其他變化。</p>
+<p>我們在 <a href="https://medium.com/dartlang/announcing-dart-2-5-super-charged-development-328822024970">Dart 2.5</a> 中推出了 dart:ffi 的預覽版，這是我們用於 <a href="https://dart.dev/guides/libraries/c-interop">C 互通</a> 的新機制。Dart 2.6 有一個新版本的 dart:ffi。這個新版本有許多重大 API 變更，以使我們的 API 更易於使用、提供更多類型安全，並提供方便的記憶體存取。有關其他詳細資訊，請參閱 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#foreign-function-interface-dartffi">Dart 2.6 變更日誌</a>。透過這些變更，dart:ffi 進入測試階段，我們預計 API 變更的頻率會大大降低，並且預計總體穩定性會很高。請繼續透過 <a href="https://github.com/dart-lang/sdk/issues">議題追蹤器</a> 向我們提供回饋。</p>
+<p>Dart 2.6 還包含一個令人興奮的新語言功能的預覽版，<a href="https://github.com/dart-lang/language/issues/41">擴展方法</a>。我們還有一些潤色和工具工作要完成此功能，但我們希望在下一個 Dart SDK 版本中正式推出它。到時候我們將會更多地談論擴展方法；現在，您可以閱讀有關 <a href="https://medium.com/dartlang/extension-methods-2d466cd8b308">此功能背後的設計考量</a>。</p>
+<h3 id="後續步驟"><a href="#後續步驟" class="headerlink" title="後續步驟"></a>後續步驟</h3><p>下載 Dart 2.6 SDK（<a href="https://dart.dev/get-dart">dart.dev&#x2F;get-dart</a>），使用 dart2native 建構一些酷炫的東西，然後告訴我們。如果您願意分享詳細資訊，請在此文章底部留言。我們很期待看到您建構的東西！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=a76c815e6baf" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart2native-a76c815e6baf">宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/native-code/" rel="tag"># native-code</a>
+              <a href="/tags/compilers/" rel="tag"># compilers</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/3d0ae6d.html" rel="prev" title="【文章翻譯】Dart extension method fundamentals">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart extension method fundamentals
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9ea1f18e.html" rel="next" title="【文章翻譯】A brand new DartPad.dev with Flutter support">
+      【文章翻譯】A brand new DartPad.dev with Flutter support <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88%E6%8E%A8%E5%87%BA-Dart-2-6-%E5%92%8C-dart2native%EF%BC%9A%E5%B0%87-Dart-%E7%B7%A8%E8%AD%AF%E6%88%90%E7%8D%A8%E7%AB%8B%E7%9A%84%E5%8E%9F%E7%94%9F%E5%9F%B7%E8%A1%8C%E6%AA%94"><span class="nav-number">1.</span> <span class="nav-text">宣佈推出 Dart 2.6 和 dart2native：將 Dart 編譯成獨立的原生執行檔</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-Native-%E5%92%8C-dart2native-%E7%B7%A8%E8%AD%AF%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">Dart Native 和 dart2native 編譯器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-dart2native-%E5%BB%BA%E6%A7%8B%E5%91%BD%E4%BB%A4%E5%88%97%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">使用 dart2native 建構命令列應用程式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%8F%E9%81%8E-dart-ffi-%E8%88%87-C-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E4%BA%92%E9%80%9A"><span class="nav-number">1.3.</span> <span class="nav-text">透過 dart:ffi 與 C 程式碼互通</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kilo%EF%BC%9A%E7%94%A8%E4%B8%8D%E5%88%B0-500-%E8%A1%8C-Dart-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%B7%A8%E5%AF%AB%E7%9A%84-7MB-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%B7%A8%E8%BC%AF%E5%99%A8"><span class="nav-number">1.4.</span> <span class="nav-text">kilo：用不到 500 行 Dart 程式碼編寫的 7MB 程式碼編輯器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-dart2native-%E5%BB%BA%E6%A7%8B%E6%9C%8D%E5%8B%99"><span class="nav-number">1.5.</span> <span class="nav-text">使用 dart2native 建構服務</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%94%A8%E6%80%A7"><span class="nav-number">1.6.</span> <span class="nav-text">可用性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5%E9%99%90%E5%88%B6"><span class="nav-number">1.7.</span> <span class="nav-text">已知限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-2-6-%E4%B8%AD%E7%9A%84%E5%85%B6%E4%BB%96%E8%AE%8A%E5%8C%96"><span class="nav-number">1.8.</span> <span class="nav-text">Dart 2.6 中的其他變化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%8C%E7%BA%8C%E6%AD%A5%E9%A9%9F"><span class="nav-number">1.9.</span> <span class="nav-text">後續步驟</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

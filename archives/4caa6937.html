@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 3 之路：完全可靠的空安全語言在過去的四年裡，我們將 Dart 發展成為一種快速、可移植且現代化的語言。我們的下一個版本 Dart 3 將完成到完全可靠的空安全語言的旅程。作為這段旅程的最後一步，我們將移除幾個歷史悠久的 Dart 語言和 SDK 工件，包括移除對在沒有可靠空安全的情況下運行的支援。這使得 Dart 更易於學習">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】The road to Dart 3: A fully sound, null safe language">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/4caa6937.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 3 之路：完全可靠的空安全語言在過去的四年裡，我們將 Dart 發展成為一種快速、可移植且現代化的語言。我們的下一個版本 Dart 3 將完成到完全可靠的空安全語言的旅程。作為這段旅程的最後一步，我們將移除幾個歷史悠久的 Dart 語言和 SDK 工件，包括移除對在沒有可靠空安全的情況下運行的支援。這使得 Dart 更易於學習">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*5XfWLgEBx4iJvuqA">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=afdd580fbefa">
+<meta property="article:published_time" content="2022-12-08T06:02:03.000Z">
+<meta property="article:modified_time" content="2024-12-18T15:02:22.967Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="null-safety">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/0*5XfWLgEBx4iJvuqA">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/4caa6937.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】The road to Dart 3: A fully sound, null safe language | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4caa6937.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】The road to Dart 3: A fully sound, null safe language
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-12-08 14:02:03" itemprop="dateCreated datePublished" datetime="2022-12-08T14:02:03+08:00">2022-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 23:02:22" itemprop="dateModified" datetime="2024-12-18T23:02:22+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-3-之路：完全可靠的空安全語言"><a href="#Dart-3-之路：完全可靠的空安全語言" class="headerlink" title="Dart 3 之路：完全可靠的空安全語言"></a>Dart 3 之路：完全可靠的空安全語言</h2><p>在過去的四年裡，我們將 Dart 發展成為一種快速、可移植且現代化的語言。我們的下一個版本 Dart 3 將完成到<strong>完全可靠的空安全語言</strong>的旅程。作為這段旅程的最後一步，我們將移除幾個歷史悠久的 Dart 語言和 SDK 工件，包括<strong>移除對在沒有可靠空安全的情況下運行的支援</strong>。這使得 Dart 更易於學習，並使我們能夠更快地發展 Dart SDK 以支援新功能。要了解 Dart 3 中的主要變化以及如何最好地準備您的應用程式和套件，請继续阅读！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*5XfWLgEBx4iJvuqA" />
+<figcaption>通往 Dart 3 的道路。 <em>(照片由</em><a href="https://unsplash.com/@ohlrogge?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"><em> Niklas Ohlrogge</em></a><em> 在</em><a href="https://unsplash.com/s/photos/road-denmark?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"><em> Unsplash</em></a><em> 上拍攝)</em></figcaption>
+</figure>
+
+<h3 id="為什麼要使用可靠的空安全？"><a href="#為什麼要使用可靠的空安全？" class="headerlink" title="為什麼要使用可靠的空安全？"></a>為什麼要使用可靠的空安全？</h3><p>許多現代程式語言都支援空安全（也稱為<a href="https://en.wikipedia.org/wiki/Void_safety">void 安全</a>）。這可以避免空解引用問題，Tony Hoare 將其稱為十億美元的錯誤：「這導致了無數的錯誤、漏洞和系統崩潰，在過去的四十年裡可能造成十億美元的痛苦和損失」( <a href="https://web.archive.org/web/20090119110704/http://qconlondon.com/london-2009/presentation/Null+References%3A+The+Billion+Dollar+Mistake">Hoare 2009</a>)。為了解決這個問題，像 Swift、C# 和 Kotlin 等語言支援一種類型系統，您可以將變數宣告為<em>非空</em>（<em>永遠</em>不能包含空值）或<em>可空</em>（可以包含值或空值）。這種類型系統可以與靜態分析結合使用，以檢測任何將空值賦值給非空變數的情況。Dart 語言中的空安全支援使用類似的模型，預設情況下變數是非空的，並且只在明確宣告時才允許空值。</p>
+<p>更進一步，<strong>Dart 在現有語言中引入了<em>可靠的空安全</em></strong>。一個可靠的系統可以保證非空變數<em>永遠</em>不包含空值。在 Dart 空安全的早期規劃中，<a href="https://github.com/dart-lang/language/blob/master/accepted/2.12/nnbd/roadmap.md">我們探討了</a>這個主題，以及其他語言所做的權衡。Swift 的設計從一開始就包含了可靠性。TypeScript 本質上是不可靠的，因為它的底層類型系統允許將任何物件視為任何靜態類型。正如您在<a href="https://www.typescriptlang.org/play#code/MYGwhgzhAECyCeAVeAHApgHkQPmgbwChpoA3MEAVzWgC5pEBuI6YAewDsIAXAJwuC6seACgD6ZStTqIAlPi4ALAJYQAdBKrQAvNHHkqDAL4FjBAGYV2ApR2hgAJvYCC7eIqXsA5hgCi2YWA8PGDwdE5BIb7YADTQaCBoALZo7Fx0PnKExMSBwfCqKBQQCsLxSSlcMkymZDykAIx0CMjoGOwUiQBGaHUAPtDtICC4OuxoAO5wSKhowgAsAExVBLWkC9oNTGycrAmqIKyewgAGAMSNDdAq0AAkeCT16vpohrEk69d370+ShscyBAISjM0GEDx+mgAhKMKENMswAPQI6AAETQoEC1AAHnYYOwOABaQbgToJWKdChcaDjajAMDsaDcJRDXEQJSeBnE6CCK5pZjfDTUGFDJjEVY4ujtLo9DbgwUMYjMbYQXZofaHE6nBaSwlcnEqOh3LF-AGmJHQJzQEAqKmsEH49hE2EgaAASVSahWgWgiXgABkbWEIvA2h1ujwRtAANr1WILWKLAC6TAI5qcjjsA2dqgt7HsmYdTulPBzAAUeB4qYpqDw0BBYVxVAQHM5XO4vMJfQHuLFicsWy43MovBgAPKdABW6K4-i7NtiACJEMoYNd8VS0CQUgWwz0F8tlar1UcF6cAMx0a3cK4QGgL2Jz7jLIA">此 TypeScript 範例</a>中看到的，我們可以將空值賦值給非空變數。出於人體工程學和避免遷移所有現有程式碼的原因，C# 對其空檢查有幾個<a href="https://devblogs.microsoft.com/dotnet/nullable-reference-types-in-csharp/#avoiding-dereferencing-of-nulls">例外</a>。Kotlin 有幾個不可靠的<a href="https://kotlinlang.org/docs/null-safety.html#nullable-types-and-non-null-types">例外</a>，部分原因是它旨在與 Java 互操作。正如您在此 Kotlin 範例中看到的，<a href="https://play.kotlinlang.org/embed?short=yOc5EY5E8&amp;theme=darcula">泛型</a>可能會觸發空值流入宣告為包含非空元素的列表的情況。</p>
+<p>對於 Dart，我們選擇了可靠空安全的路徑。這涉及到一個權衡。在少數情況下，這使得遷移到空安全的成本更高，但會產生一個可靠的類型系統，可以完全信任非空類型註釋。我們可以在我們的編譯器和執行時中基於類型系統的空值方面進行實作<a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">優化</a>。我們<em>確切地知道</em>變數何時不為空。我們認為這些是 Dart 的正確權衡。</p>
+<h3 id="在-Dart-3-中，所有-Dart-程式碼都將使用可靠的空安全"><a href="#在-Dart-3-中，所有-Dart-程式碼都將使用可靠的空安全" class="headerlink" title="在 Dart 3 中，所有 Dart 程式碼都將使用可靠的空安全"></a>在 Dart 3 中，所有 Dart 程式碼都將使用可靠的空安全</h3><p><em>追蹤議題：<a href="https://github.com/dart-lang/sdk/issues/49530">SDK #49530</a>。</em></p>
+<p>自從我們在<a href="https://dart.dev/guides/language/evolution#dart-212">Dart 2.12</a> 中將空安全引入 Dart 語言以來已經三年了。如上一節所述，我們認識到遷移現有 Dart 套件和應用程式所需的影響。為了幫助遷移，Dart 支援以三種方式運行您的應用程式程式碼。它可以在沒有空安全的情況下運行，在具有部分空安全的混合模式下運行，或在完全可靠的空安全的情況下運行。當 100% 的程式碼（包括所有依賴項）已遷移時，就會出現完全可靠的空安全。這讓 Dart 開發人員有時間逐步遷移現有程式碼。然而，支援多種模式會增加開銷和複雜性。</p>
+<p>首先，Dart 開發人員需要注意所有三種模式。每當您閱讀一段 Dart 程式碼時，您必須檢查語言版本以查看類型預設是否為非空、預設是否為可空，或兩者兼而有之。</p>
+<p>其次，在我們的編譯器和執行時中支援所有三種模式會減慢 Dart SDK 的發展速度。這種支援會增加新增功能的成本和複雜性。</p>
+<p>在 Dart 3 中，可靠的空安全將是，如前<a href="https://medium.com/dartlang/dart-2-18-f4b3101f146c">所述</a>和前<a href="https://groups.google.com/a/dartlang.org/g/announce/c/P3UygvbXPgY">所述</a>的，<a href="https://github.com/dart-lang/sdk/issues/49530">唯一支援的模式</a>。在 Dart 3 及更高版本中，SDK 約束下限小於 2.12 的 Pubspec 檔案將<strong>停止解析</strong>。當您將約束設定為小於 2.12 時，任何包含語言標記的原始程式碼都將失敗（例如 &#x2F;&#x2F; @dart&#x3D;2.9）。</p>
+<p>根據我們的遙測數據，我們認為目前大約 85% 的 <code>flutter run</code> 執行都使用可靠的空安全。如果您有剩餘 15% 的應用程式或套件，請在 Dart 3 發佈之前<a href="https://dart.dev/null-safety/migration-guide">遷移</a>，我們預計將在 2023 年年中左右發佈。</p>
+<p>我們理解遷移大型程式碼庫可能需要一些時間。我們相信您會發現遷移是值得的。BMW 最近遷移了他們的主要 MyBMW 應用程式，<a href="https://www.press.bmwgroup.com/global/article/detail/T0328610EN/the-my-bmw-app:-new-features-and-tech-insights-for-march-2021?language=en">一個非常大的應用程式</a>，由大約 300 名開發人員組成的團隊建立：</p>
+<p>_”雖然對於像 MyBMW 應用程式這樣的大規模程式碼庫來說，遷移到空安全肯定並不容易，但 Google 的工具為我們在遷移過程中提供了巨大的幫助。完成遷移後，我們很高興擁有一個錯誤更少的程式碼庫。”_，Christian Schmid，BMW AG</p>
+<p>要了解有關遷移的更多資訊，請觀看以下影片，或查看<a href="https://dart.dev/null-safety/migration-guide">遷移指南</a>。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FeBr5tlumwlg%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DeBr5tlumwlg&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FeBr5tlumwlg%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/029eecf1ffddaf22c5f9ed315de99cef/href">https://medium.com/media/029eecf1ffddaf22c5f9ed315de99cef/href</a></iframe>
+
+
+<h3 id="重大語言和-API-變更"><a href="#重大語言和-API-變更" class="headerlink" title="重大語言和 API 變更"></a>重大語言和 API 變更</h3><p>除了空安全變更之外，我們還進行了一些其他變更，以移除 Dart 語言和核心函式庫 API 中的歷史工件。這些變更包括移除已停止使用的核心函式庫 API ( <a href="https://github.com/dart-lang/sdk/issues/49529">#49529</a>)、移除預設參數值的歷史語法 ( <a href="https://github.com/dart-lang/language/issues/2357">#2357</a>)，以及要求 tear-offs 是顯式的 ( <a href="https://github.com/dart-lang/language/issues/2399">#2399</a>)。</p>
+<p>我們相信這些變更對已遷移到使用空安全的程式碼影響很小。當我們發佈第一個 Dart 3 alpha 版本時，您將能夠快速測試這些較小的重大變更是否適用於您的套件或應用程式。</p>
+<h3 id="Dart-3-的新功能"><a href="#Dart-3-的新功能" class="headerlink" title="Dart 3 的新功能"></a>Dart 3 的新功能</h3><p>Dart 3 預計還將包含許多新功能，包括改進與其他程式語言的互操作性和新的語言功能。我們將在 2023 年 1 月 25 日的下一個重要活動 <a href="https://flutter.dev/events/flutter-forward">Flutter Forward</a> 上詳細討論這個主題。</p>
+<p>讓我們來預覽一下一個稱為<strong>模式</strong>的語言功能。模式使 Dart 語言更具表現力，增加了對更多結構化資料的支援，並透過代數資料類型實現更實用的風格。</p>
+<p>以下程式碼顯示了一個在函數上使用多個返回值的範例，以及將這些返回值<em>解構</em>為單個變數的功能：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/b9195dbdb4f1c0698fa26659c5af0c08/href">https://medium.com/media/b9195dbdb4f1c0698fa26659c5af0c08/href</a></iframe>
+
+<p>我們將在明年初分享更多關於此新功能的詳細資訊。要查看預覽，您可以查看<a href="https://github.com/dart-lang/language/blob/master/accepted/future-releases/0546-patterns/feature-specification.md">語言規範</a></p>
+<h3 id="Dart-3-之後"><a href="#Dart-3-之後" class="headerlink" title="Dart 3 之後"></a>Dart 3 之後</h3><p>我們同時致力於許多潛在的新功能，從構思到實驗再到潛在的發佈。因此，一些目前的工作將在 Dart 3 之後完成。</p>
+<p>首先，正如我們<a href="https://medium.com/dartlang/experimenting-with-dart-and-wasm-ef7f1c065577">去年提到的</a>，我們正在致力於支援將 Dart 程式碼編譯為 WebAssembly (<strong>Wasm</strong>)。Wasm 使 Flutter Web 應用程式能夠在瀏覽器中以完全原生程式碼運行。這是一項龐大的工作，需要的不僅僅是更新 Dart 編譯器。它需要與 W3C 和瀏覽器供應商合作，透過 <a href="https://github.com/WebAssembly/gc/blob/master/proposals/gc/Charter.md">WasmGC</a> 擴展，在 Wasm 中增加對垃圾回收語言的支援。</p>
+<p>其次，我們正在致力於<strong>巨集</strong>。這些啟用了<a href="https://github.com/dart-lang/language/blob/master/working/macros/feature-specification.md">靜態元程式設計</a>。這種強大的機制允許一段程式碼（巨集）在編譯程式期間修改和擴展程式的原始程式碼。例如，這可以減少反序列化 JSON 或建立資料類別所需的樣板程式碼。</p>
+<p>您應該期待在 Dart 3 之後看到這些功能和其他令人興奮的功能。</p>
+<h3 id="通往-Dart-3-的道路"><a href="#通往-Dart-3-的道路" class="headerlink" title="通往 Dart 3 的道路"></a>通往 Dart 3 的道路</h3><p>如前幾節所述，如果您尚未遷移到可靠的空安全，那麼這是第一步。我們建議您現在就這樣做！</p>
+<p>接下來，Dart 3 將透過一系列里程碑推出。我們目前的預期圍繞著這些日期：</p>
+<ul>
+<li><strong>2023 年 1 月&#x2F;2 月左右</strong>：Dart 3 alpha 發佈。它側重於啟用早期的 Dart 3 相容性測試。我們預計您將能夠運行靜態分析 (<code>dart analyze / flutter analyze</code>)。我們的目標是任何通過 Dart 3 alpha 靜態分析的應用程式或套件都應支援 Dart 3 穩定版。</li>
+<li><strong>2023 年 3 月&#x2F;4 月左右</strong>：Dart 3 beta 發佈。此版本預覽了 Dart 3 中的新功能。您可以使用它來試驗新功能，並就問題或改進建議提供回饋。</li>
+<li><strong>2023 年年中左右</strong>：Dart 3 穩定版發佈。可靠的空安全成為唯一支援的模式。</li>
+</ul>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>Dart 3 版本預計在 2023 年年中左右發佈。它將包含幾個重大變更，主要是停止在沒有可靠空安全的情況下運行。我們希望在 2023 年 1 月或 2 月左右準備好 Dart 3 alpha 版本，您可以用於 Dart 3 相容性測試。</p>
+<p>要準備您的應用程式：</p>
+<ul>
+<li>完成任何未完成的<a href="https://dart.dev/null-safety/migration-guide">空安全遷移</a></li>
+<li>驗證您的程式碼沒有使用任何已棄用的 API</li>
+<li>運行 <a href="https://dart.dev/tools/dart-fix"><code>dart fix</code></a>。</li>
+</ul>
+<p>Dart 3 還將包含幾個新的強大功能，例如模式。我們希望在春季發佈 Dart 3 beta 版本，以展示所有新功能。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=afdd580fbefa" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/the-road-to-dart-3-afdd580fbefa">通往 Dart 3 的道路：完全可靠的空安全語言</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/null-safety/" rel="tag"># null-safety</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/40b97bb2.html" rel="prev" title="【文章翻譯】Supporting six platforms with two keyboards">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Supporting six platforms with two keyboards
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/9e979e21.html" rel="next" title="【文章翻譯】What we learned from the Flutter Q3 2022 survey">
+      【文章翻譯】What we learned from the Flutter Q3 2022 survey <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-3-%E4%B9%8B%E8%B7%AF%EF%BC%9A%E5%AE%8C%E5%85%A8%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%E8%AA%9E%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">Dart 3 之路：完全可靠的空安全語言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E8%A6%81%E4%BD%BF%E7%94%A8%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼要使用可靠的空安全？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Dart-3-%E4%B8%AD%EF%BC%8C%E6%89%80%E6%9C%89-Dart-%E7%A8%8B%E5%BC%8F%E7%A2%BC%E9%83%BD%E5%B0%87%E4%BD%BF%E7%94%A8%E5%8F%AF%E9%9D%A0%E7%9A%84%E7%A9%BA%E5%AE%89%E5%85%A8"><span class="nav-number">1.2.</span> <span class="nav-text">在 Dart 3 中，所有 Dart 程式碼都將使用可靠的空安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%A7%E8%AA%9E%E8%A8%80%E5%92%8C-API-%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.3.</span> <span class="nav-text">重大語言和 API 變更</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 3 的新功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-3-%E4%B9%8B%E5%BE%8C"><span class="nav-number">1.5.</span> <span class="nav-text">Dart 3 之後</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E5%BE%80-Dart-3-%E7%9A%84%E9%81%93%E8%B7%AF"><span class="nav-number">1.6.</span> <span class="nav-text">通往 Dart 3 的道路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.7.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

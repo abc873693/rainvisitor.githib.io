@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Dart 進行 hack    Python 的互動模式很棒。Dart 目前沒有互動模式，但它非常適合快速製作原型，所以讓我們看看是否可以將一些東西拼湊在一起！ 聲明：我的確在 Google 工作，但這篇文章是關於一個個人專案。我不在 Dart 團隊或相關團隊。這只是我的淺見和我的故事。一起來吧。 像 Python 或 Ruby">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】A Dart REPL PoC">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/2504fdf2.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 使用 Dart 進行 hack    Python 的互動模式很棒。Dart 目前沒有互動模式，但它非常適合快速製作原型，所以讓我們看看是否可以將一些東西拼湊在一起！ 聲明：我的確在 Google 工作，但這篇文章是關於一個個人專案。我不在 Dart 團隊或相關團隊。這只是我的淺見和我的故事。一起來吧。 像 Python 或 Ruby">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/proxy/0*lOBcrb2bYgKV6VYT.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/866/1*sqspbSjstPhKIsIbZBDq-Q.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/552/0*wtt2rUBIRxHnPUHv.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/460/0*2PUDlyPF7rchkNmA.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/866/1*2tDjwpxSxslDUfiv8enwow.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/570/0*bgs2vFlKPkZsFbSO.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/866/1*eh9q0mNToXK0R_QiYdrylw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/866/1*uemGA2TzYypx2RmooQfwmg.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/866/1*KKIJauKlylkVMaLvhJQq9w.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/625/0*Xn430bpRfeDmM9uF.jpg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/400/0*0_DI8nuDDB5VwIbc.jpg">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f327e3769b6f">
+<meta property="article:published_time" content="2017-01-17T13:27:57.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:44:21.931Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="google">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="software-development">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/proxy/0*lOBcrb2bYgKV6VYT.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/2504fdf2.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】A Dart REPL PoC | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2504fdf2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】A Dart REPL PoC
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-17 21:27:57" itemprop="dateCreated datePublished" datetime="2017-01-17T21:27:57+08:00">2017-01-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:44:21" itemprop="dateModified" datetime="2024-12-18T15:44:21+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="使用-Dart-進行-hack"><a href="#使用-Dart-進行-hack" class="headerlink" title="使用 Dart 進行 hack"></a>使用 Dart 進行 hack</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/proxy/0*lOBcrb2bYgKV6VYT.png" />
+</figure>
+
+<p><a href="https://www.python.org/">Python</a> 的互動模式很棒。<a href="http://dartlang.org/">Dart</a> 目前沒有互動模式，但它非常適合快速製作原型，所以讓我們看看是否可以將一些東西拼湊在一起！</p>
+<p><em>聲明：我的確在 Google 工作，但這篇文章是關於一個個人專案。我不在 Dart 團隊或相關團隊。這只是我的淺見和我的故事。一起來吧。</em></p>
+<p>像 Python 或 Ruby 等語言的互動模式有助於讓初學者更容易上手。但這些並不是唯一使用 <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> 概念的語言。REPL 是一個讀取-評估-列印循環。當您在終端機中與它們互動時，像 BASH 或 zsh 等 shell 也會使用 REPL。這也是您在 <a href="http://jupyter.org/">Jupyter</a> (IPython Notebooks)、<a href="https://www.mathworks.com/products/matlab.html">Matlab</a>、<a href="https://www.wolfram.com/mathematica/">Mathematica</a> 或 <a href="https://www.maplesoft.com/products/maple/">Maple</a> 中使用筆記本時所獲得的。這種互動式計算方式在研究人員中非常流行。</p>
+<p>這就是 Python 互動模式的樣子：</p>
+<figure>
+<a href="https://asciinema.org/a/99317"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*sqspbSjstPhKIsIbZBDq-Q.gif" /></a>
+<figcaption>Good ol’ Python REPL</figcaption>
+</figure>
+
+<p>Dart 不支援像 Python 那樣在全域範圍內評估語句，因此沒有明顯的方法可以正確地執行此操作。在 Dart 中，語句必須在函式內，而 main 函式是程式的進入點。就像在 C++ 或 C# 中一樣。就個人而言，我更喜歡這種方式，因為它更容易理解程式運行時發生的事情。但是… 我仍然非常想要一個互動模式。它可以讓我玩轉想法，更快地嘗試事物。那麼讓我們看看是否可以建立一個 REPL 作為概念驗證！</p>
+<h3 id="如何在-Dart-中建立-REPL？"><a href="#如何在-Dart-中建立-REPL？" class="headerlink" title="如何在 Dart 中建立 REPL？"></a>如何在 Dart 中建立 REPL？</h3><p>Dart 非常適合製作原型。所以讓我們這樣做，不要被語言設計問題所困擾 :)</p>
+<p>現在沒有像 JavaScript 或 Python 中那樣的 eval 函式，而且我也不想自己寫一個完整的直譯器來實現它。它不會很快，而且我也沒有很多時間。但是，當您在 Intellij 中除錯 <a href="https://www.dartlang.org/tools/jetbrains-plugin">Dart 程式碼</a> 時，您可以在逐步執行程式碼時評估表達式。評估表達式正是我們想要做的，不是嗎？我們可以使用這個功能嗎？</p>
+<p>Dart 的除錯功能透過其 <a href="https://github.com/dart-lang/sdk/blob/master/runtime/vm/service/service.md">VM 服務</a> 公開。它是 <a href="https://www.dartlang.org/dart-vm">Dart VM</a> 提供的 JSON-RPC 服務，您可以連接到它來除錯您的應用程式。<a href="https://medium.com/u/a81c627aeff9">Natalie Weizenbaum</a> 發表了一篇關於 <code>vm_service_client</code> 套件的文章，該套件提供了一個非常好的 API 來與 VM 服務互動：<a href="http://news.dartlang.org/2016/05/unboxing-packages-vmserviceclient.html">http://news.dartlang.org/2016/05/unboxing-packages-vmserviceclient.html</a></p>
+<p>現在我們可以做的是：我們的 REPL 可以連接到它自己的 VM 服務來評估它從終端機讀取的表達式！這聽起來很瘋狂…</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/552/0*wtt2rUBIRxHnPUHv.jpg" />
+</figure>
+
+<p>… 但它有效！我寫了一個 <a href="https://github.com/BlackHC/dart_repl/blob/ca3518074c94f48ce5be872b15b58556133a474c/bin/repl.dart">快速 spike</a>，它確實有效。Dart 支援 <a href="https://www.dartlang.org/tutorials/language/futures">非同步程式設計</a>，這非常方便，因為它可以防止程式在與自己的 VM 服務通訊時阻塞自己。</p>
+<blockquote>
+<p>Spike 是測試驅動開發中的一個概念：它們是用於找出一些技術問題的快速且粗糙的實驗。</p>
+</blockquote>
+<p>解決了可行性問題後，很容易編寫一個合適的概念驗證。為了評估超出 1 + 1 的表達式，我們需要支援變數。現在無法輕鬆建立變數，因為變數宣告在 Dart 中不是表達式。在 Python 中，您可以透過賦值來即時宣告變數。在 Dart 中，我們可以透過重載 <a href="https://www.dartlang.org/articles/language/emulating-functions#interactions-with-mirrors-and-nosuchmethod">noSuchMethod</a> 來即時在字典中建立元素，從而模擬動態欄位。我稱這個類別為 Scope，當我們在它的實例中 <a href="https://www.dartdocs.org/documentation/vm_service_client/0.2.3/vm_service_client/VMInstanceRef/evaluate.html">評估表達式</a> 時，可以像全域變數一樣存取欄位。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/460/0*2PUDlyPF7rchkNmA.jpg" />
+</figure>
+
+<p>程式碼實際上更直接：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/24c2ff5f3a35ac2aff25a18c34a6fa36/href">https://medium.com/media/24c2ff5f3a35ac2aff25a18c34a6fa36/href</a></iframe>
+
+<p>有了這個，我們已經可以做一些事情，例如 <code>a = 3</code> 和 <code>b = a * 3</code>：</p>
+<figure>
+<a href="https://asciinema.org/a/99312"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*2tDjwpxSxslDUfiv8enwow.gif" /></a>
+<figcaption>Simple expressions: DONE</figcaption>
+</figure>
+
+<p>我們很快就會遇到一個限制，那就是我們只能存取在宣告 Scope 類別的檔案中匯入的符號。<code>import &#39;...&#39;;</code> 無法使用 VM 服務進行評估。因此，如果我們沒有明確匯入 <code>dart:io</code>，就沒有 <code>dart:io</code>，也沒有自訂函式庫 :(</p>
+<p>哦，等等！Dart 可以使用帶有 <a href="https://api.dartlang.org/stable/1.21.1/dart-isolate/Isolate/spawnUri.html">Isolate.spawnUri</a> 的 URI 產生新的 isolates（獨立的工作線程）。使用者可以在命令列上指定額外的匯入，REPL 可以產生程式碼以包含這些匯入，然後使用產生的程式碼產生新的 isolate，這些程式碼具有使用者可用的匯入。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/570/0*bgs2vFlKPkZsFbSO.jpg" />
+</figure>
+
+<p>它有效 \o&#x2F;</p>
+<figure>
+<a href="https://asciinema.org/a/99313"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*eh9q0mNToXK0R_QiYdrylw.gif" /></a>
+<figcaption>Custom imports: DONE</figcaption>
+</figure>
+
+<h3 id="支援更多-Dart"><a href="#支援更多-Dart" class="headerlink" title="支援更多 Dart"></a>支援更多 Dart</h3><p>現在的另一個問題是我們只能評估表達式。像 <code>if/else</code> 塊或 <code>while</code> 迴圈這樣的控制語句不是表達式。對於語句，我們可以將它們包裝在一個閉包中並執行該閉包，這是一個函式調用表達式。因此，<code>if (a == 1) print(&#39;a is 1!!&#39;);</code> 將變成</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">() &#123; <span class="keyword">if</span> (a == <span class="number">1</span>) <span class="built_in">print</span>(<span class="string">&#x27;a is 1!!&#x27;</span>); &#125;();</span><br></pre></td></tr></table></figure>
+
+<p>我們只需要弄清楚輸入是表達式還是語句。這很困難，因為我們必須為此編寫一個 Dart 解析器。但是 Dart 是用 Dart 編寫的，而且 <a href="https://pub.dartlang.org/packages/analyzer">analyzer</a> 套件提供了一個可以免費解析任何 Dart 程式碼的解析器！</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c81085d088d4d2246a4159f5d1af133b/href">https://medium.com/media/c81085d088d4d2246a4159f5d1af133b/href</a></iframe>
+
+<p>因此，這也解決了。</p>
+<figure>
+<a href="https://asciinema.org/a/99314"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*uemGA2TzYypx2RmooQfwmg.gif" /></a>
+<figcaption>Statements and expressions: DONE</figcaption>
+</figure>
+
+<h3 id="更多匯入"><a href="#更多匯入" class="headerlink" title="更多匯入"></a>更多匯入</h3><p>最後一點阻止我們匯入任何函式庫的是，預設情況下，新的 Isolate 只能看到在其 <code>pubspec.yaml</code> 中提到的套件。我們希望支援匯入任何函式庫。<code>Isolate.spawnUri</code> 有一個 <code>packageConfig</code> 參數，允許我們指定從套件名稱到套件路徑的映射。我們可以使用另一個命令列參數來定位另一個套件，並在我們的 Isolate 中使用其套件設定。喔！</p>
+<p>我們很快就會遇到問題，我們的 Isolate 需要存取 analyzer 套件（和其他套件），而這些套件可能不會被您想要在 REPL 會話中使用的任何套件載入。套件 <a href="https://pub.dartlang.org/packages/package_resolver">package_resolver</a> 來救援！有了它，我們可以輕鬆地操作套件設定。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e22f734a0e7be08e8ee8eb506616ac2d/href">https://medium.com/media/e22f734a0e7be08e8ee8eb506616ac2d/href</a></iframe>
+
+<p>有了這些，我們就實作了一個完整的工作流程：</p>
+<figure>
+<a href="https://asciinema.org/a/99316"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*KKIJauKlylkVMaLvhJQq9w.gif" /></a>
+<figcaption>Import any library from another package: DONE</figcaption>
+</figure>
+
+<h3 id="接下來是什麼？"><a href="#接下來是什麼？" class="headerlink" title="接下來是什麼？"></a>接下來是什麼？</h3><p>這是一篇很長的文章… 整個概念驗證的程式碼量為 <strong>451 行</strong>，幾乎和這篇文章一樣長。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/625/0*Xn430bpRfeDmM9uF.jpg" />
+</figure>
+
+<p>程式碼可以在 <a href="https://github.com/BlackHC/dart_repl/tree/master/lib">https://github.com/BlackHC/dart_repl&#x2F;tree&#x2F;master&#x2F;lib</a> 上找到。如果您安裝了 Dart，您可以輕鬆地試用它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pub global activate dart_repl</span><br><span class="line">pub global run dart_repl</span><br></pre></td></tr></table></figure>
+
+<p>我真的很喜歡在我的閒暇時間建立這個概念驗證。所有部分都在幾個小時內就位。Intellij 中對 Dart 的 IDE 支援非常出色，而且現在有很多文件和文章。例如，請查看 Natalie Weizenbaum 的 Unboxing Packages 系列：<a href="http://news.dartlang.org/2016/04/unboxing-packages-async-part-3.html">http://news.dartlang.org/2016/04/unboxing-packages-async-part-3.html</a> 等。Dart 中的低階 hack 很有趣，而且有很多很棒的函式庫可以發揮創意。<a href="https://github.com/dart-lang/code_builder">code_builder</a> 看起來非常有前途，<a href="https://github.com/google/built_collection.dart">built_collection</a> 提供了不可變的集合。<a href="https://medium.com/u/7c51fc1918ba">David Morgan</a> 也一直在發表關於 Dart 中 <a href="https://medium.com/dartlang/darts-built-collection-for-immutable-collections-db662f705eff#.kj3ubd2xj">不可變集合</a> 的文章。</p>
+<p>對於 <code>dart_repl</code>，如果可以在運行時匯入額外的函式庫而無需重新啟動，那就太好了。Dart 團隊最近在 VM 中加入了對熱重載的支援。這主要為 <a href="https://flutter.io/">Flutter</a> 中的行動應用程式開發人員提供了更好的體驗。也許，這也可以用於臨時匯入以及在 REPL 中定義函式和類別。</p>
+<p>總體而言，Dart 對於研究和研究人員來說可能非常有用，我絕對希望看到 Jupyter 支援 Dart。只需要實作其核心介面，就可以使這樣的 Dart REPL 與之相容… :) 那應該很容易，對吧？</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/400/0*0_DI8nuDDB5VwIbc.jpg" />
+</figure>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f327e3769b6f" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-repl-poc-f327e3769b6f">Dart REPL 概念驗證</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">dartlang</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/google/" rel="tag"># google</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/software-development/" rel="tag"># software-development</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/1b3316c0.html" rel="prev" title="【文章翻譯】Dart-on-LLVM">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart-on-LLVM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/4f58b335.html" rel="next" title="【文章翻譯】Zero to One with Flutter">
+      【文章翻譯】Zero to One with Flutter <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-Dart-%E9%80%B2%E8%A1%8C-hack"><span class="nav-number">1.</span> <span class="nav-text">使用 Dart 進行 hack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%9C%A8-Dart-%E4%B8%AD%E5%BB%BA%E7%AB%8B-REPL%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">如何在 Dart 中建立 REPL？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8F%B4%E6%9B%B4%E5%A4%9A-Dart"><span class="nav-number">1.2.</span> <span class="nav-text">支援更多 Dart</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E5%8C%AF%E5%85%A5"><span class="nav-number">1.3.</span> <span class="nav-text">更多匯入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E4%B8%8B%E4%BE%86%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">接下來是什麼？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的不可變性介紹不可否認，不可變性是程式設計中的一個熱門話題，尤其是在前端程式設計中。像 Immutable.js 這樣的函式庫和其他概念，像是單向資料流，都認為當資料在您不知不覺中沒有發生變化時，更容易理解資料：  在物件導向和函數式程式設計中，不可變物件（不可更改物件）是指在建立後其狀態無法修改的物件。這與可變物件（可更改物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】An intro to immutability with Dart">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/2d226dc5.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 的不可變性介紹不可否認，不可變性是程式設計中的一個熱門話題，尤其是在前端程式設計中。像 Immutable.js 這樣的函式庫和其他概念，像是單向資料流，都認為當資料在您不知不覺中沒有發生變化時，更容易理解資料：  在物件導向和函數式程式設計中，不可變物件（不可更改物件）是指在建立後其狀態無法修改的物件。這與可變物件（可更改物">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=d4de871865c7">
+<meta property="article:published_time" content="2017-04-23T19:28:51.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:32:13.364Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="functional-programming">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="immutable">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=d4de871865c7">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/2d226dc5.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】An intro to immutability with Dart | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2d226dc5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】An intro to immutability with Dart
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-24 03:28:51" itemprop="dateCreated datePublished" datetime="2017-04-24T03:28:51+08:00">2017-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:32:13" itemprop="dateModified" datetime="2024-12-18T15:32:13+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-的不可變性介紹"><a href="#Dart-的不可變性介紹" class="headerlink" title="Dart 的不可變性介紹"></a>Dart 的不可變性介紹</h2><p>不可否認，<a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0ahUKEwiM4_LAjLzTAhWDKGMKHbnICLYQFggmMAE&url=https://en.wikipedia.org/wiki/Immutable_object&usg=AFQjCNEkdj3g887nk6kENS9SYN-2xsqXpw&sig2=hZqSkCh5MKP-OX2w8YyjvQ">不可變性</a>是程式設計中的一個熱門話題，尤其是在前端程式設計中。像 <a href="https://facebook.github.io/immutable-js/">Immutable.js</a> 這樣的函式庫和其他概念，像是單向資料流，都認為當資料在您不知不覺中沒有發生變化時，更容易理解資料：</p>
+<blockquote>
+<p>在物件導向和函數式程式設計中，<strong>不可變</strong>物件（不可更改物件）是指在建立後其狀態無法修改的物件。這與<strong>可變</strong>物件（可更改物件）相反，後者可以在建立後進行修改。</p>
+</blockquote>
+<p>那麼，Dart 呢？我們有一些概念非常適合不可變性和內建的不可變物件，從 <code>const</code> 修飾符和 <code>const</code> 建構函式開始。不要與 ES6 中的 <code>const</code> 混淆，後者只是一個不可變的繫結：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ea74deee818166289d71ec2e853c434b/href">https://medium.com/media/ea74deee818166289d71ec2e853c434b/href</a></iframe>
+
+<p>在 Dart 中，<code>const</code> 既是一個不可變的繫結，也 <em>是</em> 一個不可變的物件：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/b5c3e18a4ded4290dc78862cec944a62/href">https://medium.com/media/b5c3e18a4ded4290dc78862cec944a62/href</a></iframe>
+
+<p>所有字面量（<code>Null</code>、<code>String</code>、<code>int</code>、<code>double</code>、<code>num</code>、<code>bool</code>、<code>Map</code>、<code>List</code>、<code>Symbol</code>）都可以是 <code>const</code>，並且可以使用 <code>const</code> 建構函式建立使用者類型：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/edfbe695485a73786e4f6746cb8ca8d2/href">https://medium.com/media/edfbe695485a73786e4f6746cb8ca8d2/href</a></iframe>
+
+<p>讓我們回顧一下 - <code>const</code> 實例既是不可變的繫結，並且在語言層面上被 <em>強制</em> 為深度不可變的 - 並且在編譯時被 <em>規範化</em> - 也就是說，任何兩個實例都被認為是等效的，並且在運行時只由一個實例表示。例如，以下程式碼相當便宜 - 它在執行時只分配一個實例：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/0e956977444eba775eb2be11833f0b5c/href">https://medium.com/media/0e956977444eba775eb2be11833f0b5c/href</a></iframe>
+
+<p>想了解更多嗎？<a href="https://www.dartlang.org/guides/language/language-tour#final-and-const">閱讀關於 final 和 const 的 Dart 語言導覽</a>。</p>
+<h3 id="使用-package-meta-進行進一步的靜態檢查"><a href="#使用-package-meta-進行進一步的靜態檢查" class="headerlink" title="使用 package:meta 進行進一步的靜態檢查"></a>使用 package:meta 進行進一步的靜態檢查</h3><p>當然，<code>const</code> 有點限制 - 您必須能夠在編譯時建立一個類別 - 因此您不能例如讀取資料庫並在執行時建立 <code>const</code> 物件。我們最近在 <a href="https://pub.dartlang.org/packages/meta">package:meta</a> 中引入了 <code>@immutable</code> 註釋：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/41b36ef3a895268ca40ff6309867409e/href">https://medium.com/media/41b36ef3a895268ca40ff6309867409e/href</a></iframe>
+
+<p>您可以使用此註釋來幫助確保開發人員保持您的類別深度不可變。它不會像 <code>const</code> 那樣被規範化，但仍然對開發人員很有幫助。</p>
+<p>希望這是一個很好的不可變性介紹。如果您想了解更多關於 Dart 或不可變性的資訊，請在評論中或 Twitter 上告訴我。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=d4de871865c7" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/an-intro-to-immutability-with-dart-d4de871865c7">Dart 的不可變性介紹</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/functional-programming/" rel="tag"># functional-programming</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/immutable/" rel="tag"># immutable</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/c2baa1c1.html" rel="prev" title="【文章翻譯】Evolving the Dart REPL PoC">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Evolving the Dart REPL PoC
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/79568b97.html" rel="next" title="【文章翻譯】Announcing official gRPC support for Dart">
+      【文章翻譯】Announcing official gRPC support for Dart <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E7%9A%84%E4%B8%8D%E5%8F%AF%E8%AE%8A%E6%80%A7%E4%BB%8B%E7%B4%B9"><span class="nav-number">1.</span> <span class="nav-text">Dart 的不可變性介紹</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-package-meta-%E9%80%B2%E8%A1%8C%E9%80%B2%E4%B8%80%E6%AD%A5%E7%9A%84%E9%9D%9C%E6%85%8B%E6%AA%A2%E6%9F%A5"><span class="nav-number">1.1.</span> <span class="nav-text">使用 package:meta 進行進一步的靜態檢查</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

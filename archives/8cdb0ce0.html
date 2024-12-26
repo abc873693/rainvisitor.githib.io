@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 非同步程式設計：Isolate 和事件迴圈Dart 儘管是單執行緒語言，但它支援 futures、streams、背景工作以及你在現代非同步和（在 Flutter 的情況下）反應式編寫程式碼所需的所有其他功能。本文涵蓋 Dart 支援背景工作的基礎：isolate 和 事件迴圈。 如果您更喜歡透過觀看或聆聽來學習，本文中的所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart asynchronous programming: Isolates and event loops">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/8cdb0ce0.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 非同步程式設計：Isolate 和事件迴圈Dart 儘管是單執行緒語言，但它支援 futures、streams、背景工作以及你在現代非同步和（在 Flutter 的情況下）反應式編寫程式碼所需的所有其他功能。本文涵蓋 Dart 支援背景工作的基礎：isolate 和 事件迴圈。 如果您更喜歡透過觀看或聆聽來學習，本文中的所有">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/278/1*xtjhmzoLQEmh7Od1BkroVg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/630/1*MnJQG2bdbcqmEwu1lSL52Q.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/624/1*kxDfLtL2ySN1yiY1nmcTrA.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/624/1*t-mHg6JrdkKCs65UvD70-Q.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bffc3e296a6a">
+<meta property="article:published_time" content="2019-07-25T08:08:10.000Z">
+<meta property="article:modified_time" content="2024-12-18T13:40:38.785Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="asynchronous-programming">
+<meta property="article:tag" content="event-loop">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/278/1*xtjhmzoLQEmh7Od1BkroVg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/8cdb0ce0.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart asynchronous programming: Isolates and event loops | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8cdb0ce0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart asynchronous programming: Isolates and event loops
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-07-25 16:08:10" itemprop="dateCreated datePublished" datetime="2019-07-25T16:08:10+08:00">2019-07-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 21:40:38" itemprop="dateModified" datetime="2024-12-18T21:40:38+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-非同步程式設計：Isolate-和事件迴圈"><a href="#Dart-非同步程式設計：Isolate-和事件迴圈" class="headerlink" title="Dart 非同步程式設計：Isolate 和事件迴圈"></a>Dart 非同步程式設計：Isolate 和事件迴圈</h2><p>Dart 儘管是單執行緒語言，但它支援 futures、streams、背景工作以及你在現代非同步和（在 Flutter 的情況下）反應式編寫程式碼所需的所有其他功能。本文涵蓋 Dart 支援背景工作的基礎：<em>isolate</em> 和 <em>事件迴圈</em>。</p>
+<p>如果您更喜歡透過觀看或聆聽來學習，本文中的所有內容都包含在以下影片中，該影片是 <em>Flutter in Focus</em> 影片系列 <em>Dart 中的非同步程式設計</em> 的一部分：</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fvl_AaCgudcY%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Dvl_AaCgudcY&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fvl_AaCgudcY%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/e80af6e037b2f07d9cd64134c3a9383c/href">https://medium.com/media/e80af6e037b2f07d9cd64134c3a9383c/href</a></iframe>
+
+<p>還在這裡嗎？讓我們來談談 isolate。</p>
+<h3 id="Isolate"><a href="#Isolate" class="headerlink" title="Isolate"></a>Isolate</h3><p><em>Isolate</em> 是所有 Dart 程式碼執行的環境。它就像機器上的一個小空間，擁有自己的私有記憶體區塊和一個運行事件迴圈的單執行緒。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/278/1*xtjhmzoLQEmh7Od1BkroVg.png" />
+<figcaption>一個 isolate 擁有自己的記憶體和一個運行事件迴圈的單執行緒。</figcaption>
+</figure>
+
+<p>在許多其他語言（如 C++）中，您可以讓多個執行緒共用相同的記憶體並執行您想要的任何程式碼。然而，在 Dart 中，每個執行緒都在其自己的 isolate 中，擁有自己的記憶體，並且該執行緒僅處理事件（稍後會詳細介紹）。</p>
+<p>許多 Dart 應用程式在其單個 isolate 中運行所有程式碼，但如果需要，您可以擁有多個 isolate。如果您要執行的計算量非常大，以至於如果在主 isolate 中運行它可能會導致掉幀，那麼您可以使用 <a href="https://api.dartlang.org/stable/dart-isolate/Isolate/spawn.html">Isolate.spawn()</a> 或 <a href="https://flutter.dev/docs/cookbook/networking/background-parsing#4-move-this-work-to-a-separate-isolate">Flutter 的 compute() 函數</a>。這兩個函數都會建立一個單獨的 isolate 來進行數字運算，讓您的主 isolate 可以自由地（例如）重建和渲染 Widget 樹。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/630/1*MnJQG2bdbcqmEwu1lSL52Q.png" />
+<figcaption>兩個 isolate，每個 isolate 都有自己的記憶體和執行緒。</figcaption>
+</figure>
+
+<p>新的 isolate 將獲得自己的事件迴圈和自己的記憶體，即使原始 isolate 是這個新 isolate 的父級，也不允許存取。這就是名稱 <em>isolate</em> 的來源：這些小空間彼此 <em>隔離</em>。</p>
+<p>事實上，isolate 合作的唯一途徑是透過來回傳遞訊息。一個 isolate 向另一個 isolate 發送訊息，接收 isolate 使用其事件迴圈處理該訊息。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/624/1*kxDfLtL2ySN1yiY1nmcTrA.png" />
+<figcaption>Isolate 可以向其他 isolate 發送訊息。</figcaption>
+</figure>
+
+<p>這種缺乏共用記憶體的設計可能聽起來有點嚴格，尤其是如果您來自 Java 或 C++ 等語言，但它對 Dart 程式設計師來說有一些關鍵好處。</p>
+<p>例如，isolate 中的記憶體分配和垃圾回收不需要鎖定。只有一個執行緒，所以如果它不忙，您就知道記憶體沒有被改變。這對於 Flutter 應用程式來說非常有用，因為它們有時需要快速地建立和銷毀大量 Widget。</p>
+<h3 id="事件迴圈"><a href="#事件迴圈" class="headerlink" title="事件迴圈"></a>事件迴圈</h3><p>現在您已經對 isolate 有了基本的了解，讓我們深入了解真正使非同步程式碼成為可能的因素：<em>事件迴圈</em>。</p>
+<p>想像一個應用程式在其生命週期中的時間線。應用程式啟動、應用程式停止，並且在這之間會發生許多事件——來自磁碟的 I&#x2F;O、來自使用者的點擊……各種各樣的事情。</p>
+<p>您的應用程式無法預測這些事件何時發生或以何種順序發生，並且它必須使用永不阻塞的單執行緒來處理所有這些事件。因此，應用程式運行一個事件迴圈。它從其事件佇列中抓取最舊的事件，處理它，然後返回以獲取下一個事件，處理它，依此類推，直到事件佇列為空。</p>
+<p>在應用程式運行的整個過程中——您點擊螢幕、下載內容、計時器關閉——事件迴圈只是不斷地循環，一次處理一個事件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/624/1*t-mHg6JrdkKCs65UvD70-Q.png" />
+<figcaption>事件迴圈一次處理一個事件。</figcaption>
+</figure>
+
+<p>當動作中斷時，執行緒就會掛起，等待下一個事件。它可以觸發垃圾回收器、喝杯咖啡等等。</p>
+<p>Dart 擁有的所有用於非同步程式設計的高階 API 和語言功能——futures、streams、async 和 await——都建立在這個簡單的迴圈之上和周圍。</p>
+<p>例如，假設您有一個按鈕可以啟動網路請求，如下所示：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5f48733b8fa51f699640162252d2c611/href">https://medium.com/media/5f48733b8fa51f699640162252d2c611/href</a></iframe>
+
+<p>當您運行應用程式時，Flutter 會建立按鈕並將其顯示在螢幕上。然後您的應用程式等待。</p>
+<p>您的應用程式的事件迴圈只是閒置，等待下一個事件。與按鈕無關的事件可能會進入並被處理，而按鈕則坐在那裡等待使用者點擊它。最終他們點擊了它，並且一個點擊事件進入佇列。</p>
+<p>該事件被提取以進行處理。Flutter 查看它，渲染系統說：「這些座標與凸起的按鈕匹配」，因此 Flutter 執行 <code>onPressed</code> 函數。該程式碼啟動網路請求（返回一個 future）並使用 <code>then()</code> 方法為 future 註冊一個完成處理程式。</p>
+<p>就這樣。迴圈完成了對該點擊事件的處理，並將其捨棄。</p>
+<p>現在，<code>onPressed</code> 是 <a href="https://api.flutter.dev/flutter/material/RaisedButton-class.html">RaisedButton</a> 的一個屬性，網路事件使用 <a href="https://api.dart.dev/stable/dart-async/Future-class.html">future</a> 的回調函數，但這兩種技術都在做同樣的基本事情。它們都是一種告訴 Flutter 的方式：「嘿，稍後，您可能會看到特定類型的事件進入。當您看到時，請執行這段程式碼。」</p>
+<p>因此，<code>onPressed</code> 正在等待點擊，future 正在等待網路資料，但從 Dart 的角度來看，這些都只是佇列中的事件。</p>
+<p>這就是 Dart 中非同步程式碼的工作原理。Futures、streams、async 和 await——這些 API 只是您告訴 Dart 的事件迴圈：「這裡有一些程式碼，請稍後運行它」的方式。</p>
+<p>如果我們回顧程式碼範例，您現在可以準確地看到它是如何被分解成針對特定事件的區塊的。有初始構建 (1)、點擊事件 (2) 和網路響應事件 (3)。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/4ae7636cc12b748fde92de79364c9219/href">https://medium.com/media/4ae7636cc12b748fde92de79364c9219/href</a></iframe>
+
+<p>習慣使用非同步程式碼後，您將開始在各處識別這些模式。了解事件迴圈將有助於您繼續學習更高級別的 API。</p>
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>我們快速瀏覽了 isolate、事件迴圈和 Dart 中非同步程式碼的基礎。</p>
+<p>如果您想了解更多資訊，請查看 <em>Dart 中的非同步程式設計</em> 系列的下一個影片。它討論了 <em>Future API</em>，您可以使用它來進行非同步程式設計，而無需大量程式碼。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FOTS-ap9_aXc%3Ffeature%3Doembed&amp;url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DOTS-ap9_aXc&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FOTS-ap9_aXc%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/8b6cf4ee42282247c713fd0c0da5298c/href">https://medium.com/media/8b6cf4ee42282247c713fd0c0da5298c/href</a></iframe>
+
+<p><em>非常感謝 Andrew Brogdon，他創作了本文所依據的影片。</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bffc3e296a6a" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-asynchronous-programming-isolates-and-event-loops-bffc3e296a6a">Dart 非同步程式設計：Isolate 和事件迴圈</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/asynchronous-programming/" rel="tag"># asynchronous-programming</a>
+              <a href="/tags/event-loop/" rel="tag"># event-loop</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/32991e23.html" rel="prev" title="【文章翻譯】Flutter for web early adopter program now open">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Flutter for web early adopter program now open
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/e4668f10.html" rel="next" title="【文章翻譯】What do Flutter package users need? Findings from Q2 user survey">
+      【文章翻譯】What do Flutter package users need? Findings from Q2 user survey <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-%E9%9D%9E%E5%90%8C%E6%AD%A5%E7%A8%8B%E5%BC%8F%E8%A8%AD%E8%A8%88%EF%BC%9AIsolate-%E5%92%8C%E4%BA%8B%E4%BB%B6%E8%BF%B4%E5%9C%88"><span class="nav-number">1.</span> <span class="nav-text">Dart 非同步程式設計：Isolate 和事件迴圈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Isolate"><span class="nav-number">1.1.</span> <span class="nav-text">Isolate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E8%BF%B4%E5%9C%88"><span class="nav-number">1.2.</span> <span class="nav-text">事件迴圈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.3.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

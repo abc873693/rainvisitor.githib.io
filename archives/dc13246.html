@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2：void 的遺產  Dart 2 中類似 void 類型宇宙的半精確描述   我在 StackOverflow、Gitter 甚至 Google 內部支援頻道上看到的最常被問到的問題之一是 Dart 2 中以下內建類型之間的差異：Object、dynamic、void 和 Null。 長話短說，Null（或其他語言中的 B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart 2: Legacy of the &#96;void&#96;">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/dc13246.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Dart 2：void 的遺產  Dart 2 中類似 void 類型宇宙的半精確描述   我在 StackOverflow、Gitter 甚至 Google 內部支援頻道上看到的最常被問到的問題之一是 Dart 2 中以下內建類型之間的差異：Object、dynamic、void 和 Null。 長話短說，Null（或其他語言中的 B">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*qGU6soDvCW0RFfDX8vpUow.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e7afb5f44df0">
+<meta property="article:published_time" content="2018-08-30T08:34:25.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:54:12.691Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="type-safety">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*qGU6soDvCW0RFfDX8vpUow.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/dc13246.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart 2: Legacy of the `void` | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/dc13246.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart 2: Legacy of the `void`
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-08-30 16:34:25" itemprop="dateCreated datePublished" datetime="2018-08-30T16:34:25+08:00">2018-08-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:54:12" itemprop="dateModified" datetime="2024-12-18T15:54:12+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-2：void-的遺產"><a href="#Dart-2：void-的遺產" class="headerlink" title="Dart 2：void 的遺產"></a>Dart 2：<code>void</code> 的遺產</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*qGU6soDvCW0RFfDX8vpUow.png" />
+<figcaption>Dart 2 中類似 void 類型宇宙的半精確描述</figcaption>
+</figure>
+
+<p>我在 StackOverflow、Gitter 甚至 Google 內部支援頻道上看到的最常被問到的問題之一是 Dart 2 中以下內建類型之間的差異：<code>Object</code>、<code>dynamic</code>、<code>void</code> 和 <code>Null</code>。</p>
+<p>長話短說，<code>Null</code>（或其他語言中的 Bottom，即「無」）不應該在大部分真實使用者程式碼中使用，我懷疑在不久的將來我們會看到更多文章和 lint 來溫和地阻止使用。</p>
+<p>其餘三個類型則不太清楚，因為在 Dart 2 中，任何東西在執行時都可以是 <code>dynamic</code>、<code>Object</code> 或 <code>void</code>，僅根據 <em>靜態</em> 類型簽章而有所不同。因此，讓我們看看幾個 <em>何時</em> 應該使用哪種類型簽章的實際範例。</p>
+<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><p><a href="https://api.dartlang.org/stable/2.0.0/dart-core/Object-class.html">Object</a> 是 Dart 類別階層的根類別，Dart 中的每個其他類別都是 <code>Object</code> 的子類別——包括像 <code>int</code>、<code>double</code> 或 <code>bool</code> 這樣的「原始」類型。它保證了一些東西：一個 <a href="https://api.dartlang.org/stable/2.0.0/dart-core/Object/hashCode.html"><code>hashCode</code> 屬性</a>，一個 <a href="https://api.dartlang.org/stable/2.0.0/dart-core/Object/operator_equals.html"><code>==</code> 運算子</a>，一個 <a href="https://api.dartlang.org/stable/2.0.0/dart-core/Object/toString.html"><code>toString</code> 方法</a>。</p>
+<p>實際上，我使用 <code>Object</code> 作為窮人的聯合類型——期望使用者在使用某個東西之前使用 <code>is</code> 運算子來確定它的真實類型。**我不使用 <code>dynamic</code>**，因為正如下一節所述，它會停用重要的靜態分析，並且更容易讓您進入無效狀態。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span> readProperty(<span class="built_in">String</span> name) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> age = readProperty(<span class="string">&#x27;name&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (age <span class="keyword">is</span> <span class="built_in">int</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;I am <span class="subst">$age</span> years old&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (age <span class="keyword">is</span> <span class="built_in">String</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(age);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另一個選項是使用 <code>Object</code> 來宣告您 <em>不關心</em> 資料結構的內部類型是什麼，例如 <code>List&lt;Object&gt;</code> 可能表示「任何東西的列表」。例如，在編寫一個組合 <code>List</code> 中每個元素的 <code>hashCode</code> 的函式時，這就派上用場了：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> hashList(<span class="built_in">List</span>&lt;<span class="built_in">Object</span>&gt; elements) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Object</code> 的一個很好的特性（與 <code>dynamic</code> 相比）是，如果您嘗試在其上調用一個不存在的方法，您將立即獲得分析和編譯器回饋。例如，以下程式碼會產生一個 <em>靜態錯誤</em>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">Object</span> a = <span class="number">5</span>;</span><br><span class="line">  a.aMethodThatDoesNotExist();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然而，在實際應用中，<code>Object</code> 是相當（並且有意地）有限的。我希望 <a href="https://github.com/dart-lang/sdk/issues/26488">Dart 將獲得對方法重載的支援</a>，這將允許我在真實程式碼中顯著減少 <code>Object</code> 類型的使用。</p>
+<h3 id="dynamic"><a href="#dynamic" class="headerlink" title="dynamic"></a>dynamic</h3><p>我個人在 Dart 2 中 <em>從不</em> 使用 <code>dynamic</code> 類型。在我看來，它是 <code>Object</code> 和一個特殊指令的聯合，該指令告訴工具和編譯器 <em>停用靜態分析檢查</em>。也就是說，以下程式碼是合法的，並且只會在執行時出現錯誤（而不是靜態地！）：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">dynamic</span> x = <span class="number">5</span>;</span><br><span class="line">  x.aMethodThatDoesNotExist();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 Dart 1 中，<code>dynamic</code> 無處不在，任何其他靜態類型都是為了 IDE 和靜態分析支援——但編譯器（和執行時）將所有東西都視為 <code>dynamic</code>。儘管如此，在 Dart 2 中仍然有一些不幸的「陷阱」可能會 <em>意外地</em> 建立一個動態類型的變數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">computeAge() =&gt; <span class="number">5</span>; <span class="comment">// 返回類型是 dynamic</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> name; <span class="comment">// 靜態類型是 dynamic</span></span><br><span class="line">  <span class="keyword">var</span> animals = []; <span class="comment">// 靜態和執行時類型是 List&lt;dynamic&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>更糟糕的是，<code>dynamic</code> 調用會丟失 Dart 2 中至關重要的類型資訊：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">  <span class="built_in">String</span> name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> users = []; <span class="comment">// 隱式地是 List&lt;dynamic&gt;，還記得嗎？</span></span><br><span class="line">  users.add(<span class="keyword">new</span> User()..name = <span class="string">&#x27;Matan&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 執行時錯誤：List&lt;dynamic&gt; 不是 Iterable&lt;String&gt;</span></span><br><span class="line">  <span class="built_in">Iterable</span>&lt;<span class="built_in">String</span>&gt; names = users.map((u) =&gt; u.name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>發生此錯誤的原因是因為這裡的實際調用是：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">users.map((<span class="built_in">dynamic</span> u) =&gt; u.name);</span><br></pre></td></tr></table></figure>
+
+<p>…它沒有足夠的靜態類型資訊來產生 <code>Iterable&lt;String&gt;</code>。透過將 <code>users</code> 修正為正確的類型（並避免動態調用），一切正常：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 我們也可以寫成 `var users = &lt;User&gt;[</span></span><br><span class="line">  <span class="keyword">var</span> users = [<span class="keyword">new</span> User()..name = <span class="string">&#x27;Matan&#x27;</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// OK！</span></span><br><span class="line">  <span class="built_in">Iterable</span>&lt;<span class="built_in">String</span>&gt; names = users.map((u) =&gt; u.name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="void"><a href="#void" class="headerlink" title="void"></a>void</h3><p>最後，我們有 <code>void</code>，這是 Dart 2 中最新的類型。在 Dart 1 中，<code>void</code> 只能用作函式的返回類型（例如 <code>void main()</code>），但在 Dart 2 中，它已被 <em>泛化</em>，並且可以在其他地方使用，例如 <code>Future&lt;void&gt;</code>。</p>
+<p><code>void</code> 類型在語義上類似於 <code>Object</code>（它可以是任何東西），但有一些額外的限制——<code>void</code> 類型不能用於任何東西（即使是 <code>==</code> 或 <code>hashCode</code>），並且將某個東西賦值給 <code>void</code> 類型是無效的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> foo() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">var</span> bar = foo(); <span class="comment">// 無效</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <em>實際應用中</em>，我使用 <code>void</code> 來表示「任何東西，我不關心元素」，或者更常見的是表示「省略」，例如在 <code>Future&lt;void&gt;</code> 或 <code>Stream&lt;void&gt;</code> 中：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">清除快取。</span></span></span><br><span class="line">Future&lt;<span class="keyword">void</span>&gt; purgeCache() &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的程式碼片段中，我不希望使用者嘗試使用提供的 <code>Future</code> 的返回值，因為它不相關。我見過使用 <code>Future&lt;Null&gt;</code> 來達到此目的的範例，這實際上是在 <code>Future&lt;void&gt;</code> 成為可能 <em>之前</em> 的一種解決方法。</p>
+<p>例如，這在靜態上是正常的，但在執行時在 Dart 2 中是無效的：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:async&#x27;</span>;</span><br><span class="line"></span><br><span class="line">Future&lt;<span class="built_in">String</span>&gt; _doAThing() <span class="keyword">async</span> =&gt; <span class="string">&#x27;Test&#x27;</span>;</span><br><span class="line">Future&lt;<span class="built_in">Null</span>&gt; doAThing() <span class="keyword">async</span> =&gt; _doAThing();</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="comment">// Future&lt;String&gt; 不是 FutureOr&lt;Null&gt; 類型的子類型</span></span><br><span class="line">  <span class="keyword">await</span> doAThing();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>…而使用 <code>Future&lt;void&gt;</code> 作為 <code>doAThing()</code> 是有效且正確的。</p>
+<p>另一個例子可能是不帶任何事件資料的 <code>Stream</code>：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// <span class="language-markdown">當使用者登出系統時觸發事件。</span></span></span><br><span class="line">Stream&lt;<span class="keyword">void</span>&gt; <span class="keyword">get</span> onLogOut &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>另一個更實際的用途是實作一個具有您不會使用的泛型類型引數的類別。例如，實作流行的 <a href="https://zh.wikipedia.org/wiki/%E8%AE%BF%E9%97%AE%E8%80%85%E6%A8%A1%E5%BC%8F">訪問者模式</a>，當 C（上下文）類型引數未使用時，我們可以透過傳遞 <code>void</code> 來忽略它：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Visitor</span>&lt;<span class="title">N</span>, <span class="title">C</span>&gt; </span>&#123;</span><br><span class="line">  N visitNode(N node, [C context]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IdentityVisitor</span>&lt;<span class="title">N</span>&gt; <span class="keyword">extends</span> <span class="title">Visitor</span>&lt;<span class="title">N</span>, <span class="title">void</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  N visitNode(N node, [_]) =&gt; node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>我希望這篇簡短的文章可以幫助您圍繞使用 <code>Object</code>、<code>dynamic</code>、<code>void</code> 做出 API 決策。如果您有任何其他問題或想法，請留言！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e7afb5f44df0" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-2-legacy-of-the-void-e7afb5f44df0">Dart 2：<code>void</code> 的遺產</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/type-safety/" rel="tag"># type-safety</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/b0c060c4.html" rel="prev" title="window 10 安裝 docker 無法開啟 問題">
+      <i class="fa fa-chevron-left"></i> window 10 安裝 docker 無法開啟 問題
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/7cf6f9eb.html" rel="next" title="【文章翻譯】Improved discovery on the Dart package site">
+      【文章翻譯】Improved discovery on the Dart package site <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dart-2%EF%BC%9Avoid-%E7%9A%84%E9%81%BA%E7%94%A2"><span class="nav-number">1.</span> <span class="nav-text">Dart 2：void 的遺產</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object"><span class="nav-number">1.1.</span> <span class="nav-text">Object</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dynamic"><span class="nav-number">1.2.</span> <span class="nav-text">dynamic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#void"><span class="nav-number">1.3.</span> <span class="nav-text">void</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

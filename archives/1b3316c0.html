@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 基於 LLVM 的 Dart 編譯實驗這篇文章講述了一個使用 LLVM 編譯器框架編譯 Dart 語言的實驗。乍看之下，這似乎沒有什麼意義，因為：     Dart 已經擁有一個出色的 虛擬機器，它使用 即時編譯 (JIT) 來獲得優異的效能。由於 Dart 是動態型別的（更準確地說，它是 可選型別的），JIT 編譯器是一個很自然的選擇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Dart-on-LLVM">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/1b3316c0.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 基於 LLVM 的 Dart 編譯實驗這篇文章講述了一個使用 LLVM 編譯器框架編譯 Dart 語言的實驗。乍看之下，這似乎沒有什麼意義，因為：     Dart 已經擁有一個出色的 虛擬機器，它使用 即時編譯 (JIT) 來獲得優異的效能。由於 Dart 是動態型別的（更準確地說，它是 可選型別的），JIT 編譯器是一個很自然的選擇">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/845/1*DN03P0ofCSyHM6UwB42Nyg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/845/1*g6p0yM6fD_UD3rfsOWGQ-A.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/960/1*VqmfjhoN9cMWH0vz37zU6A.jpeg">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/964/1*pyM5bJo-_-i8Leum4yHPOQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*_B_KUgeFwaeUxC97GBIHPw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/600/1*uB5TngqsrAvvzu_fr8KCdg.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/348/1*4bthU0tgek2j09dJuKn-aQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/598/1*f_vtnoVYGfdXXqPUaGrOGw.png">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b82e83f99a70">
+<meta property="article:published_time" content="2017-01-11T07:04:48.000Z">
+<meta property="article:modified_time" content="2024-12-18T07:46:02.323Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="programming">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="llvm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/845/1*DN03P0ofCSyHM6UwB42Nyg.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/1b3316c0.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Dart-on-LLVM | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1b3316c0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Dart-on-LLVM
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-01-11 15:04:48" itemprop="dateCreated datePublished" datetime="2017-01-11T15:04:48+08:00">2017-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:46:02" itemprop="dateModified" datetime="2024-12-18T15:46:02+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="基於-LLVM-的-Dart-編譯實驗"><a href="#基於-LLVM-的-Dart-編譯實驗" class="headerlink" title="基於 LLVM 的 Dart 編譯實驗"></a>基於 LLVM 的 Dart 編譯實驗</h2><p>這篇文章講述了一個使用 LLVM 編譯器框架編譯 Dart 語言的實驗。乍看之下，這似乎沒有什麼意義，因為：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/845/1*DN03P0ofCSyHM6UwB42Nyg.png" />
+</figure>
+
+<p>Dart 已經擁有一個出色的 <a href="https://www.dartlang.org/dart-vm/tools/dart-vm">虛擬機器</a>，它使用 <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">即時編譯 (JIT)</a> 來獲得優異的效能。由於 Dart 是動態型別的（更準確地說，它是 <a href="https://www.dartlang.org/articles/language/optional-types">可選型別的</a>），JIT 編譯器是一個很自然的選擇——它可以使用運行時可用的型別來執行靜態編譯器無法進行的優化。</p>
+<p>Dart-on-LLVM 看起來像是一項徒勞無功的工作的另一個原因是，儘管名稱如此，LLVM 並不是一個虛擬機器，而且直到最近它才適用於帶有垃圾回收的語言。所謂適用，我們指的是：</p>
+<ul>
+<li>移動、精確（無洩漏）的垃圾回收</li>
+<li>高度優化</li>
+</ul>
+<p>這是因為，一旦優化器修改了您的程式碼，您就再也無法找到堆疊上的可垃圾回收指標。一種常見的策略是將所有指標移動到特殊的記憶體區域，但这會降低現代編譯器中的許多優化策略，現代編譯器依賴於區域變數的暫存器分配來發揮其魔力。您可以擁有良好的垃圾回收或完全的效能，但不能兩者兼得。</p>
+<p>然而，LLVM 領域正在颳起新的風。最近，LLVM 以實驗性的 <a href="http://llvm.org/docs/Statepoints.html">Statepoint</a> 功能的形式增加了一些垃圾回收支援。這已被各種勇敢的團隊使用，包括 <a href="https://github.com/ispras/llv8/wiki">LLV8</a> 實驗背後的人員和 <a href="http://llvm.org/devmtg/2015-10/slides/DasReames-LLVMForAManagedLanguage.pdf">Azul</a>，他們正在將其用於 JVM 的新型頂級編譯器。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/845/1*g6p0yM6fD_UD3rfsOWGQ-A.png" />
+</figure>
+
+<p>構建一個基於 LLVM 的真正虛擬機器似乎已從「不可能的任務」變成了僅僅是「<a href="https://www.youtube.com/watch?v=gJGJMi-sUS8">困難的任務</a>」。同時，<a href="https://github.com/dart-lang/dev_compiler/blob/master/STRONG_MODE.md">強模式</a> 使 Dart 更具靜態型別，並且減少了動態性。此外，我們 Google 正在為 iOS 構建 <a href="https://www.youtube.com/watch?v=Mx-AllVZ1VY&t=0m29s">Flutter</a>，而 iOS 禁止 JIT 編譯。這兩個發展都使 Dart 更符合 LLVM 專案的目標和權衡。</p>
+<h3 id="為什麼選擇-LLVM？"><a href="#為什麼選擇-LLVM？" class="headerlink" title="為什麼選擇 LLVM？"></a>為什麼選擇 LLVM？</h3><p>LLVM 是一個現代的、維護良好的開源編譯器框架，它為我們提供了許多優化和平台，而且是「免費的」。例如，有一個完整的 <a href="http://llvm.org/docs/Passes.html#inline-function-integration-inlining">內聯</a> pass，可以將任何函數內聯到任何其他函數中，並包含關於何時這樣做的 <a href="https://bugs.chromium.org/p/v8/issues/detail?id=3354">啟發式方法</a>。</p>
+<p>它看起來也是一個開放、友好的社群，歡迎各種貢獻。</p>
+<h3 id="實驗目標"><a href="#實驗目標" class="headerlink" title="實驗目標"></a>實驗目標</h3><ul>
+<li>上下文是在提前編譯場景中的強模式 Dart</li>
+<li>評估使用 Statepoint 支援精確、移動垃圾回收的可行性</li>
+<li>評估效能</li>
+</ul>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>我們（<a href="https://medium.com/u/9fa86af2470a">Erik Corry</a> 和 Dmitry Olshansky）的實驗基於已停止的「<a href="https://github.com/dartino/sdk">Dartino</a>」運行時。這是一個針對小型設備進行了優化的實驗性 Dart 運行時。與使用 DartVM 作為基礎相比，它對我們有一些優勢：</p>
+<ul>
+<li>已經有一個由 <a href="https://medium.com/u/191fa0fcb4fe">Martin Kustermann</a> 構建的 Dartino 的實驗性 LLVM 後端。它沒有垃圾回收支援，因此在記憶體不足時會崩潰。</li>
+<li>Dartino 利用了 <a href="https://webdev.dartlang.org/tools/dart2js">Dart2JS</a> 的許多機制，因此它不需要完整的解析器、前端等。我們用作輸入的 Dartino 位元組碼已經降低了许多困難的 Dart 功能。例如，閉包是物件，可選參數已變成了不同版本的函數。</li>
+<li>我們都已經熟悉 Dartino。</li>
+<li>Dartino 附帶了一個相對完整的運行時，並且能夠運行大型應用程式，例如託管 Dart2JS。它沒有很多 Unix IO 支援，而且執行緒模型也不同，因此它不是一個直接替代品。</li>
+</ul>
+<h3 id="Dartino-中的垃圾回收"><a href="#Dartino-中的垃圾回收" class="headerlink" title="Dartino 中的垃圾回收"></a>Dartino 中的垃圾回收</h3><p>現有的 Dartino LLVM 實驗是在一段時間之前從 Dartino 分叉出來的，當時的垃圾回收非常簡單（半空間 <a href="https://en.wikipedia.org/wiki/Cheney's_algorithm">Cheney 收集器</a>，沒有分代，長時間暫停，2 倍記憶體佔用開銷）。我們從 Dartino 主分支中挑選了一些變更，以獲得更傳統的帶有寫入屏障的 2 代垃圾回收。沒有讀取屏障，收集是停止所有執行緒的，沒有併發垃圾回收（雖然 LLVM Statepoints 似乎確實支援這些功能，而且它們幾乎肯定被 Azul 在其閉源虛擬機器中使用）。</p>
+<p>我們沒有從較新的 Dartino 版本中挑選壓縮舊分代的支援。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/1*VqmfjhoN9cMWH0vz37zU6A.jpeg" />
+</figure>
+
+<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/964/1*pyM5bJo-_-i8Leum4yHPOQ.png" />
+</figure>
+
+<p>上面的流程顯示了從 Dart 原始碼到機器碼的路徑。在實際的實作中，第一部分將被基於「<a href="https://github.com/dart-lang/sdk/tree/master/pkg/kernel">kernel</a>」格式的內容替換（預先解析的 Dart 原始碼前端）。</p>
+<h4 id="翻譯成-LLVM-和高階優化"><a href="#翻譯成-LLVM-和高階優化" class="headerlink" title="翻譯成 LLVM 和高階優化"></a>翻譯成 LLVM 和高階優化</h4><p>llvm-codegen 連結到我們自己的 LLVM 副本，並執行高階優化。在此階段，LLVM 維持指標在垃圾回收過程中有效的假設，但指標使用非預設的「地址空間」標記，這禁止 LLVM 以在存在移動垃圾回收的情況下不正確的方式推理其位元模式。各種自訂的 LLVM 內建函數用於標記可能發生垃圾回收的點。</p>
+<p>由於標記指標，LLVM 位元組碼非常醜陋，有很多轉換和加法。因此，本文檔包含「LLVM 偽程式碼」，而不是真正的 .ll 檔案。如果您習慣於實際的 .ll 檔案，這看起來就像「寶貝的第一個 .ll 咿呀學語」，抱歉！以下程式碼表示 mem2reg 之後的動態分派，該 pass 將區域變數從堆疊提升到 <a href="https://en.wikipedia.org/wiki/Static_single_assignment_form">SSA</a> 暫存器中：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/2a556a8d39b25d686a2bc724b0a201cb/href">https://medium.com/media/2a556a8d39b25d686a2bc724b0a201cb/href</a></iframe>
+
+<p>在優化器運行後，上面的相當費力的查找已從迴圈中移除，只剩下調用指令。這是可能的，因為類別指標在 Dart 中是不可變的，並且我們已將各種中繼資料附加到載入指令（未顯示），包括 <code>invariant.load</code> 和 <code>never.faults</code>（後者是我們 <a href="https://github.com/ErikCorryGoogle/llvm">修補的 LLVM 版本</a> 的新增功能）。</p>
+<h4 id="降低"><a href="#降低" class="headerlink" title="降低"></a>降低</h4><p>一旦高階優化運行完成，我們將大多數內建函數降低為普通的 LLVM 指令。例如，寫入屏障簡化為一系列儲存（Dartino 使用卡片標記方案，這很大程度上歸功於 <a href="https://medium.com/u/f4d8d5c764a8">Urs</a> 的 <a href="http://hoelzle.org/publications/urs-thesis.pdf">博士論文</a> 第 6.2.3 節）。降低後，每個區域變數指標都在每個可能的垃圾回收點（基本上是每個調用）被一個不透明的內建函數重寫。這會抑制許多優化（這就是為什麼我們必須在降低之前進行優化 pass），但有兩個目的：</p>
+<ul>
+<li>內建函數稍後將用於生成堆疊映射，詳細說明堆疊上可垃圾回收指標的位置。</li>
+<li>SSA 值被分解為垃圾回收前和垃圾回收後的值，這使得垃圾回收對優化器可見，並防止無效的程式碼生成。</li>
+</ul>
+<p>調用現在看起來更像這樣（分派已從迴圈中提升出來，因此 %code 包含程式碼指標——迴圈未顯示）</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/706ab9a6a3bcade0d6dd9d9ebfa2b478/href">https://medium.com/media/706ab9a6a3bcade0d6dd9d9ebfa2b478/href</a></iframe>
+
+<p>轉換相當笨拙，在轉換後的調用中建立了一個特殊標記，並將其用作 <code>gc.result</code> 和 <code>gc.relocate</code> 調用中的參數。可垃圾回收指標仍然被特殊標記（使用非零地址空間，在上面的偽 LLVM 中未顯示），這在下一階段抑制了一些優化。</p>
+<h4 id="程式碼生成"><a href="#程式碼生成" class="headerlink" title="程式碼生成"></a>程式碼生成</h4><p>最後一步是程式碼生成，由 LLVM 程式 llc 執行。這一步可以使用完全未修補的 ToT LLVM 透過命令 <code>llc -O3</code> 完成。目前唯一支援實驗性垃圾回收內建函數的後端是 x64，但我們沒有看到任何將 ARM 支援加入和上游化的根本性障礙。動態分派調用站點現在看起來像：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/cd4cec4022d4c83b1a111e22469a344f/href">https://medium.com/media/cd4cec4022d4c83b1a111e22469a344f/href</a></iframe>
+
+<p>這使用 x64 的標準（主要是基於暫存器）調用約定。在每次調用之前，一堆暫存器會溢出到堆疊中，如果需要，垃圾回收可以在堆疊中移動它們。不支援被調用者儲存的可垃圾回收值（V8 和 DartVM 也不支援）。</p>
+<h3 id="效能"><a href="#效能" class="headerlink" title="效能"></a>效能</h3><p>Dartino 位元組碼在一個非常動態的型別環境中針對簡潔性和緊湊性進行了優化。在此分析中，我們嘗試展望一個使用強模式並且在編譯時知道型別的場景。在這種情況下，方法的分派和對物件上成員變數的存取將更簡單、更快。為了更接近這種情況，我們在生成 LLVM 程式碼時使用了一些全程式分析。</p>
+<p>最重要的結果是，如果只有少數類別具有方法 <code>foo()</code>，那麼我們會檢查這些類別並直接調用 <code>foo()</code> 方法。與某些類似虛擬函數表的分派機制不同，這讓 LLVM 可以在有意義的地方內聯方法。這是一個巨大的勝利，尤其是對於 <a href="https://www.dartlang.org/resources/dart-tips/dart-tips-ep-10">getter 和 setter</a>，這是 Dart 的一個很棒的功能。</p>
+<p>編譯器仍然必須處理許多動態語言問題，它大多數都能正確處理（請參閱下面的測試狀態部分）。特別是，整數可能會溢出並隨時變成真正的堆分配數字物件。再加上運算子的重載，這使得即使是簡單的 for 迴圈也相當複雜。更多的靜態分析可能會改善這一點。</p>
+<p>與真正的 DartVM 的一個區別是，我們不會檢查堆疊溢出，也不會在迴圈返回邊緣檢查執行緒中斷。根據 V8 的經驗，我們估計修復這個問題可能會損失大約 10% 的效能。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/1*_B_KUgeFwaeUxC97GBIHPw.png" />
+</figure>
+
+<p>我們與常規的 JIT DartVM 以及已為 <a href="https://flutter.io/">Flutter</a> 加入到 DartVM 中的新的提前編譯支援進行了比較。基準測試 <a href="https://github.com/dartino/sdk/tree/master/benchmarks">來自 Dartino</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/600/1*uB5TngqsrAvvzu_fr8KCdg.png" />
+</figure>
+
+<p>運行一個像 Hello World 這樣短暫的程式主要顯示啟動所需的時間。基於 JIT 的系統花費時間編譯程式碼，而這裡的兩個非 LLVM 解決方案都在啟動時反序列化資料堆。</p>
+<h3 id="效能結論"><a href="#效能結論" class="headerlink" title="效能結論"></a>效能結論</h3><p>我們的效能與 Flutter 現有的提前編譯技術相當（這是一個移動的目標——這些測量是在 2016 年 11 月下旬在一台強大的 64 位 Linux 工作站上進行的）。JIT 仍然遙遙領先。我們正在運行的 Dartino 分支的垃圾回收效能還沒有達到標準。</p>
+<p>我們還測量了啟動時間。Dartino-LLVM 為類別、常數和分派表生成靜態資料。這些資料由高度優化的 <a href="https://www.cs.virginia.edu/~dww4s/articles/ld_linux.html">ld.linux</a> 運行時連結器載入，它們的載入速度比目前的 Dart AOT 資料堆快照更快，從而為啟動提供了非常好的效能。對於啟動測試，CPU 調控器設定為「效能」。</p>
+<h3 id="關於相容性的說明"><a href="#關於相容性的說明" class="headerlink" title="關於相容性的說明"></a>關於相容性的說明</h3><p>在這項研究中，我們並沒有特別關注獲得 100% 的 Dart 相容性。證明「困難的事情」是可能的，例如垃圾回收和異常處理，就足夠了。在某些情況下，我們採用了一種捷徑，表明真正的解決方案是可能的，而無需浪費時間實際實作真正的解決方案。以下是一些我們妥協的地方：</p>
+<ul>
+<li>像 Dartino 一樣，我們沒有無限精度的整數。但是，我們確實會檢查所有整數運算是否溢出，並動態切換到裝箱數字表示形式（但是，裝箱表示形式只有 64 位，會換行）。</li>
+<li>在 no-such-method（本質上是一個失敗的型別檢查）上，我們沒有遵循完整的 Dart 語義，這包括調用 no-such-method 方法並檢查是否存在與缺少的方法同名的 getter，並返回一個帶有「call」方法的物件。但是，我們確實會在安全點（可以進行分配的點）拋出異常。</li>
+<li>我們不會在調用時檢查堆疊溢出，也不會在迴圈返回邊緣檢查中斷。LLVM 確實對此提供了實驗性支援。我們比較的解決方案確實支援這一點。V8 的經驗表明，修復這個問題可能會導致大約 10% 的效能下降。</li>
+<li>我們的前端編譯器是一個修改過的 Dart2JS。由於 Dartino 已停止，它沒有跟上語言的最新變化，因此有一些測試我們無法運行。</li>
+<li>Dart 異常處理已完全實作，除了與 no-such-method 相關的異常。為此，我們使用了 LLVM 內建的異常處理支援，這看起來足以勝任這項任務，並且與 Dart 的異常模型非常吻合（這與 LLVM 設計的 C++ 並沒有太大的不同）。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/348/1*4bthU0tgek2j09dJuKn-aQ.png" />
+</figure>
+
+<p>總之，我們通過了 Dartino 可以通過的近 90% 的測試。在我們失敗的測試中，最大的原因是編譯器前端的問題和處理 no-such-method 事件的問題。</p>
+<p>在大約 11.6% 的失敗測試中，以下是它們失敗原因的細分：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/598/1*f_vtnoVYGfdXXqPUaGrOGw.png" />
+</figure>
+
+<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>實驗性的 LLVM 垃圾回收支援似乎在 x64 上完全正常工作。</p>
+<p>原型的效能與我們更成熟的基於 DartVM 的提前編譯解決方案相當。</p>
+<p>對於效能分析，我們沒有使用 Dart 強模式，預計這將產生發揮 LLVM 優勢的優化機會。但是，我們正在使用一些封閉世界假設，我們認為這是現實的。</p>
+<p>我們能夠僅使用未修補的 LLVM ToT 版本將最後階段從 LLVM 位元組碼編譯為機器碼（在上面的流程圖中以藍色標記）。我們觀察到，在此階段執行的優化 (-O3) 並沒有導致任何錯誤編譯或垃圾回收問題。</p>
+<h3 id="未來"><a href="#未來" class="headerlink" title="未來"></a>未來</h3><p>關於如何以及是否將這種方法用於 Dart 或 Flutter 尚未做出決定，但以下是一些關於可以探索的有趣方向的隨機想法。</p>
+<ul>
+<li>擁有一種自定義的語言，而不是帶有控制代碼的 C++，來編寫運行時例程。後端將是帶有 Statepoint 的 LLVM。（目前的版本中有一個小的 Forth 實驗，但需要更強大的東西才能編寫非常簡單的原生例程）。</li>
+<li>包裝 64 位整數會產生什麼影響？</li>
+<li>我們如何使用全程式知識來生成程式碼，同時仍然允許並行編譯大型專案？</li>
+</ul>
+<h3 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h3><p>LLVM 垃圾回收支援 <a href="http://llvm.org/docs/Statepoints.html">http://llvm.org/docs/Statepoints.html</a><br>Dartino-LLVM 儲存庫 <a href="https://github.com/dartino/sdk/tree/llvm">https://github.com/dartino/sdk/tree/llvm</a><br>修改後的 LLVM 儲存庫 <a href="https://github.com/ErikCorryGoogle/llvm">https://github.com/ErikCorryGoogle/llvm</a><br>Urs Hölzle 博士論文： <a href="http://hoelzle.org/publications/urs-thesis.pdf">http://hoelzle.org/publications/urs-thesis.pdf</a><br>LLV8： <a href="https://github.com/ispras/llv8">https://github.com/ispras/llv8</a></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b82e83f99a70" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-on-llvm-b82e83f99a70">基於 LLVM 的 Dart</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/programming/" rel="tag"># programming</a>
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/llvm/" rel="tag"># llvm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/f1831e03.html" rel="prev" title="【文章翻譯】Dart’s built_value for Serialization">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】Dart’s built_value for Serialization
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/2504fdf2.html" rel="next" title="【文章翻譯】A Dart REPL PoC">
+      【文章翻譯】A Dart REPL PoC <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%96%BC-LLVM-%E7%9A%84-Dart-%E7%B7%A8%E8%AD%AF%E5%AF%A6%E9%A9%97"><span class="nav-number">1.</span> <span class="nav-text">基於 LLVM 的 Dart 編譯實驗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%BA%E4%BB%80%E9%BA%BC%E9%81%B8%E6%93%87-LLVM%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">為什麼選擇 LLVM？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%A6%E9%A9%97%E7%9B%AE%E6%A8%99"><span class="nav-number">1.2.</span> <span class="nav-text">實驗目標</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dartino-%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">1.4.</span> <span class="nav-text">Dartino 中的垃圾回收</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%A7%8B"><span class="nav-number">1.5.</span> <span class="nav-text">架構</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BF%BB%E8%AD%AF%E6%88%90-LLVM-%E5%92%8C%E9%AB%98%E9%9A%8E%E5%84%AA%E5%8C%96"><span class="nav-number">1.5.1.</span> <span class="nav-text">翻譯成 LLVM 和高階優化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%99%8D%E4%BD%8E"><span class="nav-number">1.5.2.</span> <span class="nav-text">降低</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BC%8F%E7%A2%BC%E7%94%9F%E6%88%90"><span class="nav-number">1.5.3.</span> <span class="nav-text">程式碼生成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%88%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">效能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%88%E8%83%BD%E7%B5%90%E8%AB%96"><span class="nav-number">1.7.</span> <span class="nav-text">效能結論</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%9C%E6%96%BC%E7%9B%B8%E5%AE%B9%E6%80%A7%E7%9A%84%E8%AA%AA%E6%98%8E"><span class="nav-number">1.8.</span> <span class="nav-text">關於相容性的說明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AB%96"><span class="nav-number">1.9.</span> <span class="nav-text">結論</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AA%E4%BE%86"><span class="nav-number">1.10.</span> <span class="nav-text">未來</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%83%E8%80%83"><span class="nav-number">1.11.</span> <span class="nav-text">參考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

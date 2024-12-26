@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.4Dart 3.4 今天正式發布！此版本展示了 Dart 和 Flutter 在 Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24 文章中的共同努力，因此請務必在那裏獲得完整的資訊。這篇文章介紹了我們對 WebAssembly 的支援，並詳細說明了今年 Dart 語言的幾個主要路線圖項目之">
+  <meta name="description" content="【文章內容使用 Gemini 2.0 自動翻譯產生】 宣佈 Dart 3.4Dart 3.4 於今天發佈！此版本展示了 Dart 和 Flutter 在 Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24 文章中的共同努力，因此請務必在那裡獲得完整資訊。這篇文章介紹了我們對 WebAssembly 的支援，然後詳細介紹了今年 Dart 語言的主要路線圖項目之一：巨集。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【文章翻譯】Announcing Dart 3.4">
 <meta property="og:url" content="https://blog.rainvisitor.me/archives/851f90eb.html">
 <meta property="og:site_name" content="RainVisitor Blog">
-<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動產生】 宣布 Dart 3.4Dart 3.4 今天正式發布！此版本展示了 Dart 和 Flutter 在 Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24 文章中的共同努力，因此請務必在那裏獲得完整的資訊。這篇文章介紹了我們對 WebAssembly 的支援，並詳細說明了今年 Dart 語言的幾個主要路線圖項目之">
+<meta property="og:description" content="【文章內容使用 Gemini 2.0 自動翻譯產生】 宣佈 Dart 3.4Dart 3.4 於今天發佈！此版本展示了 Dart 和 Flutter 在 Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24 文章中的共同努力，因此請務必在那裡獲得完整資訊。這篇文章介紹了我們對 WebAssembly 的支援，然後詳細介紹了今年 Dart 語言的主要路線圖項目之一：巨集。">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*hAcsCFLU0Ze7pej6">
 <meta property="og:image" content="https://cdn-images-1.medium.com/max/896/0*aOAKYwKdjXURuZN9">
 <meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bd8d23b4462a">
 <meta property="article:published_time" content="2024-05-14T12:36:15.000Z">
-<meta property="article:modified_time" content="2024-09-29T17:41:48.897Z">
+<meta property="article:modified_time" content="2024-12-18T04:37:23.501Z">
 <meta property="article:author" content="Rainvisitor">
 <meta property="article:tag" content="dart">
 <meta property="article:tag" content="dartlang">
@@ -189,7 +189,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:41:48" itemprop="dateModified" datetime="2024-09-30T01:41:48+08:00">2024-09-30</time>
+                <time title="Modified: 2024-12-18 12:37:23" itemprop="dateModified" datetime="2024-12-18T12:37:23+08:00">2024-12-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -212,57 +212,56 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="宣布-Dart-3-4"><a href="#宣布-Dart-3-4" class="headerlink" title="宣布 Dart 3.4"></a>宣布 Dart 3.4</h2><p>Dart 3.4 今天正式發布！此版本展示了 Dart 和 Flutter 在 <a href="https://medium.com/flutter/io24-5e211f708a37">Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24</a> 文章中的共同努力，因此請務必在那裏獲得完整的資訊。這篇文章介紹了我們對 WebAssembly 的支援，並詳細說明了今年 Dart 語言的幾個主要路線圖項目之一：_宏_。</p>
+        <p>【文章內容使用 Gemini 2.0 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-3-4"><a href="#宣佈-Dart-3-4" class="headerlink" title="宣佈 Dart 3.4"></a>宣佈 Dart 3.4</h2><p>Dart 3.4 於今天發佈！此版本展示了 Dart 和 Flutter 在 <a href="https://medium.com/flutter/io24-5e211f708a37">Flutter 3.22 &#x2F; Dart 3.4 &#x2F; IO24</a> 文章中的共同努力，因此請務必在那裡獲得完整資訊。這篇文章介紹了我們對 WebAssembly 的支援，然後詳細介紹了今年 Dart 語言的主要路線圖項目之一：<em>巨集</em>。</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hAcsCFLU0Ze7pej6" />
 </figure>
 
-<h3 id="WebAssembly-更新"><a href="#WebAssembly-更新" class="headerlink" title="WebAssembly 更新"></a>WebAssembly 更新</h3><p>今天，我們很興奮地宣布，在最新的 Flutter 3.22 穩定版本中，<a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Web 應用</a> 已經完全支援 WebAssembly (Wasm)！</p>
-<p>這項投資橫跨 Dart 和 Flutter 多年。如果您一直在關注這些發展，您會看到我們的漸進式改進：</p>
+<h3 id="WebAssembly-更新"><a href="#WebAssembly-更新" class="headerlink" title="WebAssembly 更新"></a>WebAssembly 更新</h3><p>今天，我們很高興地宣布，隨著最新的 Flutter 3.22 穩定版發佈，<a href="https://docs.flutter.dev/platform-integration/web/wasm">Flutter Web 應用程式</a> 現已完全支援 WebAssembly (Wasm)！</p>
+<p>這是 Dart 和 Flutter 多年來的投資。如果您一直在關注這些發展，您已經看到了我們的逐步發展：</p>
 <ul>
-<li>將 <a href="https://developer.chrome.com/blog/wasmgc/">WasmGC</a> 提案標準化，</li>
-<li>加入了一個全新的 Dart 編譯器後端，用於生成 WasmGC 程式碼，以及</li>
-<li><a href="https://dart.dev/interop/js-interop">重新設計</a> 我們的 Web 和 JavaScript 互操作產品，以最佳支援 Wasm。</li>
+<li>標準化 <a href="https://developer.chrome.com/blog/wasmgc/">WasmGC</a>  提案，</li>
+<li>加入一個全新的 Dart 編譯器後端來產生 WasmGC 程式碼，以及</li>
+<li><a href="https://dart.dev/interop/js-interop">改進</a> 我們的 Web 和 JavaScript 互通產品，以最好地支援 Wasm。</li>
 </ul>
-<p>我們將繼續投資 WebAssembly。我們的下一個努力將在純粹的 Dart 應用程式中啟用對 Wasm 的完全支援，並完成一些缺失的功能（例如延遲載入）。Dart 中 Wasm 編譯的端到端工具仍在開發中，但您可以 <a href="http://dart.dev/web/wasm">嘗試預覽</a> 在 stable 版本中使用一些臨時步驟。之後，我們還希望在 <a href="https://github.com/dart-lang/sdk/issues/53884">JS 環境之外</a> 的 Dart 中支援 Wasm，例如標準 Wasm 執行時間，例如 wasmtime 和 wasmer。</p>
-<h3 id="Dart-宏：提升開發抽象層級"><a href="#Dart-宏：提升開發抽象層級" class="headerlink" title="Dart 宏：提升開發抽象層級"></a>Dart 宏：提升開發抽象層級</h3><p>我們投入了多年時間設計 Dart 宏系統。為了改善 Dart 的開發體驗，宏提供了元程式設計解決方案，例如程式碼生成。此解決方案內建到 Dart 語言中，為開發人員提供最大的效能、效率和生產力。現在，我們準備提供此體驗的預覽！</p>
-<p>Dart 開發人員長期以來的一個痛點是，JSON 資料的序列化和反序列化既瑣碎又乏味。在 Dart 中，製作一個可重複使用且功能強大的解決方案是一個挑戰，因為它出於效能原因不支持運行時反射。作為替代方案，我們依賴於程式碼生成解決方案，例如 <a href="https://docs.flutter.dev/data-and-backend/serialization/json#serializing-json-using-code-generation-libraries">JsonSerializable</a>。這些依賴於在程式碼本身之前運行的外部工具，使開發人員的體驗變得複雜。</p>
-<p>今天，我們宣布了一種用於 JSON 序列化和反序列化的全新方法的預覽：<a href="https://dart.dev/go/json-codable">JsonCodable</a> 宏。</p>
-<p>宏是一種透過在編譯時內省其他程式碼來生成更多程式碼的程式碼類型。例如，以下是一個帶有新的 JsonCodable 宏的 Dart 類別 Vehicle：</p>
+<p>我們將繼續投資 WebAssembly。我們的下一步工作將是在純 Dart 應用程式中啟用對 Wasm 的全面支援，並完成一些缺失的功能（例如延遲載入）。Dart 中 Wasm 編譯的端到端工具仍在開發中，但您現在可以透過一些臨時步驟在穩定版中 <a href="http://dart.dev/web/wasm">試用預覽版</a>。之後，我們還希望在 JS 環境之外的 Dart 中支援 Wasm（例如 wasmtime 和 wasmer 等標準 Wasm runtime），如 <a href="https://github.com/dart-lang/sdk/issues/53884">dart-lang&#x2F;sdk&#x2F;issues&#x2F;53884</a> 中所述。</p>
+<h3 id="Dart-巨集：提升開發抽象層級"><a href="#Dart-巨集：提升開發抽象層級" class="headerlink" title="Dart 巨集：提升開發抽象層級"></a>Dart 巨集：提升開發抽象層級</h3><p>我們投入了多年時間來設計 Dart 巨集系統。為了改善 Dart 的開發體驗，巨集提供了一個元程式設計解決方案，例如程式碼產生。此解決方案內建於 Dart 語言中，可為開發人員提供最大的效能、效率和生產力。現在，我們準備好提供此體驗的預覽版！</p>
+<p>長期以來，Dart 開發人員的一個痛點是序列化和反序列化 JSON 資料的瑣碎但繁瑣的模式。製作一個可重複使用、功能足夠強大的解決方案在 Dart 中是一項挑戰，因為由於效能原因，它不支援 runtime reflection。作為替代方案，我們一直依賴於程式碼產生解決方案，例如 <a href="https://docs.flutter.dev/data-and-backend/serialization/json#serializing-json-using-code-generation-libraries">JsonSerializable</a>。這些解決方案依賴於在程式碼本身之前運行的外部工具，使開發人員體驗變得複雜。</p>
+<p>今天，我們宣布推出一個全新的 JSON 序列化和反序列化方法的預覽版：<a href="https://dart.dev/go/json-codable">JsonCodable</a> 巨集。</p>
+<p>巨集是一種程式碼，它透過在編譯時檢視<em>其他</em>程式碼來產生<em>更多</em>程式碼。例如，以下是一個應用新 JsonCodable 巨集的 Dart 類別 <code>Vehicle</code>：</p>
 <figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonCodable</span>()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Vehicle</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> description;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> wheels;</span><br><span class="line">  Vehicle(<span class="keyword">this</span>.description, <span class="keyword">this</span>.wheels);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> jsonString = Vehicle(<span class="string">&#x27;bicycle&#x27;</span>, <span class="number">2</span>).toJson();</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">&#x27;Vehicle serialized: <span class="subst">$jsonString</span>&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>那麼，它是如何運作的呢？<code>toJson()</code> 方法（以及配套的 <code>fromJson()</code> 建構函數）從哪裡來呢？這是一個用於簡化開發人員體驗的新宏系統的實驗性實作。當 Dart 編譯器看到 <code>@JsonCodable()</code> 註解時，它會立即實時找到 JsonCodable 宏的定義，並開始執行它。這會導致宏：</p>
+<p>那麼，它是如何工作的呢？<code>toJson()</code> 方法（以及配套的 <code>fromJson()</code> 建構函式）從哪裡來的？這是我們新的巨集系統的實驗性實作，旨在簡化開發人員體驗。當 Dart 編譯器看到 <code>@JsonCodable()</code> 注釋時，它會立即找到 JsonCodable 巨集的定義並開始執行它。這會導致巨集：</p>
 <ol>
-<li>建立一個新的「<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">增強類別</a> 」；一種新的語言結構，允許為現有類別新增新的宣告。</li>
-<li>讀取開發人員對 Vehicle 類別的定義，以確定它具有兩個欄位，<code>description</code> 和 <code>wheels</code>。</li>
-<li>在增強類別中新增一個新的 <code>toJson</code> 方法簽章。</li>
+<li>建立一個新的“<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">擴充類別</a>”；這是一種新的語言結構，可以將新的宣告加入到現有的類別中。</li>
+<li>讀取開發人員對 <code>Vehicle</code> 類別的定義，以確定它有兩個欄位：<code>description</code> 和 <code>wheels</code>。</li>
+<li>將新的 <code>toJson</code> 方法簽章加入到擴充類別中。</li>
 <li>填寫 <code>toJson</code> 方法的主體，以處理 <code>description</code> 和 <code>wheels</code> 欄位的序列化。</li>
 </ol>
-<p>所有這些都在沒有延遲的情況下完成。整合的體驗支援我們現有的開發人員工作流程，例如熱重載，正如此螢幕錄影所示：</p>
+<p>所有這些都立即發生。整合的體驗支援我們現有的開發人員工作流程，例如熱重新載入，如下面的螢幕錄影所示：</p>
 <figure>
 <img alt="" src="https://cdn-images-1.medium.com/max/896/0*aOAKYwKdjXURuZN9" />
-<figcaption>Screencast showing the experience of using a macro: Initially no toJson code completion exists, but after adding <a href="http://twitter.com/JsonCodable">@JsonCodable</a> to the class, the toJson code completion shows up immediately.</figcaption>
+<figcaption>螢幕錄影顯示了使用巨集的體驗：最初沒有 toJson 程式碼完成，但在將 <a href="http://twitter.com/JsonCodable">@JsonCodable</a> 加入到類別後，toJson 程式碼完成會立即顯示。</figcaption>
 </figure>
 
-<h3 id="長期宏目標"><a href="#長期宏目標" class="headerlink" title="長期宏目標"></a>長期宏目標</h3><p>最終目標是讓社群能夠建立自己的宏。這提高了 Dart 程式設計的抽象層級。以資料類別為例，這是 <a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">投票數最高</a> 的 Dart 語言功能。我們考慮過在 Dart 中新增對資料類別的內建支援，但了解到人們對此類結構應該支援哪些內容意見分歧很大，以至於我們無法自己設定標準。欄位是否應該不可變？它是否應該支援相等？那 <code>hashCode</code> 呢？也許還有 <code>toString</code> ？我們得出結論，支援宏系統會是更好的方法。社群可以建立自己的抽象類型，允許更多可擴展的實驗和多樣性。</p>
-<p>設計和實作如此強大的宏系統是一項艱鉅的任務。我們決心以一種不會對核心 Dart 開發人員用例（例如程式碼輔助和完成、程式碼分析和熱重載）產生不利效能影響的方式來進行。考慮到這一點，我們採取了分階段的方法：</p>
+<h3 id="長期巨集目標"><a href="#長期巨集目標" class="headerlink" title="長期巨集目標"></a>長期巨集目標</h3><p>最終目標是讓社群能夠建立自己的巨集。這提高了 Dart 程式設計的抽象層級。以資料類別為例，這是 <a href="https://github.com/dart-lang/language/issues?q=is:issue+is:open+sort:reactions-+1-desc">得票最高</a> 的 Dart 語言功能。我們研究了在 Dart 中加入對資料類別的內建支援，但了解到對於這樣的結構應該支援什麼以設定我們自己的標準，意見差異很大。欄位應該是不可變的嗎？它應該支援 equals 嗎？hashCode 呢？也許還有 toString？我們的結論是，支援巨集系統將是更好的方法。社群可以建立自己的抽象類型，允許更多可擴展的實驗和多樣性。</p>
+<p>設計和實作這樣一個強大的巨集系統是一項艱鉅的任務。我們決定以一種不會對核心 Dart 開發人員使用案例（例如程式碼輔助和完成、程式碼分析和熱重新載入）產生負面效能影響的方式來完成它。考慮到這一點，我們正在採取分階段的方法：</p>
 <ul>
-<li>在今天的版本中，我們提供了一個單一宏 JsonCodable 的預覽，以便使用者可以開始熟悉使用宏的開發體驗。</li>
-<li>如果這個宏的推出順利，我們希望在後續版本中將 JSON 宏升級到穩定版本。</li>
-<li>與此同時，我們正在努力完成底層宏系統的設計和實作。一旦我們對其效能和穩定性有信心，最終的目標將是讓 Dart 開發人員社群能夠定義自己的宏。</li>
+<li>在今天的版本中，我們將提供單個巨集 JsonCodable 的預覽版，以便使用者可以開始熟悉使用巨集的開發人員體驗。</li>
+<li>如果此巨集的推出順利，那麼我們希望在以後的版本中將 JSON 巨集升級到穩定版。</li>
+<li>同時，我們正在努力完成底層巨集系統的設計和實作。一旦我們對其效能和穩定性充滿信心，最終目標將是讓 Dart 開發人員社群能夠定義自己的巨集。</li>
 </ul>
-<p>完成這些階段還有很多工作要做。同時，您可以閱讀文件以了解更多關於 <a href="https://dart.dev/go/macros">Dart 宏系統</a> 的資訊，並立即嘗試 <a href="https://dart.dev/go/json-codable">JsonCodable 宏</a> 的預覽。</p>
-<h3 id="其他改進"><a href="#其他改進" class="headerlink" title="其他改進"></a>其他改進</h3><p>與往常一樣，此版本包含所有用於提供最佳 Dart 版本的持續開發。在此版本中，我們做出了以下改進：</p>
+<p>完成這些階段還有很多工作要做。同時，您可以閱讀文件以進一步了解 <a href="https://dart.dev/go/macros">Dart 巨集系統</a>，並立即試用 <a href="https://dart.dev/go/json-codable">JsonCodable 巨集</a> 的預覽版。</p>
+<h3 id="其他改進"><a href="#其他改進" class="headerlink" title="其他改進"></a>其他改進</h3><p>與往常一樣，此版本包含所有持續的開發，這些開發旨在提供最佳版本的 Dart。在此版本中，我們進行了以下改進：</p>
 <ul>
-<li>解決了超過 50% 的分析器程式碼完成錯誤。（請繼續提交 <a href="https://github.com/dart-lang/sdk/labels/analyzer-completion-correctness">議題</a>！）</li>
-<li>改進了條件運算式、if-null 運算式和 switch 運運算式的類型分析與語言規範的對齊（<a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#language-1">變更日誌</a>）。</li>
-<li>從 <code>dart:cli</code> 函式庫中移除不完整且不一致的工具，以償還 Dart VM 中的技术债务。</li>
-<li>解决了几个不足之处，以改进新的 <code>dart:js_interop</code> 函式庫。</li>
+<li>解決了超過 50% 的分析器程式碼完成錯誤。（請繼續提交 <a href="https://github.com/dart-lang/sdk/labels/analyzer-completion-correctness">錯誤報告</a>！）</li>
+<li>改進了條件表達式、if-null 表達式和 switch 表達式的類型分析與語言規範的一致性（<a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#language-1">變更日誌</a>）。</li>
+<li>從 <code>dart:cli</code> 函式庫中移除了不完整且不一致的工具，以償還 Dart VM 中的技術債務。</li>
+<li>解決了一些不足之處，以改進新的 <code>dart:js_interop</code> 函式庫。</li>
 </ul>
-<p>查看 <a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#340">變更日誌</a> 以獲取完整的故事！不要忘記閱讀此版本中關於我們共同努力的 <a href="https://medium.com/flutter/io24-5e211f708a37">Dart 和 Flutter 聯合部落格文章</a> 以獲取完整的故事！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bd8d23b4462a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">宣布 Dart 3.4</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p>undefined</p>
+<p>查看完整的 <a href="https://github.com/dart-lang/sdk/blob/main/CHANGELOG.md#340">變更日誌</a>！別忘了閱讀此版本的 Dart 和 Flutter <a href="https://medium.com/flutter/io24-5e211f708a37">聯合部落格文章</a>，以了解我們共同努力的完整故事！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bd8d23b4462a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">宣佈 Dart 3.4</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過醒目顯示和回應這個故事來繼續討論。</p></p>
 
     </div>
 
@@ -349,7 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E5%B8%83-Dart-3-4"><span class="nav-number">1.</span> <span class="nav-text">宣布 Dart 3.4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebAssembly-%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.</span> <span class="nav-text">WebAssembly 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%AE%8F%EF%BC%9A%E6%8F%90%E5%8D%87%E9%96%8B%E7%99%BC%E6%8A%BD%E8%B1%A1%E5%B1%A4%E7%B4%9A"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 宏：提升開發抽象層級</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%B7%E6%9C%9F%E5%AE%8F%E7%9B%AE%E6%A8%99"><span class="nav-number">1.3.</span> <span class="nav-text">長期宏目標</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%94%B9%E9%80%B2"><span class="nav-number">1.4.</span> <span class="nav-text">其他改進</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-3-4"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 3.4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebAssembly-%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.</span> <span class="nav-text">WebAssembly 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%B7%A8%E9%9B%86%EF%BC%9A%E6%8F%90%E5%8D%87%E9%96%8B%E7%99%BC%E6%8A%BD%E8%B1%A1%E5%B1%A4%E7%B4%9A"><span class="nav-number">1.2.</span> <span class="nav-text">Dart 巨集：提升開發抽象層級</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%B7%E6%9C%9F%E5%B7%A8%E9%9B%86%E7%9B%AE%E6%A8%99"><span class="nav-number">1.3.</span> <span class="nav-text">長期巨集目標</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%94%B9%E9%80%B2"><span class="nav-number">1.4.</span> <span class="nav-text">其他改進</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -363,7 +362,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">242</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -372,7 +371,7 @@
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">188</span>
+        <span class="site-state-item-count">239</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
