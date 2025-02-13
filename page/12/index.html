@@ -146,6 +146,440 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6a45274c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/6a45274c.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing the Flutter Puzzle Hack!</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 20:17:06" itemprop="dateCreated datePublished" datetime="2022-01-06T20:17:06+08:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-Flutter-Puzzle-Hack！"><a href="#宣布-Flutter-Puzzle-Hack！" class="headerlink" title="宣布 Flutter Puzzle Hack！"></a>宣布 Flutter Puzzle Hack！</h2><figure>
+<img alt="The Flutter Puzzle Hack logo" src="https://cdn-images-1.medium.com/max/1024/1*RpaR1pTpRa0PUdNdfv4njA.png" />
+<figcaption>Flutter Puzzle Hack 標誌</figcaption>
+</figure>
+
+<p>準備好拋開節日塵埃，嘗試一個有趣的程式設計專案，測試您對 Flutter 的知識嗎？我們很高興宣布 Flutter Puzzle Hack，這是我們最新的挑戰，看看您能用 Flutter 做出什麼，以及贏得超過 50,000 美元獎金的機會。我們請您開發出最具創意但可解的滑動拼圖，目標是網頁上的 Flutter。無論您是創造出新的設計、從頭開始重建拼圖，還是以新的有趣方式整合套件，我們都希望看到您能將想像力發揮到什麼程度。</p>
+<p>為了讓您開始，我們編寫了範例程式碼，它處理所有拼圖邏輯。我們還整理了大量其他文件和資源來幫助您建立引人入勝的提交，因此無論您是經驗豐富的 Flutter 開發人員，還是您只是在閱讀 Flutter Apprentice 後加入 Flutter 社群，這裡都有適合您的東西！</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*fzoYmZlFqBLxkXuCDM6IEw.png" />
+</figure>
+
+<p>請務必在 Twitter 上分享您的解決方案，並使用標籤 #flutterpuzzlehack 標記，以便有機會在我們的 Twitter 帳戶上獲得展示！</p>
+<h3 id="詳細資訊"><a href="#詳細資訊" class="headerlink" title="詳細資訊"></a>詳細資訊</h3><p><strong>日期：</strong> <em>所有專案必須在 2022 年 2 月 28 日下午 1:59 PT (GMT -7) 之前提交。獲獎者將於 2022 年 3 月 23 日公布。</em></p>
+<p><strong>如何提交：</strong> <em>可以在 <a href="https://flutterhack.devpost.com/">DevPost</a> 找到註冊和提交參賽作品的說明。</em></p>
+<p><strong>類別：</strong> <em>獲獎者將在以下類別中選出：</em></p>
+<ul>
+<li><em>整體執行</em></li>
+<li><em>最佳動畫和設計使用</em></li>
+<li><em>創意</em></li>
+<li><em>最佳跨平台解決方案</em></li>
+<li><em>社群選擇</em></li>
+</ul>
+<p><em>我們還將頒發獎品給提交具有對 Flutter 社群有幫助的內容以及提交高品質 Flutter 團隊回饋的提交。</em></p>
+<p><strong>獎品</strong> <em>包括一台功能齊全的 Macbook Pro、現金、Flutter 周邊商品以及在 Flutter 推廣渠道上獲得展示的機會。</em></p>
+<h3 id="產品資訊會議"><a href="#產品資訊會議" class="headerlink" title="產品資訊會議"></a>產品資訊會議</h3><p>除了所有這些資源之外，我們還與 Flutter Community YouTube 頻道合作，邀請 Google Chrome、Firebase 和 Rive 等團隊來分享從網頁構建最佳實務到有效使用整合以將您的專案提升到新水平的內容。查看 <a href="https://flutterhack.devpost.com/">競賽頁面</a> 以獲取詳細的時程表。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fue2qa2L5CF4%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Due2qa2L5CF4&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fue2qa2L5CF4%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/6e2f470328c32ae25644d8b82750ccce/href">https://medium.com/media/6e2f470328c32ae25644d8b82750ccce/href</a></iframe>
+
+<h3 id="保持聯繫"><a href="#保持聯繫" class="headerlink" title="保持聯繫"></a>保持聯繫</h3><p>我們與 DevPost 的朋友合作進行此挑戰，這意味著您可以在 DevPost 平台上為您最喜歡的提交作品投票、與其他參與者建立聯繫並找到所有相關的競賽更新。</p>
+<p>前往 <a href="https://flutterhack.devpost.com/">flutterhack.devpost.com</a> 開始。祝您好運，玩得開心！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=ffc74fda6d44" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-the-flutter-puzzle-hack-ffc74fda6d44">宣布 Flutter Puzzle Hack！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/898be70a.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/898be70a.html" class="post-title-link" itemprop="url">【文章翻譯】What’s New in Flutter 2.8</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-09 01:00:33" itemprop="dateCreated datePublished" datetime="2021-12-09T01:00:33+08:00">2021-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Flutter-2-8-的新功能"><a href="#Flutter-2-8-的新功能" class="headerlink" title="Flutter 2.8 的新功能"></a>Flutter 2.8 的新功能</h2><p>北半球的季節變換，樹葉變色，氣溫下降，今年的最後一個穩定版本也到來了。歡迎來到 Flutter 2.8！這個版本代表了 207 位貢獻者和 178 位審查者的辛勤工作，共產生了 2,424 個合併的 PR 和 2976 個已關閉的議題。特別感謝本次版本的主要社群貢獻者 Bartosz Selwesiuk，他是 Very Good Ventures 的 Flutter 工程師，他貢獻了 23 個 PR，其中大部分都與 Web 平台的相機功能相關。</p>
+<p>所有這些共同努力導致了引擎和 Flutter DevTools 的顯著性能提升，為 Flutter 提供了穩定的 Google Mobile Ads SDK 版本，加入了一系列新的 Firebase 功能和改進，更新了 WebView 3.0，推出了一批新的 Flutter Favorite 套件，對桌面平台進行了大量更新，為穩定版本發佈鋪平了道路，以及推出了支援更多套件（包括 Firebase 自身）的 DartPad 新版本。這可能是今年最後一個版本，但絕對不是最不重要的。讓我們一起來看看吧！</p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>始終如一，Flutter 的首要任務是品質。我們花費大量時間確保 Flutter 在所有支援的設備上都能盡可能順暢且穩定地運行。</p>
+<h3 id="啟動"><a href="#啟動" class="headerlink" title="啟動"></a>啟動</h3><p>此版本包含對應用程式啟動延遲的改進。我們使用 Google Pay（一個大型、流行的應用程式，擁有超過 100 萬行代碼）來測試這些改進，以確保這些更改可以對現實世界的應用程式產生可感知的影響。總體而言，這些改進導致 Google Pay 在低端 Android 設備上的啟動延遲降低了 50%，在高端設備上則降低了 10%。</p>
+<p>Flutter 影響 Dart VM 垃圾回收策略的方式的改進，現在可以幫助在應用程式啟動過程中避免不合時宜的 GC 循環。例如，在 Android 上渲染第一個畫面之前，Flutter 現在 <a href="https://github.com/flutter/flutter/issues/90551">僅在 TRIM_LEVEL_RUNNING_CRITICAL 及以上時通知 Dart VM 記憶體壓力</a>。在本地測試中，此更改將低端設備上的第一個畫面渲染時間最多縮短了 300 毫秒。</p>
+<p>出於 <a href="https://github.com/flutter/engine/pull/29145#pullrequestreview-778935616">謹慎</a>，在之前的版本中，Flutter 在建立平台視圖時會阻塞平台執行緒。<a href="https://github.com/flutter/flutter/issues/91711">仔細的推理和測試</a> 確定可以移除一些序列化操作，這在低端設備上啟動 Google Pay 時，可以移除超過 100 毫秒的阻塞。</p>
+<p>先前，建立預設字體管理器會在建立第一個 Dart 隔離區時引入人工延遲。<a href="https://github.com/flutter/engine/pull/29291">將預設字體管理器建立延遲到與 Dart 隔離區建立同時執行</a> 既改進了啟動延遲，又使上述優化的效果更加明顯，因為這是主要的瓶頸。</p>
+<h3 id="記憶體"><a href="#記憶體" class="headerlink" title="記憶體"></a>記憶體</h3><p>在記憶體受限設備上運行的 Flutter 開發者 <a href="https://github.com/flutter/flutter/issues/91382">遇到過問題</a>，因為 Flutter 會急切地載入 Dart VM 的「服務隔離區」，而其 AOT 程式碼與應用程式捆綁在一起，導致 Flutter 同時將兩者讀取到記憶體中。在 2.8 版本的 Android 中，Dart VM 的服務隔離區 <a href="https://github.com/flutter/engine/pull/29245">被拆分到自己的捆綁包中</a>，可以單獨載入，這將記憶體節約了 40 MB，直到需要服務隔離區為止。<a href="https://github.com/flutter/flutter/issues/92120">Dart VM 通知作業系統</a> 記憶體中由 AOT 程式使用的頁面由一個可能不需要再次讀取的檔案備份，從而進一步將記憶體佔用降低了 10%。因此，先前保存檔案備份資料副本的頁面可以被回收，並用於其他用途。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>有時開發人員希望查看 Flutter 的性能追蹤資料以及 Android 原生追蹤事件。此外，他們通常希望即使在發佈模式下也能查看追蹤事件，以便更好地理解已部署應用程式中的性能問題。為了實現這個目標，<a href="https://github.com/flutter/engine/pull/28903">2.8 版本的穩定版本</a> 現在會將追蹤事件發送到 Android systrace 記錄器（如果在應用程式啟動時啟用），即使 Flutter 應用程式是在發佈模式下構建的，這些事件也會被發送。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*eAFKwrcfLHlqKk6ng677pw.png" />
+<figcaption>Flutter 追蹤事件現在顯示在 Android systrace 記錄工具中（底部）</figcaption>
+</figure>
+
+<p>此外，為了幫助創建更少的卡頓動畫，一些開發者希望 <a href="https://github.com/flutter/flutter/issues/92286">在性能追蹤中獲取更多有關柵格快取行為的資訊</a>，柵格快取允許 Flutter 複製昂貴且重複使用的圖片，而不是在每個畫面都重新繪製。<a href="https://github.com/flutter/flutter/issues/92286">性能追蹤中的全新流程事件</a> 現在允許您追蹤柵格快取圖片的生命週期。</p>
+<h3 id="Flutter-DevTools"><a href="#Flutter-DevTools" class="headerlink" title="Flutter DevTools"></a>Flutter DevTools</h3><p>為了除錯性能問題，此版本的 DevTools 加入了一個 <a href="https://github.com/flutter/devtools/pull/3451">全新的「增強追蹤」功能</a>，以幫助您診斷由昂貴的構建、佈局和繪製操作造成的 UI 卡頓。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/629/0*QXiOV7Bm7wlP9gI-" />
+</figure>
+
+<p>當任何這些追蹤功能啟用時，時間線會包含新的事件，用於構建 Widget、佈局渲染物件以及繪製渲染物件（如適用）。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ltUPM1ji3asrgDOw" />
+</figure>
+
+<p>此外，此版本的 DevTools 加入了一個 <a href="https://github.com/flutter/devtools/pull/3357">新的功能，用於分析應用程式啟動的性能</a>。這個分析包含從 Dart VM 初始化到渲染第一個 Flutter 畫面之間的 CPU 樣本。在您按下「分析應用程式啟動」按鈕並載入應用程式啟動分析後，您會看到選擇了「AppStartUp」使用者標籤用於分析。您也可以在可用的使用者標籤列表中選擇此使用者標籤過濾器（如果存在），從而載入應用程式啟動分析。選擇此標籤會顯示應用程式啟動的分析資料。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*xpb0al6JT1AdKUjO" />
+</figure>
+
+<h3 id="Web-平台視圖"><a href="#Web-平台視圖" class="headerlink" title="Web 平台視圖"></a>Web 平台視圖</h3><p>Android 和 iOS 並不是唯一獲得性能提升的平台。此版本還改進了 Flutter Web 的平台視圖性能。如果您不熟悉平台視圖，它們是 Flutter 允許您在應用程式中託管來自底層平台的原生 UI 組件的方式。Flutter Web 使用 <a href="https://api.flutter.dev/flutter/widgets/HtmlElementView-class.html">HtmlElementView</a> Widget 實作此功能，它允許您在 Flutter Web 應用程式中託管 HTML 元素。如果您使用的是 <code>google_maps_flutter</code> 或 <code>video_player</code> Plugin 的 Web 版本，或者您遵循 Flutter 團隊關於如何優化 <a href="https://docs.flutter.dev/development/platform-integration/web-images#use-img-in-a-platform-view">在 Web 上顯示圖片</a> 的建議，那麼您就在使用平台視圖。</p>
+<p>在之前的 Flutter 版本中，嵌入平台視圖會立即創建一個新的畫布，每個額外的平台視圖會再增加一個畫布。額外的畫布成本很高，因為每個畫布的大小都是整個視窗的大小。此版本 <a href="https://github.com/flutter/engine/pull/28087">重新使用為先前平台視圖創建的畫布</a>，因此您不會在每秒鐘都產生 60 次成本，而只會在應用程式整個生命週期中產生一次成本。這意味著您可以在 Web 應用程式中擁有多個 <code>HtmlElementView</code> 實例，而不會降低性能，同時也能在使用平台視圖時減少捲軸卡頓。</p>
+<h3 id="生態系統"><a href="#生態系統" class="headerlink" title="生態系統"></a>生態系統</h3><p>Flutter 不僅僅是框架、引擎和工具，它還有超過 20,000 個與 Flutter 相容的套件和 Plugin 在 pub.dev 上，而且每天還有更多套件被加入。Flutter 開發人員每天都會與大量生態系統中的套件互動，因此讓我們看看自上次版本發佈以來 Flutter 生態系統中發生了什麼。</p>
+<h3 id="Flutter-Ads-正式發佈"><a href="#Flutter-Ads-正式發佈" class="headerlink" title="Flutter Ads 正式發佈"></a>Flutter Ads 正式發佈</h3><p>最重要的是 <a href="https://medium.com/flutter/announcing-general-availability-for-the-google-mobile-ads-sdk-for-flutter-574e51ea6783">Google Mobile SDK for Flutter 正式發佈</a>，這是在 11 月發生的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hRLh9gi5n3E82lXG" />
+</figure>
+
+<p>此版本支援 5 種廣告格式，整合了 AdMob 和 Ad Manager 支援，並包含了一個新的中介功能的測試版本，以幫助您優化廣告性能。有關將 Google Ads 整合到 Flutter 應用程式以及其他變現選項的更多資訊，請 <a href="https://flutter.dev/monetization">查看 flutter.dev 上新的變現頁面</a>。</p>
+<h3 id="WebView-3-0"><a href="#WebView-3-0" class="headerlink" title="WebView 3.0"></a>WebView 3.0</h3><p>Flutter 此次另一個新的版本是 <a href="https://pub.dev/packages/webview_flutter">webview_flutter Plugin</a> 的 3.0 版本。我們提升了版本號碼，因為加入了許多新功能，還因為 Android 上 Web 視圖工作方式的潛在重大變更。在之前的 webview_flutter 版本中，混合合成模式已經可用，但不是預設模式。混合合成修復了先前預設虛擬顯示模式的許多問題。根據使用者回饋和議題追蹤，我們認為混合合成是時候成為預設模式了。此外，webview_flutter 還加入了一些廣受歡迎的功能：</p>
+<ul>
+<li>支援 POST 和 GET 來填充內容 (<a href="https://github.com/flutter/plugins/pull/4450">4450</a>，<a href="https://github.com/flutter/plugins/pull/4479">4479</a>，<a href="https://github.com/flutter/plugins/pull/4480">4480</a>，<a href="https://github.com/flutter/plugins/pull/4573">4573</a>)</li>
+<li>從檔案和字串載入 HTML (<a href="https://github.com/flutter/plugins/pull/4446">4446</a>，<a href="https://github.com/flutter/plugins/pull/4486">4486</a>，<a href="https://github.com/flutter/plugins/pull/4544">4544</a>，<a href="https://github.com/flutter/plugins/pull/4558">4558</a>)</li>
+<li>透明背景支援 (<a href="https://github.com/flutter/plugins/pull/3431">3431</a>，<a href="https://github.com/flutter/plugins/pull/4569">4569</a>，<a href="https://github.com/flutter/plugins/pull/4570">4570</a>)</li>
+<li>在載入內容之前寫入 cookie (<a href="https://github.com/flutter/plugins/pull/4555">4555</a>，<a href="https://github.com/flutter/plugins/pull/4556">4556</a>，<a href="https://github.com/flutter/plugins/pull/4557">4557</a>)</li>
+</ul>
+<p>此外，在 3.0 版本中，webview_flutter 為一個新的平台提供了初步支援：Web。我們已經有很多開發者詢問是否能夠在 Flutter Web 應用程式中託管 Web 視圖，這允許您從單個程式碼庫中為行動設備或 Web 構建應用程式。在 Flutter Web 應用程式中託管 Web 視圖是什麼樣子的呢？從程式碼的角度來看，它看起來完全一樣：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/032e4e78697ff2f08bafd1b01be0931a/href">https://medium.com/media/032e4e78697ff2f08bafd1b01be0931a/href</a></iframe>
+
+<p>在 Web 上運行時，它按預期工作：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/640/0*4T03yBAog-6unwc8" />
+</figure>
+
+<p>請注意，目前 webview_flutter 的 Web 實作有一些限制，因為它是使用 iframe 構建的，iframe 只支援簡單的 URL 載入，而且無法控制或與載入的內容互動（有關更多資訊，請查看 <a href="https://pub.dev/packages/webview_flutter_web">webview_flutter_web README</a>）。但是，我們正在根據大眾的需求將 webview_flutter_web 作為 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages#endorsed-federated-plugin">未經認證的 Plugin</a> 提供。如果您想嘗試一下，請將以下行添加到您的 <code>pubspec.yaml</code> 文件中：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/6e2ab63403aefc4835f711191e24e886/href">https://medium.com/media/6e2ab63403aefc4835f711191e24e886/href</a></iframe>
+
+<p>如果您對 Web 或其他平台的 webview_flutter v3.0 有任何回饋，請 <a href="https://github.com/flutter/flutter/issues">在 Flutter 儲存庫中將其記錄為 Web 視圖議題</a>。此外，如果您之前沒有使用過 Web 視圖，或者您想複習一下，請查看 <a href="https://codelabs.developers.google.com/codelabs/flutter-webview">新的 Web 視圖 Codelab</a>，它會逐步引導您完成在 Flutter 應用程式中託管 Web 內容的過程。</p>
+<h3 id="Flutter-Favorites"><a href="#Flutter-Favorites" class="headerlink" title="Flutter Favorites"></a>Flutter Favorites</h3><p><a href="https://docs.flutter.dev/development/packages-and-plugins/favorites#flutter-ecosystem--committee">Flutter 生態系統委員會</a> 再次開會，指定以下套件為 Flutter Favorite 套件：</p>
+<ul>
+<li>三個針對新的 Router API 的自訂路由套件： <a href="https://pub.dev/packages/beamer">beamer</a>，<a href="https://pub.dev/packages/routemaster">routemaster</a> 和 <a href="https://pub.dev/packages/go_router">go_router</a></li>
+<li><a href="https://pub.dev/packages/drift">drift</a>，一個已經非常強大且流行的 Flutter 和 Dart 反應式持久化函式庫的重命名版本，建立在 <a href="https://pub.dev/packages/sqlite3">sqlite</a> 的基礎上</li>
+<li><a href="https://pub.dev/packages/freezed">freezed</a>，一個 Dart 語言補丁，用於提供一個簡單的語法來定義模型、複製物件、模式匹配等等</li>
+<li><a href="https://pub.dev/packages/dart_code_metrics">dart_code_metrics</a></li>
+<li>以及幾個外觀很棒的 GUI 套件： <a href="https://pub.dev/packages/flex_color_scheme">flex_color_scheme</a>，<a href="https://pub.dev/packages/flutter_svg">flutter_svg</a>，<a href="https://pub.dev/packages/feedback">feedback</a>，<a href="https://pub.dev/packages/toggle_switch">toggle_switch</a> 和 <a href="https://pub.dev/packages/auto_size_text">auto_size_text</a></li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1000/0*raIVwhHpVh0ON5ha" />
+<figcaption>Flexfold 應用程式使用 flex_color_scheme 構建</figcaption>
+</figure>
+
+<p>恭喜這些套件作者，感謝您透過辛勤工作支援 Flutter 社群。如果您有興趣提名您最喜歡的 Flutter 套件參加 Flutter Favorite 獎項，請遵循 <a href="https://docs.flutter.dev/development/packages-and-plugins/favorites">Flutter Favorite 程式頁面</a> 上的指南和說明。</p>
+<h3 id="平台特定套件"><a href="#平台特定套件" class="headerlink" title="平台特定套件"></a>平台特定套件</h3><p>如果您是套件作者，您必須做出的一個決定是您將支援哪些平台。如果您要構建一個包含平台特定原生程式碼的 Plugin，您可以 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages#plugin-platforms">使用專案 <code>pubspec.yaml</code> 文件中的 <code>pluginClass</code> 屬性</a> 來做到這一點，它指示提供功能的原生類別：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/5155d142980a0e7b40eef107f5e802d5/href">https://medium.com/media/5155d142980a0e7b40eef107f5e802d5/href</a></iframe>
+
+<p>但是，隨著 <a href="https://dart.dev/guides/libraries/c-interop">Dart FFI</a> 的日益成熟，您可以在 100% 的 Dart 代碼中實作平台特定功能，就像 <a href="https://pub.dev/packages/path_provider_windows">path_provider_windows 套件</a> 一樣。當您沒有任何原生類別可以使用，但仍然希望將您的套件指定為只支援某些平台時，請改用 <code>dartPluginClass</code> 屬性：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ee970a6541a54bac4d023d803fdded38/href">https://medium.com/media/ee970a6541a54bac4d023d803fdded38/href</a></iframe>
+
+<p>此設定到位後，即使您沒有任何原生程式碼，您也會將您的套件指定為只支援某些平台。您還必須提供 Dart Plugin 類別；在 <a href="https://docs.flutter.dev/development/packages-and-plugins/developing-packages#dart-only-platform-implementations">Flutter.dev 上的 Dart-only 平台實作文件</a> 中了解更多資訊。</p>
+<h3 id="Firebase"><a href="#Firebase" class="headerlink" title="Firebase"></a>Firebase</h3><p>Flutter 生態系統的另一個重要組成部分是 FlutterFire，它被三分之二的 Flutter 應用程式使用。此版本加入了一組新的功能，可以更輕鬆地使用 Flutter 和 Firebase 構建應用程式：</p>
+<ul>
+<li>所有 FlutterFire Plugin 都從測試版本升級到穩定版本</li>
+<li>DartPad 中對多個 Firebase 服務的新支援</li>
+<li>更方便地為認證和實時 Firestore 查詢構建 UI 的新函式庫</li>
+<li>可在 Alpha 版本中使用的 Flutter 的全新 Firestore 物件&#x2F;文件映射</li>
+</ul>
+<h3 id="生產品質"><a href="#生產品質" class="headerlink" title="生產品質"></a>生產品質</h3><p><a href="http://firebase.flutter.dev/">FlutterFire Plugin</a> 已經（幾乎）全部從測試版本轉移到穩定品質。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/984/0*0BHU6qlHwKUxPrXb" />
+</figure>
+
+<p>轉移到 Android、iOS 和 Web 穩定版本的 Plugin 包括 <a href="https://firebase.flutter.dev/docs/analytics/overview">Analytics</a>，<a href="https://firebase.flutter.dev/docs/dynamic-links/overview">Dynamic Links</a>，<a href="https://firebase.flutter.dev/docs/in-app-messaging/overview">In-App Messaging</a>，<a href="https://firebase.flutter.dev/docs/performance/overview">Performance Monitoring</a>，<a href="https://firebase.flutter.dev/docs/database/overview">Realtime Database</a>，<a href="https://firebase.flutter.dev/docs/remote-config/overview">Remote Config</a> 以及新加入的 <a href="https://firebase.flutter.dev/docs/installations/overview">Installations</a>。App Check Plugin 和 macOS 平台支援仍然處於測試階段，因為 Firebase 函式庫本身也處於測試階段。如果您擔心是否要選擇 Realtime Database、Analytics 或 Remote Config，因為 FlutterFire 函式庫還沒有準備好投入生產環境，那麼現在可以不用再擔心了。這些現在都是支援生產環境的完整 Plugin。</p>
+<h3 id="Dart-only-Firebase-初始化"><a href="#Dart-only-Firebase-初始化" class="headerlink" title="Dart-only Firebase 初始化"></a>Dart-only Firebase 初始化</h3><p>隨著套件的轉移到生產品質，我們加入了 <a href="https://github.com/FirebaseExtended/flutterfire/pull/6549">從 Dart 初始化任何支援平台上的 Firebase</a> 的功能：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/23b53b28bc75a8440665446978c2a7ea/href">https://medium.com/media/23b53b28bc75a8440665446978c2a7ea/href</a></iframe>
+
+<p>此程式碼使用每個支援平台的適當選項來初始化 Firebase 應用程式，如 <code>firebase_options.dart</code> 文件中所定義，該文件包含每個平台的資料結構，如下所示：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/f8b48d6f8a8a81f7e150e39e17228bbf/href">https://medium.com/media/f8b48d6f8a8a81f7e150e39e17228bbf/href</a></iframe>
+
+<p>若要收集每個平台的初始化選項資料結構的資料，請查看 <a href="https://pub.dev/packages/flutterfire_cli">新的 flutterfire CLI 工具</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*69rsgRC_hcraKOAK" />
+</figure>
+
+<p>此工具會深入您的平台特定子資料夾中的資料，以找到唯一的捆綁 ID，然後使用該 ID 來查詢與您的匹配平台特定應用程式相符的 Firebase 專案的特定詳細資訊，甚至在沒有任何專案或應用程式的</p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/76279cee.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/76279cee.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 2.15</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-12-08 18:00:39" itemprop="dateCreated datePublished" datetime="2021-12-08T18:00:39+08:00">2021-12-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-15"><a href="#宣佈-Dart-2-15" class="headerlink" title="宣佈 Dart 2.15"></a>宣佈 Dart 2.15</h2><p>今天，我們發佈了 Dart SDK 的 2.15 版本，它具有使用 worker isolates 的快速併發、一個新的構造函數 tear-off 語言功能、dart:core 函式庫中改進的列舉支援、套件發佈者的新功能等等。</p>
+<figure>
+<img alt="Graphic listing new 2.15 features" src="https://cdn-images-1.medium.com/max/1024/1*96RfgLO4RYR2ReAs8t6x5w.png" />
+</figure>
+
+<h3 id="使用-worker-isolates-的快速併發"><a href="#使用-worker-isolates-的快速併發" class="headerlink" title="使用 worker isolates 的快速併發"></a>使用 worker isolates 的快速併發</h3><p>幾乎所有現代設備都具有多核心的 CPU，能夠並行運行多個任務。對於大多數 Dart 程式而言，這些核心的使用方式對開發人員來說是透明的：Dart 運行時系統預設在單核上運行所有 Dart 程式碼，但會使用其他核心來執行系統級任務，例如異步輸入&#x2F;輸出，例如寫入檔案或進行網路呼叫。</p>
+<p>但是您的 Dart 程式碼本身可能需要並行運行。例如，您可能有一個連續的動畫和一個長時間運行的任務，例如解析一個大型 JSON 檔案。如果額外任務花費的時間太長，則可能會導致 UI 中出現卡頓或延遲。透過將這些額外任務移動到單獨的核心，動畫可以繼續在主執行緒上運行，而不會中斷。</p>
+<p>Dart 的併發模型基於 <a href="https://dart.dev/guides/language/concurrency">isolates</a>——彼此隔離的獨立執行單元——以防止與共用記憶體相關的一大類併發程式設計錯誤，例如 <a href="https://zh.wikipedia.org/wiki/%E7%AB%B6%E4%BA%89%E6%A2%B3%E7%82%B9#%E5%9C%A8%E8%BD%AF%E4%BB%B6%E4%B8%AD">資料競爭等競爭條件</a>。Dart 透過不允許在 isolates 之間共用任何可變物件來防止這些錯誤，而是使用 isolates 使用 <a href="https://dart.dev/guides/language/concurrency#sending-multiple-messages-between-isolates">訊息傳遞</a> 交換狀態的模型。在 Dart 2.15 中，我們對 isolates 進行了許多重大增強。</p>
+<p>我們首先重新設計和重新實作了 isolates 的工作方式，引入了一個新概念：<em>isolate 群組</em>。isolate 群組中的 isolates 共用代表正在運行程式的各種內部資料結構。這使得群組中的個別 isolates 的成本要低得多。現在，在現有的 isolate 群組中啟動額外的 isolate 的速度要快 100 倍以上，因為我們不需要初始化程式結構，而且這些產生的 isolates 消耗的記憶體減少了 10-100 倍。</p>
+<p>雖然 isolate 群組仍然可以防止在 isolates 之間共用可變物件，但該群組是使用共用堆實作的，這解鎖了更多功能。我們可以將物件從一個 isolate 傳遞到另一個 isolate，這可以用於執行返回大量記憶體的任務的 worker isolates。例如，一個 worker isolate 進行網路呼叫以獲取資料，將該資料解析為一個大型 JSON 物件圖，然後將該 JSON 圖返回給主 isolate。在 Dart 2.15 之前，該結果需要進行深度複製，如果複製花費的時間超過畫面預算，則本身可能會導致 UI 卡頓。</p>
+<p>在 2.15 中，worker isolate 可以呼叫 <a href="https://api.dart.dev/stable/2.15.0/dart-isolate/Isolate/exit.html">Isolate.exit()</a>，將其結果作為參數傳遞。然後，Dart 運行時將包含結果的記憶體從 worker isolate 傳遞到主 isolate，而無需複製，並且主 isolate 可以在恆定時間內接收結果。我們在 <a href="https://medium.com/flutter/whats-new-in-flutter-2-8-d085b763d181">Flutter 2.8</a> 中更新了 <a href="https://api.flutter.dev/flutter/foundation/compute-constant.html">compute()</a> 工具函數，以利用 <code>Isolate.exit()</code>。如果您已經在使用 <code>compute()</code>，那麼在升級到 Flutter 2.8 後，您將自動獲得這些效能提升。</p>
+<p>最後，我們重新設計了 isolate 訊息傳遞機制，使傳遞中小型的訊息的速度提高了大約 8 倍。傳送速度明顯加快，接收訊息幾乎總是在恆定時間內完成。我們還擴展了 isolates 可以相互傳送的物件類型，加入了對函數類型、閉包和堆疊追蹤物件的支援。有關詳細資訊，請參閱 <a href="https://api.dart.dev/stable/2.15.0/dart-isolate/SendPort/send.html">SendPort.send()</a> 的 API 文件。</p>
+<p>要了解有關如何使用 isolates 的更多資訊，請參閱我們為 2.15 加入的新的 <a href="https://dart.dev/guides/language/concurrency">Dart 中的併發</a> 文件。我們還有一些 <a href="https://github.com/dart-lang/samples/tree/master/isolates">程式碼範例</a> 供您查看。</p>
+<h3 id="新的語言功能：構造函數-tear-offs"><a href="#新的語言功能：構造函數-tear-offs" class="headerlink" title="新的語言功能：構造函數 tear-offs"></a>新的語言功能：構造函數 tear-offs</h3><p>在 Dart 中，您可以透過使用函數的名稱來建立一個指向另一個物件上的函數的函數物件。在以下範例中，<code>main()</code> 方法的第二行說明了當它將 <code>g</code> 設定為 <code>m.greet</code> 時的語法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Greeter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  Greeter(<span class="keyword">this</span>.name);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">void</span> greet(<span class="built_in">String</span> who) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;<span class="subst">$name</span> says: Hello <span class="subst">$who</span>!&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="keyword">final</span> m = Greeter(<span class="string">&#x27;Michael&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> g = m.greet; <span class="comment">// g 保存指向 m.greet 的函數指標。</span></span><br><span class="line">  g(<span class="string">&#x27;Leaf&#x27;</span>); <span class="comment">// 呼叫並列印 &quot;Michael says: Hello Leaf!&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這種函數指標——也稱為函數 <em>tear-offs</em> ——在使用 Dart 核心函式庫時經常出現。以下是一個透過傳遞函數指標來呼叫可迭代物件上的 <code>foreach()</code> 的範例：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> m = Greeter(<span class="string">&#x27;Michael&#x27;</span>);</span><br><span class="line"></span><br><span class="line">[<span class="string">&#x27;Lasse&#x27;</span>, <span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;Erik&#x27;</span>].forEach(m.greet);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 列印 &quot;Michael says: Hello Lasse!&quot;, &quot;Michael says: Hello Bob!&quot;,</span></span><br><span class="line"><span class="comment">// &quot;Michael says: Hello Erik!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>從歷史上看，我們不支援從構造函數建立 tear-offs（語言問題 <a href="https://github.com/dart-lang/language/issues/216">#216</a>）。這很煩人，因為在許多情況下——例如，在構建 Flutter UI 時——構造函數 tear-off 正是您需要的。從 Dart 2.15 開始，現在支援此語法。以下是一個透過呼叫 <code>.map()</code> 並將其傳遞給 <code>Text</code> 的構造函數的 tear-off 來構建包含三個 <code>Text</code> widget 的 <code>Column</code> widget 的範例。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FruitWidget</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Column(</span><br><span class="line">        children: [<span class="string">&#x27;Apple&#x27;</span>, <span class="string">&#x27;Orange&#x27;</span>].map(Text.<span class="keyword">new</span>).toList());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>Text.new</code> 指的是 <code>Text</code> 類別的預設構造函數。您也可以參考命名構造函數——例如，<code>.map(Text.rich)</code>。</p>
+<h3 id="相關的語言變更"><a href="#相關的語言變更" class="headerlink" title="相關的語言變更"></a>相關的語言變更</h3><p>在實作構造函數 tear-offs 的同時，我們藉此機會修復了對函數指標的現有支援中的一些不一致之處。您現在可以特化泛型方法來建立非泛型方法：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">T id&lt;T&gt;(T value) =&gt; value;</span><br><span class="line"><span class="keyword">var</span> intId = id&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能。</span></span><br><span class="line"><span class="built_in">int</span> <span class="built_in">Function</span>(<span class="built_in">int</span>) intId = id; <span class="comment">// 2.15 之前的解決方法。</span></span><br></pre></td></tr></table></figure>
+
+<p>您甚至可以特化泛型函數物件來建立非泛型函數物件：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fo = id; <span class="comment">// 撕掉 `id`，建立一個函數物件。</span></span><br><span class="line"><span class="keyword">const</span> c1 = fo&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能；之前是錯誤的。</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，我們清理了涉及泛型的類型文字：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> y = <span class="built_in">List</span>; <span class="comment">// 已經支援。</span></span><br><span class="line"><span class="keyword">var</span> z = <span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;; <span class="comment">// 2.15 中的新功能。</span></span><br><span class="line"><span class="keyword">var</span> z = typeOf&lt;<span class="built_in">List</span>&lt;<span class="built_in">int</span>&gt;&gt;(); <span class="comment">// 2.15 之前的解決方法。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="改進-dart-core-函式庫中的列舉"><a href="#改進-dart-core-函式庫中的列舉" class="headerlink" title="改進 dart:core 函式庫中的列舉"></a>改進 dart:core 函式庫中的列舉</h3><p>我們對 dart:core 函式庫中的列舉 API 進行了一些便利的補充（語言問題 <a href="https://github.com/dart-lang/language/issues/1511">#1511</a>）。您現在可以使用 <code>.name</code> 獲取每個列舉值的字串值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> MyEnum &#123;</span><br><span class="line">  one, two, three</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="built_in">print</span>(MyEnum.one.name);  <span class="comment">// 列印 &quot;one&quot;。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您也可以按名稱查詢列舉值：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(MyEnum.values.byName(<span class="string">&#x27;two&#x27;</span>) == MyEnum.two);  <span class="comment">// 列印 &quot;true&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>最後，您可以獲取所有名稱值對的映射：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> map = MyEnum.values.asNameMap();</span><br><span class="line"><span class="built_in">print</span>(map[<span class="string">&#x27;three&#x27;</span>] == MyEnum.three);  <span class="comment">// 列印 &quot;true&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>有關使用這些新 API 的範例，請參閱 <a href="https://github.com/flutter/flutter/pull/94496/files">此 Flutter PR</a>。</p>
+<h3 id="壓縮指標"><a href="#壓縮指標" class="headerlink" title="壓縮指標"></a>壓縮指標</h3><p>Dart 2.15 加入了對壓縮指標的支援，這是一種技術，如果只需要支援 32 位地址空間（最多 4 GB 記憶體），則 64 位 SDK 可以使用更節省空間的指標表示形式。壓縮指標會顯著減少記憶體；在我們使用 GPay 應用程式進行的內部測試中，我們發現 Dart 堆大小減少了大約 10%。</p>
+<p>由於壓縮指標意味著無法定址 4 GB 以上的任何可用 RAM，因此該功能位於 Dart SDK 中的一個設定選項之後，只有在構建 SDK 時，Dart SDK 的嵌入器才能切換該選項。Flutter SDK 版本 2.8 已為 Android 構建啟用此設定，Flutter 團隊正在考慮在未來的版本中 <a href="https://github.com/flutter/flutter/issues/94753">也為 iOS 構建啟用它</a>。</p>
+<h3 id="Dart-SDK-中包含的-Dart-DevTools"><a href="#Dart-SDK-中包含的-Dart-DevTools" class="headerlink" title="Dart SDK 中包含的 Dart DevTools"></a>Dart SDK 中包含的 Dart DevTools</h3><p><a href="https://dart.dev/tools/dart-devtools#">DevTools 套件</a> 的除錯和效能工具以前不在 Dart SDK 中；您必須單獨下載它。從 Dart 2.15 開始，您現在下載 Dart SDK 時就可以獲得 DevTools，而無需進一步的安裝步驟。有關將 DevTools 與 Dart 命令列應用程式一起使用的更多資訊，請參閱 <a href="https://dart.dev/tools/dart-devtools#using-devtools-with-a-command-line-app">DevTools 文件</a>。</p>
+<h3 id="套件發佈者的新-pub-功能"><a href="#套件發佈者的新-pub-功能" class="headerlink" title="套件發佈者的新 pub 功能"></a>套件發佈者的新 pub 功能</h3><p>Dart 2.15 SDK 在 dart pub 開發人員命令和 <a href="https://pub.dev/">pub.dev</a> 套件儲存庫中還有兩個新功能。</p>
+<p>首先，有一個針對套件發佈者的新安全功能。目的是檢測發佈者何時意外地將機密——例如雲端或 CI 憑證——發佈到 pub 套件中。在了解到在 GitHub 儲存庫中，每天都會 <a href="https://www.ndss-symposium.org/wp-content/uploads/2019/02/ndss2019_04B-3_Meli_paper.pdf">洩露數千個機密</a> 後，我們受到啟發加入了此洩露檢測功能。</p>
+<p>洩露檢測作為 dart pub publish 命令中運行的預發佈驗證的一部分運行。如果它在即將發佈的檔案中檢測到潛在的機密，則發佈命令將在不發佈的情況下退出，並列印如下輸出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Publishing my_package 1.0.0 to https://pub.dartlang.org:</span><br><span class="line">Package validation found the following errors:</span><br><span class="line">* line 1, column 1 of lib/key.pem: Potential leak of Private Key detected.</span><br><span class="line">╷</span><br><span class="line">1 │ ┌ - - -BEGIN PRIVATE KEY - - -</span><br><span class="line">2 │ │ H0M6xpM2q+53wmsN/eYLdgtjgBd3DBmHtPilCkiFICXyaA8z9LkJ</span><br><span class="line">3 │ └ - - -END PRIVATE KEY - - -</span><br><span class="line">╵</span><br><span class="line">* line 2, column 23 of lib/my_package.dart: Potential leak of Google OAuth Refresh Token detected.</span><br><span class="line">╷</span><br><span class="line">2 │ final refreshToken = &quot;1//042ys8uoFwZrkCgYIARAAGAQSNwF-L9IrXmFYE-sfKefSpoCnyqEcsHX97Y90KY-p8TPYPPnY2IPgRXdy0QeVw7URuF5u9oUeIF0&quot;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在極少數情況下，此檢測可能會出現誤報，將您實際上打算發佈的內容或檔案標記為潛在洩露。在這些情況下，您可以將檔案加入 <a href="https://dart.dev/go/false-secrets">允許清單</a>。</p>
+<p>其次，我們為發佈者加入了另一個功能，支援撤回已發佈的套件版本。當發佈了錯誤的套件版本時，我們通常建議發佈一個新的次要版本，以修復意外問題。在極少數情況下——例如，當您還沒有這樣的修復程式時，或者當您意外發佈了一個新的主要版本但打算發佈一個新的次要版本時——您可以使用新的 <a href="https://dart.dev/go/package-retraction">套件撤回功能</a> 作為最後的手段。此功能在 pub.dev 上的管理 UI 中提供：</p>
+<figure>
+<img alt="Screenshot of the package retraction UI" src="https://cdn-images-1.medium.com/max/1024/1*9KDYm1R4x6D4S-mzL-QE2g.png" />
+</figure>
+
+<p>當套件版本被撤回時，pub 用戶端在 pub get 或 pub upgrade 中不再解析到該版本。如果任何開發人員已經解析到撤回的版本（因此它在他們的 <code>pubspec.lock</code> 檔案中），他們下次運行 pub 時會看到一條警告：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub get</span><br><span class="line">Resolving dependencies…</span><br><span class="line">mypkg 0.0.181-buggy (retracted, 0.0.182-fixed available)</span><br><span class="line">Got dependencies!</span><br></pre></td></tr></table></figure>
+
+<h3 id="用於檢測雙向-Unicode-字元的安全分析-CVE-2021–22567"><a href="#用於檢測雙向-Unicode-字元的安全分析-CVE-2021–22567" class="headerlink" title="用於檢測雙向 Unicode 字元的安全分析 (CVE-2021–22567)"></a>用於檢測雙向 Unicode 字元的安全分析 (CVE-2021–22567)</h3><p>最近發現了一個涉及雙向 Unicode 字元的一般程式設計語言漏洞 (<a href="https://nvd.nist.gov/vuln/detail/CVE-2021-42574">CVE-2021–42574</a>)。此漏洞影響支援 Unicode 的大多數現代程式設計語言。以下 Dart 原始程式碼說明了該問題：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="keyword">final</span> accessLevel = <span class="string">&#x27;user&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (accessLevel == <span class="string">&#x27;user‮ .⁦// Check if admin⁩ ⁦&#x27;</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;You are a regular user.&#x27;</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;You are an admin.&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>您可能會認為這個程式會列印 *You are a regular user.*，但實際上它可能會列印 *You are an admin.*！透過使用包含雙向 Unicode 字元的字串，可以利用此漏洞。這些字元會將文字的方向從左到右更改為從右到左，然後再返回，所有這些都在同一行中。使用雙向字元時，文字在螢幕上的渲染方式可能與實際文字內容大不相同。您可以在 <a href="https://gist.github.com/mit-mit/7dda00ca6278ce7d2555f78d59d9e67b?h=1">此 GitHub 程式碼 gist</a> 中看到一個範例。</p>
+<p>針對此漏洞的緩解措施包括使用檢測雙向 Unicode 字元的工具（編輯器、程式碼審查工具等），以便開發人員可以意識到它們，並有意識地接受它們的使用。上面連結到的 GitHub gist 檔案檢視器就是一個顯示這些字元的工具的範例。</p>
+<p>Dart 2.15 引入了一個進一步的緩解措施（Dart 安全公告 <a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-8pcp-6qc9-rqmv">CVE-2021–22567</a>）：Dart 分析器現在會掃描雙向 Unicode 字元，並標記任何使用它們的情況：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ dart analyze</span><br><span class="line">Analyzing cvetest...                   2.6s</span><br><span class="line"></span><br><span class="line">info • bin/cvetest.dart:4:27 • The Unicode code point &#x27;U+202E&#x27;</span><br><span class="line">       changes the appearance of text from how it&#x27;s interpreted</span><br><span class="line">       by the compiler. Try removing the code point or using the</span><br><span class="line">       Unicode escape sequence &#x27;\u202E&#x27;. •</span><br><span class="line">       text_direction_code_point_in_literal</span><br></pre></td></tr></table></figure>
+
+<p>我們建議將這些字元替換為 Unicode 跳脫序列，以便它們在任何文字編輯器或檢視器中都可見。或者，如果您確實有合法使用這些字元的情況，您可以透過在使用前的行中加入覆蓋來禁用警告：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ignore: text_direction_code_point_in_literal</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="使用第三方-pub-伺服器時的-Pub-dev-憑證漏洞-CVE-2021–22568"><a href="#使用第三方-pub-伺服器時的-Pub-dev-憑證漏洞-CVE-2021–22568" class="headerlink" title="使用第三方 pub 伺服器時的 Pub.dev 憑證漏洞 (CVE-2021–22568)"></a>使用第三方 pub 伺服器時的 Pub.dev 憑證漏洞 (CVE-2021–22568)</h3><p>我們還發佈了第二個與 pub.dev 相關的 Dart 安全公告：<a href="https://github.com/dart-lang/sdk/security/advisories/GHSA-r32f-vhjp-qhj7">CVE-2021–22568</a>。此公告針對可能已將套件發佈到第三方 pub 套件伺服器（例如私人或公司內部套件伺服器）的套件發佈者。<strong>僅</strong>發佈到公共 pub.dev 儲存庫（標準設定）的開發人員<strong>不受</strong>此漏洞的影響。</p>
+<p>如果您已發佈到第三方儲存庫，則該漏洞是：提交給該第三方儲存庫進行身份驗證的 OAuth2 臨時（一小時）存取權杖可能會被濫用於對公共 pub.dev 儲存庫進行身份驗證。因此，惡意的第三方 pub 伺服器可能會使用存取權杖在 pub.dev 上冒充您並在那裡發佈套件。如果您已將套件發佈到不受信任的第三方套件儲存庫，請考慮審計您在 pub.dev 公共套件儲存庫上的所有帳戶活動。您可以使用 <a href="https://pub.dev/my-activity-log">pub.dev 活動日誌</a> 來完成此目的。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>我們希望您會喜歡 Dart 2.15 中的這些新功能，<a href="https://dart.dev/get-dart">今天即可使用</a>。這是我們今年的最後一個版本，我們想藉此機會感謝 Dart 生態系統。感謝所有出色的回饋，感謝您在我們不斷發展中提供的持續支援，感謝您在過去一年中透過在 <a href="https://pub.dev/">pub.dev</a> 上發佈數千個套件來擴展我們的生態系統。我們迫不及待地想在明年重新開始，我們為 2022 年計劃了很多令人興奮的事情。在此之前，祝您假期愉快！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7e7a598e508a" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-2-15-7e7a598e508a">宣佈 Dart 2.15</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/44737a81.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -427,7 +861,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-19 10:41:32" itemprop="dateModified" datetime="2024-12-19T10:41:32+08:00">2024-12-19</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -668,7 +1102,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-19 10:42:06" itemprop="dateModified" datetime="2024-12-19T10:42:06+08:00">2024-12-19</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -800,7 +1234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-20 02:15:56" itemprop="dateModified" datetime="2024-12-20T02:15:56+08:00">2024-12-20</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -964,378 +1398,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c03d62b9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/c03d62b9.html" class="post-title-link" itemprop="url">【文章翻譯】Introducing the Flutter Meetup Network!</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-10-01 16:01:12" itemprop="dateCreated datePublished" datetime="2021-10-01T16:01:12+08:00">2021-10-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="介紹-Flutter-Meetup-網絡！"><a href="#介紹-Flutter-Meetup-網絡！" class="headerlink" title="介紹 Flutter Meetup 網絡！"></a>介紹 Flutter Meetup 網絡！</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*4eNp-BypLrDgEwkyWbm2zw.png" />
-<figcaption>與其他 Flutter 愛好者聯手！</figcaption>
-</figure>
-
-<p>Flutter Meetup 網絡 (FMN) 是一個由對 Flutter 熱情的 Meetup 小組組成的國際網絡。FMN 計畫的使命是 <strong>透過賦予社群組織者權力，讓他們能夠透過引人入勝的活動來教育和啟發當地社群，從而培養一個蓬勃發展的全球 Flutter 開發人員社群。</strong></p>
-<p>Meetup（以及類似的開發人員社群）是極好的資源。隨著 Flutter 在過去幾年中越來越受歡迎，全球各地自發地出現了 100 多個 Meetup 小組，用來慶祝 Flutter 並教育其成員有關 Flutter 的知識。這些小組的志願者舉辦了 <em>許多</em> 棒的活動和研討會。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*v_2ToStDprKx9KEzZgA5Fw.png" />
-</figure>
-
-<p>我們 Flutter 團隊見證並感謝這些了不起的社群。💙 Flutter Meetup 網絡 (FMN) 現在將正式推出，以支援這些小組。網絡成員將能夠存取各種資源（更多詳細資訊即將推出！），讓規劃和主辦以 Flutter 為主題的活動變得更加容易。</p>
-<p>除了建立人脈之外，Meetup 還有許多其他優點。當您在目前的 Flutter 專案中遇到問題時，很有可能您可以在當地的 Flutter Meetup 中找到一位開發人員，他們已經解決了類似問題。或者，也許他們知道最適合您需求的套件。</p>
-<p>我們很高興支援我們了不起且熱情的組織者，並迫不及待地想看看 Flutter Meetup 網絡在未來會做些什麼。</p>
-<p><a href="https://www.meetup.com/pro/flutter">加入您附近的 Meetup！</a></p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f47f7ac728bc" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/introducing-the-flutter-meetup-network-f47f7ac728bc">介紹 Flutter Meetup 網絡！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4eaa459e.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/4eaa459e.html" class="post-title-link" itemprop="url">【文章翻譯】Supernova: a design system platform</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-30 20:38:27" itemprop="dateCreated datePublished" datetime="2021-09-30T20:38:27+08:00">2021-09-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 20:20:40" itemprop="dateModified" datetime="2024-09-30T20:20:40+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="早期採用者使用-Flutter-Web-應用程式開發的經驗"><a href="#早期採用者使用-Flutter-Web-應用程式開發的經驗" class="headerlink" title="早期採用者使用 Flutter Web 應用程式開發的經驗"></a>早期採用者使用 Flutter Web 應用程式開發的經驗</h2><p>兩年前，Flutter 宣布為準備使用 Flutter Web 支援進行開發的公司提供 <a href="https://medium.com/flutter/flutter-for-web-early-adopter-program-now-open-9f1fb146e4c4">早期採用者計劃</a>。今天，其中一家早期採用者 <a href="https://www.supernova.io/">Supernova</a>， 推出了其設計系統平台，該平台同時使用 Flutter 建立，並為 Flutter 輸出程式碼。</p>
-<p>我們認為 Supernova 是 Flutter 在 Web 上實現的體驗的一個很好的例子。我和 Supernova 的 CEO <a href="https://twitter.com/JiriTrecak">Jiří Třečák</a> 和 CTO <a href="https://twitter.com/ArtemUfimtcev">Artem Ufimtcev</a> 坐在一起，了解更多關於他們使用 Flutter Web 支援所構建的內容。</p>
-<h4 id="您如何向從未聽說過-Supernova-的人描述它？"><a href="#您如何向從未聽說過-Supernova-的人描述它？" class="headerlink" title="您如何向從未聽說過 Supernova 的人描述它？"></a>您如何向從未聽說過 Supernova 的人描述它？</h4><p>通常情況下，設計和開發團隊是分開的，從未真正共同合作；這是因為工具是專為其中一個團隊而設計的。因此，我們決定建立一個平台，讓設計師和開發人員可以走到一起，作為一個團隊共同合作。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*GOSImwOIA3oqItUMRmq5Kw.png" />
-</figure>
-
-<h4 id="告訴我更多關於-Supernova-概念背後的靈感。"><a href="#告訴我更多關於-Supernova-概念背後的靈感。" class="headerlink" title="告訴我更多關於 Supernova 概念背後的靈感。"></a>告訴我更多關於 Supernova 概念背後的靈感。</h4><p>這個概念源於在設計過程中需要一定程度的自動化，以減輕迭代工作流程的繁瑣。我們今天推出的工具可以自動將設計師建立的設計系統轉換為開發人員可以直接使用的程式碼形式。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*oqPmxo8kmisR_7oiZn06vQ.png" />
-<figcaption>Supernova，一個自動化設計流程的平台</figcaption>
-</figure>
-
-<h4 id="您能更詳細地說明使用者在此版本中可以期待的功能嗎？"><a href="#您能更詳細地說明使用者在此版本中可以期待的功能嗎？" class="headerlink" title="您能更詳細地說明使用者在此版本中可以期待的功能嗎？"></a>您能更詳細地說明使用者在此版本中可以期待的功能嗎？</h4><p>在此版本中，您可以將 Figma 設計導入 Supernova，管理樣式、素材或其他元件，然後將它們輸出為程式碼。我們建立了一個文件編輯器，讓您可以根據您的設計系統建立文件，最後，還建立了一個自動化引擎，可以在設計更改時自動更新您的文件和程式碼。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*YaZp-vdLHW17_b9ktY_4mQ.png" />
-<figcaption>Supernova 的文件編輯器</figcaption>
-</figure>
-
-<p>我們平台中的 <em>所有內容</em> 都是使用 Flutter 和 Dart 建立的。其中有很多複雜的邏輯，因此我們的應用程式比大多數應用程式更依賴于 Dart，Flutter 用於視覺化層。除了 Flutter 的 CanvasKit 渲染器之外，我們還擁有自己的 Skia 引擎，用於從 Figma 中的資料模型解析和渲染元件。</p>
-<h4 id="為什麼您選擇-Flutter-和-Dart-作為構建內容的不可或缺的一部分？"><a href="#為什麼您選擇-Flutter-和-Dart-作為構建內容的不可或缺的一部分？" class="headerlink" title="為什麼您選擇 Flutter 和 Dart 作為構建內容的不可或缺的一部分？"></a>為什麼您選擇 Flutter 和 Dart 作為構建內容的不可或缺的一部分？</h4><blockquote>我們選擇 Flutter 的主要原因是我們能夠按照自己的意愿改造平台。</blockquote>
-
-<p>最初，Supernova 是一個原生 macOS 應用程式，但我們看到了對基於 Web 的解決方案的濃厚興趣。Flutter 承諾使用一個程式碼庫部署到其他平台，這使得它成為一個有吸引力的選擇。我們知道我們最終希望有一個桌面應用程式，因為我們的工具非常依賴於計算，並且與典型的網站相比，它對效能的要求更高。</p>
-<p>我們選擇 Flutter 的主要原因是我們能夠按照自己的意愿改造平台。我們知道我們將擁有許多不常見的視覺操作，而不是使用 WebGL 從頭開始構建，Flutter 為我們提供了一種存取低層渲染引擎的方法，以便我們能夠以自己的方式構建它，使用經過良好測試的框架。</p>
-<p>儘管我們在早期遇到了一些困難，但由於 Flutter 提供的靈活性，我們認為做出了正確的決定。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*0vWG-4VTlJkHX_9z0nGNWg.png" />
-<figcaption>Supernova 不僅使用 Flutter 建立，還輸出 Flutter 程式碼</figcaption>
-</figure>
-
-<h4 id="因此，這並不總是順風順水。你能描述一下這些困難以及你在這過程中學到了什麼嗎？"><a href="#因此，這並不總是順風順水。你能描述一下這些困難以及你在這過程中學到了什麼嗎？" class="headerlink" title="因此，這並不總是順風順水。你能描述一下這些困難以及你在這過程中學到了什麼嗎？"></a>因此，這並不總是順風順水。你能描述一下這些困難以及你在這過程中學到了什麼嗎？</h4><p>我們在開發 Flutter Web 應用程式時遇到的第一個技術挑戰之一是路由問題。當 Router API 發佈時，我們立即重新設計了路由系統以採用它，這被證明對 Web 應用程式更有效。雖然它提供了更好的整合到瀏覽器歷史記錄中，但它對於巢狀路由來說過於複雜。因此，我們讓在頁面之間共享狀態控制器（在本例中是 MobX 儲存）成為可能，以模擬巢狀路由。這種方法使維護和實作變得更加簡單。</p>
-<p>我們學到的最主要的一點是 Dart 和 JavaScript 之間的互操作性對於 Web 應用程式的重要性。如果您還目標是 Flutter 支援的其他平台，那麼使用 Web 特定函式庫會有一些限制，但如果您的主要關注點是 Web 應用程式，那麼它可以節省大量時間。我們了解到，使用 JavaScript 函式庫和嵌入 HTML 可以彌補缺少 Web 支援的 Plugin。例如，我們使用這種方法來建立程式碼預覽 Widget，我們將其作為 HTML 嵌入，並使用 JavaScript 函式庫來進行語法高亮顯示。我認為，在建立 Flutter Web 應用程式時，熟悉 JavaScript 非常有幫助，同時還要了解 Dart&#x2F;JavaScript 互操作性和 HTML 嵌入的優點和限制。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Zo9xfW_VtnLJmaTYq5ZJyg.png" />
-<figcaption>使用 Dart/JavaScript 互操作性建立的程式碼預覽 Widget</figcaption>
-</figure>
-
-<p>我們還了解到，使用 Flutter 為 Web 應用程式優化效能與為 Flutter 支援的其他平台優化效能並沒有太大區别。在大多數情况下，可以使用兩種方法解决问题：</p>
-<ol>
-<li>將 Widget 重新建立定位到 Widget 樹的尽可能小的部分。使用 MobX 作為主要狀態管理系統意味著重新建立只會影響 UI 中必要的部分。</li>
-<li>使用带有按需子项构建器的列表。我们尽力在任何地方使用 ListView 构建器和 Sliver，以便我们只构建当前在屏幕上可见的部分。</li>
-</ol>
-<h4 id="尽管有困难，但-Flutter-是否帮助你克服了某些特定的技术挑战？"><a href="#尽管有困难，但-Flutter-是否帮助你克服了某些特定的技术挑战？" class="headerlink" title="尽管有困难，但 Flutter 是否帮助你克服了某些特定的技术挑战？"></a>尽管有困难，但 Flutter 是否帮助你克服了某些特定的技术挑战？</h4><p>透過 Flutter 使用 CanvasKit 渲染器比使用 WebGL 從頭開始撰寫著色器要愉快得多。CanvasKit 為我們提供了更多更高級别的渲染工具，讓我們可以專注於將 Figma 的非標準矢量模型轉換為與我們的 Skia 渲染引擎一起使用的細微差別。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*J7beI4HVjgoaD4JHk-JUyw.png" />
-</figure>
-
-<p>開發人員通常低估了字體管理的挑戰。在本例中，我們必須支援設計師可能使用的所有字體。由於 <a href="https://pub.dev/packages/google_fonts">google_fonts 套件</a> 可以自動從 Google 直接下載字體，Flutter 在這方面幫助很大。</p>
-<p>最後，Flutter 還允許我們共享驅動 Supernova 平台和我們建立的用於在 Figma 中運行的獨立 Plugin 的程式碼庫。雖然前端完全不同，但它們共享相同的資料模型和邏輯。</p>
-<h4 id="我很好奇，您如何看待使用-Flutter-在-Web-上的體驗與使用更傳統的框架相比？"><a href="#我很好奇，您如何看待使用-Flutter-在-Web-上的體驗與使用更傳統的框架相比？" class="headerlink" title="我很好奇，您如何看待使用 Flutter 在 Web 上的體驗與使用更傳統的框架相比？"></a>我很好奇，您如何看待使用 Flutter 在 Web 上的體驗與使用更傳統的框架相比？</h4><p>總體而言，有很多相似之处。Flutter 中的概念，例如它对 UI 的反应式方法、Widget、Flexbox 布局，甚至状态管理，都可以在许多现代 Web 框架中找到。</p>
-<p>然而，Flutter 有几方面不同。與其他 Web 框架不同，Flutter 不依賴於 HTML 或 CSS 來撰寫 UI 元件。相反，您必須了解哪些 Widget 存在，以及如何將它們組合在一起以實現與使用 CSS 才能實現的相同 UI。也就是说，Flutter 附带了对 Material 的开箱即用支持，因此如果您习惯了这种外观和感觉，它可以帮助您入门。</p>
-<blockquote>我发现 Dart 背后的理念大相径庭。</blockquote>
-
-<p>另一个重要区别是语言。虽然本质上 Dart 与 JavaScript 相似，但我发现 Dart 背后的理念大相径庭。在使用 Dart 编写代码一段时间后，您会发现它专为安全性、可预测性而设计。诸如健全的空安全之类的语言功能在 JavaScript 和与 JavaScript 兼容的语言世界中并不常见，我们发现它们对于使复杂应用程序稳定且可维护至关重要。另一个令我们惊喜的是 Dart 的注解处理和代码生成功能。</p>
-<h4 id="由于您是早期采用者，您觉得-Flutter-的-Web-支持有哪些改进？"><a href="#由于您是早期采用者，您觉得-Flutter-的-Web-支持有哪些改进？" class="headerlink" title="由于您是早期采用者，您觉得 Flutter 的 Web 支持有哪些改进？"></a>由于您是早期采用者，您觉得 Flutter 的 Web 支持有哪些改进？</h4><p>我們一直從第一個技術預覽版開始就在 Web 上使用 Flutter。在那時，Web 目標不支持使用瀏覽器歷史記錄的導航，效能很差，缺少很多 Widget 和 Plugin，工具和偵錯程式也不存在。</p>
-<p>現在有了穩定版本，我們在所有這些領域都看到了進步，並且對我們在 Web 上使用 Flutter 的決定充滿信心。如果您將技術預覽版與 Flutter 2.5 版本進行比較，您會發現效能有了實質性改进，特別是在渲染複雜佈局方面。</p>
-<p>也就是说，仍然有提高的空间！特别是，我们期待看到用于检查 CanvasKit 渲染 Widget 的更好的工具，因为今天的浏览器工具不支持它。</p>
-<h4 id="最后一个问题，如何开始使用-Supernova？"><a href="#最后一个问题，如何开始使用-Supernova？" class="headerlink" title="最后一个问题，如何开始使用 Supernova？"></a>最后一个问题，如何开始使用 Supernova？</h4><p>隨著今天的發佈，Supernova 現在對每個人都可用！要開始使用，請訪問 <a href="https://www.supernova.io/">supernova.io</a> 註冊並提供您 Figma 設計檔案的連結。然後，從那裡開始，基本而言，整個世界都向您敞開了。您可以立即開始為 Flutter（或任何其他框架）輸出程式碼，或獲取圖示的素材以開始撰寫文件。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*mtTv0oMcbsbStL_T9RSsZw.png" />
-<figcaption>Supernova 的元件管理器與 Figma 整合在一起</figcaption>
-</figure>
-
-<p>我們很高興看到 Flutter 的早期採用者在 Web 上推出產品。請務必親自查看！如果您正在使用 Flutter 在 Web 上進行開發，請告訴我們。一如既往，您可以在 Twitter 上找到我們 <a href="https://twitter.com/FlutterDev">FlutterDev</a>。我們迫不及待地想看看您創作了什麼！</p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9effe491.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/9effe491.html" class="post-title-link" itemprop="url">【文章翻譯】Flutter: What’s next on the Web?</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-09-14 19:31:45" itemprop="dateCreated datePublished" datetime="2021-09-14T19:31:45+08:00">2021-09-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 20:22:51" itemprop="dateModified" datetime="2024-09-30T20:22:51+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="我們對未來版本優先考慮事項，重點關注效能、開發者體驗和-Web-整合"><a href="#我們對未來版本優先考慮事項，重點關注效能、開發者體驗和-Web-整合" class="headerlink" title="我們對未來版本優先考慮事項，重點關注效能、開發者體驗和 Web 整合"></a>我們對未來版本優先考慮事項，重點關注效能、開發者體驗和 Web 整合</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*7iBUzC4UvwNi8agIsCrZ7w.png" />
-</figure>
-
-<p>Flutter 的 Web 支援在 2021 年 3 月 <a href="https://medium.com/flutter/flutter-web-support-hits-the-stable-milestone-d6b84e83b425">達到了穩定里程碑</a>。那麼接下來呢？</p>
-<p>根據我們的使用者研究，Web 是超過 10% Flutter 專案的目標。因此，我們現在的重點是提高初始穩定版本的品質，並讓更多人能夠將他們的 Flutter Web 應用程式部署到生產環境。</p>
-<p>我們根據 Flutter 季度調查的結果以及我們在問題、面對面討論和社交媒體上聽到的意見來確立這些優先事項。我們剛剛收到了第三季度調查的結果，我們很高興看到這個計畫符合您的回饋。</p>
-<p>本文將更詳細地介紹我們的路線圖以及為每個優先事項規劃的工作。某些功能可能跨越幾個季度，而其他功能則需要 [調查 (🔍)] 才能確定解決方案。</p>
-<h3 id="WEB-外觀和感覺"><a href="#WEB-外觀和感覺" class="headerlink" title="WEB 外觀和感覺"></a>WEB 外觀和感覺</h3><p>Flutter Web 應用程式在 Web 上感覺自然至關重要。這包括諸如捲軸行為、文字功能、啟動畫面、超連結、SEO 和其他 Web 特定的 UI 功能等功能。</p>
-<h4 id="RTL-文字"><a href="#RTL-文字" class="headerlink" title="RTL 文字"></a><strong>RTL 文字</strong></h4><p>先前，Flutter 為阿拉伯語和希伯來語等從右到左 (RTL) 語言提供了不完整的 Web 支援。雖然框架本身支援 RTL 文字，但 Web 引擎生成了未定義的行為，因為它忽略了 LTR 和 RTL 之間的區別。</p>
-<p>最近的穩定版本 (2.5) 加入基本的 RTL 支援，因此所有主要 RTL 語言的使用案例都可以在 Flutter Web 應用程式中支援和使用。大部分與基本支援相關的問題都已解決，我們計畫修復剩餘的問題。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/32239">為文字編輯實作 RTL 支援</a>（已修復）</li>
-<li><a href="https://github.com/flutter/flutter/issues/69396">Web 上的 RTL 文字渲染故障</a>（已修復）</li>
-<li><a href="https://github.com/flutter/flutter/issues/78550">具有 TextDirection.rtl 的 TextField，在 Web 上游標位置錯誤</a>（已規劃）</li>
-<li><a href="https://github.com/flutter/flutter/issues/82136">RichText 中的 InlineSpans 在 RTL 應用程式中重疊</a>（已修復）</li>
-</ul>
-<h4 id="捲軸行為"><a href="#捲軸行為" class="headerlink" title="捲軸行為"></a><strong>捲軸行為</strong></h4><p>雖然 Flutter 2 包含 <a href="https://github.com/flutter/flutter/pulls?q=is:pr+is:closed+is:merged+label:%22f:+scrolling%22">多項改進</a> 以支援桌面瀏覽器上的捲軸行為（例如捲軸列支援），但在瀏覽器或執行 Web 應用程式的作業系統上，捲軸行為有時看起來或感覺不對。</p>
-<p>雖然其中一些行為取決於 Flutter 桌面支援的工作，但我們計畫在此路線圖中解決一些特定於捲軸物理和捲軸列的問題（如下所列）。我們也計畫調查觸控板支援。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/35687">PageScrollPhysics 有奇怪的行為</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/41434">(無限) 列表 Widget 中沒有捲軸列</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/85579">Mac 桌面捲軸物理應維持範圍</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/13253">讓捲軸列避免遮擋 Sliver 和媒體查詢填充</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/87739">MaterialScrollBehavior.buildScrollbar 需要更新</a></li>
-</ul>
-<p><a href="https://github.com/flutter/flutter/issues/23604">🔍 研究觸控板支援</a></p>
-<h4 id="應用程式載入-API"><a href="#應用程式載入-API" class="headerlink" title="應用程式載入 API"></a><strong>應用程式載入 API</strong></h4><p>某些 Web 應用程式在應用程式載入時或提供自訂體驗時，更喜歡顯示啟動畫面、載入指示器或登陸頁面。目前，沒有簡單的方法可以實作自訂體驗或指示 Flutter Web 應用程式正在載入；當使用 CanvasKit 的較大 bundle 大小渲染時，這變得更加重要。</p>
-<p>我們在此的工作重點是為您提供應用程式啟動週期的明確 API，該 API 可用於預載應用程式、控制應用程式的載入週期，以及建立啟動畫面或載入指示器。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/48468">為 Web 加入啟動畫面支援</a></li>
-</ul>
-<h3 id="無障礙性"><a href="#無障礙性" class="headerlink" title="無障礙性"></a>無障礙性</h3><p>無障礙性是我們的首要任務之一；我們的目標是為您提供必要的工具來建立無障礙的 Web 應用程式，這些應用程式可以在最常見的螢幕閱讀器上良好運行。</p>
-<p>Flutter 2.2 對無障礙性支援進行了重大改進。從那以後，我們聽到了一些嘗試使用螢幕閱讀器（例如 <a href="https://www.freedomscientific.com/products/software/jaws/">JAWS</a>）瀏覽 Web 應用程式的最終使用者的意見。</p>
-<p>在此路線圖中，我們專注於使用 <a href="https://flutter.dev/docs/development/accessibility-and-localization/accessibility#screen-readers">支援的螢幕閱讀器</a>（例如桌面瀏覽器的快顯通知）時出現的問題。我們還將繼續調查改進整體無障礙性支援的方法。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/83812">使用 Enter 鍵時，無法宣布按鈕按下</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/83809">方向鍵和 B 鍵不會更新螢幕閱讀器焦點</a></li>
-</ul>
-<h3 id="效能"><a href="#效能" class="headerlink" title="效能"></a>效能</h3><p>效能是我們始終優先考慮的領域，以改善使用 Flutter Web 應用程式的使用者體驗。目前，我們的重點是改善捲軸卡頓，並加快 Web 應用程式的初始載入速度。</p>
-<h4 id="捲軸卡頓"><a href="#捲軸卡頓" class="headerlink" title="捲軸卡頓"></a><strong>捲軸卡頓</strong></h4><p>根據我們最近的季度調查，捲軸卡頓是所報告的頂級效能問題之一。我們的目標是確保 Flutter Web 應用程式可以透過行動設備上的手勢或桌面上的滑鼠&#x2F;鍵盤順暢捲軸，但這也取決於 Web 應用程式期望使用者捲軸瀏覽的內容類型和數量。</p>
-<p>在接下來的幾個月裡，我們將主要專注於改善由於圖片解碼引起的卡頓，我們將繼續調查捲軸效能問題，以找出可以改善的其他使用案例。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/63397">將圖片解碼移動到 Web 工作執行緒</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/71884">在 CanvasKit 渲染器中降低平台視圖的成本</a></li>
-</ul>
-<h4 id="捆綁-CanvasKit（離線支援）"><a href="#捆綁-CanvasKit（離線支援）" class="headerlink" title="捆綁 CanvasKit（離線支援）"></a><strong>捆綁 CanvasKit（離線支援）</strong></h4><p>目前，在 CanvasKit 中渲染的 Flutter Web 應用程式需要額外的步驟才能作為漸進式 Web 應用程式 (PWA) 在離線狀態下運行。為了讓應用程式在離線模式下能直接作為 PWA 完整運行，並確保應用程式符合嚴格的內容安全政策，我們需要捆綁 CanvasKit 和字體備份。</p>
-<p>我們將首先捆綁 CanvasKit，然後捆綁字體，最後加入必要的工具以啟用離線模式。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/85793">CanvasKit 後端不應依賴於易變的 Google 字體</a></li>
-<li><a href="https://github.com/flutter/flutter/issues/70101">支援捆綁 CanvasKit 而不是 CDN</a></li>
-</ul>
-<h4 id="CanvasKit-下載大小"><a href="#CanvasKit-下載大小" class="headerlink" title="CanvasKit 下載大小"></a><strong>CanvasKit 下載大小</strong></h4><p>CanvasKit 比基於 DOM 的方法具有更好的效能，因此它是在桌面瀏覽器上的預設渲染器。但是，下載應用程式所需的時間會影響初始載入效能（以及在 Web 上運行的 Flutter 應用程式的 Lighthouse 分數）。</p>
-<p>在此路線圖中，我們將調查減少 CanvasKit 下載大小的方法，以改善初始載入效能。我們希望確保最終使用者的設備或瀏覽器不會處理過大的負載。</p>
-<p><a href="https://github.com/flutter/flutter/issues/89616">🔍 改進 CanvasKit 下載大小</a></p>
-<p><a href="https://github.com/flutter/flutter/issues/76248">🔍 尋找合理大小的 emoji 字體備份</a></p>
-<h3 id="與-HTML-內容整合"><a href="#與-HTML-內容整合" class="headerlink" title="與 HTML 內容整合"></a>與 HTML 內容整合</h3><p>能夠與瀏覽器程式碼整合對於利用 Web 平台的優勢至關重要。Flutter Web 應用程式有兩種方式可以與 HTML 整合：1) 在 Flutter Web 應用程式中使用 HTML 平台視圖，或 2) 將 Flutter 作為內容島嵌入到現有的 Web 應用程式中（有點像 Web 的加到應用程式）。雖然前者現在存在，可能需要改進，但後者將是一個需要進一步設計和開發的新功能。</p>
-<h4 id="使用自訂元素嵌入（加到應用程式）"><a href="#使用自訂元素嵌入（加到應用程式）" class="headerlink" title="使用自訂元素嵌入（加到應用程式）"></a><strong>使用自訂元素嵌入（加到應用程式）</strong></h4><p>目前，將 Flutter Web 應用程式嵌入到現有的網站&#x2F;Web 應用程式中的唯一方式是透過 iframe。雖然這對某些使用案例有效，但對於那些逐漸遷移 Web 應用程式以使用 Flutter 來說並不總是理想的解決方案。</p>
-<p>在此路線圖中，我們將調查和設計自訂解決方案，讓您能夠嵌入 Flutter Web 應用程式，類似於加到應用程式的行動情境。</p>
-<p><a href="https://github.com/flutter/flutter/issues/32329">🔍 將應用程式渲染到自訂元素中</a></p>
-<h3 id="開發者體驗"><a href="#開發者體驗" class="headerlink" title="開發者體驗"></a>開發者體驗</h3><p>Flutter 生態系統包括您在開發中使用的功能，但目前缺乏 Web 支援，例如外掛、除錯、熱重載等等。為了讓您在 Web 上擁有良好的開發者體驗，我們將繼續縮減行動和 Web 之間的差異。</p>
-<h4 id="相機外掛"><a href="#相機外掛" class="headerlink" title="相機外掛"></a><strong>相機外掛</strong></h4><p>自初始穩定版本發佈以來，相機外掛一直是最常被要求的外掛之一；許多人發現，當將 Flutter 行動應用程式移植到 Web 時，這種差異是一個障礙。</p>
-<p>在 Flutter 2.5 穩定版本中，我們提供了一個 <a href="https://pub.dev/packages/camera_web">外掛</a> 的早期版本，該外掛可以初始化相機、顯示相機預覽並拍照。隨著我們收到回饋，我們將改進此外掛。</p>
-<ul>
-<li><a href="https://github.com/flutter/flutter/issues/45297">為 Web 加入相機支援</a>（已透過部分待審查的 PR 修復）</li>
-</ul>
-<h3 id="感謝您！"><a href="#感謝您！" class="headerlink" title="感謝您！"></a>感謝您！</h3><p>雖然這是我們目前 Web 路線圖的概述，但我們的 <a href="https://github.com/flutter/flutter/issues?q=is:open+is:issue+label:platform-web+">GitHub 問題列表</a> 仍然是我們正在進行的工作的真實來源。我們可能會根據我們的學習成果和您的意見來加入、延長或延遲功能。</p>
-<p>與往常一樣，我們非常重視您的回饋，並感謝您的支援！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e0454bff964" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/flutter-whats-next-on-the-web-e0454bff964">Flutter：Web 上的下一步是什麼？</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1405,7 +1467,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1441,7 +1503,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

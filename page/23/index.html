@@ -146,6 +146,437 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/d4ba04b0.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/d4ba04b0.html" class="post-title-link" itemprop="url">【文章翻譯】Performance Testing of Flutter apps</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-09 01:26:02" itemprop="dateCreated datePublished" datetime="2019-05-09T01:26:02+08:00">2019-05-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h3 id="Flutter-應用程式的效能測試"><a href="#Flutter-應用程式的效能測試" class="headerlink" title="Flutter 應用程式的效能測試"></a>Flutter 應用程式的效能測試</h3><p>Flutter 框架在預設情況下非常快速，但這是否意味著您不必考慮效能呢？不。絕對有可能撰寫出速度緩慢的 Flutter 應用程式。另一方面，也有可能充分利用框架，讓您的應用程式不僅速度快，而且高效，消耗更少的 CPU 時間和電池。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/742/1*MxtHyEfdBlANwu7ZRyX2mw.png" />
+<figcaption>這就是我們想要的：一個在某些有意義的指標上比較您的應用程式的兩個版本時具有統計顯著性的結果。請繼續閱讀以了解如何獲得此結果。</figcaption>
+</figure>
+
+<p>Flutter 效能優化的概略準則如下：</p>
+<ul>
+<li>更新狀態時，目標盡可能少的 Widget。</li>
+<li>僅在必須時更新狀態。</li>
+<li>將計算密集型任務放在建構方法之外，理想情況下是在主隔離區之外。</li>
+</ul>
+<p>事實上，對於許多有關效能优化的問題，答案是「視情況而定」。對 <em>特定</em> Widget 進行的 <em>特定</em> 優化是否值得付出努力和維護成本？<em>特定</em> 情況下的 <em>特定</em> 方法是否有意義？</p>
+<p>這些問題唯一有用的答案來自測試和測量。量化每個選擇對效能的影響，並根據這些資料做出決定。</p>
+<p>好消息是，Flutter 提供了出色的效能分析工具，例如 <a href="https://flutter.github.io/devtools/">Dart DevTools</a>（目前處於預覽發行階段），其中包含 Flutter Inspector，或者您可以直接從 Android Studio（安裝 Flutter 外掛後）使用 <a href="https://flutter.github.io/devtools/inspector">Flutter Inspector</a>。您有 Flutter Driver 用於測試您的應用程式，以及用於儲存效能資訊的 Profile 模式。</p>
+<p>壞消息是現代智慧型手機非常「聰明」。</p>
+<h3 id="治理器的問題"><a href="#治理器的問題" class="headerlink" title="治理器的問題"></a>治理器的問題</h3><p>iOS 和 Android 治理器使量化 Flutter 應用程式的效能變得特別困難。這些系統級別的守護程序會根據負載調整 CPU 和 GPU 單位的速度。當然，這大多是好事，因為它確保在消耗盡可能少的電池的情況下提供流暢的效能。</p>
+<p>缺點是，您可以透過讓應用程式 <em>更多</em> 地工作來使其顯著 <em>更快</em>。</p>
+<p>在下方，您可以看到如何將具有無意義 <code>print</code> 語句的迴圈加入到應用程式中，使治理器切換到更高檔，從而使應用程式更快，其效能也更可預測。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/656/0*vJSgoS61dEqAK7kf" />
+<figcaption>治理器的問題：預設情況是，您無法信任您的數字。在這個箱型圖中，我們在 x 軸上有單獨的執行（以它們開始的精確時間標記），以及 y 軸上的建構時間。如您所見，當我們加入一些完全不必要的 `print` 語句時，它會使建構時間下降，而不是上升。</figcaption>
+</figure>
+
+<p>在此實驗中，較差的程式碼導致更快的建構時間（上方）、更快的柵格化時間和更高的畫面更新率。當客觀上較差的程式碼導致更好的效能指標時，您便無法依賴這些指標來提供指導。</p>
+<p>這只是一個例子，說明行動應用程式的效能基準測試為何會不合常理且困難。</p>
+<p>在下方，我分享了一些我在處理 Flutter 的 Google I&#x2F;O 應用程式 <a href="https://github.com/2d-inc/developer_quest">Developer Quest</a> 時收集的技巧。</p>
+<h3 id="基本建議"><a href="#基本建議" class="headerlink" title="基本建議"></a>基本建議</h3><ul>
+<li>在 DEBUG 模式下不要測量效能。僅在 profile 模式下測量效能。</li>
+<li>在真實設備上測量，而不是在 iOS 模擬器或 Android 模擬器中。軟體模擬器非常適合開發，但它們與真實設備的效能特性有很大差異。Flutter 不允許您在模擬設備上以 profile 模式執行，因為這沒有任何意義。您以這種方式收集的資料不適用於現實世界的效能。</li>
+<li>理想情況下，使用相同的物理設備。將其作為您的專用效能測試設備，不要用於其他任何用途。</li>
+<li>了解 Flutter 的 <a href="https://flutter.dev/docs/testing/ui-performance">效能分析工具</a>。</li>
+</ul>
+<h3 id="CPU-GPU-治理器"><a href="#CPU-GPU-治理器" class="headerlink" title="CPU&#x2F;GPU 治理器"></a>CPU&#x2F;GPU 治理器</h3><p>如上所述，現代作業系統會根據負載和其他一些啟發式算法更改其處置的每個 CPU 和 GPU 的頻率。（例如，觸碰螢幕通常會使 Android 手機切換到更高檔。）</p>
+<p>在 Android 上，您可以關閉這些治理器。我們稱此過程為「比例鎖定」。</p>
+<ul>
+<li>建立一個比例鎖定效能測試設備的腳本。您可以使用 <a href="https://github.com/google/skia/blob/e25b4472cdd9f09cd393c9c34651218507c9847b/infra/bots/recipe_modules/flavor/android.py">Skia 的做法</a> 作為靈感。您也可以查看 <a href="https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-system-cpu">Unix CPU API</a>。</li>
+<li>除非您執行的基準測試作業規模龐大，例如 Skia，否則您可能想要更輕量級且不那麼通用的工具。查看 Developer Quest 的 <a href="https://github.com/2d-inc/developer_quest/blob/master/tool/lock_android_scaling.sh">shell 腳本</a> 以獲取一些提示。例如，以下摘錄將 CPU 設為使用者空間治理器（唯一不會自行更改 CPU 頻率的治理器）。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">GOV=<span class="string">&quot;userspace&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Setting CPU governor to: <span class="variable">$&#123;GOV&#125;</span>&quot;</span></span><br><span class="line">adb shell <span class="string">&quot;echo <span class="variable">$&#123;GOV&#125;</span> &gt; /sys/devices/system/cpu/cpu<span class="variable">$&#123;CPU_NO&#125;</span>/cpufreq/scaling_governor&quot;</span></span><br><span class="line">ACTUAL_GOV=`adb shell <span class="string">&quot;cat /sys/devices/system/cpu/cpu<span class="variable">$&#123;CPU_NO&#125;</span>/cpufreq/scaling_governor&quot;</span>`</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;- result: <span class="variable">$&#123;ACTUAL_GOV&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>您的目標在此不是模擬現實世界的效能（沒有使用者會比例鎖定其設備），而是讓不同執行之間的效能指標具有可比性。</li>
+<li>最終，您需要進行實驗，並將 shell 腳本調整為您將使用的設備。這項工作很繁瑣，但直到您完成這項工作之前，您的效能資料都會欺騙您。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*PVigpdSw-WlNfJHI" />
+<figcaption>Developer Quest 的早期版本在桌面上由 Flutter Driver 測試。</figcaption>
+</figure>
+
+<h3 id="Flutter-Driver"><a href="#Flutter-Driver" class="headerlink" title="Flutter Driver"></a>Flutter Driver</h3><p>Flutter Driver 讓您可以自動測試您的應用程式。請閱讀 flutter.dev 的 <a href="https://flutter.dev/docs/cookbook/testing/integration/profiling">效能分析</a> 部分，以獲取有關如何在分析應用程式時使用它的具體做法。</p>
+<ul>
+<li>在效能測試時，不要手動測試您的應用 Programm。始終使用 Flutter Driver 以確保您比較的是同樣的事物。</li>
+<li>撰寫 Flutter Driver 程式碼，讓它測試您真正想要測量的內容。如果您追求的是一般的應用程式效能，請嘗試瀏覽應用程式的各個部分，並執行使用者會執行的操作。</li>
+<li>如果您的應用程式包含機率因素（隨機、網路事件等），請將其模擬出來。這些瀏覽過程應盡可能彼此相似。</li>
+<li>如果需要，請使用 <a href="https://api.dartlang.org/stable/2.2.0/dart-developer/Timeline-class.html">Timeline</a> 的 <code>startSync()</code> 和 <code>finishSync()</code> 方法來新增自訂時間軸事件。例如，當您感興趣的是特定函數的效能時，此方法非常有用。將 <code>startSync()</code> 放在其開頭，將 <code>finishSync()</code> 放在其結束位置。</li>
+<li>儲存摘要（<a href="https://docs.flutter.io/flutter/flutter_driver/TimelineSummary/writeSummaryToFile.html"><code>writeSummaryToFile</code></a>）和更重要的是原始時間軸（<a href="https://docs.flutter.io/flutter/flutter_driver/TimelineSummary/writeTimelineToFile.html"><code>writeTimelineToFile</code></a>）。</li>
+<li>對於應用程式的每個版本，請執行多次測試。對於 Developer Quest，我將其收斂到 100 次執行。（當您測量雜訊較大的事物時，例如第 99 個百分位數，您可能需要更多次執行。）對於基於 POSIX 的系統，這只意味著執行類似以下內容：<code>for i in &#123;1..100&#125;; do flutter drive --target=test_driver/perf.dart --profile; done</code>。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Y7-lpotj3tTjqJyobYyKHw.png" />
+<figcaption>使用 Chrome 的時間軸工具檢查 Flutter 的 profile 輸出。</figcaption>
+</figure>
+
+<h3 id="時間軸"><a href="#時間軸" class="headerlink" title="時間軸"></a>時間軸</h3><p>時間軸是 profile 執行結果的原始輸出。Flutter 將此資訊轉儲到一個 JSON 檔案中，可以將其載入到 <code>chrome://tracing</code> 中。</p>
+<ul>
+<li>了解如何在 Chrome 的追蹤時間軸中打開完整時間軸。您只需要在 Chrome 瀏覽器中打開 <code>chrome://tracing</code>，點選「載入」，然後選擇 JSON 檔案。您可以在 <a href="https://aras-p.info/blog/2017/01/23/Chrome-Tracing-as-Profiler-Frontend/">這個簡短的教學課程</a> 中了解更多資訊。（Flutter 也提供了 <a href="https://flutter.github.io/devtools/timeline">時間軸工具</a>，目前處於技術預覽階段。我沒有使用它，因為 Developer Quest 專案在 Flutter 的時間軸工具準備就緒之前就已經開始了。）</li>
+<li>使用 WSAD 鍵在 <code>chrome://tracing</code> 中移動時間軸，並使用 1234 切換操作模式。</li>
+<li>首次設定效能測試時，請考慮使用完整的 Android 系統追蹤來執行 Flutter Driver。這為您提供了更多關於設備中實際發生的事情的洞察力，包括 CPU 比例資訊。但是，請不要在完全開啟系統追蹤的情況下測量您的應用程式，因為它會使一切都變得更慢且更不可預測。</li>
+<li>如何使用 Flutter Driver 執行完整的 Android 系統追蹤？首先，使用 <code>/path/to/your/android/sdk/platform-tools/systrace/systrace.py --atrace-categories=gfx,input,view,webview,wm,am,sm,audio,video,camera,hal,app,res,dalvik,rs,bionic,power,pm,ss,database,network,adb,pdx,sched,irq,freq,idle,disk,load,workq,memreclaim,regulators,binder_driver,binder_lock</code> 開始 Android 系統追蹤。然後，使用 <code>flutter run test_driver/perf.dart --profile --trace-systrace</code> 啟動應用程式。最後，使用 <code>flutter drive --driver=test_driver/perf_test.dart --use-existing-app=http://127.0.0.1:NNNNN/</code>（其中 NNNNN 是 <code>flutter run</code> 上面的埠號）啟動 Flutter Driver。</li>
+</ul>
+<h3 id="指標"><a href="#指標" class="headerlink" title="指標"></a>指標</h3><p>查看盡可能多的指標總比少好，但我發現有些指標比其他指標更有用。</p>
+<ul>
+<li>建構時間和柵格化時間（TimelineSummary 預設提供的指標）僅適用於實際上不包含太多 UI 建構以外的內容的非常嚴格的效能測試。</li>
+<li>不要將 TimelineSummary.frameCount 作為計算畫面更新率 (FPS) 的方法。Flutter 的 profile 工具不會提供實際的畫面更新率資訊。TimelineSummary 提供 <code>countFrames()</code> 方法，但它只計算已完成的畫面建構次數。一個經過良好優化的應用程式會限制不必要的重新建構，其畫面更新率將低於頻繁重新建構的未優化應用程式。</li>
+<li>我個人透過測量執行 Dart 程式碼所花費的總 CPU 時間來獲得最有用的資料。這計算了在建構方法中以及在建構方法之外執行的程式碼。假設您在比例鎖定的設備上執行 profile 測試，則總 CPU 時間是應用程式將消耗多少電池電量的良好近似值。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/678/0*0S0itDkQHzRjcY1N" />
+</figure>
+
+<ul>
+<li>找出執行 Dart 程式碼所花費的總 CPU 時間最簡單的方法是測量時間軸中 MessageLoop:FlushTasks 事件的範圍。對於 Developer Quest，我撰寫了一個 Dart 工具 <a href="https://github.com/2d-inc/developer_quest/blob/master/test_driver/parse_timeline.dart#L82">來提取這些事件</a>。</li>
+<li>若要偵測卡頓（即跳過的畫面），請尋找極端值。例如，對於 Developer Quest 的特定案例和我們用於測試的設備，查看第 95 個百分位數的建構時間很有幫助。（即使比較具有截然不同的效率水準的程式碼，第 90 個百分位數的建構時間也過於相似，而第 99 個百分位數的數字往往會出現雜訊。您的情況可能有所不同。）</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/660/0*ewPiWp1FMME8HDnV" />
+</figure>
+
+<ul>
+<li>如上所述，請對應用程式的每個版本執行多次測試（可能 100 次）。然後，使用具有誤差範圍的平均值或百分位數資料。更好的是，使用箱型圖。</li>
+</ul>
+<h3 id="結果"><a href="#結果" class="headerlink" title="結果"></a>結果</h3><p>設定完畢後，您便能夠自信地比較提交和實驗。在下方，您可以看到針對常見困境的答案：「這個優化是否值得維護開銷？」</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*ynM53tboJVQFcpmxRuuu4A.png" />
+</figure>
+
+<p>我認為在 <em>特定</em> 案例中，答案是肯定的。只需增加幾行程式碼，我們應用程式的每次自動瀏覽平均可以節省 12% 的 CPU 時間。</p>
+<p>但是，這是本文的主要訊息 - 另一項優化的測量結果可能會顯示出截然不同的情況。試圖過度外推效能測量結果是引人入勝的，但錯誤的做法。</p>
+<p>換句話說：「視情況而定」。我們應該接受這句話。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=df7669bb7df7" width="1" height="1"><hr><p><a href="https://medium.com/flutter/performance-testing-of-flutter-apps-df7669bb7df7">Flutter 應用程式的效能測試</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/3f9d05eb.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/3f9d05eb.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 2.3: Optimized for building user interfaces</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-08 16:59:00" itemprop="dateCreated datePublished" datetime="2019-05-08T16:59:00+08:00">2019-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-3：針對建構使用者介面最佳化"><a href="#宣佈-Dart-2-3：針對建構使用者介面最佳化" class="headerlink" title="宣佈 Dart 2.3：針對建構使用者介面最佳化"></a>宣佈 Dart 2.3：針對建構使用者介面最佳化</h2><p>今天，我們宣佈 Dart 2.3 SDK 的穩定版本發佈，其中包含新的語言功能，可改善您在開發使用者介面時的編碼體驗，新的工具支援用於開發 Flutter UI，以及兩個新的網站：<a href="https://dart.dev/">dart.dev</a> 和 <a href="https://pub.dev/">pub.dev</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/960/0*iKWVPoE5aSiCI-mW" />
+</figure>
+
+<h3 id="Dart-的發展勢頭"><a href="#Dart-的發展勢頭" class="headerlink" title="Dart 的發展勢頭"></a>Dart 的發展勢頭</h3><p>我們每年都期待的開發者研究報告之一是 <a href="https://insights.stackoverflow.com/survey/2019">StackOverflow 開發者調查</a>，它提供了關於開發者趨勢和對不同技術的看法的一個綜合數據集。今年的版本展示了 Dart 的人氣和知名度的增長，它首次進入了 <a href="https://insights.stackoverflow.com/survey/2019#technology-_-most-loved-dreaded-and-wanted-languages">最受歡迎的語言</a> 名單，與其他流行語言如 JavaScript、C# 和 Go 並列，並領先於 C++、F# 和 R 等語言。同時，我們在 Flutter 社群的好朋友在 <a href="https://insights.stackoverflow.com/survey/2019#technology-_-most-loved-dreaded-and-wanted-other-frameworks-libraries-and-tools">最受歡迎的框架</a> 名單中排名第三。上個月 Codementor 關於 <em>學習和不學習哪些程式語言</em> 的調查也傳達了類似的正面消息：</p>
+<blockquote>
+<p><em>「</em>兩個真正名列前茅的、進步最大的語言的例子是 Dart 和 Ruby<em>」。</em> Codementor，2019 年 4 月 <a href="https://www.codementor.io/blog/worst-languages-2019-6mvbfg3w9x">來源</a></p>
+</blockquote>
+<p>我們要向 Dart 社群的所有開發者致以誠摯的 <em>感謝</em>。看到您採用 Dart、提供您的回饋，並在我們嘗試建構用於在任何平台上運行快速應用程式的最佳客戶端優化語言的過程中繼續與我們同行，這對我們來說意義重大。</p>
+<h3 id="用於建構使用者介面的新語言功能"><a href="#用於建構使用者介面的新語言功能" class="headerlink" title="用於建構使用者介面的新語言功能"></a>用於建構使用者介面的新語言功能</h3><p>談到客戶端開發，Dart 和 Flutter 團隊之間一項長期合作的項目是為使用 Dart 捕捉使用者介面程式碼創造良好的支援，而無需標記語言。我們認為，對行為和佈局使用單一語言具有很大的優勢。這些優勢包括減少上下文切換、無需學習兩種語言，以及在建構 UI 時允許使用通用程式語言的所有抽象功能。</p>
+<p>在過去的幾個版本中，我們進行了一些改進，例如簡化 <a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6#da82">建構 widget</a> 的程式碼、加入自動 <a href="https://medium.com/dartlang/announcing-dart-2-1-improved-performance-usability-9f55fca6f31a">int 到 double 的轉換</a>，以及加入 <a href="https://medium.com/dartlang/announcing-dart-2-2-faster-native-code-support-for-set-literals-7e2ab19cc86d">集合字面量</a>。在 Dart 2.3 中，我們又向前邁出了一大步，提供了三個新功能，用於表達基於列表、條件或重複的 UI。</p>
+<p>您可以將 UI 視為 widget 節點的樹狀結構。某些節點包含 widget 列表，例如可捲軸元素的列表。通常，這些列表是由其他列表建構的。為此，我們加入了一個新的 <a href="https://dart.dev/guides/language/language-tour#spread-operator">展開運算符</a> 功能，用於將一個列表中的元素 <em>解包</em> 到另一個列表中。在下面的範例中，<code>buildMainElements()</code> 返回一個 widget 列表，然後使用展開運算符 <code>...</code> 將其解包到周圍的列表中：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c0e540695e17d207deb07d76bc39032e/href">https://medium.com/media/c0e540695e17d207deb07d76bc39032e/href</a></iframe>
+
+<p>另一個常見的 UI 任務是根據條件包含特定元素。例如，您可能希望在除最後一頁之外的所有頁面上都包含一個 <em>下一步</em> 按鈕。使用 Dart 2.3，您可以使用 <a href="https://dart.dev/guides/language/language-tour#collection-operators">集合 if</a> 來做到這一點：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/d1208dddd17c81275e070c393ef0086f/href">https://medium.com/media/d1208dddd17c81275e070c393ef0086f/href</a></iframe>
+
+<p>最後，UI 通常會從其他重複的元素建構重複的元素。您可以使用新的 <a href="https://dart.dev/guides/language/language-tour#collection-operators">集合 for</a> 功能來表達這一點：</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c4ef27ef465faeee3e80829fa2fe7621/href">https://medium.com/media/c4ef27ef465faeee3e80829fa2fe7621/href</a></iframe>
+
+<p>而且由於這三個新功能是語言功能，而不是標記命令，因此它們是完全可組合的，並且可以在您處理集合的任何上下文中使用。這些功能包含在 <a href="https://medium.com/flutter-io/announcing-flutter-1-5-d203c6072e5c">Flutter 1.5</a> 版本中，並且在您可以今天下載的 <a href="https://dart.dev/get-dart">Dart 2.3</a> 版本中提供。我們還加入了新的 lint，您可以在 <a href="https://dart.dev/guides/language/analysis-options#enabling-linter-rules">靜態分析中設定</a> 以強制使用新的 <a href="http://dart-lang.github.io/linter/lints/prefer_spread_collections.html">spread</a>、<a href="http://dart-lang.github.io/linter/lints/prefer_if_elements_to_conditional_expressions.html">集合 if</a> 和 <a href="http://dart-lang.github.io/linter/lints/prefer_for_elements_to_map_fromIterable.html">集合 for</a> 功能。</p>
+<p>有關加入這些功能的所有工作的詳細資訊，請查看 Dart 語言團隊工程師 Bob Nystrom（又名 <a href="https://twitter.com/munificentbob">munificentbob</a>）的 <a href="https://medium.com/dartlang/making-dart-a-better-language-for-ui-f1ccaf9f546c">最近的這篇文章</a>。</p>
+<p>我們還要感謝參與 UX 研究的開發者，這些研究對於塑造這些新的語言功能至關重要。</p>
+<h3 id="IDE-和編輯器功能"><a href="#IDE-和編輯器功能" class="headerlink" title="IDE 和編輯器功能"></a>IDE 和編輯器功能</h3><p>為了與 Dart 2.3 的 UI 主題保持一致，我們還在 IDE 支援中加入了新的 UI 指南功能。UI 指南是在 UI 程式碼中繪製的水平和垂直線，可以更輕鬆地查看 Flutter UI <code>build()</code> 方法的樹狀結構。以下是一個範例（來自計算機應用程式），其中 UI 指南清楚地說明了 UI 是由一個展開的 Column 建構的，其中包含多個 KeyRow，每個 KeyRow 都包含 NumberKey。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/438/1*CsGJu4iSvHzspALjfbQRfA.png" />
+<figcaption>IDE with UI Guides visualizing the tree structure of UI code</figcaption>
+</figure>
+
+<p>UI 指南在 IntelliJ IDEA 和 Android Studio plugin 的 <a href="https://plugins.jetbrains.com/plugin/9212-flutter">版本 35.2</a> 中提供。要啟用此功能，請選擇設定 <em>偏好設定 &gt; 語言和框架 &gt; Flutter &gt; UI 指南</em>。我們希望在後續版本中在 VS Code 中提供類似的支援。</p>
+<p>最後，我們觀察到開發者經常使用 IDE 中的程式碼完成作為探索 API 的一種方式。程式碼完成對於探索您已匯入的函式庫中的 API 非常有效，但它不適用於尚未匯入的函式庫中的 API。我們的工具現在可以支援後一種使用案例：您可以在任何前綴上叫用程式碼完成，並且您將看到目前套件、它直接依賴的套件和 SDK 中所有 API 的完成。如果您從尚未匯入的函式庫中選擇一個完成（標記為 <em>自動匯入</em>，如下面的動畫所示），則工具會為您加入匯入語句。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/640/0*fqBkEGgVtWMT1QRy" />
+<figcaption>Animation showing code completion &amp; automatic import adding</figcaption>
+</figure>
+
+<p>這個新的自動匯入功能在 VS Code 中的 <a href="https://dartcode.org/releases/v2-26/">v2.26 plugin</a>、IntelliJ 2019.1 和即將發佈的 Android Studio 3.5 版本中提供。</p>
+<h3 id="新的-Dart-和-Pub-網站"><a href="#新的-Dart-和-Pub-網站" class="headerlink" title="新的 Dart 和 Pub 網站"></a>新的 Dart 和 Pub 網站</h3><p>最後，但同樣重要的是，在過去的幾個月中，我們一直忙於為 Dart 平台建構一個新的網站：<a href="https://dart.dev/">dart.dev</a></p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/955/1*ydTSALWV77UbB3WHKsy9cg.png" />
+<figcaption>Redesigned <a href="https://dart.dev">https://dart.dev</a> homepage</figcaption>
+</figure>
+
+<p>這個新的網站提供了一個全新的首頁，重點是解釋 Dart 平台的核心優勢。我們還更新了文件頁面，使其具有更好的導航和更具視覺吸引力。最後，我們對所有內容進行了大量的重新組織，以便更容易發現，並為以前缺少的核心內容加入了新的頁面。</p>
+<p>同樣地，我們也對 Pub 套件網站進行了視覺更新，並將其移至一個方便的新網址：<a href="https://pub.dev/">pub.dev</a>。</p>
+<p>我們很樂意聽到您對這兩個網站的回饋。如果您發現問題或有任何建議，請在 <a href="https://github.com/dart-lang/site-www/issues">dart.dev 問題追蹤器</a> 或 <a href="https://github.com/dart-lang/pub-dartlang-dart/issues">pub.dev 問題追蹤器</a> 中建立一個問題。感謝您的支援！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e84919ca1dff" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/announcing-dart-2-3-optimized-for-building-user-interfaces-e84919ca1dff">宣佈 Dart 2.3：針對建構使用者介面最佳化</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/ef946277.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/ef946277.html" class="post-title-link" itemprop="url">【文章翻譯】A roundup of Flutter news at Google I/O</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-08 16:29:32" itemprop="dateCreated datePublished" datetime="2019-05-08T16:29:32+08:00">2019-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:17:57" itemprop="dateModified" datetime="2024-12-18T15:17:57+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Flutter：為行動、網頁和桌面打造美麗的應用程式"><a href="#Flutter：為行動、網頁和桌面打造美麗的應用程式" class="headerlink" title="Flutter：為行動、網頁和桌面打造美麗的應用程式"></a>Flutter：為行動、網頁和桌面打造美麗的應用程式</h2><p>今年在 <a href="https://events.google.com/io/">I&#x2F;O ‘19</a> 中，我們發佈了有關 Flutter 的無數消息，如果您沒有全職追蹤所有消息，您可能會錯過其中一些。因此，這篇文章將彙集所有重大消息，以及來自新聞報導的重點。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*3XedGb879lTK2vbCP0uscA.png" />
+<figcaption>在 Google I/O '19 開發者大會主題演講中，Adam Seligman 宣布 Flutter for Web 技術預覽版。</figcaption>
+</figure>
+
+<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p>Flutter 從行動設備擴展到支援網頁和桌面：相同的程式碼庫，同樣關注於高生產力下快速、美麗的體驗。</p>
+<h2 id="新聞和公告"><a href="#新聞和公告" class="headerlink" title="新聞和公告"></a>新聞和公告</h2><ul>
+<li>Flutter <a href="https://flutter.dev/web">現在支援網頁</a>。開源，<a href="https://github.com/flutter/flutter_web">GitHub 上的程式庫</a>。</li>
+<li>Flutter 1.5 發佈到 stable channel (<a href="https://github.com/flutter/flutter/wiki/Release-Notes-Flutter-1.5.4">發行備註</a>)。包括針對 <a href="https://github.com/flutter/flutter/wiki/Desktop-shells">Windows、Mac 和 Linux 作業系統</a> 的初步支援。針對 <a href="https://pub.dev/packages/in_app_purchase">應用程式內購買</a>、<a href="https://pub.dev/packages/provider">狀態管理</a> 的全新外掛。針對基於 <a href="https://github.com/firebase/mlkit-custom-image-classifier/tree/master/flutter-app">ML Kit</a> 的影像分類的全新範例。</li>
+<li>支援在 <a href="https://github.com/flutter/flutter/wiki/Linting-Flutter-apps-for-Chrome-OS">Chrome OS 上進行開發</a> 和 <a href="https://github.com/flutter/flutter/wiki/Linting-Flutter-apps-for-Chrome-OS">將應用程式發佈到 Chrome OS</a>。</li>
+<li>Dart 2.3 <a href="https://dart.dev/tools/sdk/archive">發佈</a>，新增支援 UI-as-code 功能，包括 <em>spread</em> 運算子、集合 <em>if</em> 和集合 <em>for</em>；<a href="https://dart.dev/">網站</a> 和 <a href="https://pub.dev/">套件網站</a> 進行了全面改造。</li>
+<li>宣布 Flutter 的新參考客戶：eBay、Sonos 和紐約時報。Assistant 團隊正在使用 Flutter 為他們的智慧顯示平台提供動力，為 Google Nest Hub 等設備的 UI 提供動力。</li>
+<li>針對 <a href="https://dartcode.org/releases/v3-0/">Visual Studio Code</a> 和 <a href="https://groups.google.com/d/msg/flutter-dev/qZNjCI_2BLE/_R4iJPOFAAAJ">Android Studio</a> 工具擴展的更新。</li>
+<li><a href="https://www.appbrewery.co/p/flutter-development-bootcamp-with-dart/">App Brewery 發佈了 Flutter 培訓課程</a>，與 Google 合作。30 小時的影片和實驗室，僅需 $10 的補貼價格。</li>
+<li>公布了 <a href="https://medium.com/flutter-io/the-flutter-create-winners-are-40980f2d20b3">Flutter Create 獎項得主</a>，以及 <a href="https://www.youtube.com/watch?v=WLvpROMUjYQ">示範影片</a>。</li>
+<li>6 月 1 日在國際上舉辦了 <a href="https://flutterhackathon.com/">由社群組織的 Flutter 黑客松</a>。</li>
+</ul>
+<h2 id="來自-Flutter-和-Dart-團隊的文章"><a href="#來自-Flutter-和-Dart-團隊的文章" class="headerlink" title="來自 Flutter 和 Dart 團隊的文章"></a>來自 Flutter 和 Dart 團隊的文章</h2><ul>
+<li><a href="https://developers.googleblog.com/2019/05/Flutter-io19.html">Flutter：適用於行動、網頁、嵌入式和桌面環境的可移植 UI 框架</a></li>
+<li><a href="https://medium.com/flutter-io/bringing-flutter-to-the-web-904de05f0df0">將 Flutter 帶到網頁上</a></li>
+<li><a href="https://medium.com/flutter-io/announcing-flutter-1-5-d203c6072e5c">宣布 Flutter 1.5</a></li>
+<li><a href="https://medium.com/dartlang/announcing-dart-2-3-optimized-for-building-user-interfaces-e84919ca1dff">Dart 2.3：針對構建使用者介面進行優化</a></li>
+<li><a href="https://medium.com/googleplaydev/flutter-and-chrome-os-better-together-14b257ed6776">Chrome OS 和 Flutter：天作之合</a></li>
+<li><a href="https://medium.com/flutter-io/performance-testing-of-flutter-apps-df7669bb7df7">Flutter 應用程式的效能測試</a></li>
+</ul>
+<h2 id="來自合作團隊的文章"><a href="#來自合作團隊的文章" class="headerlink" title="來自合作團隊的文章"></a>來自合作團隊的文章</h2><ul>
+<li><a href="https://medium.com/flutter-nyc/flutter-is-all-the-things-805caf2793f3">Flutter 就是所有</a> (Very Good Ventures)</li>
+<li><a href="https://medium.com/flutter-nyc/under-the-hood-with-flutter-for-web-bc0d5ce1c11e">Flutter for Web 的內部運作</a> (Very Good Ventures)</li>
+<li><a href="https://medium.com/2dimensions/flutter-developer-quest-game-at-google-i-o-2019-53971a56a524">I&#x2F;O ‘19 的 Flutter 開發者尋寶遊戲</a> (2Dimensions)</li>
+</ul>
+<h2 id="Flutter-和-Dart-主題演講和會議錄影"><a href="#Flutter-和-Dart-主題演講和會議錄影" class="headerlink" title="Flutter 和 Dart 主題演講和會議錄影"></a>Flutter 和 Dart 主題演講和會議錄影</h2><ul>
+<li><a href="https://twitter.com/googledevs/status/1126222981452247040">主題演講：宣布 Flutter for Web 的技術預覽版</a></li>
+<li><a href="https://www.youtube.com/watch?v=YSULAJf6R6M">超越行動：Material Design、適應性 UI 和 Flutter</a></li>
+<li><a href="https://www.youtube.com/watch?v=ZBJa-xjZl3w">使用 Flutter 為 iOS 構建應用程式</a></li>
+<li><a href="https://www.youtube.com/watch?v=IyFZznAk69U">為 iOS、Android、Chrome OS 和網頁構建 Flutter 應用程式</a></li>
+<li><a href="https://www.youtube.com/watch?v=J5DQRPRBiFI">Dart：高效、快速且多平台 - 選擇 3 個</a></li>
+<li><a href="https://www.youtube.com/watch?v=d_m5csmrf7I">使用 Flutter 進行務實的狀態管理</a></li>
+</ul>
+<h2 id="示範和-Codelabs"><a href="#示範和-Codelabs" class="headerlink" title="示範和 Codelabs"></a>示範和 Codelabs</h2><ul>
+<li><a href="https://www.nytimes.com/games/prototype/kenken">紐約時報 KENKEN 遊戲，使用 Flutter for Web 構建</a></li>
+<li><a href="https://flutter.github.io/samples/">Flutter 網頁範例圖庫</a></li>
+<li><a href="http://github.com/2d-inc/developer_quest">2Dimensions：開發者尋寶遊戲</a> (<a href="https://itunes.apple.com/app/id1455994402">iOS</a>，<a href="https://play.google.com/store/apps/details?id=dev.flutter.devRpg">Android</a>)</li>
+<li>針對 Flutter 的三個全新 Codelabs：<a href="https://codelabs.developers.google.com/codelabs/google-photos-sharing/index.html">照片 API</a>、<a href="https://codelabs.developers.google.com/codelabs/google-maps-in-flutter/index.html">Google 地图</a>、<a href="https://codelabs.developers.google.com/codelabs/flutter-cupertino/index.html">iOS 應用程式</a></li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/proxy/1*iFS8mhfeoLHEBSfh0p7CTw.jpeg" />
+<figcaption>紐約時報 KENKEN 遊戲，顯示在 Chrome、macOS、行動 Safari、iPhone 和 Android 上運行。</figcaption>
+</figure>
+
+<h2 id="新聞報導重點"><a href="#新聞報導重點" class="headerlink" title="新聞報導重點"></a>新聞報導重點</h2><ul>
+<li>“Flutter 已經取得了長足的進步，迅速成為跨 iOS 和 Android 的多平台編碼最佳框架之一。[…] 坦白說，對 Flutter 的積極反應讓人感到震驚。” (<a href="https://www.xda-developers.com/flutter-1-5-support-web-embedded-desktop/">XDA 開發者</a>)</li>
+<li>“Google 的 Flutter UI 工具包專注於跨平台開發，可能只有兩年的歷史，但它已迅速成為許多開發人員的首選框架。” (<a href="https://techcrunch.com/2019/05/07/googles-flutter-framework-spreads-its-wings-and-goes-multi-platform/">TechCrunch</a>)</li>
+<li>“Google 正在解決應用程式開發人員面臨的最大障礙之一，這不僅讓開發人員的工作變得更輕鬆，而且讓他們的應用程式和服務在我們最常用的幾乎所有平台上都更易於使用，包括 Android、iOS、Windows 10、macOS、Chrome OS 和 Web 瀏覽器。” (<a href="https://www.businessinsider.com/googles-flutter-will-bring-your-favorite-apps-to-mobile-desktop-web-2019-5">BusinessInsider</a>)</li>
+<li>“顯然，Google 正在努力讓 Flutter 成為建立各種應用程式的最佳方式。無論您的應用程式是針對 Android、iOS、Chrome OS、Windows、Web、IoT 還是所有這些，都不再重要了，這真是太驚人了。” (<a href="https://9to5google.com/2019/05/07/flutter-apps-web-desktop-more/">9to5Google</a>)</li>
+<li>“這些更新今天宣布時收穫了許多歡呼聲，……意味著 Flutter 實際上成為了多平台 UI 框架。” (<a href="https://siliconangle.com/2019/05/07/google-expands-flutter-ui-framework-web/">SiliconAngle</a>)</li>
+</ul>
+<p>請參閱 <a href="https://venturebeat.com/2019/05/07/google-expands-flutter-mobile-app-sdk-to-the-web-desktop-and-embedded-devices/">VentureBeat</a>、<a href="https://www.zdnet.com/article/google-expands-ui-framework-flutter-from-just-mobile-to-multi-platform/">ZDNet</a>、<a href="https://www.thurrott.com/dev/206307/google-brings-flutter-to-the-web-in-technical-preview">Thurrott</a> 等其他媒體報導。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=453bb3249981" width="1" height="1"><hr><p><a href="https://medium.com/flutter/a-roundup-of-flutter-news-at-google-i-o-453bb3249981">Google I&#x2F;O 上 Flutter 新聞彙總</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/bd9de999.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,7 +608,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 21:39:41" itemprop="dateModified" datetime="2024-12-18T21:39:41+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,7 +712,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:49:52" itemprop="dateModified" datetime="2024-12-18T15:49:52+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -444,7 +875,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:50:32" itemprop="dateModified" datetime="2024-12-18T15:50:32+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -549,7 +980,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:51:38" itemprop="dateModified" datetime="2024-12-18T15:51:38+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -675,7 +1106,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:53:01" itemprop="dateModified" datetime="2024-12-18T15:53:01+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -893,7 +1324,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:53:25" itemprop="dateModified" datetime="2024-12-18T15:53:25+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -990,7 +1421,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:54:12" itemprop="dateModified" datetime="2024-12-18T15:54:12+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1092,329 +1523,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/b0c060c4.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/b0c060c4.html" class="post-title-link" itemprop="url">window 10 安裝 docker 無法開啟 問題</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-08-27 16:21:28" itemprop="dateCreated datePublished" datetime="2018-08-27T16:21:28+08:00">2018-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-24 20:29:20" itemprop="dateModified" datetime="2020-10-24T20:29:20+08:00">2020-10-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>若開啟docker後，vmware無法執行須關閉docker使用的hyper-v兩者會相衝，只能同時開其一<br><a href="https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries" target="_blank" rel="noopener">https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries</a></p>
-<p>關閉系統hyper-v<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype off</span><br></pre></td></tr></table></figure></p>
-<p>重新打開<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype auto</span><br></pre></td></tr></table></figure></p>
-<p>上述兩指令 執行完都須重新開機</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/33f96af4.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/33f96af4.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-08-07 16:14:17" itemprop="dateCreated datePublished" datetime="2018-08-07T16:14:17+08:00">2018-08-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 16:07:34" itemprop="dateModified" datetime="2024-12-18T16:07:34+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="宣佈-Dart-2-穩定版和-Dart-Web-平台"><a href="#宣佈-Dart-2-穩定版和-Dart-Web-平台" class="headerlink" title="宣佈 Dart 2 穩定版和 Dart Web 平台"></a>宣佈 Dart 2 穩定版和 Dart Web 平台</h2><p>今天，我們宣佈 Dart 2 穩定版正式發佈，其中包括 Dart Web 平台的重寫，它提供了生產力、效能和可擴展性的獨特組合。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/589/1*xV5sN0ycM2OxY5BbGDhdmg.png" />
-</figure>
-
-<p>Flutter 開發者已經享受 Dart 2 的許多優點，因為 Flutter 幾個月來一直在捆綁 Dart 2 SDK 的預發佈版本。然而，由於框架和語言之間的緊密耦合，Dart 2 的穩定版是 Flutter 穩定版發佈的另一個重要里程碑。如果您還沒有安裝 Flutter，請<a href="https://flutter.io/get-started/install/">由此開始</a>。</p>
-<p>隨著 Dart 2 的發佈，Web 開發者現在可以利用相同的語言、函式庫和工具以及許多 Web 專用的增強功能。Web 開發者應從<a href="https://webdev.dartlang.org/guides/get-started">開始使用</a>頁面開始，以獲取有關安裝工具和建立第一個應用程式的說明。</p>
-<h3 id="Dart：越來越受歡迎"><a href="#Dart：越來越受歡迎" class="headerlink" title="Dart：越來越受歡迎"></a>Dart：越來越受歡迎</h3><p>Dart 2 標誌著 Dart 作為一種主流程式語言的重生，專注於為行動和 Web 應用程式實現快速開發和出色的使用者體驗。我們希望讓構建客戶端應用程式的開發人員提高生產力，使用一種語言、框架和組件來減少樣板程式碼，讓他們專注於業務邏輯，並使用能夠及早識別錯誤、實現強大除錯功能並提供小型、快速執行時程式碼的工具。</p>
-<p>在過去的一年中，Dart 經歷了巨大的成長。我們自己的分析表明，外部使用量成長了十倍。在上個季度，根據拉取請求的衡量標準，Dart 是 GitHub 上<a href="https://madnight.github.io/githut/#/pull_requests/2018/2">成長最快的語言之一</a>；<a href="http://sotagtrends.com/?tags=%5Bdart,perl,haskell,rust%5D&amp;relative=false">StackOverflow 問題</a>的成長也生動地展示了 Dart 的發展勢頭：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/762/0*s3bqLPad7xh_nFH-" />
-</figure>
-
-<p>在內部，Dart 是 Google 用於 Web 應用程式開發的少數幾種語言之一，擁有來自數十個不同專案的數百萬行程式碼，包括 Google Ads、Google Shopping 和我們自己的內部基礎架構團隊。</p>
-<p>事實上，您可能已經在使用 Dart 而沒有意識到：流行的 <a href="https://sass-lang.com/">Sass 樣式表預處理器</a> 最近<a href="http://sass.logdown.com/posts/7045860-dart-sass-100-is-released">用 Dart 重寫</a>，使其更快、更可攜帶且更容易編寫。Sass 現在作為 Homebrew 和 Chocolatey 上的獨立可執行檔發佈，並在 npm 上編譯為純 JavaScript。Dart 可以輕鬆地在任何地方安裝應用程式，而無需外部相依性，並且可以融入使用 Dart 和不使用 Dart 的人的工作流程中。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*YX3CcH4He_IIEhzx" />
-</figure>
-
-<p>Dart 2 專注於三個領域：強化和收緊語言、開發我們對 Web 和行動框架的支援，以及將支援 Google 使用 Dart 的一些工具和組件帶到外部世界。本文的其餘部分將探討這些主題。</p>
-<h3 id="Dart-2：客戶端優化的語言"><a href="#Dart-2：客戶端優化的語言" class="headerlink" title="Dart 2：客戶端優化的語言"></a>Dart 2：客戶端優化的語言</h3><p>正如我們在<a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">二月</a> <a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">強調的</a>，<a href="https://www.dartlang.org/guides/language/sound-dart">Dart 類型系統</a>是<em>健全的</em>。這意味著在使用者執行您的應用程式之前（在分析和編譯期間）就會發現一大類問題。當我們將 Dart 擴展到 Google 內部極其龐大的應用程式時，類型系統在開發週期的早期捕獲了更多錯誤，從而提高了生產程式碼的品質。</p>
-<p>使用 Dart 2，您無法進入表達式求值結果與表達式的靜態類型不符的狀態。這意味著您可以將程式碼庫擴展到數百萬行，處理大型重構專案，並自信地部署程式碼。</p>
-<p>別擔心：健全性並不意味著大量的樣板程式碼。類型系統包括進階推斷，即使是泛型類型參數。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> _field = [<span class="number">3.14</span>, <span class="number">6.28</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 沒有提供類型參數，但推斷為 &lt;int&gt;</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].runtimeType); <span class="comment">// List&lt;int&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果類型不匹配，則使用它們的共同基類型</span></span><br><span class="line">  <span class="comment">// int (1) 和 double (3.14) 都是 `num`</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">3.14</span>].runtimeType); <span class="comment">// List&lt;num&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 推斷超越了變數。</span></span><br><span class="line">  <span class="comment">// 您也可以省略欄位上的類型。</span></span><br><span class="line">  <span class="built_in">print</span>(_field.runtimeType); <span class="comment">// List&lt;double&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>要了解更多關於 Dart 2 類型系統的資訊，請查看<a href="https://www.dartlang.org/guides/language/sound-dart">此頁面</a>。</p>
-<p>如先前的部落格文章所述，Dart 2 還減少了幾個關鍵領域的語言儀式：例如，<code>new</code> 關鍵字現在是可選的，而 <code>const</code> 關鍵字在常數環境中是可選的。</p>
-<p>最後，我們在幕後做了很多工作來統一各種支援工具，使用一個共同的前端，現在支援我們的編譯器和執行時。這確保了我們使用者的現在的一致性，並承諾在 Dart 持續發展的過程中提高新功能的速度和品質。</p>
-<h3 id="Web-上的-Dart：豐富而強大的框架"><a href="#Web-上的-Dart：豐富而強大的框架" class="headerlink" title="Web 上的 Dart：豐富而強大的框架"></a>Web 上的 Dart：豐富而強大的框架</h3><p>Web 應用程式從一開始就是 Dart 使命的核心。事實上，Google 的大多數 Dart 開發都是針對 Web 應用程式。其中最大的一個是 Google Ads，它為數十億美元的網路經濟提供動力。在將他們的程式碼遷移到 Dart 的過程中，他們將 UI 程式碼庫的大小減少了 40%，同時提高了開發人員的生產力和應用程式品質。</p>
-<p>雖然核心 Dart SDK 提供了存取現代瀏覽器 API 的函式庫，但我們也支援一個強大的受 Angular 啟發的框架，用於構建複雜的 Web 應用程式。作為 Dart 2 的一部分發佈的 <a href="https://webdev.dartlang.org/angular">AngularDart 5</a> 利用了 Dart 的健全類型系統和<a href="https://github.com/dart-lang/build">新的構建系統</a>（如下所述）在開發過程中提供快速增量構建，並在您準備部署時提供更小的已編譯 JavaScript。</p>
-<p>此版本的一個主要重點領域是改進在頁面加載時處理的程式碼量，顯著減少了網頁的「互動時間」。與 AngularDart 4 相比，許多應用程式的程式碼大小減少了一半以上。</p>
-<p>為了展示 Dart Web 平台的改進，我們構建了一個<a href="https://hnpwa.dartlang.org/">基於 Dart 的 HackerNews 網站客戶端實作</a>，作為一個漸進式 Web 應用程式；這與其他範例實作一起發佈在流行的 <a href="https://hnpwa.com/">HNPWA 網站</a>上。使用構建 Dart Web 應用程式的最佳實務，我們能夠提供功能齊全的體驗，在現代設備上在一秒鐘內即可完全互動，在中等行動設備上在緩慢的 3G 網路上在五秒鐘內即可完全互動。即使與針對較小型應用程式進行優化的輕量級 Web 框架相比，這也具有競爭力。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/353/1*Zf8U7ODhydytCsOn6_pQcw.png" />
-<figcaption><a href="https://hnpwa.dartlang.org/">hnpwa.dartlang.org</a></figcaption>
-</figure>
-
-<p>我們的框架投資延伸到我們的<a href="https://pub.dartlang.org/packages/angular_components">核心組件</a>，我們也更新了這些組件。您現在可以存取 100 個新的類別，包括許多日期、時間和選單 <a href="https://material.io/">Material 組件</a>。您可以在<a href="https://dart-lang.github.io/angular_components_example/">組件庫</a>中瀏覽我們的所有組件。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/316/0*drInYm1m0XD2vGZS" />
-<figcaption><em>Material 日期選擇器 - Web 應用程式可用的豐富組件之一</em></figcaption>
-</figure>
-
-<h3 id="Dart-2-的彈性工具"><a href="#Dart-2-的彈性工具" class="headerlink" title="Dart 2 的彈性工具"></a>Dart 2 的彈性工具</h3><p>使用 Dart 2，Dart 成為一流的編譯為 JavaScript 的語言，具有 Web 開發人員期望的開發週期和出色的執行時效能特徵。這是同時提供大多數以 JS 為目標的語言不提供的優點：健全的類型系統和出色的原生行動應用程式支援。</p>
-<p>使用 Dart 2，我們的 Web 工具採用 100% JavaScript 開發模型，並使用兩個互補的 JavaScript 編譯器。開發編譯器 <a href="https://webdev.dartlang.org/tools/dartdevc">dartdevc</a> 提供快速增量編譯，同時產生易於閱讀和除錯的 JavaScript。這讓我們的生產編譯器 <a href="https://webdev.dartlang.org/tools/dart2js">dart2js</a> 可以專注於為行動裝置的漸進式 Web 應用程式和桌面的複雜企業體驗產生高度優化的 JavaScript。這兩種編譯器都利用 Dart 的健全類型系統來優化它們的輸出。</p>
-<p>我們的 Web 工具基於<a href="https://github.com/dart-lang/build">新的構建系統</a>構建，該系統旨在快速、可除錯且可擴展。現在，諸如產生序列化程式碼、將 Sass 編譯為 CSS 以及將 Dart 編譯為 JavaScript 之類的任務都發生在一個工具鏈中，該工具鏈支援在您變更應用程式部分內容時進行快速增量更新。構建系統也被設計為支援 Web 以外的用途。例如：Flutter 開發人員正在使用它來產生 <a href="https://flutter.io/json/#serializing-json-using-code-generation-libraries">JSON 序列化程式碼</a>。</p>
-<p>使用 Dart 2，我們還擁有一套擴展的開發人員工具。除了支援 <a href="https://developer.android.com/studio/">Android Studio</a> 和 JetBrains 套件工具（包括 <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a> 和 <a href="https://www.jetbrains.com/webstorm/">WebStorm</a>）之外，我們還支援 <a href="https://code.visualstudio.com/">Visual Studio Code</a> 和 <a href="https://dartcode.org/">Dart Code 擴展</a>。我們也有一個很棒的實驗暫存區：<a href="https://dartpad.dartlang.org/">DartPad</a>，它已針對 Dart 2 進行了完全更新。</p>
-<p>最後，Dart SDK 還附帶了一套其他有用的工具：與我們的<a href="https://pub.dartlang.org/">套件網站</a>一起使用的套件管理器、<a href="https://www.dartlang.org/tools/analyzer">靜態分析器</a>、您可以從命令列或作為套件使用的 linter，以及用於<a href="https://pub.dartlang.org/packages/dartdoc">Web 文件</a>和符合 <a href="https://www.dartlang.org/guides/language/effective-dart/style">Dart 樣式指南</a>的<a href="https://pub.dartlang.org/packages/dart_style">程式碼格式化</a>的工具。</p>
-<h3 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h3><p>查看開始使用 <a href="https://flutter.io/get-started/install/">Flutter</a> 和 <a href="https://webdev.dartlang.org/guides/get-started">Dart Web 工具集</a>的說明。</p>
-<p><a href="https://groups.google.com/a/dartlang.org/forum/#!topic/announce/IUWWXwL7QB4">發行說明</a>提供了自 Dart 1 以來進行的許多其他較小改進的詳細技術說明，其中一些是對舊 Dart 程式碼的重大變更。如果您遇到 Google 搜尋無法解決的問題，我們建議您從 <a href="https://stackoverflow.com/questions/tagged/dart">StackOverflow</a>開始。訂閱 <a href="https://groups.google.com/a/dartlang.org/forum/#!forum/announce">Dart 公告</a>郵件列表並在 <a href="https://twitter.com/dart_lang">Twitter 上關注我們</a>以獲取更新。我們也希望在我們的社群中看到您，例如 <a href="https://gitter.im/dart-lang/home">Gitter</a>聊天室和 <a href="https://www.reddit.com/r/dartlang/">r&#x2F;dartlang subreddit</a>。</p>
-<h3 id="謝謝"><a href="#謝謝" class="headerlink" title="謝謝"></a>謝謝</h3><p>Dart 已成為一種針對 Web 和行動開發進行優化的通用語言。我們已經開發 Dart 2 多年，在此期間，它觸及了我們生態系統的各個方面，並且需要遷移數百萬行程式碼和數百個套件。</p>
-<p>我們感謝 <a href="https://www.dartlang.org/">Dart</a> 和 <a href="https://flutter.io/">Flutter</a>社群以及數百名幫助我們完成這段旅程的 Google 工程師。沒有你們，我們不可能做到這一點！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3775d5f8eac7" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-2-stable-and-the-dart-web-platform-3775d5f8eac7">宣佈 Dart 2 穩定版和 Dart Web 平台</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c2d0618c.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/c2d0618c.html" class="post-title-link" itemprop="url">【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-07-20 20:33:00" itemprop="dateCreated datePublished" datetime="2018-07-20T20:33:00+08:00">2018-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 16:08:08" itemprop="dateModified" datetime="2024-12-18T16:08:08+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！"><a href="#準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！" class="headerlink" title="準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！"></a>準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</h2><p>我們發佈了 Dart 套件庫 <a href="https://pub.dartlang.org/">Pub</a> 的新版本！這次我們專注於為 Dart 2 穩定版發佈做準備。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zpVgP0W04QFmqqaJO9fzhg.png" />
-</figure>
-
-<h3 id="將您的套件遷移到-Dart-2"><a href="#將您的套件遷移到-Dart-2" class="headerlink" title="將您的套件遷移到 Dart 2"></a>將您的套件遷移到 Dart 2</h3><p>我們預計 Dart 2 版本將在不久的將來升級到穩定版！因此，至關重要的是您要<a href="https://www.dartlang.org/dart-2#migration">遷移您的程式碼</a>——尤其是您已發佈的任何套件——以使其與 Dart 2 相容。這主要有三個方面：</p>
-<ul>
-<li>確保您的程式碼通過 Dart 2 分析（<a href="https://www.dartlang.org/dart-2#general-process">詳情</a>）。我們建議您也要注意提示——例如，為棄用做準備。</li>
-<li>運行程式碼測試，以確保您的程式碼通過 Dart 2 運行程式碼檢查（<a href="https://www.dartlang.org/guides/language/sound-problems#runtime-errors">詳情</a>）。</li>
-<li>將套件的 SDK 約束上限更新為 &lt;3.0.0（<a href="https://www.dartlang.org/dart-2#upper-constraints-on-the-sdk-version">詳情</a>）。</li>
-</ul>
-<p>我們強烈建議所有套件作者完成這項工作，我們也將在接下來的幾天內努力完成我們擁有的套件。</p>
-<h3 id="Pub-網站上改進的分析介面"><a href="#Pub-網站上改進的分析介面" class="headerlink" title="Pub 網站上改進的分析介面"></a>Pub 網站上改進的分析介面</h3><p>為了幫助您進行遷移，我們更新了 Pub 網站的分析標籤頁，使程式碼分析結果更易於閱讀。首先，在分析頁面的頂部，我們加入了進度條，讓您可以快速查看套件的狀態：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LatYAFujtrM2yebc" />
-<figcaption>Pub 網站上顯示的套件評分</figcaption>
-</figure>
-
-<p>進度條下方是詳細的分析結果，按嚴重程度分組：錯誤（紅色圖示）、警告（黃色圖示）和建議問題（藍色圖示），如下圖所示：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Fq4FHYc9N5aHmYBK" />
-<figcaption>Pub 網站上顯示的分析問題</figcaption>
-</figure>
-
-<h3 id="更新的分析評分"><a href="#更新的分析評分" class="headerlink" title="更新的分析評分"></a>更新的分析評分</h3><p>我們還對分析評分進行了一些調整。如果符合以下任何條件，我們現在會降低套件的評分：</p>
-<ul>
-<li>套件未通過 Dart 2 分析。</li>
-<li>SDK 約束上限不小於 &lt;3.0.0。</li>
-<li>API 參考生成（<a href="https://www.dartlang.org/guides/language/effective-dart/documentation">dartdoc</a>）失敗。</li>
-</ul>
-<p>對於我們的下一個 Pub 網站版本，我們預計將進一步完善評分，並加入一些關於評分計算方式的文件。</p>
-<h3 id="搜尋套件的-API-介面"><a href="#搜尋套件的-API-介面" class="headerlink" title="搜尋套件的 API 介面"></a>搜尋套件的 API 介面</h3><p>搜尋是 Pub 網站上最受歡迎的功能——這並不奇怪。在過去的幾個季度中，我們在這一領域進行了許多改進，重點是加入平台過濾器和更好的排名。新版本擴展了搜尋功能，支援搜尋套件的 API 介面。除了目前對套件描述和 README.md 內容的搜尋索引外，搜尋現在還涵蓋了套件的所有公共 API 成員，以及這些成員的 API 文件！當您想要找到描述和 README.md 檔案中未提及的內容時，這非常棒。</p>
-<p>例如，假設您正在尋找一個可以使用 <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> 貨幣格式格式化字串的套件。在描述和 README.md 檔案中搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217&api=0">一個結果</a>，但包含 API 文件的搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217">幾個結果</a>：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">4217 的 10 個結果</span><br><span class="line"></span><br><span class="line">intl</span><br><span class="line">包含處理國際化/本地化訊息、日期和數字格式化和解析、雙向文字和其他國際化問題的程式碼。</span><br><span class="line">v 0.15.2 • 更新時間：2017 年 10 月 19 日 FLUTTER WEB OTHER</span><br><span class="line">API 結果：</span><br><span class="line">intl/NumberFormat-class.html</span><br><span class="line"></span><br><span class="line">flutter_billing</span><br><span class="line">一個 flutter plugin，用於與 iOS 和 Android 上的計費系統進行通訊。</span><br><span class="line">v 0.1.2 • 更新時間：2018 年 2 月 10 日 FLUTTER</span><br><span class="line">API 結果：</span><br><span class="line">flutter_billing/BillingProduct-class.html</span><br></pre></td></tr></table></figure>
-
-<h3 id="總結…"><a href="#總結…" class="headerlink" title="總結…"></a>總結…</h3><p>Dart 2 穩定頻道版本即將發佈，我們已經對 Pub 網站進行了一系列與 Dart 2、排名和搜尋相關的改進。</p>
-<p>如果您已經發佈了套件，<em>現在</em> 是時候更新它們以適應 Dart 2 了：</p>
-<ol>
-<li>確保您的套件通過 Dart 2 分析。</li>
-<li>在 pubspec.yaml 中將 SDK 約束上限更新為 &lt;3.0.0。</li>
-<li>重新發佈您更新的套件。</li>
-</ol>
-<p>然後前往您在 <a href="https://pub.dartlang.org/">pub.dartlang.org</a> 上的套件分析頁面，看看您還可以做些什麼來提高您的排名！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=118464d7f59d" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/getting-ready-for-dart-2-and-making-your-packages-look-great-on-the-pub-site-118464d7f59d">準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1484,7 +1592,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1520,7 +1628,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

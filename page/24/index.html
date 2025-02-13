@@ -146,6 +146,329 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/b0c060c4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/b0c060c4.html" class="post-title-link" itemprop="url">window 10 安裝 docker 無法開啟 問題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-08-27 16:21:28" itemprop="dateCreated datePublished" datetime="2018-08-27T16:21:28+08:00">2018-08-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-24 20:29:20" itemprop="dateModified" datetime="2020-10-24T20:29:20+08:00">2020-10-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>若開啟docker後，vmware無法執行須關閉docker使用的hyper-v兩者會相衝，只能同時開其一<br><a href="https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries" target="_blank" rel="noopener">https://stackoverflow.com/questions/48066994/docker-no-matching-manifest-for-windows-amd64-in-the-manifest-list-entries</a></p>
+<p>關閉系統hyper-v<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype off</span><br></pre></td></tr></table></figure></p>
+<p>重新打開<br><figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bcdedit /<span class="built_in">set</span> hypervisorlaunchtype auto</span><br></pre></td></tr></table></figure></p>
+<p>上述兩指令 執行完都須重新開機</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/33f96af4.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/33f96af4.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 2 Stable and the Dart Web Platform</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-08-07 16:14:17" itemprop="dateCreated datePublished" datetime="2018-08-07T16:14:17+08:00">2018-08-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-2-穩定版和-Dart-Web-平台"><a href="#宣佈-Dart-2-穩定版和-Dart-Web-平台" class="headerlink" title="宣佈 Dart 2 穩定版和 Dart Web 平台"></a>宣佈 Dart 2 穩定版和 Dart Web 平台</h2><p>今天，我們宣佈 Dart 2 穩定版正式發佈，其中包括 Dart Web 平台的重寫，它提供了生產力、效能和可擴展性的獨特組合。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/589/1*xV5sN0ycM2OxY5BbGDhdmg.png" />
+</figure>
+
+<p>Flutter 開發者已經享受 Dart 2 的許多優點，因為 Flutter 幾個月來一直在捆綁 Dart 2 SDK 的預發佈版本。然而，由於框架和語言之間的緊密耦合，Dart 2 的穩定版是 Flutter 穩定版發佈的另一個重要里程碑。如果您還沒有安裝 Flutter，請<a href="https://flutter.io/get-started/install/">由此開始</a>。</p>
+<p>隨著 Dart 2 的發佈，Web 開發者現在可以利用相同的語言、函式庫和工具以及許多 Web 專用的增強功能。Web 開發者應從<a href="https://webdev.dartlang.org/guides/get-started">開始使用</a>頁面開始，以獲取有關安裝工具和建立第一個應用程式的說明。</p>
+<h3 id="Dart：越來越受歡迎"><a href="#Dart：越來越受歡迎" class="headerlink" title="Dart：越來越受歡迎"></a>Dart：越來越受歡迎</h3><p>Dart 2 標誌著 Dart 作為一種主流程式語言的重生，專注於為行動和 Web 應用程式實現快速開發和出色的使用者體驗。我們希望讓構建客戶端應用程式的開發人員提高生產力，使用一種語言、框架和組件來減少樣板程式碼，讓他們專注於業務邏輯，並使用能夠及早識別錯誤、實現強大除錯功能並提供小型、快速執行時程式碼的工具。</p>
+<p>在過去的一年中，Dart 經歷了巨大的成長。我們自己的分析表明，外部使用量成長了十倍。在上個季度，根據拉取請求的衡量標準，Dart 是 GitHub 上<a href="https://madnight.github.io/githut/#/pull_requests/2018/2">成長最快的語言之一</a>；<a href="http://sotagtrends.com/?tags=%5Bdart,perl,haskell,rust%5D&amp;relative=false">StackOverflow 問題</a>的成長也生動地展示了 Dart 的發展勢頭：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/762/0*s3bqLPad7xh_nFH-" />
+</figure>
+
+<p>在內部，Dart 是 Google 用於 Web 應用程式開發的少數幾種語言之一，擁有來自數十個不同專案的數百萬行程式碼，包括 Google Ads、Google Shopping 和我們自己的內部基礎架構團隊。</p>
+<p>事實上，您可能已經在使用 Dart 而沒有意識到：流行的 <a href="https://sass-lang.com/">Sass 樣式表預處理器</a> 最近<a href="http://sass.logdown.com/posts/7045860-dart-sass-100-is-released">用 Dart 重寫</a>，使其更快、更可攜帶且更容易編寫。Sass 現在作為 Homebrew 和 Chocolatey 上的獨立可執行檔發佈，並在 npm 上編譯為純 JavaScript。Dart 可以輕鬆地在任何地方安裝應用程式，而無需外部相依性，並且可以融入使用 Dart 和不使用 Dart 的人的工作流程中。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*YX3CcH4He_IIEhzx" />
+</figure>
+
+<p>Dart 2 專注於三個領域：強化和收緊語言、開發我們對 Web 和行動框架的支援，以及將支援 Google 使用 Dart 的一些工具和組件帶到外部世界。本文的其餘部分將探討這些主題。</p>
+<h3 id="Dart-2：客戶端優化的語言"><a href="#Dart-2：客戶端優化的語言" class="headerlink" title="Dart 2：客戶端優化的語言"></a>Dart 2：客戶端優化的語言</h3><p>正如我們在<a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">二月</a> <a href="https://medium.com/dartlang/announcing-dart-2-80ba01f43b6">強調的</a>，<a href="https://www.dartlang.org/guides/language/sound-dart">Dart 類型系統</a>是<em>健全的</em>。這意味著在使用者執行您的應用程式之前（在分析和編譯期間）就會發現一大類問題。當我們將 Dart 擴展到 Google 內部極其龐大的應用程式時，類型系統在開發週期的早期捕獲了更多錯誤，從而提高了生產程式碼的品質。</p>
+<p>使用 Dart 2，您無法進入表達式求值結果與表達式的靜態類型不符的狀態。這意味著您可以將程式碼庫擴展到數百萬行，處理大型重構專案，並自信地部署程式碼。</p>
+<p>別擔心：健全性並不意味著大量的樣板程式碼。類型系統包括進階推斷，即使是泛型類型參數。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> _field = [<span class="number">3.14</span>, <span class="number">6.28</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  <span class="comment">// 沒有提供類型參數，但推斷為 &lt;int&gt;</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].runtimeType); <span class="comment">// List&lt;int&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果類型不匹配，則使用它們的共同基類型</span></span><br><span class="line">  <span class="comment">// int (1) 和 double (3.14) 都是 `num`</span></span><br><span class="line">  <span class="built_in">print</span>([<span class="number">1</span>, <span class="number">3.14</span>].runtimeType); <span class="comment">// List&lt;num&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 推斷超越了變數。</span></span><br><span class="line">  <span class="comment">// 您也可以省略欄位上的類型。</span></span><br><span class="line">  <span class="built_in">print</span>(_field.runtimeType); <span class="comment">// List&lt;double&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要了解更多關於 Dart 2 類型系統的資訊，請查看<a href="https://www.dartlang.org/guides/language/sound-dart">此頁面</a>。</p>
+<p>如先前的部落格文章所述，Dart 2 還減少了幾個關鍵領域的語言儀式：例如，<code>new</code> 關鍵字現在是可選的，而 <code>const</code> 關鍵字在常數環境中是可選的。</p>
+<p>最後，我們在幕後做了很多工作來統一各種支援工具，使用一個共同的前端，現在支援我們的編譯器和執行時。這確保了我們使用者的現在的一致性，並承諾在 Dart 持續發展的過程中提高新功能的速度和品質。</p>
+<h3 id="Web-上的-Dart：豐富而強大的框架"><a href="#Web-上的-Dart：豐富而強大的框架" class="headerlink" title="Web 上的 Dart：豐富而強大的框架"></a>Web 上的 Dart：豐富而強大的框架</h3><p>Web 應用程式從一開始就是 Dart 使命的核心。事實上，Google 的大多數 Dart 開發都是針對 Web 應用程式。其中最大的一個是 Google Ads，它為數十億美元的網路經濟提供動力。在將他們的程式碼遷移到 Dart 的過程中，他們將 UI 程式碼庫的大小減少了 40%，同時提高了開發人員的生產力和應用程式品質。</p>
+<p>雖然核心 Dart SDK 提供了存取現代瀏覽器 API 的函式庫，但我們也支援一個強大的受 Angular 啟發的框架，用於構建複雜的 Web 應用程式。作為 Dart 2 的一部分發佈的 <a href="https://webdev.dartlang.org/angular">AngularDart 5</a> 利用了 Dart 的健全類型系統和<a href="https://github.com/dart-lang/build">新的構建系統</a>（如下所述）在開發過程中提供快速增量構建，並在您準備部署時提供更小的已編譯 JavaScript。</p>
+<p>此版本的一個主要重點領域是改進在頁面加載時處理的程式碼量，顯著減少了網頁的「互動時間」。與 AngularDart 4 相比，許多應用程式的程式碼大小減少了一半以上。</p>
+<p>為了展示 Dart Web 平台的改進，我們構建了一個<a href="https://hnpwa.dartlang.org/">基於 Dart 的 HackerNews 網站客戶端實作</a>，作為一個漸進式 Web 應用程式；這與其他範例實作一起發佈在流行的 <a href="https://hnpwa.com/">HNPWA 網站</a>上。使用構建 Dart Web 應用程式的最佳實務，我們能夠提供功能齊全的體驗，在現代設備上在一秒鐘內即可完全互動，在中等行動設備上在緩慢的 3G 網路上在五秒鐘內即可完全互動。即使與針對較小型應用程式進行優化的輕量級 Web 框架相比，這也具有競爭力。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/353/1*Zf8U7ODhydytCsOn6_pQcw.png" />
+<figcaption><a href="https://hnpwa.dartlang.org/">hnpwa.dartlang.org</a></figcaption>
+</figure>
+
+<p>我們的框架投資延伸到我們的<a href="https://pub.dartlang.org/packages/angular_components">核心組件</a>，我們也更新了這些組件。您現在可以存取 100 個新的類別，包括許多日期、時間和選單 <a href="https://material.io/">Material 組件</a>。您可以在<a href="https://dart-lang.github.io/angular_components_example/">組件庫</a>中瀏覽我們的所有組件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/316/0*drInYm1m0XD2vGZS" />
+<figcaption><em>Material 日期選擇器 - Web 應用程式可用的豐富組件之一</em></figcaption>
+</figure>
+
+<h3 id="Dart-2-的彈性工具"><a href="#Dart-2-的彈性工具" class="headerlink" title="Dart 2 的彈性工具"></a>Dart 2 的彈性工具</h3><p>使用 Dart 2，Dart 成為一流的編譯為 JavaScript 的語言，具有 Web 開發人員期望的開發週期和出色的執行時效能特徵。這是同時提供大多數以 JS 為目標的語言不提供的優點：健全的類型系統和出色的原生行動應用程式支援。</p>
+<p>使用 Dart 2，我們的 Web 工具採用 100% JavaScript 開發模型，並使用兩個互補的 JavaScript 編譯器。開發編譯器 <a href="https://webdev.dartlang.org/tools/dartdevc">dartdevc</a> 提供快速增量編譯，同時產生易於閱讀和除錯的 JavaScript。這讓我們的生產編譯器 <a href="https://webdev.dartlang.org/tools/dart2js">dart2js</a> 可以專注於為行動裝置的漸進式 Web 應用程式和桌面的複雜企業體驗產生高度優化的 JavaScript。這兩種編譯器都利用 Dart 的健全類型系統來優化它們的輸出。</p>
+<p>我們的 Web 工具基於<a href="https://github.com/dart-lang/build">新的構建系統</a>構建，該系統旨在快速、可除錯且可擴展。現在，諸如產生序列化程式碼、將 Sass 編譯為 CSS 以及將 Dart 編譯為 JavaScript 之類的任務都發生在一個工具鏈中，該工具鏈支援在您變更應用程式部分內容時進行快速增量更新。構建系統也被設計為支援 Web 以外的用途。例如：Flutter 開發人員正在使用它來產生 <a href="https://flutter.io/json/#serializing-json-using-code-generation-libraries">JSON 序列化程式碼</a>。</p>
+<p>使用 Dart 2，我們還擁有一套擴展的開發人員工具。除了支援 <a href="https://developer.android.com/studio/">Android Studio</a> 和 JetBrains 套件工具（包括 <a href="https://www.jetbrains.com/idea/">IntelliJ IDEA</a> 和 <a href="https://www.jetbrains.com/webstorm/">WebStorm</a>）之外，我們還支援 <a href="https://code.visualstudio.com/">Visual Studio Code</a> 和 <a href="https://dartcode.org/">Dart Code 擴展</a>。我們也有一個很棒的實驗暫存區：<a href="https://dartpad.dartlang.org/">DartPad</a>，它已針對 Dart 2 進行了完全更新。</p>
+<p>最後，Dart SDK 還附帶了一套其他有用的工具：與我們的<a href="https://pub.dartlang.org/">套件網站</a>一起使用的套件管理器、<a href="https://www.dartlang.org/tools/analyzer">靜態分析器</a>、您可以從命令列或作為套件使用的 linter，以及用於<a href="https://pub.dartlang.org/packages/dartdoc">Web 文件</a>和符合 <a href="https://www.dartlang.org/guides/language/effective-dart/style">Dart 樣式指南</a>的<a href="https://pub.dartlang.org/packages/dart_style">程式碼格式化</a>的工具。</p>
+<h3 id="了解更多"><a href="#了解更多" class="headerlink" title="了解更多"></a>了解更多</h3><p>查看開始使用 <a href="https://flutter.io/get-started/install/">Flutter</a> 和 <a href="https://webdev.dartlang.org/guides/get-started">Dart Web 工具集</a>的說明。</p>
+<p><a href="https://groups.google.com/a/dartlang.org/forum/#!topic/announce/IUWWXwL7QB4">發行說明</a>提供了自 Dart 1 以來進行的許多其他較小改進的詳細技術說明，其中一些是對舊 Dart 程式碼的重大變更。如果您遇到 Google 搜尋無法解決的問題，我們建議您從 <a href="https://stackoverflow.com/questions/tagged/dart">StackOverflow</a>開始。訂閱 <a href="https://groups.google.com/a/dartlang.org/forum/#!forum/announce">Dart 公告</a>郵件列表並在 <a href="https://twitter.com/dart_lang">Twitter 上關注我們</a>以獲取更新。我們也希望在我們的社群中看到您，例如 <a href="https://gitter.im/dart-lang/home">Gitter</a>聊天室和 <a href="https://www.reddit.com/r/dartlang/">r&#x2F;dartlang subreddit</a>。</p>
+<h3 id="謝謝"><a href="#謝謝" class="headerlink" title="謝謝"></a>謝謝</h3><p>Dart 已成為一種針對 Web 和行動開發進行優化的通用語言。我們已經開發 Dart 2 多年，在此期間，它觸及了我們生態系統的各個方面，並且需要遷移數百萬行程式碼和數百個套件。</p>
+<p>我們感謝 <a href="https://www.dartlang.org/">Dart</a> 和 <a href="https://flutter.io/">Flutter</a>社群以及數百名幫助我們完成這段旅程的 Google 工程師。沒有你們，我們不可能做到這一點！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3775d5f8eac7" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-2-stable-and-the-dart-web-platform-3775d5f8eac7">宣佈 Dart 2 穩定版和 Dart Web 平台</a> 最初發佈於 Medium 上的 <a href="https://medium.com/dartlang">Dart</a>，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c2d0618c.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/c2d0618c.html" class="post-title-link" itemprop="url">【文章翻譯】Getting ready for Dart 2, and making your packages look great on the Pub site!</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-20 20:33:00" itemprop="dateCreated datePublished" datetime="2018-07-20T20:33:00+08:00">2018-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！"><a href="#準備迎接-Dart-2，並讓您的套件在-Pub-網站上看起來更棒！" class="headerlink" title="準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！"></a>準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</h2><p>我們發佈了 Dart 套件庫 <a href="https://pub.dartlang.org/">Pub</a> 的新版本！這次我們專注於為 Dart 2 穩定版發佈做準備。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*zpVgP0W04QFmqqaJO9fzhg.png" />
+</figure>
+
+<h3 id="將您的套件遷移到-Dart-2"><a href="#將您的套件遷移到-Dart-2" class="headerlink" title="將您的套件遷移到 Dart 2"></a>將您的套件遷移到 Dart 2</h3><p>我們預計 Dart 2 版本將在不久的將來升級到穩定版！因此，至關重要的是您要<a href="https://www.dartlang.org/dart-2#migration">遷移您的程式碼</a>——尤其是您已發佈的任何套件——以使其與 Dart 2 相容。這主要有三個方面：</p>
+<ul>
+<li>確保您的程式碼通過 Dart 2 分析（<a href="https://www.dartlang.org/dart-2#general-process">詳情</a>）。我們建議您也要注意提示——例如，為棄用做準備。</li>
+<li>運行程式碼測試，以確保您的程式碼通過 Dart 2 運行程式碼檢查（<a href="https://www.dartlang.org/guides/language/sound-problems#runtime-errors">詳情</a>）。</li>
+<li>將套件的 SDK 約束上限更新為 &lt;3.0.0（<a href="https://www.dartlang.org/dart-2#upper-constraints-on-the-sdk-version">詳情</a>）。</li>
+</ul>
+<p>我們強烈建議所有套件作者完成這項工作，我們也將在接下來的幾天內努力完成我們擁有的套件。</p>
+<h3 id="Pub-網站上改進的分析介面"><a href="#Pub-網站上改進的分析介面" class="headerlink" title="Pub 網站上改進的分析介面"></a>Pub 網站上改進的分析介面</h3><p>為了幫助您進行遷移，我們更新了 Pub 網站的分析標籤頁，使程式碼分析結果更易於閱讀。首先，在分析頁面的頂部，我們加入了進度條，讓您可以快速查看套件的狀態：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LatYAFujtrM2yebc" />
+<figcaption>Pub 網站上顯示的套件評分</figcaption>
+</figure>
+
+<p>進度條下方是詳細的分析結果，按嚴重程度分組：錯誤（紅色圖示）、警告（黃色圖示）和建議問題（藍色圖示），如下圖所示：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Fq4FHYc9N5aHmYBK" />
+<figcaption>Pub 網站上顯示的分析問題</figcaption>
+</figure>
+
+<h3 id="更新的分析評分"><a href="#更新的分析評分" class="headerlink" title="更新的分析評分"></a>更新的分析評分</h3><p>我們還對分析評分進行了一些調整。如果符合以下任何條件，我們現在會降低套件的評分：</p>
+<ul>
+<li>套件未通過 Dart 2 分析。</li>
+<li>SDK 約束上限不小於 &lt;3.0.0。</li>
+<li>API 參考生成（<a href="https://www.dartlang.org/guides/language/effective-dart/documentation">dartdoc</a>）失敗。</li>
+</ul>
+<p>對於我們的下一個 Pub 網站版本，我們預計將進一步完善評分，並加入一些關於評分計算方式的文件。</p>
+<h3 id="搜尋套件的-API-介面"><a href="#搜尋套件的-API-介面" class="headerlink" title="搜尋套件的 API 介面"></a>搜尋套件的 API 介面</h3><p>搜尋是 Pub 網站上最受歡迎的功能——這並不奇怪。在過去的幾個季度中，我們在這一領域進行了許多改進，重點是加入平台過濾器和更好的排名。新版本擴展了搜尋功能，支援搜尋套件的 API 介面。除了目前對套件描述和 README.md 內容的搜尋索引外，搜尋現在還涵蓋了套件的所有公共 API 成員，以及這些成員的 API 文件！當您想要找到描述和 README.md 檔案中未提及的內容時，這非常棒。</p>
+<p>例如，假設您正在尋找一個可以使用 <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> 貨幣格式格式化字串的套件。在描述和 README.md 檔案中搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217&api=0">一個結果</a>，但包含 API 文件的搜尋會給您<a href="https://pub.dartlang.org/packages?q=4217">幾個結果</a>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">4217 的 10 個結果</span><br><span class="line"></span><br><span class="line">intl</span><br><span class="line">包含處理國際化/本地化訊息、日期和數字格式化和解析、雙向文字和其他國際化問題的程式碼。</span><br><span class="line">v 0.15.2 • 更新時間：2017 年 10 月 19 日 FLUTTER WEB OTHER</span><br><span class="line">API 結果：</span><br><span class="line">intl/NumberFormat-class.html</span><br><span class="line"></span><br><span class="line">flutter_billing</span><br><span class="line">一個 flutter plugin，用於與 iOS 和 Android 上的計費系統進行通訊。</span><br><span class="line">v 0.1.2 • 更新時間：2018 年 2 月 10 日 FLUTTER</span><br><span class="line">API 結果：</span><br><span class="line">flutter_billing/BillingProduct-class.html</span><br></pre></td></tr></table></figure>
+
+<h3 id="總結…"><a href="#總結…" class="headerlink" title="總結…"></a>總結…</h3><p>Dart 2 穩定頻道版本即將發佈，我們已經對 Pub 網站進行了一系列與 Dart 2、排名和搜尋相關的改進。</p>
+<p>如果您已經發佈了套件，<em>現在</em> 是時候更新它們以適應 Dart 2 了：</p>
+<ol>
+<li>確保您的套件通過 Dart 2 分析。</li>
+<li>在 pubspec.yaml 中將 SDK 約束上限更新為 &lt;3.0.0。</li>
+<li>重新發佈您更新的套件。</li>
+</ol>
+<p>然後前往您在 <a href="https://pub.dartlang.org/">pub.dartlang.org</a> 上的套件分析頁面，看看您還可以做些什麼來提高您的排名！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=118464d7f59d" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/getting-ready-for-dart-2-and-making-your-packages-look-great-on-the-pub-site-118464d7f59d">準備迎接 Dart 2，並讓您的套件在 Pub 網站上看起來更棒！</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4f8c39d9.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,7 +500,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 16:09:06" itemprop="dateModified" datetime="2024-12-18T16:09:06+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -333,7 +656,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 21:33:41" itemprop="dateModified" datetime="2024-12-18T21:33:41+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -431,7 +754,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:32:13" itemprop="dateModified" datetime="2024-12-18T15:32:13+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -528,7 +851,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:34:25" itemprop="dateModified" datetime="2024-12-18T15:34:25+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -658,7 +981,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:37:14" itemprop="dateModified" datetime="2024-12-18T15:37:14+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -890,7 +1213,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:35:00" itemprop="dateModified" datetime="2024-12-18T15:35:00+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1015,7 +1338,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:38:50" itemprop="dateModified" datetime="2024-12-18T15:38:50+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1215,532 +1538,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4f58b335.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/4f58b335.html" class="post-title-link" itemprop="url">【文章翻譯】Zero to One with Flutter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-02-22 07:02:51" itemprop="dateCreated datePublished" datetime="2017-02-22T07:02:51+08:00">2017-02-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:41:02" itemprop="dateModified" datetime="2024-12-18T15:41:02+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="使用-Flutter-從零到一"><a href="#使用-Flutter-從零到一" class="headerlink" title="使用 Flutter 從零到一"></a>使用 Flutter 從零到一</h2><p><em>2016 年夏末，我在丹麥奧胡斯 Google 辦公室的新工作是使用 <a href="https://flutter.io/">Flutter</a> 和 <a href="https://www.dartlang.org/">Dart</a> 在 Android&#x2F;iOS 應用程式中實作動畫圖表。除了是「Noogler」之外，Flutter、Dart 和動畫對我來說都是全新的。事實上，我以前從未做過行動應用程式。我的第一支智慧型手機才用了幾個月——因為擔心用我的舊 Nokia 接聽電話面試會失敗而驚慌失措地買的……</em></p>
-<p><em>我確實有一些來自桌面 Java 的圖表經驗，但那不是動畫的。我覺得……很奇怪。一部分像恐龍，一部分像重生。</em></p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/164/1*2t8GffL0BcNoGLU-IgHT9w.jpeg" />
-</figure>
-
-<p><strong>簡而言之：</strong> 透過為 Android&#x2F;iOS 應用程式編寫 Dart 圖表動畫，發現 Flutter 的 Widget 和 tween 概念的優勢。</p>
-<p>轉移到新的開發堆疊會讓您意識到自己的優先事項。在我的清單中，最重要的是以下三項：</p>
-<ul>
-<li><strong>強大的概念</strong> 透過提供簡單、相關的方式來組織想法、邏輯或資料，從而有效地處理複雜性。</li>
-<li><strong>清晰的程式碼</strong> 讓我們能夠清晰地表達這些概念，而不會被語言陷阱、過多的樣板或輔助細節所分心。</li>
-<li><strong>快速迭代</strong> 是實驗和學習的關鍵——軟體開發團隊以學習為生：真正的需求是什麼，以及如何用程式碼表達的概念來最好地實現這些需求。</li>
-</ul>
-<p>Flutter 是一個新的平台，可以使用 Dart 從單一程式碼庫開發 Android 和 iOS 應用程式。由於我們的需求是相當複雜的 UI，包括動畫圖表，因此只建構一次的想法似乎非常有吸引力。我的任務包括使用 Flutter 的 CLI 工具、一些預先建構的 Widget 和它的 2D 渲染引擎——除了編寫大量的純 Dart 程式碼來建模和製作圖表動畫之外。我將在下面分享我學習經驗中的一些概念重點，並為您自己評估 Flutter&#x2F;Dart 堆疊提供一個起點。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/300/1*OKV3RzTg89W3VxXnpAH3Eg.gif" />
-<figcaption>開發過程中從 iOS 模擬器擷取的簡單動畫長條圖</figcaption>
-</figure>
-
-<p>這是 Flutter 及其「Widget」和「tween」概念的 <a href="https://medium.com/dartlang/zero-to-one-with-flutter-part-two-5aa2f06655cb">兩部分</a> 介紹的第一部分。我將透過使用它們來顯示和製作如上所示的圖表動畫來說明這些概念的優勢。完整的程式碼範例應該可以讓您了解使用 Dart 可以達到的程式碼清晰度。而且我將包含足夠的細節，以便您可以在自己的筆記型電腦（以及模擬器或設備）上跟進，並體驗 Flutter 開發週期的長度。</p>
-<p>起點是全新 <a href="https://flutter.io/setup">安裝 Flutter</a>。執行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br></pre></td></tr></table></figure>
-
-<p>以檢查設定：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ flutter doctor</span><br><span class="line">[✓] Flutter (on Mac OS, channel master)</span><br><span class="line">  • Flutter at /Users/mravn/flutter</span><br><span class="line">  • Framework revision 64bae978f1 (7 hours ago), 2017-02-18 21:00:27</span><br><span class="line">  • Engine revision ab09530927</span><br><span class="line">  • Tools Dart version 1.23.0-dev.0.0</span><br><span class="line">[✓] Android toolchain - develop for Android devices</span><br><span class="line">    (Android SDK 24.0.2)</span><br><span class="line">  • Android SDK at /Users/mravn/Library/Android/sdk</span><br><span class="line">  • Platform android-25, build-tools 24.0.2</span><br><span class="line">  • Java(TM) SE Runtime Environment (build 1.8.0_101-b13)</span><br><span class="line">[✓] iOS toolchain - develop for iOS devices (Xcode 8.2.1)</span><br><span class="line">  • Xcode at /Applications/Xcode.app/Contents/Developer</span><br><span class="line">  • Xcode 8.2.1, Build version 8C1002</span><br><span class="line">  • ios-deploy 1.9.1</span><br><span class="line">[✓] IntelliJ IDEA Community Edition (version 2016.3.4)</span><br><span class="line">  • Dart plugin version 163.13137</span><br><span class="line">  • Flutter plugin version 0.1.10</span><br><span class="line">[✓] Connected devices</span><br><span class="line">  • iPhone SE • 664A33B0-A060-4839-A933-7589EF46809B • ios •</span><br><span class="line">    iOS 10.2 (simulator)</span><br></pre></td></tr></table></figure>
-
-
-<p>如果有足夠的勾號，您就可以建立 Flutter 應用程式。讓我們將其稱為 <code>charts</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter create charts</span><br></pre></td></tr></table></figure>
-
-<p>這應該會產生一個同名目錄：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">charts</span><br><span class="line">  android</span><br><span class="line">  ios</span><br><span class="line">  lib</span><br><span class="line">    main.dart</span><br></pre></td></tr></table></figure>
-
-<p>已產生大約五十個檔案，組成一個完整的範例應用程式，可以安裝在 Android 和 iOS 上。我們將在 <code>main.dart</code> 和同級檔案中完成所有程式碼編寫，無需修改任何其他檔案或目錄。</p>
-<p>您應該驗證是否可以啟動範例應用程式。啟動模擬器或連接設備，然後在 <code>charts</code> 目錄中執行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flutter run</span><br></pre></td></tr></table></figure>
-
-<p>然後，您應該在模擬器或設備上看到一個簡單的計數應用程式。它使用了 Material Design Widget，這很好，但它是可選的。作為 Flutter 架構的最頂層，這些 Widget 是完全可以替換的。</p>
-<p>首先，讓我們用下面的程式碼替換 <code>main.dart</code> 的內容，這是一個簡單的起點，用於玩圖表動畫。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(<span class="keyword">new</span> ChartsApp());</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartsApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> MaterialApp(</span><br><span class="line">      title: <span class="string">&#x27;Charts&#x27;</span>,</span><br><span class="line">      home: <span class="keyword">new</span> ChartPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ChartPageState createState() =&gt; <span class="keyword">new</span> ChartPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> dataSet = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      dataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">        child: <span class="keyword">new</span> Text(<span class="string">&#x27;Data set: <span class="subst">$dataSet</span>&#x27;</span>),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>儲存變更，然後重新啟動應用程式。您可以從終端機執行此操作，方法是按 R 鍵。此「完全重新啟動」操作會捨棄應用程式狀態，然後重建 UI。對於在程式碼變更後現有應用程式狀態仍然有效的情況，可以按 r 鍵進行「熱重載」，這只會重建 UI。IntelliJ IDEA 也有一個 Flutter 外掛，提供與 Dart 編輯器整合的相同功能：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*soCdZ19Qugtv1YJewMQZGg.png" />
-<figcaption>IntelliJ IDEA 中使用 Flutter 外掛的螢幕截圖，顯示右上角的重新載入和重新啟動按鈕。如果應用程式是從 IDE 中啟動的，則這些按鈕會啟用。</figcaption>
-</figure>
-
-<p>重新啟動後，應用程式會顯示一個置中的文字標籤，顯示「Data set: null」，以及一個用於重新整理資料的浮動動作按鈕。是的，萬事起頭難。</p>
-<p>要了解熱重載和完全重新啟動之間的區別，請嘗試以下操作：按下浮動動作按鈕幾次後，記下目前的資料集編號，然後在程式碼中將 <code>Icons.refresh</code> 替換為 <code>Icons.add</code>，儲存並執行熱重載。觀察按鈕的變化，但應用程式狀態會保留；我們仍然在隨機數字流中的同一個位置。現在撤消圖示變更，儲存並執行完全重新啟動。應用程式狀態已重設，我們回到了「Data set: null」。</p>
-<p>我們的簡單應用程式展示了 Flutter Widget 概念的兩個核心面向：</p>
-<ul>
-<li>使用者介面是由<strong>不可變 Widget</strong> 樹定義的，該樹是透過建構函數調用（您可以在其中設定 Widget）和建構方法（Widget 實作可以決定其子樹的外觀）的組合建構的。我們應用程式的結果樹狀結構如下所示，其中每個 Widget 的主要角色都在括弧中。如您所見，雖然 Widget 概念相當廣泛，但每個具體的 Widget 類型通常都有一個非常專注的職責。</li>
-</ul>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">MaterialApp                    (導航)</span><br><span class="line">  ChartPage                    (狀態管理)</span><br><span class="line">    Scaffold                   (佈局)</span><br><span class="line">      Center                   (佈局)</span><br><span class="line">        Text                   (文字)</span><br><span class="line">      FloatingActionButton     (使用者互動)</span><br><span class="line">        Icon                   (圖形) </span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li>使用不可變 Widget 樹定義使用者介面後，變更該介面的唯一方法是重建樹。Flutter 會在下一幀到期時處理這件事。我們所要做的就是告訴 Flutter，子樹所依賴的某些狀態已變更。此類<strong>狀態相依子樹</strong>的根必須是 <code>StatefulWidget</code>。與任何正常的 Widget 一樣，<code>StatefulWidget</code> 不是可變的，但其子樹是由 <code>State</code> 物件建構的，<code>State</code> 物件是可變的。Flutter 會在樹重建過程中保留 <code>State</code> 物件，並在建構過程中將每個物件附加到新樹中各自的 Widget。然後，它們會決定如何建構該 Widget 的子樹。在我們的應用程式中，<code>ChartPage</code> 是一個 <code>StatefulWidget</code>，<code>ChartPageState</code> 作為其狀態。每當使用者按下按鈕時，我們都會執行一些程式碼來變更 <code>ChartPageState</code>。我們已使用 <code>setState</code> 標記了變更，以便 Flutter 可以執行其內務處理並排程 Widget 樹以進行重建。當這種情況發生時，<code>ChartPageState</code> 將建構一個以新的 <code>ChartPage</code> 實例為根的稍微不同的子樹。</li>
-</ul>
-<p>不可變 Widget 和狀態相依子樹是 Flutter 提供給我們的用於處理複雜 UI 中狀態管理複雜性的主要工具，這些 UI 會回應非同步事件，例如按鈕按下、計時器刻度或傳入資料。根據我的桌面經驗，我認為這種複雜性是非常真實的。評估 Flutter 方法的優勢是——也應該是——讀者的練習：在一些非平凡的事情上嘗試一下。</p>
-<p>我們的圖表應用程式在 Widget 結構方面將保持簡單，但我們將做一些動畫的自訂圖形。第一步是用一個非常簡單的圖表替換每個資料集的文字表示。由於資料集目前只涉及 0..100 區間內的一個數字，因此圖表將是一個只有一個長條的長條圖，其高度由該數字決定。我們將使用初始值 50 以避免空高度：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> dataSet = <span class="number">50</span>;  <span class="comment">// Initial value</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      dataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),    <span class="comment">// Adjust size as needed</span></span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(dataSet),</span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> dataSet;</span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.dataSet);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - dataSet.toDouble()),</span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.dataSet != dataSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>CustomPaint</code> 是一個將繪製委託給 <code>CustomPainter</code> 策略的 Widget。我們對該策略的實作會繪製單個長條。</p>
-<p>下一步是加入動畫。每當資料集變更時，我們希望長條平滑地而不是突然地變更高度。Flutter 有一個 <code>AnimationController</code> 概念來協調動畫，透過註冊一個監聽器，我們會在動畫值（從零到一的雙精度值）變更時收到通知。每當這種情況發生時，我們可以像以前一樣調用 <code>setState</code> 並更新 <code>ChartPageState</code>。</p>
-<p>出於說明原因，我們第一次嘗試會很醜陋：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>; <span class="comment">// Import animation library</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line">  <span class="built_in">int</span> startDataSet = <span class="number">50</span>;</span><br><span class="line">  <span class="built_in">int</span> currentDataSet = <span class="number">50</span>;</span><br><span class="line">  <span class="built_in">int</span> endDataSet = <span class="number">50</span>;</span><br><span class="line"></span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;<span class="built_in">double</span>&gt; _animation;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line">    _animation = <span class="keyword">new</span> Tween(begin: <span class="number">0.0</span>, end: <span class="number">1.0</span>).animate(_controller)</span><br><span class="line">      ..addListener(() &#123;</span><br><span class="line">        setState(() &#123;</span><br><span class="line">          currentDataSet = (startDataSet + (endDataSet - startDataSet) * _animation.value).toInt();</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      startDataSet = currentDataSet;</span><br><span class="line">      endDataSet = <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>);</span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(currentDataSet),</span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _controller.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... BarChartPainter remains the same</span></span><br></pre></td></tr></table></figure>
-
-
-<p>哎呦。複雜性已經開始顯現，而我們的資料集仍然只是一個數字！設定動畫控制所需的程式碼是一個小問題，因為當我們獲得更多圖表資料時，它不會產生分支。真正問題是變數 <code>startHeight</code>、<code>currentHeight</code> 和 <code>endHeight</code>，它們反映了對資料集和動畫值的變更，並且在三個不同的地方更新。</p>
-<p>我們需要一個概念來處理這個爛攤子。</p>
-<p>輸入 <strong>tweens</strong>。雖然遠非 Flutter 獨有，但它們是一個令人愉悅的簡單概念，用於組織動畫程式碼。它們的主要貢獻是用函數式方法取代了上面的命令式方法。tween 是一個_值_。它描述了在其他值的空間中兩個點之間的路徑，例如長條圖，因為動畫值從零到一。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/260/1*3KpUQjhZLrvwvjF0daKg9g.jpeg" />
-</figure>
-
-<p>Tweens 在這些其他值的類型中是通用的，並且可以用 Dart 表示為 <code>Tween&lt;T&gt;</code> 類型的物件：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tween</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> T begin;</span><br><span class="line">  <span class="keyword">final</span> T end;</span><br><span class="line"></span><br><span class="line">  Tween(&#123; <span class="keyword">this</span>.begin, <span class="keyword">this</span>.end &#125;);</span><br><span class="line"></span><br><span class="line">  T lerp(<span class="built_in">double</span> t) =&amp;gt; T.lerp(begin, end, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>術語 <code>lerp</code> 來自電腦圖形領域，是 <em>線性插值</em>（作為名詞）和 <em>線性插值</em>（作為動詞）的縮寫。參數 <code>t</code> 是動畫值，因此 tween 應該從 <code>begin</code>（當 <code>t</code> 為零時）到 <code>end</code>（當 <code>t</code> 為一時）進行插值。</p>
-<p>Flutter SDK 的 <a href="https://docs.flutter.io/flutter/animation/Tween-class.html"><code>Tween&lt;T&gt;</code></a> 類別與上述非常相似，但它是一個支援變更 <code>begin</code> 和 <code>end</code> 的具體類別。我不完全確定為什麼做出這個選擇，但在 SDK 的動畫支援領域中，我還沒有探索過，可能有很好的理由。在接下來的文章中，我將使用 Flutter <code>Tween&lt;T&gt;</code>，但假設它是不可變的。</p>
-<p>我們可以使用單個 <code>Tween&lt;double&gt;</code> 來清理我們的長條高度程式碼：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  Tween&lt;<span class="built_in">double</span>&gt; _tween;</span><br><span class="line"></span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;<span class="built_in">double</span>&gt; _animation;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    _tween = <span class="keyword">new</span> Tween(begin: <span class="number">50.0</span>, end: <span class="number">50.0</span>);</span><br><span class="line">    _animation = _tween.animate(_controller);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      _tween = <span class="keyword">new</span> Tween(begin: _tween.end, end: <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>).toDouble());</span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(_animation.value), <span class="comment">// Use _animation.value directly</span></span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line"></span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// ... dispose method remains the same</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> dataSet;  <span class="comment">// Now takes a double</span></span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.dataSet);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - dataSet.toDouble()), <span class="comment">// Convert to double if needed</span></span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.dataSet != dataSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>我們使用 <code>Tween</code> 將長條高度動畫端點打包成單個值。它與 <code>AnimationController</code> 和 <code>CustomPainter</code> 整合得很好，避免了動畫過程中 Widget 樹重建，因為 Flutter 基礎結構現在標記了 <code>CustomPaint</code> 以便在每個動畫刻度重新繪製，而不是標記整個 <code>ChartPage</code> 子樹以進行重建、重新佈局和重新繪製。這些都是明確的改進。但 tween 概念還有更多內容；它提供了_結構_來組織我們的想法和程式碼，而我們還沒有真正認真对待這一點。tween 概念說，</p>
-<p><em>透過在所有 T 的空間中繪製路徑來製作 T 的動畫，因為動畫值從零到一。使用 Tween<T> 建模路徑。</em></p>
-<p>在上面的程式碼中，T 是一個雙精度值，但我們不希望對雙精度值進行動畫處理，我們希望對長條圖進行動畫處理！好吧，現在是單個長條，但這個概念很強大，如果我們允許的話，它可以擴展。</p>
-<p>（您可能會想知道為什麼我們不進一步爭論，堅持對資料集而不是它們作為長條圖的表示進行動畫處理。這是因為資料集（與作為圖形物件的長條圖相反）通常不在存在平滑路徑的空間中。長條圖的資料集通常涉及對應於離散資料類別的數值資料。但是，如果沒有作為長條圖的空間表示，則不同類別的兩個資料集之間沒有合理的平滑路徑概念。）</p>
-<p>回到我們的程式碼，我們將需要一個 <code>Bar</code> 類型和一個 <code>BarTween</code> 來對其進行動畫處理。接下來，讓我們將與長條相關的類別提取到它們自己的 <code>bar.dart</code> 檔案中，與 <code>main.dart</code> 並列：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:ui&#x27;</span> <span class="keyword">show</span> lerpDouble;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bar</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">double</span> height;</span><br><span class="line">  Bar(&#123;<span class="keyword">this</span>.height&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> Bar lerp(Bar begin, Bar end, <span class="built_in">double</span> t) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Bar(height: lerpDouble(begin.height, end.height, t));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarTween</span> <span class="keyword">extends</span> <span class="title">Tween</span>&lt;<span class="title">Bar</span>&gt; </span>&#123;</span><br><span class="line">  BarTween(&#123;Bar begin, Bar end&#125;) : <span class="keyword">super</span>(begin: begin, end: end);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Bar lerp(<span class="built_in">double</span> t) =&gt; Bar.lerp(begin, end, t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>我在這裡遵循 Flutter SDK 約定，根據 <code>Bar</code> 類別上的靜態方法定義 <code>BarTween.lerp</code>。這對於像 <code>Bar</code>、<code>Color</code>、<code>Rect</code> 和許多其他簡單類型來說效果很好，但我們需要重新考慮更複雜圖表類型的方法。Dart SDK 中沒有 <code>double.lerp</code>，因此我們使用 <code>dart:ui</code> 套件中的函數 <code>lerpDouble</code> 來達到相同的效果。</p>
-<p>我們的應用程式現在可以用長條表示，如下面的程式碼所示；我趁機取消了 <code>dataSet</code> 欄位。</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/animation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:math&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;bar.dart&#x27;</span>; <span class="comment">// Import bar classes</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() =&gt; runApp(<span class="keyword">new</span> ChartsApp());</span><br><span class="line"></span><br><span class="line"><span class="comment">// ... ChartsApp remains the same</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  ChartPageState createState() =&gt; <span class="keyword">new</span> ChartPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChartPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">ChartPage</span>&gt; <span class="title">with</span> <span class="title">SingleTickerProviderStateMixin</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  BarTween _barTween;</span><br><span class="line">  AnimationController _controller;</span><br><span class="line">  Animation&lt;Bar&gt; _animation;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _controller = <span class="keyword">new</span> AnimationController(</span><br><span class="line">      duration: <span class="keyword">const</span> <span class="built_in">Duration</span>(milliseconds: <span class="number">300</span>),</span><br><span class="line">      vsync: <span class="keyword">this</span>,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">     _barTween = <span class="keyword">new</span> BarTween(begin: <span class="keyword">new</span> Bar(height:<span class="number">50.0</span>), end: <span class="keyword">new</span> Bar(height:<span class="number">50.0</span>));</span><br><span class="line">    _animation = _barTween.animate(_controller);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _refreshData() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line"></span><br><span class="line">      _barTween = <span class="keyword">new</span> BarTween(</span><br><span class="line">          begin: _barTween.end, end: <span class="keyword">new</span> Bar(height: <span class="keyword">new</span> Random().nextInt(<span class="number">101</span>).toDouble()));</span><br><span class="line"></span><br><span class="line">      _controller.forward(from: <span class="number">0.0</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Scaffold(</span><br><span class="line">      body: <span class="keyword">new</span> Center(</span><br><span class="line">          child: <span class="keyword">new</span> CustomPaint(</span><br><span class="line">            size: <span class="keyword">new</span> Size(<span class="number">200.0</span>, <span class="number">200.0</span>),</span><br><span class="line">            painter: <span class="keyword">new</span> BarChartPainter(_animation.value), <span class="comment">// Pass the Bar object</span></span><br><span class="line">          )),</span><br><span class="line">      floatingActionButton: <span class="keyword">new</span> FloatingActionButton(</span><br><span class="line">        onPressed: _refreshData,</span><br><span class="line">        tooltip: <span class="string">&#x27;Refresh&#x27;</span>,</span><br><span class="line">        child: <span class="keyword">new</span> Icon(Icons.refresh),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> dispose() &#123;</span><br><span class="line">    _controller.dispose();</span><br><span class="line">    <span class="keyword">super</span>.dispose();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BarChartPainter</span> <span class="keyword">extends</span> <span class="title">CustomPainter</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Bar bar;</span><br><span class="line"></span><br><span class="line">  BarChartPainter(<span class="keyword">this</span>.bar);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    <span class="keyword">final</span> paint = <span class="keyword">new</span> Paint()</span><br><span class="line">      ..color = Colors.blue[<span class="number">400</span>]</span><br><span class="line">      ..style = PaintingStyle.fill;</span><br><span class="line">    canvas.drawRect(</span><br><span class="line">      <span class="keyword">new</span> Rect.fromPoints(</span><br><span class="line">        <span class="keyword">new</span> Offset(<span class="number">0.0</span>, size.height - bar.height),</span><br><span class="line">        <span class="keyword">new</span> Offset(size.width, size.height),</span><br><span class="line">      ),</span><br><span class="line">      paint,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="built_in">bool</span> shouldRepaint(BarChartPainter old) =&gt; old.bar != bar;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<p>新版本更長，額外的程式碼應該有其價值。在 <a href="https://medium.com/@mravn/zero-to-one-with-flutter-part-two-5aa2f06655cb">第二部分</a> 中，我們將處理增加的圖表複雜性時，它會發揮作用。我們的需求是彩色的長條、多個長條、部分資料、堆疊長條、分組長條、堆疊和分組長條，……所有這些都是動畫的。敬請期待。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/372/1*n76TpChNv8Q25WrfBiuWpw.gif" />
-<figcaption>我們將在第二部分中製作的動畫之一的預覽。</figcaption>
-</figure>
-
-
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=43b13fd7b354" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/zero-to-one-with-flutter-43b13fd7b354">使用 Flutter 從零到一</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2504fdf2.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/2504fdf2.html" class="post-title-link" itemprop="url">【文章翻譯】A Dart REPL PoC</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-01-17 21:27:57" itemprop="dateCreated datePublished" datetime="2017-01-17T21:27:57+08:00">2017-01-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:44:21" itemprop="dateModified" datetime="2024-12-18T15:44:21+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="使用-Dart-進行-hack"><a href="#使用-Dart-進行-hack" class="headerlink" title="使用 Dart 進行 hack"></a>使用 Dart 進行 hack</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/proxy/0*lOBcrb2bYgKV6VYT.png" />
-</figure>
-
-<p><a href="https://www.python.org/">Python</a> 的互動模式很棒。<a href="http://dartlang.org/">Dart</a> 目前沒有互動模式，但它非常適合快速製作原型，所以讓我們看看是否可以將一些東西拼湊在一起！</p>
-<p><em>聲明：我的確在 Google 工作，但這篇文章是關於一個個人專案。我不在 Dart 團隊或相關團隊。這只是我的淺見和我的故事。一起來吧。</em></p>
-<p>像 Python 或 Ruby 等語言的互動模式有助於讓初學者更容易上手。但這些並不是唯一使用 <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> 概念的語言。REPL 是一個讀取-評估-列印循環。當您在終端機中與它們互動時，像 BASH 或 zsh 等 shell 也會使用 REPL。這也是您在 <a href="http://jupyter.org/">Jupyter</a> (IPython Notebooks)、<a href="https://www.mathworks.com/products/matlab.html">Matlab</a>、<a href="https://www.wolfram.com/mathematica/">Mathematica</a> 或 <a href="https://www.maplesoft.com/products/maple/">Maple</a> 中使用筆記本時所獲得的。這種互動式計算方式在研究人員中非常流行。</p>
-<p>這就是 Python 互動模式的樣子：</p>
-<figure>
-<a href="https://asciinema.org/a/99317"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*sqspbSjstPhKIsIbZBDq-Q.gif" /></a>
-<figcaption>Good ol’ Python REPL</figcaption>
-</figure>
-
-<p>Dart 不支援像 Python 那樣在全域範圍內評估語句，因此沒有明顯的方法可以正確地執行此操作。在 Dart 中，語句必須在函式內，而 main 函式是程式的進入點。就像在 C++ 或 C# 中一樣。就個人而言，我更喜歡這種方式，因為它更容易理解程式運行時發生的事情。但是… 我仍然非常想要一個互動模式。它可以讓我玩轉想法，更快地嘗試事物。那麼讓我們看看是否可以建立一個 REPL 作為概念驗證！</p>
-<h3 id="如何在-Dart-中建立-REPL？"><a href="#如何在-Dart-中建立-REPL？" class="headerlink" title="如何在 Dart 中建立 REPL？"></a>如何在 Dart 中建立 REPL？</h3><p>Dart 非常適合製作原型。所以讓我們這樣做，不要被語言設計問題所困擾 :)</p>
-<p>現在沒有像 JavaScript 或 Python 中那樣的 eval 函式，而且我也不想自己寫一個完整的直譯器來實現它。它不會很快，而且我也沒有很多時間。但是，當您在 Intellij 中除錯 <a href="https://www.dartlang.org/tools/jetbrains-plugin">Dart 程式碼</a> 時，您可以在逐步執行程式碼時評估表達式。評估表達式正是我們想要做的，不是嗎？我們可以使用這個功能嗎？</p>
-<p>Dart 的除錯功能透過其 <a href="https://github.com/dart-lang/sdk/blob/master/runtime/vm/service/service.md">VM 服務</a> 公開。它是 <a href="https://www.dartlang.org/dart-vm">Dart VM</a> 提供的 JSON-RPC 服務，您可以連接到它來除錯您的應用程式。<a href="https://medium.com/u/a81c627aeff9">Natalie Weizenbaum</a> 發表了一篇關於 <code>vm_service_client</code> 套件的文章，該套件提供了一個非常好的 API 來與 VM 服務互動：<a href="http://news.dartlang.org/2016/05/unboxing-packages-vmserviceclient.html">http://news.dartlang.org/2016/05/unboxing-packages-vmserviceclient.html</a></p>
-<p>現在我們可以做的是：我們的 REPL 可以連接到它自己的 VM 服務來評估它從終端機讀取的表達式！這聽起來很瘋狂…</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/552/0*wtt2rUBIRxHnPUHv.jpg" />
-</figure>
-
-<p>… 但它有效！我寫了一個 <a href="https://github.com/BlackHC/dart_repl/blob/ca3518074c94f48ce5be872b15b58556133a474c/bin/repl.dart">快速 spike</a>，它確實有效。Dart 支援 <a href="https://www.dartlang.org/tutorials/language/futures">非同步程式設計</a>，這非常方便，因為它可以防止程式在與自己的 VM 服務通訊時阻塞自己。</p>
-<blockquote>
-<p>Spike 是測試驅動開發中的一個概念：它們是用於找出一些技術問題的快速且粗糙的實驗。</p>
-</blockquote>
-<p>解決了可行性問題後，很容易編寫一個合適的概念驗證。為了評估超出 1 + 1 的表達式，我們需要支援變數。現在無法輕鬆建立變數，因為變數宣告在 Dart 中不是表達式。在 Python 中，您可以透過賦值來即時宣告變數。在 Dart 中，我們可以透過重載 <a href="https://www.dartlang.org/articles/language/emulating-functions#interactions-with-mirrors-and-nosuchmethod">noSuchMethod</a> 來即時在字典中建立元素，從而模擬動態欄位。我稱這個類別為 Scope，當我們在它的實例中 <a href="https://www.dartdocs.org/documentation/vm_service_client/0.2.3/vm_service_client/VMInstanceRef/evaluate.html">評估表達式</a> 時，可以像全域變數一樣存取欄位。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/460/0*2PUDlyPF7rchkNmA.jpg" />
-</figure>
-
-<p>程式碼實際上更直接：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/24c2ff5f3a35ac2aff25a18c34a6fa36/href">https://medium.com/media/24c2ff5f3a35ac2aff25a18c34a6fa36/href</a></iframe>
-
-<p>有了這個，我們已經可以做一些事情，例如 <code>a = 3</code> 和 <code>b = a * 3</code>：</p>
-<figure>
-<a href="https://asciinema.org/a/99312"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*2tDjwpxSxslDUfiv8enwow.gif" /></a>
-<figcaption>Simple expressions: DONE</figcaption>
-</figure>
-
-<p>我們很快就會遇到一個限制，那就是我們只能存取在宣告 Scope 類別的檔案中匯入的符號。<code>import &#39;...&#39;;</code> 無法使用 VM 服務進行評估。因此，如果我們沒有明確匯入 <code>dart:io</code>，就沒有 <code>dart:io</code>，也沒有自訂函式庫 :(</p>
-<p>哦，等等！Dart 可以使用帶有 <a href="https://api.dartlang.org/stable/1.21.1/dart-isolate/Isolate/spawnUri.html">Isolate.spawnUri</a> 的 URI 產生新的 isolates（獨立的工作線程）。使用者可以在命令列上指定額外的匯入，REPL 可以產生程式碼以包含這些匯入，然後使用產生的程式碼產生新的 isolate，這些程式碼具有使用者可用的匯入。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/570/0*bgs2vFlKPkZsFbSO.jpg" />
-</figure>
-
-<p>它有效 \o&#x2F;</p>
-<figure>
-<a href="https://asciinema.org/a/99313"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*eh9q0mNToXK0R_QiYdrylw.gif" /></a>
-<figcaption>Custom imports: DONE</figcaption>
-</figure>
-
-<h3 id="支援更多-Dart"><a href="#支援更多-Dart" class="headerlink" title="支援更多 Dart"></a>支援更多 Dart</h3><p>現在的另一個問題是我們只能評估表達式。像 <code>if/else</code> 塊或 <code>while</code> 迴圈這樣的控制語句不是表達式。對於語句，我們可以將它們包裝在一個閉包中並執行該閉包，這是一個函式調用表達式。因此，<code>if (a == 1) print(&#39;a is 1!!&#39;);</code> 將變成</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">() &#123; <span class="keyword">if</span> (a == <span class="number">1</span>) <span class="built_in">print</span>(<span class="string">&#x27;a is 1!!&#x27;</span>); &#125;();</span><br></pre></td></tr></table></figure>
-
-<p>我們只需要弄清楚輸入是表達式還是語句。這很困難，因為我們必須為此編寫一個 Dart 解析器。但是 Dart 是用 Dart 編寫的，而且 <a href="https://pub.dartlang.org/packages/analyzer">analyzer</a> 套件提供了一個可以免費解析任何 Dart 程式碼的解析器！</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/c81085d088d4d2246a4159f5d1af133b/href">https://medium.com/media/c81085d088d4d2246a4159f5d1af133b/href</a></iframe>
-
-<p>因此，這也解決了。</p>
-<figure>
-<a href="https://asciinema.org/a/99314"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*uemGA2TzYypx2RmooQfwmg.gif" /></a>
-<figcaption>Statements and expressions: DONE</figcaption>
-</figure>
-
-<h3 id="更多匯入"><a href="#更多匯入" class="headerlink" title="更多匯入"></a>更多匯入</h3><p>最後一點阻止我們匯入任何函式庫的是，預設情況下，新的 Isolate 只能看到在其 <code>pubspec.yaml</code> 中提到的套件。我們希望支援匯入任何函式庫。<code>Isolate.spawnUri</code> 有一個 <code>packageConfig</code> 參數，允許我們指定從套件名稱到套件路徑的映射。我們可以使用另一個命令列參數來定位另一個套件，並在我們的 Isolate 中使用其套件設定。喔！</p>
-<p>我們很快就會遇到問題，我們的 Isolate 需要存取 analyzer 套件（和其他套件），而這些套件可能不會被您想要在 REPL 會話中使用的任何套件載入。套件 <a href="https://pub.dartlang.org/packages/package_resolver">package_resolver</a> 來救援！有了它，我們可以輕鬆地操作套件設定。</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e22f734a0e7be08e8ee8eb506616ac2d/href">https://medium.com/media/e22f734a0e7be08e8ee8eb506616ac2d/href</a></iframe>
-
-<p>有了這些，我們就實作了一個完整的工作流程：</p>
-<figure>
-<a href="https://asciinema.org/a/99316"><img alt="" src="https://cdn-images-1.medium.com/max/866/1*KKIJauKlylkVMaLvhJQq9w.gif" /></a>
-<figcaption>Import any library from another package: DONE</figcaption>
-</figure>
-
-<h3 id="接下來是什麼？"><a href="#接下來是什麼？" class="headerlink" title="接下來是什麼？"></a>接下來是什麼？</h3><p>這是一篇很長的文章… 整個概念驗證的程式碼量為 <strong>451 行</strong>，幾乎和這篇文章一樣長。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/625/0*Xn430bpRfeDmM9uF.jpg" />
-</figure>
-
-<p>程式碼可以在 <a href="https://github.com/BlackHC/dart_repl/tree/master/lib">https://github.com/BlackHC/dart_repl&#x2F;tree&#x2F;master&#x2F;lib</a> 上找到。如果您安裝了 Dart，您可以輕鬆地試用它：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pub global activate dart_repl</span><br><span class="line">pub global run dart_repl</span><br></pre></td></tr></table></figure>
-
-<p>我真的很喜歡在我的閒暇時間建立這個概念驗證。所有部分都在幾個小時內就位。Intellij 中對 Dart 的 IDE 支援非常出色，而且現在有很多文件和文章。例如，請查看 Natalie Weizenbaum 的 Unboxing Packages 系列：<a href="http://news.dartlang.org/2016/04/unboxing-packages-async-part-3.html">http://news.dartlang.org/2016/04/unboxing-packages-async-part-3.html</a> 等。Dart 中的低階 hack 很有趣，而且有很多很棒的函式庫可以發揮創意。<a href="https://github.com/dart-lang/code_builder">code_builder</a> 看起來非常有前途，<a href="https://github.com/google/built_collection.dart">built_collection</a> 提供了不可變的集合。<a href="https://medium.com/u/7c51fc1918ba">David Morgan</a> 也一直在發表關於 Dart 中 <a href="https://medium.com/dartlang/darts-built-collection-for-immutable-collections-db662f705eff#.kj3ubd2xj">不可變集合</a> 的文章。</p>
-<p>對於 <code>dart_repl</code>，如果可以在運行時匯入額外的函式庫而無需重新啟動，那就太好了。Dart 團隊最近在 VM 中加入了對熱重載的支援。這主要為 <a href="https://flutter.io/">Flutter</a> 中的行動應用程式開發人員提供了更好的體驗。也許，這也可以用於臨時匯入以及在 REPL 中定義函式和類別。</p>
-<p>總體而言，Dart 對於研究和研究人員來說可能非常有用，我絕對希望看到 Jupyter 支援 Dart。只需要實作其核心介面，就可以使這樣的 Dart REPL 與之相容… :) 那應該很容易，對吧？</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/400/0*0_DI8nuDDB5VwIbc.jpg" />
-</figure>
-
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f327e3769b6f" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-repl-poc-f327e3769b6f">Dart REPL 概念驗證</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">dartlang</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1b3316c0.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/1b3316c0.html" class="post-title-link" itemprop="url">【文章翻譯】Dart-on-LLVM</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-01-11 15:04:48" itemprop="dateCreated datePublished" datetime="2017-01-11T15:04:48+08:00">2017-01-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:46:02" itemprop="dateModified" datetime="2024-12-18T15:46:02+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="基於-LLVM-的-Dart-編譯實驗"><a href="#基於-LLVM-的-Dart-編譯實驗" class="headerlink" title="基於 LLVM 的 Dart 編譯實驗"></a>基於 LLVM 的 Dart 編譯實驗</h2><p>這篇文章講述了一個使用 LLVM 編譯器框架編譯 Dart 語言的實驗。乍看之下，這似乎沒有什麼意義，因為：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/845/1*DN03P0ofCSyHM6UwB42Nyg.png" />
-</figure>
-
-<p>Dart 已經擁有一個出色的 <a href="https://www.dartlang.org/dart-vm/tools/dart-vm">虛擬機器</a>，它使用 <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">即時編譯 (JIT)</a> 來獲得優異的效能。由於 Dart 是動態型別的（更準確地說，它是 <a href="https://www.dartlang.org/articles/language/optional-types">可選型別的</a>），JIT 編譯器是一個很自然的選擇——它可以使用運行時可用的型別來執行靜態編譯器無法進行的優化。</p>
-<p>Dart-on-LLVM 看起來像是一項徒勞無功的工作的另一個原因是，儘管名稱如此，LLVM 並不是一個虛擬機器，而且直到最近它才適用於帶有垃圾回收的語言。所謂適用，我們指的是：</p>
-<ul>
-<li>移動、精確（無洩漏）的垃圾回收</li>
-<li>高度優化</li>
-</ul>
-<p>這是因為，一旦優化器修改了您的程式碼，您就再也無法找到堆疊上的可垃圾回收指標。一種常見的策略是將所有指標移動到特殊的記憶體區域，但这會降低現代編譯器中的許多優化策略，現代編譯器依賴於區域變數的暫存器分配來發揮其魔力。您可以擁有良好的垃圾回收或完全的效能，但不能兩者兼得。</p>
-<p>然而，LLVM 領域正在颳起新的風。最近，LLVM 以實驗性的 <a href="http://llvm.org/docs/Statepoints.html">Statepoint</a> 功能的形式增加了一些垃圾回收支援。這已被各種勇敢的團隊使用，包括 <a href="https://github.com/ispras/llv8/wiki">LLV8</a> 實驗背後的人員和 <a href="http://llvm.org/devmtg/2015-10/slides/DasReames-LLVMForAManagedLanguage.pdf">Azul</a>，他們正在將其用於 JVM 的新型頂級編譯器。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/845/1*g6p0yM6fD_UD3rfsOWGQ-A.png" />
-</figure>
-
-<p>構建一個基於 LLVM 的真正虛擬機器似乎已從「不可能的任務」變成了僅僅是「<a href="https://www.youtube.com/watch?v=gJGJMi-sUS8">困難的任務</a>」。同時，<a href="https://github.com/dart-lang/dev_compiler/blob/master/STRONG_MODE.md">強模式</a> 使 Dart 更具靜態型別，並且減少了動態性。此外，我們 Google 正在為 iOS 構建 <a href="https://www.youtube.com/watch?v=Mx-AllVZ1VY&t=0m29s">Flutter</a>，而 iOS 禁止 JIT 編譯。這兩個發展都使 Dart 更符合 LLVM 專案的目標和權衡。</p>
-<h3 id="為什麼選擇-LLVM？"><a href="#為什麼選擇-LLVM？" class="headerlink" title="為什麼選擇 LLVM？"></a>為什麼選擇 LLVM？</h3><p>LLVM 是一個現代的、維護良好的開源編譯器框架，它為我們提供了許多優化和平台，而且是「免費的」。例如，有一個完整的 <a href="http://llvm.org/docs/Passes.html#inline-function-integration-inlining">內聯</a> pass，可以將任何函數內聯到任何其他函數中，並包含關於何時這樣做的 <a href="https://bugs.chromium.org/p/v8/issues/detail?id=3354">啟發式方法</a>。</p>
-<p>它看起來也是一個開放、友好的社群，歡迎各種貢獻。</p>
-<h3 id="實驗目標"><a href="#實驗目標" class="headerlink" title="實驗目標"></a>實驗目標</h3><ul>
-<li>上下文是在提前編譯場景中的強模式 Dart</li>
-<li>評估使用 Statepoint 支援精確、移動垃圾回收的可行性</li>
-<li>評估效能</li>
-</ul>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>我們（<a href="https://medium.com/u/9fa86af2470a">Erik Corry</a> 和 Dmitry Olshansky）的實驗基於已停止的「<a href="https://github.com/dartino/sdk">Dartino</a>」運行時。這是一個針對小型設備進行了優化的實驗性 Dart 運行時。與使用 DartVM 作為基礎相比，它對我們有一些優勢：</p>
-<ul>
-<li>已經有一個由 <a href="https://medium.com/u/191fa0fcb4fe">Martin Kustermann</a> 構建的 Dartino 的實驗性 LLVM 後端。它沒有垃圾回收支援，因此在記憶體不足時會崩潰。</li>
-<li>Dartino 利用了 <a href="https://webdev.dartlang.org/tools/dart2js">Dart2JS</a> 的許多機制，因此它不需要完整的解析器、前端等。我們用作輸入的 Dartino 位元組碼已經降低了许多困難的 Dart 功能。例如，閉包是物件，可選參數已變成了不同版本的函數。</li>
-<li>我們都已經熟悉 Dartino。</li>
-<li>Dartino 附帶了一個相對完整的運行時，並且能夠運行大型應用程式，例如託管 Dart2JS。它沒有很多 Unix IO 支援，而且執行緒模型也不同，因此它不是一個直接替代品。</li>
-</ul>
-<h3 id="Dartino-中的垃圾回收"><a href="#Dartino-中的垃圾回收" class="headerlink" title="Dartino 中的垃圾回收"></a>Dartino 中的垃圾回收</h3><p>現有的 Dartino LLVM 實驗是在一段時間之前從 Dartino 分叉出來的，當時的垃圾回收非常簡單（半空間 <a href="https://en.wikipedia.org/wiki/Cheney's_algorithm">Cheney 收集器</a>，沒有分代，長時間暫停，2 倍記憶體佔用開銷）。我們從 Dartino 主分支中挑選了一些變更，以獲得更傳統的帶有寫入屏障的 2 代垃圾回收。沒有讀取屏障，收集是停止所有執行緒的，沒有併發垃圾回收（雖然 LLVM Statepoints 似乎確實支援這些功能，而且它們幾乎肯定被 Azul 在其閉源虛擬機器中使用）。</p>
-<p>我們沒有從較新的 Dartino 版本中挑選壓縮舊分代的支援。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/960/1*VqmfjhoN9cMWH0vz37zU6A.jpeg" />
-</figure>
-
-<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/964/1*pyM5bJo-_-i8Leum4yHPOQ.png" />
-</figure>
-
-<p>上面的流程顯示了從 Dart 原始碼到機器碼的路徑。在實際的實作中，第一部分將被基於「<a href="https://github.com/dart-lang/sdk/tree/master/pkg/kernel">kernel</a>」格式的內容替換（預先解析的 Dart 原始碼前端）。</p>
-<h4 id="翻譯成-LLVM-和高階優化"><a href="#翻譯成-LLVM-和高階優化" class="headerlink" title="翻譯成 LLVM 和高階優化"></a>翻譯成 LLVM 和高階優化</h4><p>llvm-codegen 連結到我們自己的 LLVM 副本，並執行高階優化。在此階段，LLVM 維持指標在垃圾回收過程中有效的假設，但指標使用非預設的「地址空間」標記，這禁止 LLVM 以在存在移動垃圾回收的情況下不正確的方式推理其位元模式。各種自訂的 LLVM 內建函數用於標記可能發生垃圾回收的點。</p>
-<p>由於標記指標，LLVM 位元組碼非常醜陋，有很多轉換和加法。因此，本文檔包含「LLVM 偽程式碼」，而不是真正的 .ll 檔案。如果您習慣於實際的 .ll 檔案，這看起來就像「寶貝的第一個 .ll 咿呀學語」，抱歉！以下程式碼表示 mem2reg 之後的動態分派，該 pass 將區域變數從堆疊提升到 <a href="https://en.wikipedia.org/wiki/Static_single_assignment_form">SSA</a> 暫存器中：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/2a556a8d39b25d686a2bc724b0a201cb/href">https://medium.com/media/2a556a8d39b25d686a2bc724b0a201cb/href</a></iframe>
-
-<p>在優化器運行後，上面的相當費力的查找已從迴圈中移除，只剩下調用指令。這是可能的，因為類別指標在 Dart 中是不可變的，並且我們已將各種中繼資料附加到載入指令（未顯示），包括 <code>invariant.load</code> 和 <code>never.faults</code>（後者是我們 <a href="https://github.com/ErikCorryGoogle/llvm">修補的 LLVM 版本</a> 的新增功能）。</p>
-<h4 id="降低"><a href="#降低" class="headerlink" title="降低"></a>降低</h4><p>一旦高階優化運行完成，我們將大多數內建函數降低為普通的 LLVM 指令。例如，寫入屏障簡化為一系列儲存（Dartino 使用卡片標記方案，這很大程度上歸功於 <a href="https://medium.com/u/f4d8d5c764a8">Urs</a> 的 <a href="http://hoelzle.org/publications/urs-thesis.pdf">博士論文</a> 第 6.2.3 節）。降低後，每個區域變數指標都在每個可能的垃圾回收點（基本上是每個調用）被一個不透明的內建函數重寫。這會抑制許多優化（這就是為什麼我們必須在降低之前進行優化 pass），但有兩個目的：</p>
-<ul>
-<li>內建函數稍後將用於生成堆疊映射，詳細說明堆疊上可垃圾回收指標的位置。</li>
-<li>SSA 值被分解為垃圾回收前和垃圾回收後的值，這使得垃圾回收對優化器可見，並防止無效的程式碼生成。</li>
-</ul>
-<p>調用現在看起來更像這樣（分派已從迴圈中提升出來，因此 %code 包含程式碼指標——迴圈未顯示）</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/706ab9a6a3bcade0d6dd9d9ebfa2b478/href">https://medium.com/media/706ab9a6a3bcade0d6dd9d9ebfa2b478/href</a></iframe>
-
-<p>轉換相當笨拙，在轉換後的調用中建立了一個特殊標記，並將其用作 <code>gc.result</code> 和 <code>gc.relocate</code> 調用中的參數。可垃圾回收指標仍然被特殊標記（使用非零地址空間，在上面的偽 LLVM 中未顯示），這在下一階段抑制了一些優化。</p>
-<h4 id="程式碼生成"><a href="#程式碼生成" class="headerlink" title="程式碼生成"></a>程式碼生成</h4><p>最後一步是程式碼生成，由 LLVM 程式 llc 執行。這一步可以使用完全未修補的 ToT LLVM 透過命令 <code>llc -O3</code> 完成。目前唯一支援實驗性垃圾回收內建函數的後端是 x64，但我們沒有看到任何將 ARM 支援加入和上游化的根本性障礙。動態分派調用站點現在看起來像：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/cd4cec4022d4c83b1a111e22469a344f/href">https://medium.com/media/cd4cec4022d4c83b1a111e22469a344f/href</a></iframe>
-
-<p>這使用 x64 的標準（主要是基於暫存器）調用約定。在每次調用之前，一堆暫存器會溢出到堆疊中，如果需要，垃圾回收可以在堆疊中移動它們。不支援被調用者儲存的可垃圾回收值（V8 和 DartVM 也不支援）。</p>
-<h3 id="效能"><a href="#效能" class="headerlink" title="效能"></a>效能</h3><p>Dartino 位元組碼在一個非常動態的型別環境中針對簡潔性和緊湊性進行了優化。在此分析中，我們嘗試展望一個使用強模式並且在編譯時知道型別的場景。在這種情況下，方法的分派和對物件上成員變數的存取將更簡單、更快。為了更接近這種情況，我們在生成 LLVM 程式碼時使用了一些全程式分析。</p>
-<p>最重要的結果是，如果只有少數類別具有方法 <code>foo()</code>，那麼我們會檢查這些類別並直接調用 <code>foo()</code> 方法。與某些類似虛擬函數表的分派機制不同，這讓 LLVM 可以在有意義的地方內聯方法。這是一個巨大的勝利，尤其是對於 <a href="https://www.dartlang.org/resources/dart-tips/dart-tips-ep-10">getter 和 setter</a>，這是 Dart 的一個很棒的功能。</p>
-<p>編譯器仍然必須處理許多動態語言問題，它大多數都能正確處理（請參閱下面的測試狀態部分）。特別是，整數可能會溢出並隨時變成真正的堆分配數字物件。再加上運算子的重載，這使得即使是簡單的 for 迴圈也相當複雜。更多的靜態分析可能會改善這一點。</p>
-<p>與真正的 DartVM 的一個區別是，我們不會檢查堆疊溢出，也不會在迴圈返回邊緣檢查執行緒中斷。根據 V8 的經驗，我們估計修復這個問題可能會損失大約 10% 的效能。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/600/1*_B_KUgeFwaeUxC97GBIHPw.png" />
-</figure>
-
-<p>我們與常規的 JIT DartVM 以及已為 <a href="https://flutter.io/">Flutter</a> 加入到 DartVM 中的新的提前編譯支援進行了比較。基準測試 <a href="https://github.com/dartino/sdk/tree/master/benchmarks">來自 Dartino</a>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/600/1*uB5TngqsrAvvzu_fr8KCdg.png" />
-</figure>
-
-<p>運行一個像 Hello World 這樣短暫的程式主要顯示啟動所需的時間。基於 JIT 的系統花費時間編譯程式碼，而這裡的兩個非 LLVM 解決方案都在啟動時反序列化資料堆。</p>
-<h3 id="效能結論"><a href="#效能結論" class="headerlink" title="效能結論"></a>效能結論</h3><p>我們的效能與 Flutter 現有的提前編譯技術相當（這是一個移動的目標——這些測量是在 2016 年 11 月下旬在一台強大的 64 位 Linux 工作站上進行的）。JIT 仍然遙遙領先。我們正在運行的 Dartino 分支的垃圾回收效能還沒有達到標準。</p>
-<p>我們還測量了啟動時間。Dartino-LLVM 為類別、常數和分派表生成靜態資料。這些資料由高度優化的 <a href="https://www.cs.virginia.edu/~dww4s/articles/ld_linux.html">ld.linux</a> 運行時連結器載入，它們的載入速度比目前的 Dart AOT 資料堆快照更快，從而為啟動提供了非常好的效能。對於啟動測試，CPU 調控器設定為「效能」。</p>
-<h3 id="關於相容性的說明"><a href="#關於相容性的說明" class="headerlink" title="關於相容性的說明"></a>關於相容性的說明</h3><p>在這項研究中，我們並沒有特別關注獲得 100% 的 Dart 相容性。證明「困難的事情」是可能的，例如垃圾回收和異常處理，就足夠了。在某些情況下，我們採用了一種捷徑，表明真正的解決方案是可能的，而無需浪費時間實際實作真正的解決方案。以下是一些我們妥協的地方：</p>
-<ul>
-<li>像 Dartino 一樣，我們沒有無限精度的整數。但是，我們確實會檢查所有整數運算是否溢出，並動態切換到裝箱數字表示形式（但是，裝箱表示形式只有 64 位，會換行）。</li>
-<li>在 no-such-method（本質上是一個失敗的型別檢查）上，我們沒有遵循完整的 Dart 語義，這包括調用 no-such-method 方法並檢查是否存在與缺少的方法同名的 getter，並返回一個帶有「call」方法的物件。但是，我們確實會在安全點（可以進行分配的點）拋出異常。</li>
-<li>我們不會在調用時檢查堆疊溢出，也不會在迴圈返回邊緣檢查中斷。LLVM 確實對此提供了實驗性支援。我們比較的解決方案確實支援這一點。V8 的經驗表明，修復這個問題可能會導致大約 10% 的效能下降。</li>
-<li>我們的前端編譯器是一個修改過的 Dart2JS。由於 Dartino 已停止，它沒有跟上語言的最新變化，因此有一些測試我們無法運行。</li>
-<li>Dart 異常處理已完全實作，除了與 no-such-method 相關的異常。為此，我們使用了 LLVM 內建的異常處理支援，這看起來足以勝任這項任務，並且與 Dart 的異常模型非常吻合（這與 LLVM 設計的 C++ 並沒有太大的不同）。</li>
-</ul>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/348/1*4bthU0tgek2j09dJuKn-aQ.png" />
-</figure>
-
-<p>總之，我們通過了 Dartino 可以通過的近 90% 的測試。在我們失敗的測試中，最大的原因是編譯器前端的問題和處理 no-such-method 事件的問題。</p>
-<p>在大約 11.6% 的失敗測試中，以下是它們失敗原因的細分：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/598/1*f_vtnoVYGfdXXqPUaGrOGw.png" />
-</figure>
-
-<h3 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h3><p>實驗性的 LLVM 垃圾回收支援似乎在 x64 上完全正常工作。</p>
-<p>原型的效能與我們更成熟的基於 DartVM 的提前編譯解決方案相當。</p>
-<p>對於效能分析，我們沒有使用 Dart 強模式，預計這將產生發揮 LLVM 優勢的優化機會。但是，我們正在使用一些封閉世界假設，我們認為這是現實的。</p>
-<p>我們能夠僅使用未修補的 LLVM ToT 版本將最後階段從 LLVM 位元組碼編譯為機器碼（在上面的流程圖中以藍色標記）。我們觀察到，在此階段執行的優化 (-O3) 並沒有導致任何錯誤編譯或垃圾回收問題。</p>
-<h3 id="未來"><a href="#未來" class="headerlink" title="未來"></a>未來</h3><p>關於如何以及是否將這種方法用於 Dart 或 Flutter 尚未做出決定，但以下是一些關於可以探索的有趣方向的隨機想法。</p>
-<ul>
-<li>擁有一種自定義的語言，而不是帶有控制代碼的 C++，來編寫運行時例程。後端將是帶有 Statepoint 的 LLVM。（目前的版本中有一個小的 Forth 實驗，但需要更強大的東西才能編寫非常簡單的原生例程）。</li>
-<li>包裝 64 位整數會產生什麼影響？</li>
-<li>我們如何使用全程式知識來生成程式碼，同時仍然允許並行編譯大型專案？</li>
-</ul>
-<h3 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h3><p>LLVM 垃圾回收支援 <a href="http://llvm.org/docs/Statepoints.html">http://llvm.org/docs/Statepoints.html</a><br>Dartino-LLVM 儲存庫 <a href="https://github.com/dartino/sdk/tree/llvm">https://github.com/dartino/sdk/tree/llvm</a><br>修改後的 LLVM 儲存庫 <a href="https://github.com/ErikCorryGoogle/llvm">https://github.com/ErikCorryGoogle/llvm</a><br>Urs Hölzle 博士論文： <a href="http://hoelzle.org/publications/urs-thesis.pdf">http://hoelzle.org/publications/urs-thesis.pdf</a><br>LLV8： <a href="https://github.com/ispras/llv8">https://github.com/ispras/llv8</a></p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b82e83f99a70" width="1" height="1"><hr><p><a href="https://medium.com/dartlang/dart-on-llvm-b82e83f99a70">基於 LLVM 的 Dart</a> 最初發佈在 <a href="https://medium.com/dartlang">dartlang</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1810,7 +1607,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1846,7 +1643,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

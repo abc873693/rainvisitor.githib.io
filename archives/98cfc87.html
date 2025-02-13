@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Flutter 3.29 的新功能    提升跨平台的效能和保真度簡介深入了解 Flutter 3.29！此版本改進了開發並提升了效能，其中包括對 Impeller、Cupertino、DevTools 等的更新。Flutter 3.29 在此版本週期中有 104 位獨特的作者貢獻，展現了社群的奉獻精神。讓我們一起探索新功能！ 架構Cu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】What’s new in Flutter 3.29">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/98cfc87.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 Flutter 3.29 的新功能    提升跨平台的效能和保真度簡介深入了解 Flutter 3.29！此版本改進了開發並提升了效能，其中包括對 Impeller、Cupertino、DevTools 等的更新。Flutter 3.29 在此版本週期中有 104 位獨特的作者貢獻，展現了社群的奉獻精神。讓我們一起探索新功能！ 架構Cu">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*-XHpdhmBoEU-K3pSPWTX3g.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/756/0*QDKLR7NHxkMNHUYV">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/756/0*7a_CUVACLu_PiizR">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*9o5hT9CkjtAs9PsH">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/221/0*wkUFtSuMJHMV7VBJ">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*R83UkKDD_CWQyHJCbiEUoQ.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*RfA62aWh5rI6v1S7zGzerw.png">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/750/0*Zz4XclkgqvYfadFw">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/0*4UHEVkh3Lnmhzzfa">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/770/0*HAZCXocwTzLyq3iO">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/800/0*IhJCAxTPoV0EOc9I">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*RP8usLpbhUNSCOhS">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/918/0*6P3X5mGDk25AoIW6">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*u75a-VoDr43H_xxK">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/386/0*BcgxalxFMTEB_RFP">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/763/0*mIvmDgvoydaAWE05">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*Mk6_aE2XEiK3Iq_H-q1L5Q.jpeg">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f90c380c2317">
+<meta property="article:published_time" content="2025-02-12T11:09:57.000Z">
+<meta property="article:modified_time" content="2025-02-13T16:37:33.519Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="announcements">
+<meta property="article:tag" content="flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*-XHpdhmBoEU-K3pSPWTX3g.png">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/98cfc87.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】What’s new in Flutter 3.29 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/98cfc87.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】What’s new in Flutter 3.29
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-12 19:09:57" itemprop="dateCreated datePublished" datetime="2025-02-12T19:09:57+08:00">2025-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-14 00:37:33" itemprop="dateModified" datetime="2025-02-14T00:37:33+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Flutter-3-29-的新功能"><a href="#Flutter-3-29-的新功能" class="headerlink" title="Flutter 3.29 的新功能"></a>Flutter 3.29 的新功能</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-XHpdhmBoEU-K3pSPWTX3g.png" />
+</figure>
+
+<h4 id="提升跨平台的效能和保真度"><a href="#提升跨平台的效能和保真度" class="headerlink" title="提升跨平台的效能和保真度"></a>提升跨平台的效能和保真度</h4><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><p>深入了解 Flutter 3.29！此版本改進了開發並提升了效能，其中包括對 Impeller、Cupertino、DevTools 等的更新。Flutter 3.29 在此版本週期中有 104 位獨特的作者貢獻，展現了社群的奉獻精神。讓我們一起探索新功能！</p>
+<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><h4 id="Cupertino-更新"><a href="#Cupertino-更新" class="headerlink" title="Cupertino 更新"></a>Cupertino 更新</h4><p><code>CupertinoNavigationBar</code> 和 <code>CupertinoSliverNavigationBar</code> 現在接受一個 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar/bottom.html"><code>bottom</code> widget</a>，通常是一個搜尋欄位或分段控制項。</p>
+<p>在 <code>CupertinoSliverNavigationBar</code> 中，可以使用 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoSliverNavigationBar/bottomMode.html"><code>bottomMode</code> 屬性</a> 來設定這個底部 widget，使其自動調整大小直到隱藏，或在捲軸導航欄時始終顯示。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/756/0*QDKLR7NHxkMNHUYV" />
+<figcaption>.automatic</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/756/0*7a_CUVACLu_PiizR" />
+<figcaption>.always</figcaption>
+</figure>
+
+<p>導航欄的其他變更包括：</p>
+<ul>
+<li>部分捲軸時，<a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar-class.html">CupertinoSliverNavigationBar</a> 會在其展開和摺疊狀態之間快速切換。</li>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar/CupertinoNavigationBar.large.html">CupertinoNavigationBar.large</a> 建構函式允許靜態導航欄顯示大標題。</li>
+<li>感謝社群貢獻者 <a href="http://github.com/davidhicks980">davidhicks980</a>，Cupertino 彈出視窗現在具有 <a href="https://github.com/flutter/flutter/pull/159272">更鮮豔的背景模糊</a>，從而提高了原生保真度。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*9o5hT9CkjtAs9PsH" />
+</figure>
+
+<ul>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoSheetRoute-class.html">CupertinoSheetRoute</a> 顯示一個 iOS 風格的模態表單視圖，可以使用拖動關閉手勢移除。</li>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/showCupertinoSheet.html">showCupertinoSheet</a> 函式顯示帶有內建巢狀導航的常用設定的表單。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/221/0*wkUFtSuMJHMV7VBJ" />
+</figure>
+
+<ul>
+<li>社群成員 <a href="http://github.com/thejitenpatel">thejitenpatel</a> 改進了 <a href="https://api.flutter.dev/flutter/cupertino/CupertinoAlertDialog-class.html">CupertinoAlertDialog</a> 在深色模式下的原生保真度，如下面的螢幕截圖所示：</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*R83UkKDD_CWQyHJCbiEUoQ.png" />
+<figcaption>改進前 - 左側是原生視圖，右側是 Flutter 視圖</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*RfA62aWh5rI6v1S7zGzerw.png" />
+<figcaption>改進後 - 左側是原生視圖，右側是 Flutter 視圖</figcaption>
+</figure>
+
+<ul>
+<li>反轉時，Flutter 的文字選取控制碼會在 iOS 上交換順序，文字選取放大鏡的邊框顏色現在與目前主題相符。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/750/0*Zz4XclkgqvYfadFw" />
+</figure>
+
+<h4 id="Material"><a href="#Material" class="headerlink" title="Material"></a>Material</h4><ul>
+<li><a href="https://main-api.flutter.dev/flutter/material/FadeForwardsPageTransitionsBuilder-class.html">FadeForwardsPageTransitionsBuilder</a> 是新的 Material 3 (M3) 頁面轉場建構器，旨在與 Android 的最新頁面轉場行為相符。在轉場期間，進入的頁面從右向左滑入的同時淡入，而離開的頁面從右向左滑出的同時淡出。這個新的轉場還解決了之前由 <code>ZoomPageTransitionsBuilder</code> 引起的效能問題。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*4UHEVkh3Lnmhzzfa" />
+</figure>
+
+<ul>
+<li>此版本更新了 <code>CircularProgressIndicator</code> 和 <code>LinearProgressIndicator</code>，以符合最新的 Material Design 3 規範。要使用更新的樣式，請將 <code>year2023</code> 屬性設定為 <code>false</code>，或將 <a href="https://main-api.flutter.dev/flutter/material/ProgressIndicatorThemeData/year2023.html">ProgressIndicatorThemeData.year2023</a> 設定為 <code>false</code>。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/770/0*HAZCXocwTzLyq3iO" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*IhJCAxTPoV0EOc9I" />
+</figure>
+
+<ul>
+<li>此版本還引入了最新的 Material 3 Slider 設計，其中包含更新的軌跡和控制碼形狀。Slider 預設為先前的 Material 3 樣式。要啟用最新設計，請將 <code>year2023</code> 設定為 <code>false</code>，或將 <a href="https://main-api.flutter.dev/flutter/material/SliderThemeData/year2023.html">SliderThemeData.year2023</a> 設定為 <code>false</code>。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*RP8usLpbhUNSCOhS" />
+</figure>
+
+<p>此版本包含 Material 函式庫的多個錯誤修復和功能增強。值得注意的修復包括：</p>
+<ul>
+<li>鍵盤導航現在可以正確觸發 <a href="https://main-api.flutter.dev/flutter/material/DropdownMenu/onSelected.html">DropdownMenu.onSelected</a> 回調。</li>
+<li>改進的 TabBar 彈性標籤動畫。</li>
+<li>改進的 RangeSlider 與分割的拇指對齊、拇指填充和圓角。</li>
+</ul>
+<p>除了錯誤修復之外，此版本還增強了多個 Material 元件的自訂性。<code>mouseCursor</code> 屬性已加入到 <code>Chip</code>、<code>Tooltip</code> 和 <code>ReorderableListView</code> 中，允許在懸停時使用自訂滑鼠游標。</p>
+<h4 id="文字選取"><a href="#文字選取" class="headerlink" title="文字選取"></a>文字選取</h4><p>Flutter 現在透過 <a href="https://main-api.flutter.dev/flutter/widgets/SelectionListener-class.html">SelectionListener</a> 和 <code>SelectionListenerNotifier</code> 提供有關 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 下選取範圍的更多資訊。透過 <code>SelectionListenerNotifier</code> 提供的 <a href="https://main-api.flutter.dev/flutter/widgets/SelectionDetails-class.html">SelectionDetails</a> 物件，您可以獲得選取範圍的開始和結束偏移量（相對於包裝的子樹），並指示是否存在選取範圍以及是否已摺疊。對於您想要監聽的 widget 或可選取的子樹，請使用 <code>SelectionListener</code> widget 包裝它。</p>
+<p>Flutter 還透過 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatusScope-class.html">SelectableRegionSelectionStatusScope</a> 繼承 widget 提供有關 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 狀態的資訊。您可以使用 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatusScope/maybeOf.html">SelectableRegionSelectionStatusScope.maybeOf(context)</a> 並檢查 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatus.html">SelectableRegionSelectionStatus</a> 來檢查父 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 是否正在主動變更或已完成選取。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/918/0*6P3X5mGDk25AoIW6" />
+</figure>
+
+<h4 id="輔助功能"><a href="#輔助功能" class="headerlink" title="輔助功能"></a>輔助功能</h4><p>此版本改進了多個 Material widget 的輔助功能：</p>
+<ul>
+<li>啟用螢幕閱讀器時，<code>Form</code> widget 只會播報它遇到的第一個錯誤。</li>
+<li>螢幕閱讀器現在會播報下拉式選單的正確標籤。</li>
+</ul>
+<h3 id="網頁"><a href="#網頁" class="headerlink" title="網頁"></a>網頁</h3><p>Flutter 的 WebAssembly (wasm) 支援在 2024 年 5 月首次發佈時，需要您使用特殊的 HTTP 回應標頭來託管 Flutter 應用程式。現在，此要求已放寬。雖然更新標頭允許使用 wasm 建構的 Flutter 網頁應用程式以多執行緒運行，但使用預設標頭現在允許應用程式以 wasm 運行，但僅限於單執行緒。</p>
+<p>我們已經修復了 WebGL 後端中與圖片相關的多個問題，但最重要的是：</p>
+<ul>
+<li><a href="https://github.com/flutter/engine/pull/53201">非同步解碼 UI 執行緒之外的圖片以避免卡頓</a></li>
+<li><a href="https://github.com/flutter/flutter/pull/157755">使 Image.network 與 CORS 圖片開箱即用</a></li>
+</ul>
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><h4 id="Impeller-Vulkan-穩定性"><a href="#Impeller-Vulkan-穩定性" class="headerlink" title="Impeller Vulkan 穩定性"></a>Impeller Vulkan 穩定性</h4><p>感謝 3.27 beta 和穩定版本的回饋和錯誤報告，我們對 Vulkan 後端進行了許多正確性和效能方面的改進，包括：</p>
+<ul>
+<li>修復了許多使用者在舊版 Vulkan 相容設備上報告的可重現閃爍和視覺抖動。</li>
+<li>禁用了 Android 硬體緩衝區交換鏈。此功能已放置在功能標記後面，直到確定它在所有 Android 設備上都能正常工作。</li>
+<li>大量的黑屏和崩潰報告是由於在聯發科&#x2F;PowerVR soc 上使用 Vulkan 造成的，現在已停用。這些設備現在只使用 Impeller OpenGLES（見下文）。</li>
+<li>Android 模擬器已更新為使用 Impeller GLES 後端。</li>
+</ul>
+<h4 id="Impeller-OpenGLES"><a href="#Impeller-OpenGLES" class="headerlink" title="Impeller OpenGLES"></a>Impeller OpenGLES</h4><p>在 3.29 中，沒有功能性 Vulkan 驅動程式的 Android 設備將會回退到在 OpenGLES 上運行的 Impeller，而不是使用 Skia。此行為預設啟用，無需設定。這使得 Impeller 對 Android 的支援涵蓋了 Flutter 支援的所有 Android 設備的 100%。</p>
+<h4 id="iOS-上的-Impeller"><a href="#iOS-上的-Impeller" class="headerlink" title="iOS 上的 Impeller"></a>iOS 上的 Impeller</h4><p>Skia 支援已從 iOS 後端移除，<code>FLTEnableImpeller</code> 選擇不使用標記不再有效。隨著我們開始從 iOS 建構中移除 Skia 元件，預計未來版本中二進位制大小會進一步縮小。</p>
+<h4 id="新功能"><a href="#新功能" class="headerlink" title="新功能"></a>新功能</h4><p>此版本包含許多利用 Impeller 後端的新功能。</p>
+<h4 id="背景濾鏡優化"><a href="#背景濾鏡優化" class="headerlink" title="背景濾鏡優化"></a>背景濾鏡優化</h4><p>顯示多個背景濾鏡的應用程式現在可以使用新的 widget <code>BackdropGroup</code> 和新的 <code>BackdropFilter.grouped</code> 建構函式。這些可以比 Skia 後端進一步提高多個模糊的效能。範例請參考 <a href="https://github.com/flutter/flutter/blob/flutter-3.29-candidate.0/packages/flutter/lib/src/widgets/basic.dart#L502">basic.dart</a> 原始碼。</p>
+<h4 id="ImageFilter-shader"><a href="#ImageFilter-shader" class="headerlink" title="ImageFilter.shader"></a>ImageFilter.shader</h4><p>新的 <code>ImageFilter</code> 建構函式允許將自訂著色器應用於任何子 widget。這提供了與 <code>package:flutter_shaders</code> 中的 <code>AnimatedSampler</code> widget 類似的功能，不同之處在於它也適用於背景濾鏡。範例請參考 <a href="https://github.com/flutter/flutter/blob/flutter-3.29-candidate.0/engine/src/flutter/lib/ui/painting.dart#L4239">painting.dart</a> 原始碼。</p>
+<h4 id="Android-iOS-上的-Dart-執行緒變更"><a href="#Android-iOS-上的-Dart-執行緒變更" class="headerlink" title="Android&#x2F;iOS 上的 Dart 執行緒變更"></a>Android&#x2F;iOS 上的 Dart 執行緒變更</h4><p>以前，Flutter 在與平台主執行緒不同的執行緒（UI 執行緒）上執行 Dart 程式碼。如果平台和 UI 執行緒都被佔用，這允許更高的理論吞吐量，但代價是大多數平台互操作都需要序列化和非同步訊息傳遞。這種架構還會對文字輸入、輔助功能、Plugin 等產生連鎖反應。</p>
+<p>從 3.29 開始，Android 和 iOS 上的 Flutter 在應用程式的主執行緒上執行 Dart 程式碼，不再有單獨的 UI 執行緒。這是一系列改進行動平台上平台互操作性變更的第一部分，因為它允許在沒有序列化和訊息傳遞開銷的情況下與平台進行同步調用。</p>
+<h3 id="DevTools-和-IDE"><a href="#DevTools-和-IDE" class="headerlink" title="DevTools 和 IDE"></a>DevTools 和 IDE</h3><h4 id="新的-DevTools-檢查器"><a href="#新的-DevTools-檢查器" class="headerlink" title="新的 DevTools 檢查器"></a>新的 DevTools 檢查器</h4><p>新的 DevTools 檢查器預設為所有使用者啟用。新的檢查器具有簡潔的 widget 樹、新的 widget 屬性視圖，以及一個選項，可以自動更新以響應熱重載和導航事件。更多詳情，請造訪 docs.flutter.dev 上的 <a href="https://docs.flutter.dev/tools/devtools/inspector#new">新的檢查器頁面</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*u75a-VoDr43H_xxK" />
+</figure>
+
+<h4 id="設備上-widget-選取的變更"><a href="#設備上-widget-選取的變更" class="headerlink" title="設備上 widget 選取的變更"></a>設備上 widget 選取的變更</h4><p>從 DevTools 檢查器啟用 widget 選取模式後，設備上的任何選取都將被視為 widget 選取，直到您退出 widget 選取模式為止。以前，在初始 widget 選取之後，您需要點擊設備上的<strong>選取 widget</strong> 按鈕才能選取另一個 widget。現在，設備上有一個按鈕，可以用於快速退出 widget 選取模式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/386/0*BcgxalxFMTEB_RFP" />
+</figure>
+
+<h4 id="記錄工具改進"><a href="#記錄工具改進" class="headerlink" title="記錄工具改進"></a>記錄工具改進</h4><p>DevTools 中的記錄工具已透過以下方式進行改進：</p>
+<ul>
+<li>記錄包含並顯示更多中繼資料，例如記錄嚴重性、類別、區域和隔離區。</li>
+<li>加入依記錄嚴重性級別進行篩選的支援。</li>
+<li>效能和初始載入時間的顯著改進。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/763/0*mIvmDgvoydaAWE05" />
+</figure>
+
+<p>這些只是此版本中的一些亮點。要進一步了解 Flutter 3.29 中包含的所有更新，請查看 DevTools <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.41.0">2.41.0</a> 和 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.42.2">2.42.2</a> 的發行說明。</p>
+<h3 id="重大變更和棄用"><a href="#重大變更和棄用" class="headerlink" title="重大變更和棄用"></a>重大變更和棄用</h3><h4 id="停止套件支援"><a href="#停止套件支援" class="headerlink" title="停止套件支援"></a>停止套件支援</h4><p>我們計劃在 2025 年 4 月 30 日停止對以下套件的支援：</p>
+<ul>
+<li><code>ios_platform_images</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162961">#162961</a></li>
+<li><code>css_colors</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162962">#162962</a></li>
+<li><code>palette_generator</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162963">#162963</a></li>
+<li><code>flutter_image</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162964">#162964</a></li>
+<li><code>flutter_adaptive_scaffold</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162965">#162965</a></li>
+<li><code>flutter_markdown</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162966">#162966</a></li>
+</ul>
+<p>我們鼓勵社群中任何感興趣的成員協調建立和維護分支。上面提供了用於討論和協調的議題連結。</p>
+<h4 id="移除基於腳本的-Flutter-Gradle-Plugin-應用"><a href="#移除基於腳本的-Flutter-Gradle-Plugin-應用" class="headerlink" title="移除基於腳本的 Flutter Gradle Plugin 應用"></a>移除基於腳本的 Flutter Gradle Plugin 應用</h4><p>移除基於腳本的 Flutter Gradle Plugin 應用，自 3.19 起已棄用。這支援將 Flutter Gradle Plugin 從 Groovy 轉換為 Kotlin，並將其遷移到使用 AGP 的公共 API。預計這項工作可以減少發佈新的 AGP 版本時損壞的頻率，並減少基於建構的回歸。</p>
+<p>在 3.16 之前建立且尚未遷移的專案可能會受到影響。如果 flutter 工具在建構您的專案時記錄警告：「您正在強制性地應用 Flutter 的主要 Gradle Plugin」，則您會受到影響，並且需要根據 docs.flutter.dev 上的 <a href="https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply">Flutter Gradle Plugin 的強制性應用已棄用</a> 進行遷移。</p>
+<h4 id="移除網頁-HTML-渲染器"><a href="#移除網頁-HTML-渲染器" class="headerlink" title="移除網頁 HTML 渲染器"></a>移除網頁 HTML 渲染器</h4><p>這是第一個從 Flutter 網頁中移除 HTML 渲染器的版本。更多資訊，請造訪 <a href="https://docs.google.com/document/d/1DGamHsa2lz_Qtgfrfa3j3fRaEopJXc7tCFVM1TQlck8/edit?resourcekey=0-IjkqrCoo_EcRRS2bPYKI8w&tab=t.0">計劃棄用並移除 Flutter 網頁中的 HTML 渲染器</a> 和 <a href="https://github.com/flutter/flutter/issues/145954">議題 145584：計劃棄用並移除 Flutter 網頁中的 HTML 渲染器</a>。</p>
+<h4 id="網頁圖片處理"><a href="#網頁圖片處理" class="headerlink" title="網頁圖片處理"></a>網頁圖片處理</h4><p>此版本還讓您可以 <a href="https://github.com/flutter/flutter/pull/159917">更好地控制圖片在網頁上的顯示方式</a>。在先前的 beta 版本 (3.28) 中，當發生 CORS 錯誤時，<code>Image</code> widget 會自動使用 <code>&lt;img&gt;</code> 元素來顯示來自 URL 的圖片。這可能會導致不一致的行為。現在，<code>webHtmlElementStrategy</code> 標記可讓您選擇何時使用 <code>&lt;img&gt;</code> 元素。雖然此回退預設停用，但如果您的應用程式需要，您仍然可以啟用回退，甚至可以優先使用 <code>&lt;img&gt;</code> 元素。</p>
+<h4 id="Material-標準化"><a href="#Material-標準化" class="headerlink" title="Material 標準化"></a>Material 標準化</h4><p>作為我們正在進行的 Material 主題標準化專案的一部分，此版本棄用了 <code>ThemeData.dialogBackgroundColor</code>，轉而使用 <code>DialogThemeData.backgroundColor</code>。您可以使用 <code>dart fix</code> 命令來遷移受影響的程式碼。</p>
+<p>同樣在 Material 中，在將 <code>ButtonStyleButton.iconAlignment</code> 屬性加入到 <code>ButtonStyle</code> 和相關的 <code>styleFrom</code> 方法之後，該屬性已棄用。</p>
+<p>此版本中的所有 <a href="https://docs.flutter.dev/release/breaking-changes">重大變更</a>，請參閱網站重大變更頁面上的完整遷移指南列表。</p>
+<p>與往常一樣，非常感謝社群為 <a href="https://github.com/flutter/tests/blob/master/README.md">貢獻測試</a> - 這些測試幫助我們識別重大變更。要進一步了解，請查看 <a href="https://github.com/flutter/flutter/wiki/Tree-hygiene#handling-breaking-changes">Flutter 的重大變更政策</a>。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Mk6_aE2XEiK3Iq_H-q1L5Q.jpeg" />
+</figure>
+
+<p>感謝 Flutter 社群讓此版本成為可能！我們對未來感到興奮，並迫不及待地想看到您的應用程式。查看 <a href="https://docs.flutter.dev/release/release-notes/release-notes-3.29.0">發行說明和變更日誌</a>，然後運行 <code>flutter upgrade</code> 並開始建構吧！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f90c380c2317" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-29-f90c380c2317">Flutter 3.29 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/announcements/" rel="tag"># announcements</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/131966d5.html" rel="prev" title="【文章翻譯】An update on Dart macros & data serialization">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】An update on Dart macros & data serialization
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/archives/1c16c151.html" rel="next" title="【文章翻譯】Announcing Dart 3.7">
+      【文章翻譯】Announcing Dart 3.7 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flutter-3-29-%E7%9A%84%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">1.</span> <span class="nav-text">Flutter 3.29 的新功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%90%E5%8D%87%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%9A%84%E6%95%88%E8%83%BD%E5%92%8C%E4%BF%9D%E7%9C%9F%E5%BA%A6"><span class="nav-number">1.0.1.</span> <span class="nav-text">提升跨平台的效能和保真度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B0%A1%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">簡介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%A7%8B"><span class="nav-number">1.2.</span> <span class="nav-text">架構</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cupertino-%E6%9B%B4%E6%96%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">Cupertino 更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Material"><span class="nav-number">1.2.2.</span> <span class="nav-text">Material</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E5%AD%97%E9%81%B8%E5%8F%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">文字選取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BC%94%E5%8A%A9%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.4.</span> <span class="nav-text">輔助功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B6%B2%E9%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">網頁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E6%93%8E"><span class="nav-number">1.4.</span> <span class="nav-text">引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Impeller-Vulkan-%E7%A9%A9%E5%AE%9A%E6%80%A7"><span class="nav-number">1.4.1.</span> <span class="nav-text">Impeller Vulkan 穩定性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Impeller-OpenGLES"><span class="nav-number">1.4.2.</span> <span class="nav-text">Impeller OpenGLES</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#iOS-%E4%B8%8A%E7%9A%84-Impeller"><span class="nav-number">1.4.3.</span> <span class="nav-text">iOS 上的 Impeller</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">1.4.4.</span> <span class="nav-text">新功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E6%BF%BE%E9%8F%A1%E5%84%AA%E5%8C%96"><span class="nav-number">1.4.5.</span> <span class="nav-text">背景濾鏡優化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ImageFilter-shader"><span class="nav-number">1.4.6.</span> <span class="nav-text">ImageFilter.shader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Android-iOS-%E4%B8%8A%E7%9A%84-Dart-%E5%9F%B7%E8%A1%8C%E7%B7%92%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.4.7.</span> <span class="nav-text">Android&#x2F;iOS 上的 Dart 執行緒變更</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DevTools-%E5%92%8C-IDE"><span class="nav-number">1.5.</span> <span class="nav-text">DevTools 和 IDE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E7%9A%84-DevTools-%E6%AA%A2%E6%9F%A5%E5%99%A8"><span class="nav-number">1.5.1.</span> <span class="nav-text">新的 DevTools 檢查器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%AD%E5%82%99%E4%B8%8A-widget-%E9%81%B8%E5%8F%96%E7%9A%84%E8%AE%8A%E6%9B%B4"><span class="nav-number">1.5.2.</span> <span class="nav-text">設備上 widget 選取的變更</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A8%98%E9%8C%84%E5%B7%A5%E5%85%B7%E6%94%B9%E9%80%B2"><span class="nav-number">1.5.3.</span> <span class="nav-text">記錄工具改進</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%A7%E8%AE%8A%E6%9B%B4%E5%92%8C%E6%A3%84%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text">重大變更和棄用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E5%A5%97%E4%BB%B6%E6%94%AF%E6%8F%B4"><span class="nav-number">1.6.1.</span> <span class="nav-text">停止套件支援</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E5%9F%BA%E6%96%BC%E8%85%B3%E6%9C%AC%E7%9A%84-Flutter-Gradle-Plugin-%E6%87%89%E7%94%A8"><span class="nav-number">1.6.2.</span> <span class="nav-text">移除基於腳本的 Flutter Gradle Plugin 應用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E9%99%A4%E7%B6%B2%E9%A0%81-HTML-%E6%B8%B2%E6%9F%93%E5%99%A8"><span class="nav-number">1.6.3.</span> <span class="nav-text">移除網頁 HTML 渲染器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B6%B2%E9%A0%81%E5%9C%96%E7%89%87%E8%99%95%E7%90%86"><span class="nav-number">1.6.4.</span> <span class="nav-text">網頁圖片處理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Material-%E6%A8%99%E6%BA%96%E5%8C%96"><span class="nav-number">1.6.5.</span> <span class="nav-text">Material 標準化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B5%90%E8%AA%9E"><span class="nav-number">1.7.</span> <span class="nav-text">結語</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

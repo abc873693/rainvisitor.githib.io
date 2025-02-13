@@ -146,6 +146,572 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/14c78956.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/14c78956.html" class="post-title-link" itemprop="url">【文章翻譯】Flutter 2023 Q1 survey — API breaking changes, deep linking, and more</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-30 00:10:15" itemprop="dateCreated datePublished" datetime="2023-06-30T00:10:15+08:00">2023-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Flutter-2023-年第一季調查：API-重大變更、深度連結等"><a href="#Flutter-2023-年第一季調查：API-重大變更、深度連結等" class="headerlink" title="Flutter 2023 年第一季調查：API 重大變更、深度連結等"></a>Flutter 2023 年第一季調查：API 重大變更、深度連結等</h2><p>Flutter 團隊自 2018 年發佈 1.0 版本以來，一直執行季度使用者調查計畫。第 19 次調查 <a href="https://twitter.com/FlutterDev/status/1630674202297610240">在 2023 年第一季宣布</a>，在為期 14 天的窗口內收集了 13,378 份回覆。調查旨在從 Flutter 開發人員那裡收集及時的回饋，其中包括關於以下主題的問題：</p>
+<ul>
+<li>Flutter 的感知成長</li>
+<li>API 重大變更</li>
+<li>深度連結</li>
+</ul>
+<p>總體而言，93% 的受訪者表示他們對 Flutter 感到滿意（有點滿意 + 非常滿意），其中 55% 表示非常滿意。這個數字自 2022 年 8 月以來一直保持一致。值得注意的是，開發人員對 Flutter 的滿意度仍然很高，因為在這個時間段內，使用者人數增加了 24%。</p>
+<h3 id="Flutter-的感知成長"><a href="#Flutter-的感知成長" class="headerlink" title="Flutter 的感知成長"></a>Flutter 的感知成長</h3><p>在本節中，我們詢問了受訪者對 Flutter 最近成長的看法。我們相信開發人員對 Flutter 成長的認知會影響他們是否繼續使用它，我們想了解我們的認知是否與使用者的認知一致。</p>
+<p>當我們要求受訪者評估最近的成長時，80% 的人表示 Flutter 的普及度成長很快，如下圖所示。這與我們的資料相符，資料顯示，如前所述，過去 3 個季度的月活躍使用者人數增加了 24%。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*EvfHfmRcMbEyHcAh" />
+<figcaption><em>42% 的人表示 Flutter 的成長非常快，38% 的人表示有點快</em></figcaption>
+</figure>
+
+<p>根據 80% 在前一個問題中選擇「快」的受訪者（N&#x3D;2877）的說法，Flutter 團隊的改進是 Flutter 感知快速成長的主要因素（63%）。其他值得注意的因素包括學習資源（57%）、與 Flutter 協同工作的工具和服務（51%）以及全球線上社群（50%）。令人欣慰的是，我們了解到 Flutter 團隊可以改進的領域也促進了感知的成長。我們將繼續推出新的影片，與其他團隊合作改進工具，並支援健康的社群。</p>
+<p>對於那些表示該技術成長緩慢的人（4%，或 137 人），最常見的原因是缺乏工作職位（66%）和知名公司採用（55%）。Flutter 的開發人員關係團隊發現，一些招聘經理難以找到合格的候選人，而求職者難以提升技能以滿足招聘公司的要求。為了彌合這一差距，Flutter 團隊計畫致力於更多資源，幫助 Flutter 開發人員在努力找工作時提升技能。我們還將繼續分享 <a href="https://youtu.be/bHg6TzuP9bc">開發者故事</a>，讓您了解其他人是如何將 Flutter 用於他們的生產應用程式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*zeJT-J_oHhKYFcem" />
+<figcaption><em>認為 Flutter 最近成長快速或緩慢的原因</em></figcaption>
+</figure>
+
+<h3 id="API-重大變更"><a href="#API-重大變更" class="headerlink" title="API 重大變更"></a>API 重大變更</h3><p>重大變更是指引入與 API 舊版本不兼容的新行為的變化。重大變更幫助我們保持 API 的乾淨和一致，但開發人員需要更新他們之前編寫的代碼以使用新的行為，無論是重大變更（例如在 Dart 中引入空安全），還是小變更（例如 <code>GestureRecognizer.kind()</code> 的棄用）。</p>
+<p>為了減少與此過程相關的痛苦，Flutter 一直在各個地方宣布重大變更（例如 <a href="https://docs.flutter.dev/release/breaking-changes">Flutter 網站</a>，以及 <a href="https://groups.google.com/forum/#!forum/flutter-announce">Flutter 公告</a> 或 <a href="https://groups.google.com/a/dartlang.org/g/announce">Dart 公告</a> Google 群組）。在每個穩定版本中，工具都會更新以在適當時顯示警告訊息，並在可能的情況下提供遷移工具（Flutter 修復、<code>dart fix</code> 命令）。Flutter 開發者 2019 年調查詢問了開發者對重大變更的看法，以確保 API 更乾淨。總體而言，開發者喜歡這個想法，但我們被要求牢記以下事項：</p>
+<ul>
+<li>慢慢地變更</li>
+<li>提供一個良好的遷移工具</li>
+<li>提供文件、範例、教學課程、變更日誌</li>
+<li>清楚地解釋好處</li>
+<li>廣泛地宣布</li>
+</ul>
+<p>由於 Flutter 從那時起經歷了顯著的成長（開發者數量和 API 大小都有所增加），我們想再次調查您，並決定是否有必要更新我們的政策。</p>
+<p>總體而言，在過去 12 個月內受到重大變更影響的開發人員比例從 4 年前的 30% 上升到 51%。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*BujM3j2SMg1qp3hi" />
+<figcaption><em>51% 的開發人員在過去 12 個月內經歷過重大變更</em></figcaption>
+</figure>
+
+<p>44% 的受訪者受到重大變更影響，他們對必須不斷更新代碼感到沮喪，這也高於 2019 年（32%）。但是，與 2019 年（47%）相比，大多數人同意這些變更使代碼更乾淨（67%）。此外，大多數受訪者同意這些變更很有價值（63%），這比 2019 年的 49% 有所增加。</p>
+<p>這表明我們引入的變更的複雜性似乎有所增加，但我們成功地讓這些變更為開發人員帶來了價值。鑑於總體而言 60% 的受訪者認為重大變更的好處多於困擾（而 11% 的人持相反觀點），我們了解到這些變更對 Flutter 開發人員來說在很大程度上是有益的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*YjPyKLHdN6xW-4-3" />
+<figcaption><em>對重大變更的看法</em></figcaption>
+</figure>
+
+<p>我們還詢問了您對重大變更處理方式的滿意度。我們了解到，在我們努力的各個方面，滿意度評級都是一致的。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LreVRDXghbLuzKDR" />
+<figcaption><em>對 Flutter 團隊處理重大變更的評級</em></figcaption>
+</figure>
+
+<p>鑑於此，我們決定加倍努力執行我們的現行政策。我們計畫找到更多方法自動化遷移，改善文件的可發現性，並更廣泛地傳達我們所做變更的價值和理由。</p>
+<p>我們預計在幾年後再次重新審視這一點。隨著 Flutter 的成熟，我們相信開發人員可能會從重視重大變更中引入的改進轉變為重視永遠不會破壞的 API 的穩定性。我們希望充分利用社群了解重大變更價值的時間，但如果這種態度發生變化，則不要讓 Flutter 開發者群體感到沮喪。</p>
+<h3 id="深度連結"><a href="#深度連結" class="headerlink" title="深度連結"></a>深度連結</h3><p>深度連結將使用者直接傳送到應用程式內位置，而不是傳送到網站或應用程式商店位置。由於這對開發人員來說是一個有用的功能，我們想測量對這個功能的認知，了解開發人員如何實作這個功能，並評估建立深度連結的難度，以便我們能夠更好地支援這個功能。</p>
+<p>首先，我們了解到大約一半的受訪者（55%）知道深度連結。在這些人中，大約 50% 嘗試在他們的 Android 應用程式中實作深度連結，大約 39% 嘗試在他們的 iOS 應用程式中實作深度連結，如下圖所示。在兩個平台上，不到 5% 的人報告他們在實作這個功能時遇到了問題。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*dQYszaV1ZKzV_b-y" />
+<figcaption><em>在 Android 和 iOS 應用程式中實作深度連結的開發人員百分比</em></figcaption>
+</figure>
+
+<p>若要為您的應用程式實作深度連結，您需要配置一個 Web 部分和一個應用程式部分。Web 部分將使用者導向應用程式，而應用程式部分則將使用者導向正確的頁面。</p>
+<p>在開發人員選擇建立 Web 的技術方面，大約一半的受訪者表示他們使用 Firebase 動態連結。但是，我們最近從 Firebase 團隊了解到，Firebase 動態連結不再推薦用於新專案。動態連結服務將被停用，改為使用原生檔案（Android 的應用程式連結和 iOS 的通用連結）。Firebase 宣布關閉後，您至少有 12 個月的時間進行遷移。如需更多資訊，請查看 <a href="https://firebase.google.com/support/dynamic-links-faq">動態連結常見問題解答</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*GfXUuto3tB79I47F" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*q-OVlB4QmxOfjfOM" />
+<figcaption>開發人員用來將使用者從其網站導向 iOS 或 Android 應用程式的工具</figcaption>
+</figure>
+
+<p>對於應用程式設定，使用者採用了不同的方法。命名路由是最簡單的解決方案，是最受歡迎的選擇（31%）。緊隨其後的是 <code>go_router</code> 套件，如果您想要命名路由不支持的功能（例如路由堆疊管理），它是一個更好的解決方案。這些功能在您需要更多地控制深度連結時特別有用。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*6ZkWSeMzkU_vy8uJ" />
+<figcaption>開發人員用來在應用程式中路由使用者的工具</figcaption>
+</figure>
+
+<p>從調查中，我們了解到我們應該更加努力地解釋這個功能的價值，以便更多開發人員能夠從中受益，並使其更易於實作。我們計畫在接下來的幾個季度推出一個驗證工具，以簡化實作過程。</p>
+<h3 id="接下來是什麼？"><a href="#接下來是什麼？" class="headerlink" title="接下來是什麼？"></a>接下來是什麼？</h3><p>Flutter 團隊始終渴望聽到您的意見，並將您的回饋納入工程路線圖。本季度的調查特別有價值，因為它讓我們有信心繼續我們的重大變更政策，並幫助我們發現有關深度連結的盲點。我們將繼續聆聽您的意見，並將您的回饋納入我們的 work。</p>
+<p>Flutter 團隊致力於為開發人員提供最佳體驗。我們相信，憑藉您的輸入，我們可以建立一個既強大又對開發人員友好的框架。感謝您持續的支持，期待未來收到您的意見。下一次調查見！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=7ff692f974e0" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/flutter-2023-q1-survey-api-breaking-changes-deep-linking-and-more-7ff692f974e0">Flutter 2023 年第一季調查：API 重大變更、深度連結等</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/a16bef38.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/a16bef38.html" class="post-title-link" itemprop="url">【文章翻譯】Dart DevTools: Analyzing application performance with the CPU Profiler</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-06-12 21:38:43" itemprop="dateCreated datePublished" datetime="2023-06-12T21:38:43+08:00">2023-06-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-18 15:24:22" itemprop="dateModified" datetime="2024-12-18T15:24:22+08:00">2024-12-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="Dart-DevTools：使用-CPU-分析器分析應用程式效能"><a href="#Dart-DevTools：使用-CPU-分析器分析應用程式效能" class="headerlink" title="Dart DevTools：使用 CPU 分析器分析應用程式效能"></a>Dart DevTools：使用 CPU 分析器分析應用程式效能</h2><p>無論您是使用 Dart 編寫命令列工具的後端開發人員，還是使用 Flutter 建立應用的 UX 工程師，程式效能對專案的成功至關重要。命令列工具應將延遲降到最低，而應用程式應具有回應性和靈活性，並且沒有掉幀。作為開發人員，我們盡最大努力編寫高效能的程式碼，但有時不清楚為什麼我們的程式碼沒有按照預期執行。</p>
+<p>在程式碼庫中追蹤效能問題可能是一項艱巨的任務。有許多方法可以編寫 Flutter 程式碼，使其執行速度比預期慢。有些方法顯而易見，而另一些方法則陰險地微妙。例如，您可能在特定情況下使用了錯誤的 API 或資料結構。</p>
+<p>本文將透過一個簡單的案例研究來分析一個緩慢的 Dart 命令列介面 (CLI) 應用程式的效能。您將學習：</p>
+<ul>
+<li>一般 CPU 分析器及其重要性。</li>
+<li>與 Dart 和 Flutter 捆綁在一起的取樣 CPU 分析器。</li>
+</ul>
+<p>有了對 CPU 分析的理解，我們將除錯程式的效能。我們將使用 Dart DevTools CPU 分析器和 dart:developer 的 UserTag 功能來精確找出效率低下的程式碼。我們有很多內容要介紹，所以讓我們開始吧！</p>
+<p><em>注意：Dart DevTools 也稱為 Flutter DevTools，但不要與 Chrome DevTools 混淆。</em></p>
+<h3 id="案例研究：在-Dart-中實作-grep"><a href="#案例研究：在-Dart-中實作-grep" class="headerlink" title="案例研究：在 Dart 中實作 grep"></a>案例研究：在 Dart 中實作 grep</h3><p>考慮以下簡單的 Dart CLI 應用程式：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 檔案名稱：grep.dart</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">在 [檔案] 中尋找並列印 [樣式] 的所有實例。</span></span></span><br><span class="line"><span class="keyword">void</span> grep(File file, <span class="built_in">String</span> pattern) &#123;</span><br><span class="line">  <span class="comment">// 開啟檔案並讀取其內容。</span></span><br><span class="line">  <span class="keyword">final</span> lines = file.readAsLinesSync();</span><br><span class="line"></span><br><span class="line">  <span class="built_in">String</span> output = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="built_in">int</span> lineNum = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 檢查每一行，看看它是否與 `樣式` 匹配。</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> line <span class="keyword">in</span> lines) &#123;</span><br><span class="line">    <span class="keyword">final</span> matcher = <span class="built_in">RegExp</span>(pattern);</span><br><span class="line">    <span class="keyword">if</span> (matcher.hasMatch(line)) &#123;</span><br><span class="line">      <span class="keyword">final</span> foundMessage = <span class="string">&#x27;<span class="subst">$lineNum</span>:<span class="subst">$line</span>&#x27;</span>;</span><br><span class="line">      output += foundMessage;</span><br><span class="line">    &#125;</span><br><span class="line">    lineNum++;</span><br><span class="line">  &#125;</span><br><span class="line">  stdout.writeln(output);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main(<span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; arguments) &#123;</span><br><span class="line">  <span class="keyword">if</span> (arguments.length != <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;使用方法：dart grep.dart &lt;路徑&gt; &lt;樣式&gt;&#x27;</span>);</span><br><span class="line">    exitCode = <span class="number">64</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">final</span> path = arguments[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">final</span> pattern = arguments[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> file = File(path);</span><br><span class="line">  <span class="keyword">if</span> (!file.existsSync()) &#123;</span><br><span class="line">    stderr.writeln(<span class="string">&quot;錯誤：無法開啟檔案 &#x27;<span class="subst">$path</span>&#x27;&quot;</span>);</span><br><span class="line">    exitCode = <span class="number">64</span>;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  grep(file, pattern);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>grep.dart</code> 程式實作了常見 Unix 工具的版本。它允許使用者在檔案中搜尋符合指定樣式的字元串。例如，給定一個名為 <code>names.txt</code> 的檔案，其中包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat names.txt</span><br><span class="line">Frank</span><br><span class="line">Bob</span><br><span class="line">Franny</span><br><span class="line">June</span><br><span class="line">Ben</span><br><span class="line">Francis</span><br></pre></td></tr></table></figure>
+
+<p>讓我們找出所有包含字元串 <code>&#39;Fran&#39;</code> 的行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart grep.dart names.txt &#x27;Fran&#x27;</span><br><span class="line">1:Frank</span><br><span class="line">3:Franny</span><br><span class="line">6:Francis</span><br></pre></td></tr></table></figure>
+
+<p>太棒了！我們應該從 grep 中得到這個輸出。也就是說，<code>names.txt</code> 是一個 <em>小</em> 檔案。讓我們嘗試在一個更大的文字文件中找出所有 <code>&#39;Hummingbird&#39;</code> 的實例。如果我們在一個包含 437,000 行、147 MiB 的關於蜂鳥的文字檔上執行相同的程式會怎麼樣？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ dart grep.dart hummingbird_encyclopedia.txt &#x27;Hummingbird&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>嗯……即使在 <strong>兩分钟</strong> 後，它也沒有完成。Unix grep 的效能如何？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ grep -n &#x27;Hummingbird&#x27; hummingbird_encyclopedia.txt</span><br><span class="line">16:&#x27;&#x27;&#x27;&#x27;Hummingbirds&#x27;&#x27;&#x27;&#x27; are [[bird]]s native to the…</span><br><span class="line">22:Hummingbirds have the highest…</span><br><span class="line">24:Hummingbirds split from their [[Sister taxon|sister group]]…</span><br><span class="line">// 輸出繼續</span><br></pre></td></tr></table></figure>
+
+<p>Unix 的 grep 搜尋了整個檔案，並在約 45 秒內返回了所有包含蜂鳥的行。顯然，我們的程式碼中有一些奇怪的地方需要調查。但是，我們如何識別效能問題的原因？與 Dart DevTools 捆綁在一起的 <strong>CPU 分析器</strong> 是一個很好的開始！</p>
+<h3 id="什麼是-CPU-分析器？"><a href="#什麼是-CPU-分析器？" class="headerlink" title="什麼是 CPU 分析器？"></a>什麼是 CPU 分析器？</h3><p>CPU 分析工具會追蹤程式在執行時花費時間的地方。為了提供最有效率的 CPU 分析體驗，Dart 虛擬機器 (VM)（為 Dart CLI 和 Flutter 應用程式提供動力）使用 <strong>取樣</strong> CPU 分析器。當與 Dart DevTools 等工具一起使用時，您可以識別 Dart 程式中的效能瓶頸。</p>
+<p>取樣 CPU 分析器採用統計方法來收集應用程式效能資料。它透過定期中斷執行緒並擷取當前呼叫堆疊和其他相關執行狀態的快照來收集樣本。這些樣本可以被處理，以便找出大約有多少時間花費在執行特定函數上，以及函數在不同呼叫堆疊上出現的頻率。</p>
+<p>收集樣本的頻率稱為 <strong>取樣速率</strong>，以每秒樣本數（也稱為赫茲或 Hz）衡量。大多數取樣分析器具有 1000 Hz 或更高的取樣速率。更高的取樣速率會產生更詳細的 CPU 分析，但代價是在目標流程中更高的取樣負擔。在合理的取樣速率下，取樣 CPU 分析器非常有效，並且對被分析應用程式的效能特徵沒有影響。額外的優勢是，與追蹤分析器相比，收集的資料通常在分析方面計算成本更低。</p>
+<h3 id="深入探討：取樣分析器是如何運作的？"><a href="#深入探討：取樣分析器是如何運作的？" class="headerlink" title="深入探討：取樣分析器是如何運作的？"></a>深入探討：取樣分析器是如何運作的？</h3><p><em>這部分將詳細介紹 Dart VM 的取樣 CPU 分析器的工作原理。在分析 CPU 分析時，您不需要了解這些細節。如果您不關心取樣 CPU 分析器的詳細資訊，請跳過此部分。</em></p>
+<p>Dart VM 的取樣 CPU 分析器具有三個重要的元件：執行緒中斷器、樣本收集器和樣本處理器。</p>
+<h4 id="執行緒中斷器"><a href="#執行緒中斷器" class="headerlink" title="執行緒中斷器"></a>執行緒中斷器</h4><p><a href="https://github.com/dart-lang/sdk/blob/main/runtime/vm/thread_interrupter.cc"><strong>執行緒中斷器</strong></a> 在一個專用的執行緒上運行，並在 VM 管理的每個執行緒上觸發表 CPU 樣本收集。執行緒中斷器通常處於非活動狀態，只在每個取樣間隔後喚醒一次。在每個取樣間隔之後，中斷器會遍歷執行緒列表，通知每個執行緒暫停並收集樣本。執行緒中斷器在不同平台上的行為略有不同，因為作業系統有特定的細節。</p>
+<p>在大多數支援 <a href="https://en.wikipedia.org/wiki/Signal_(IPC)">基於訊號的控制流</a>（Android 和 Linux）的平台上，<a href="https://www.gnu.org/software/libc/manual/html_node/Alarm-Signals.html">SIGPROF</a> 訊號會發送到每個執行緒。這會觸發一個 <a href="https://en.wikipedia.org/wiki/Interrupt">中斷</a>，該中斷會呼叫 CPU 分析器在目標執行緒上註冊的訊號處理器，然後在繼續工作之前收集 CPU 樣本。</p>
+<p>在其他不支持訊號（Windows 和 Fuchsia）或在某些情況下使用 SIGPROF 時效能不佳（MacOS 和 iOS）的平台上，執行緒中斷器使用系統呼叫在收集 CPU 樣本後顯式地暫停和恢復每個執行緒。在這種情況下，樣本收集是在執行緒中斷器執行緒上進行，而不是在被取樣的執行緒上進行。</p>
+<h4 id="樣本收集"><a href="#樣本收集" class="headerlink" title="樣本收集"></a>樣本收集</h4><p>一旦執行緒被中斷，CPU 分析器就會 <a href="https://github.com/dart-lang/sdk/blob/bbacf39e9c1085650b5f2a180285792ad0dd76d9/runtime/vm/profiler.cc#L1311">收集樣本</a> 以擷取執行緒的當前執行狀態。每個 <a href="https://github.com/dart-lang/sdk/blob/bbacf39e9c1085650b5f2a180285792ad0dd76d9/runtime/vm/profiler.h#L195">樣本</a> 包含以下類型的中繼資料：</p>
+<ul>
+<li>執行緒和隔離區識別碼</li>
+<li>執行緒的活動 <a href="https://api.dart.dev/stable/dart-developer/UserTag/UserTag.html">使用者標記</a></li>
+<li>收集時間戳</li>
+<li>被取樣執行緒的當前堆疊追蹤</li>
+</ul>
+<p>收集的堆疊追蹤由程式計數器 (PC) 列表組成，這些程式計數器對應於堆疊上找到的每個 Dart 和原生函數的返回地址。這些 PC 是透過一個稱為「遍歷堆疊」的過程收集的。在執行 <a href="https://github.com/dart-lang/sdk/blob/bbacf39e9c1085650b5f2a180285792ad0dd76d9/runtime/vm/profiler.cc#L208">堆疊遍歷</a> 時，堆疊遍歷器使用頂部框架的框架指標 (FP) 和已知的每個堆疊框架佈局來查找並記錄與函數關聯的 PC 以及前一個堆疊框架的 FP。堆疊遍歷器會重複此過程，使用前一個框架的 FP 作為起點，直到它到達堆疊的末尾，如圖 1 所示。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*manGRq62JBgJER8ufYlAfA.png" />
+<figcaption>**圖 1：在 ARM64 系統上收集堆疊追蹤的範例。堆疊遍歷器從 FP(N+1) 開始，從地址 FP(N+1) + 0x10 擷取程式計數器 (PC)，並將其加入到堆疊追蹤中作為框架 0。然後，堆疊遍歷器從地址 FP(N+1) + 0x8 查找 FP(N)，重複使用 FP(N) 查找框架 1 詳細資訊的相同過程。**</figcaption>
+</figure>
+
+<p>每個收集的樣本都儲存在 VM 的樣本緩衝區中，這是一個 <a href="https://en.wikipedia.org/wiki/Circular_buffer">循環緩衝區</a>，可以儲存有限數量的 CPU 樣本。這允許 VM 避免在運行時進行額外的配置，這可能會對效能產生負面影響，或者 <a href="https://en.wikipedia.org/wiki/Signal_(IPC)#Risks">如果在訊號處理器中執行，可能會導致不好的事情發生</a>。</p>
+<p>樣本緩衝區的大小在運行時是固定的，一旦填滿，舊樣本將被分析器覆蓋為新樣本。樣本緩衝區填滿的速度取決於取樣速率和每個樣本的平均堆疊深度。例如，更高的取樣速率和更深的堆疊會導致緩衝區更快地繞回。在 DevTools 中，開發人員可以透過 <a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#cpu-sampling-rate">選擇</a> 低（1000 Hz）、中（4000 Hz）和高（20,000 Hz）取樣速率來控制樣本緩衝區繞回的速度。</p>
+<h4 id="樣本處理"><a href="#樣本處理" class="headerlink" title="樣本處理"></a>樣本處理</h4><p>當客戶端透過 <a href="https://github.com/dart-lang/sdk/blob/main/runtime/vm/service/service.md#getcpusamples">VM 服務協定</a> 請求 CPU 樣本分析時，CPU 分析器需要在將樣本發送給客戶端之前處理收集的樣本。分析器：</p>
+<ol>
+<li>遍歷樣本緩衝區，使用篩選器只擷取客戶端指定的隔離區和時間範圍內的樣本。</li>
+<li><em>符號化</em>，或將 PC 對映到函數名稱，樣本集中每個堆疊框架。</li>
+<li>將整個處理後的樣本緩衝區序列化為 JSON。</li>
+<li>將 JSON 傳回給客戶端。</li>
+</ol>
+<p>即使在分析器完成處理之後，<a href="https://github.com/dart-lang/sdk/blob/main/runtime/vm/service/service.md#cpusamples">CPU 樣本回應</a> 仍然是低階的，需要開發人員工具進行額外的處理才能變得有用。例如，Dart DevTools 可以將 CPU 樣本列表轉換為各種結構表示，這些表示允許識別昂貴的函數（<a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#bottom-up">自下而上</a>）、昂貴的呼叫路徑（<a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#call-tree">呼叫樹</a> 和 <a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#flame-chart">CPU 火焰圖</a>），以及檢查個別方法的呼叫者和被呼叫者統計資料（<a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#method-table">方法表</a>）。</p>
+<h3 id="使用-Dart-DevTools-分析-Dart-和-Flutter-應用程式"><a href="#使用-Dart-DevTools-分析-Dart-和-Flutter-應用程式" class="headerlink" title="使用 Dart DevTools 分析 Dart 和 Flutter 應用程式"></a>使用 Dart DevTools 分析 Dart 和 Flutter 應用程式</h3><p>現在您已經熟悉了取樣 CPU 分析器是什麼以及它們的工作原理，讓我們除錯 grep 實作的效能。讓我們使用 <code>--observe</code> 再次運行程式碼，並打開 Dart DevTools CPU 分析器標籤：</p>
+<p><em>注意：在 DevTools 中測試 Flutter 應用時，您不需要使用 <code>--observe</code> 旗標。</em></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ dart --observe grep.dart hummingbird_encyclopedia.txt &#x27;Hummingbird&#x27;</span><br><span class="line">Dart VM 服務正在監聽 http://127.0.0.1:8181/omxEtsCtW9k=/</span><br><span class="line">Dart DevTools 除錯器和分析器位於：http://127.0.0.1:8181/omxEtsCtW9k=/devtools?uri=ws://127.0.0.1:8181/omxEtsCtW9k=/ws</span><br><span class="line">// 在這一點上，終端機掛起，沒有輸出。</span><br></pre></td></tr></table></figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*4btaxCBW8Btx71RM" />
+</figure>
+
+<p>哎呀！在 11.6 秒的期間內收集的所有樣本中，隔離區將 90% 以上的 CPU 時間花費在執行 <code>_StringBase.+</code> 上。這很可能與我們的效能問題有關，但可能不清楚 <code>grep</code> 函數中的哪個程式碼塊是導致延遲的原因。幸運的是，我們可以使用 <strong>使用者標記</strong> 进一步缩小对 <code>_StringBase.+</code> 的昂贵呼叫的位置。</p>
+<h3 id="使用使用者標記對-CPU-樣本進行分類"><a href="#使用使用者標記對-CPU-樣本進行分類" class="headerlink" title="使用使用者標記對 CPU 樣本進行分類"></a>使用使用者標記對 CPU 樣本進行分類</h3><p>當 Dart CPU 分析器中斷執行緒以收集新的樣本時，它會記錄隔離區當前設定的使用者標記。<a href="https://api.dart.dev/stable/dart-developer/dart-developer-library.html">dart:developer</a> 函式庫提供了 <a href="https://api.dart.dev/stable/dart-developer/dart-developer-library.html">UserTag</a> 類別，允許您指定和設定您感興趣的分析程式碼部分的自訂標記。</p>
+<p>為了更好地了解我們在 <code>grep</code> 實作中花費時間的地方，我們可以使用使用者標記來 instrumentation 此函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 檔案名稱：grep.dart</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:developer&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">在 [檔案] 中尋找並列印 [樣式] 的所有實例。</span></span></span><br><span class="line"><span class="keyword">void</span> grep(File file, <span class="built_in">String</span> pattern) &#123;</span><br><span class="line">  <span class="keyword">final</span> defaultTag = getCurrentTag();</span><br><span class="line">  <span class="keyword">final</span> fileReadTag = UserTag(<span class="string">&#x27;檔案讀取&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> textMatchTag = UserTag(<span class="string">&#x27;文字配對&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> printTag = UserTag(<span class="string">&#x27;列印輸出&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;檔案讀取&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  fileReadTag.makeCurrent();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 開啟檔案並讀取其內容。</span></span><br><span class="line">  <span class="keyword">final</span> lines = file.readAsLinesSync();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;文字配對&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  textMatchTag.makeCurrent();</span><br><span class="line">  <span class="built_in">String</span> output = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="built_in">int</span> lineNum = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 檢查每一行，看看它是否與 `樣式` 匹配。</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> line <span class="keyword">in</span> lines) &#123;</span><br><span class="line">    <span class="keyword">final</span> matcher = <span class="built_in">RegExp</span>(pattern);</span><br><span class="line">    <span class="keyword">if</span> (matcher.hasMatch(line)) &#123;</span><br><span class="line">      <span class="keyword">final</span> foundMessage = <span class="string">&#x27;<span class="subst">$lineNum</span>:<span class="subst">$line</span>&#x27;</span>;</span><br><span class="line">      output += foundMessage;</span><br><span class="line">    &#125;</span><br><span class="line">    lineNum++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;列印輸出&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  printTag.makeCurrent();</span><br><span class="line">  stdout.writeln(output);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將使用者標記重置為呼叫 grep 時設定的標記。</span></span><br><span class="line">  defaultTag.makeCurrent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>現在，讓我們重新運行程式碼並打開 CPU 分析器。若要查看已分類的分析，請從下拉選單中選擇 <strong>分組依據：使用者標記</strong> 選項：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*zxcsj31nCh14rLYa" />
+</figure>
+
+<p>當我們展開 <strong>文字配對</strong> 標記時，我們確認 <code>_StringBase.+</code> 方法在我們的文字配對迴圈中被呼叫：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ai9S8-Y8c_94rr6p" />
+</figure>
+
+<p>有了這些資訊，我們應該能夠仔細查看我們的程式碼並找出問題所在：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 ‘文字配對’ 標記設定為目前的使用者標記。</span></span><br><span class="line">textMatchTag.makeCurrent();</span><br><span class="line"><span class="built_in">String</span> output = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="built_in">int</span> lineNum = <span class="number">1</span>;</span><br><span class="line"><span class="comment">// 檢查每一行，看看它是否與 `樣式` 匹配。</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">final</span> line <span class="keyword">in</span> lines) &#123;</span><br><span class="line">  <span class="keyword">final</span> matcher = <span class="built_in">RegExp</span>(pattern);</span><br><span class="line">  <span class="keyword">if</span> (matcher.hasMatch(line)) &#123;</span><br><span class="line">    <span class="keyword">final</span> foundMessage = <span class="string">&#x27;<span class="subst">$lineNum</span>:<span class="subst">$line</span>&#x27;</span>;</span><br><span class="line">    <span class="comment">// 哈哈！這就是我們呼叫 `_StringBase.+` 的地方！</span></span><br><span class="line">    output += foundMessage;</span><br><span class="line">  &#125;</span><br><span class="line">  lineNum++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>找到了！我們犯了經典錯誤，多次將內容附加到 <a href="https://api.dart.dev/stable/dart-core/String-class.html">String</a>，而不是使用 <a href="https://api.dart.dev/stable/dart-core/StringBuffer-class.html">StringBuffer</a>。將內容附加到 String 會建立一個新的字元串來儲存 <code>_StringBase.+</code> 方法的結果。因此，每次我們找到匹配項時，我們都會將 <code>output + foundMessage</code> 複製到一個新的字元串中。</p>
+<p>隨著 <code>output</code> 變長，將資料附加到它會變得更昂貴，需要 O(m*n) 來執行複製，其中 m 是匹配項的平均字元數，n 是最終字元串中的總字元數。如果我們使用 <code>StringBuffer</code>，我們不會在每次附加時複製 <code>output</code>，而是在函數結束時以單一的 O(n) 操作將匹配連接起來。</p>
+<p>現在我們的應用程式使用 <a href="https://api.dart.dev/stable/dart-core/StringBuffer/writeln.html">StringBuffer.writeln</a> 而不是將內容附加到 String，讓我們看看我們的函數：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 檔案名稱：grep.dart</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:developer&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;dart:io&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// <span class="language-markdown">在 [檔案] 中尋找並列印 [樣式] 的所有實例。</span></span></span><br><span class="line"><span class="keyword">void</span> grep(File file, <span class="built_in">String</span> pattern) &#123;</span><br><span class="line">  <span class="keyword">final</span> defaultTag = getCurrentTag();</span><br><span class="line">  <span class="keyword">final</span> fileReadTag = UserTag(<span class="string">&#x27;檔案讀取&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> textMatchTag = UserTag(<span class="string">&#x27;文字配對&#x27;</span>);</span><br><span class="line">  <span class="keyword">final</span> printTag = UserTag(<span class="string">&#x27;列印輸出&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;檔案讀取&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  fileReadTag.makeCurrent();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 開啟檔案並讀取其內容。</span></span><br><span class="line">  <span class="keyword">final</span> lines = file.readAsLinesSync();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;文字配對&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  textMatchTag.makeCurrent();</span><br><span class="line">  <span class="keyword">final</span> output = <span class="built_in">StringBuffer</span>();</span><br><span class="line">  <span class="built_in">int</span> lineNum = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 檢查每一行，看看它是否與 `樣式` 匹配。</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">final</span> line <span class="keyword">in</span> lines) &#123;</span><br><span class="line">    <span class="keyword">final</span> matcher = <span class="built_in">RegExp</span>(pattern);</span><br><span class="line">    <span class="keyword">if</span> (matcher.hasMatch(line)) &#123;</span><br><span class="line">      <span class="keyword">final</span> foundMessage = <span class="string">&#x27;<span class="subst">$lineNum</span>:<span class="subst">$line</span>&#x27;</span>;</span><br><span class="line">      <span class="comment">// 將匹配項加入到緩衝區中，而不建立副本。</span></span><br><span class="line">      output.writeln(foundMessage);</span><br><span class="line">    &#125;</span><br><span class="line">    lineNum++;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將 &#x27;列印輸出&#x27; 標記設定為目前的使用者標記。</span></span><br><span class="line">  printTag.makeCurrent();</span><br><span class="line">  <span class="comment">// `output.toString()` 將緩衝區中的每個項目連接成一個新的 String，只執行一次大小為 `output.length` 的配置。</span></span><br><span class="line">  stdout.writeln(output);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將使用者標記重置為呼叫 grep 時設定的標記。</span></span><br><span class="line">  defaultTag.makeCurrent();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>讓我們再次運行測試，看看是否有任何改善：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ dart grep.dart hummingbird_encyclopedia.txt &#x27;Hummingbird&#x27;</span><br><span class="line">16:&#x27;&#x27;&#x27;&#x27;Hummingbirds&#x27;&#x27;&#x27;&#x27; are [[bird]]s native to the…</span><br><span class="line">22:Hummingbirds have the highest…</span><br><span class="line">24:Hummingbirds split from their [[Sister taxon|sister group]]…</span><br><span class="line">// 輸出繼續</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>StringBuffer</code>，我們可以在約 <strong>45 秒</strong> 內找出所有 <code>&#39;Hummingbird&#39;</code> 的實例。這好多了，幾乎與 Unix grep 實作相同！讓我們再看一下 CPU 分析器，看看是否可以進一步提高效能：</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*dL9EpPsSbaU-Bem-" />
+</figure>
+
+<p>快速瀏覽分析告訴我們，我們大部分時間都花費在列印匹配項上，而實際的匹配只花費了約 200 毫秒。我們應該關注 <code>&#39;列印輸出&#39;</code> 標記下的程式碼：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 ‘列印輸出’ 標記設定為目前的使用者標記。</span></span><br><span class="line">printTag.makeCurrent();</span><br><span class="line"><span class="comment">// `output.toString()` 將緩衝區中的每個項目連接成一個新的 String，只執行一次大小為 `output.length` 的配置。</span></span><br><span class="line">stdout.writeln(output);</span><br></pre></td></tr></table></figure>
+
+<p>似乎我們沒有什麼可以做的，因為我們只對核心 <a href="https://api.dart.dev/stable/dart-io/dart-io-library.html">dart:io</a> 函式庫的成員 <a href="https://api.dart.dev/stable/dart-io/stdout.html">stdout.writeln</a> 進行了一次呼叫。查看 <a href="https://docs.flutter.dev/tools/devtools/cpu-profiler#flame-chart">分析器中的 CPU 火焰圖</a>，我們看到這段程式碼在 SDK 中，我們無法在程式碼中獲得更多效能增益。</p>
+<p>就這樣！</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>從這篇文章開始，我們已經取得了很大的進展。我們：</p>
+<ul>
+<li>使用 Dart 編寫了一個簡單的 grep 工具。</li>
+<li>確定我們的程式效能很差。</li>
+<li>了解了 CPU 分析器，並探索了 Dart VM 的取樣 CPU 分析器。</li>
+<li>使用 Dart DevTools 的 <a href="https://docs.flutter.dev/tools/devtools/cpu-profiler">CPU 分析器</a> 找出並修復了程式的效能問題。</li>
+</ul>
+<p>深入了解效能工具是一項重要的技能，正如我們在本文中所展示的，它可以幫助您找出程式碼中可能存在著微妙的效能問題。CPU 分析器只是 <a href="https://docs.flutter.dev/tools/devtools/overview">Dart DevTools</a> 附帶的許多工具之一，可以幫助您更好地了解 Dart CLI 和 Flutter 應用的行為和效能。</p>
+<p>在未來的文章中，我們將探索使用 Dart DevTools 除錯和優化應用的其他方法，包括：</p>
+<ul>
+<li>使用 <a href="https://docs.flutter.dev/tools/devtools/memory">記憶體</a> 畫面分析記憶體使用情況。</li>
+<li>使用 <a href="https://docs.flutter.dev/tools/devtools/performance">效能</a> 畫面檢查執行時間線。</li>
+<li>使用 <a href="https://docs.flutter.dev/tools/devtools/network">網路</a> 畫面檢查 HTTP 流量。</li>
+</ul>
+<p>在那之前，祝您編程愉快！</p>
+<p><em>如果您願意，<a href="https://github.com/bkonyi">在 GitHub 上關注我</a> 以了解我對 Flutter 和 Dart 虛擬機器的最新工作，以及我的其他個人專案。</em></p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=3e94a0ec06ae" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-devtools-analyzing-application-performance-with-the-cpu-profiler-3e94a0ec06ae">Dart DevTools：使用 CPU 分析器分析應用程式效能</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p>undefined</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/91cf36fc.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/91cf36fc.html" class="post-title-link" itemprop="url">【文章翻譯】How It’s Made: I/O FLIP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-05-18 18:02:00" itemprop="dateCreated datePublished" datetime="2023-05-18T18:02:00+08:00">2023-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 20:20:40" itemprop="dateModified" datetime="2024-09-30T20:20:40+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<figure><img alt="" src="https://cdn-images-1.medium.com/max/1024/1*nGcHw9zmkDT1oGhYwuZMqA.jpeg" /></figure>
+
+<h4>結合 AI 生成的文字和圖片，為這款使用 Flutter、Firebase 和 Google Cloud 建立的紙牌遊戲增添趣味</h4>
+
+<p><a href="http://flip.withgoogle.com">I/O FLIP</a> 是一款由 Google 支援並使用 Flutter 建立的 AI 設計紙牌遊戲。它結合了許多 Google 產品和技術，包括 <a href="https://flutter.dev/">Flutter</a>、<a href="https://firebase.google.com/">Firebase</a>、生成式 AI 工具、Muse 上的 Dreambooth、<a href="https://developers.googleblog.com/2023/03/announcing-palm-api-and-makersuite.html">PaLM API</a> 和 <a href="https://developers.googleblog.com/2023/03/announcing-palm-api-and-makersuite.html">MakerSuite</a>。玩家可以進行多場比賽，並將遊戲中的牌分享到社群媒體。</p>
+
+<p>要玩遊戲，請訪問 <a href="http://flip.withgoogle.com">http://flip.withgoogle.com</a>。要開始遊戲並生成牌組，請回答幾個提示。要組牌並加入比賽，請選擇三張牌。您將使用這些牌與您的對手進行三輪比賽，每輪比賽以最高牌獲勝。當比賽結束時，樂趣不必結束。繼續進行比賽以提高您的連勝紀錄，並試圖登上排行榜！</p>
+
+<p>讓我們深入探討我們如何使用 Flutter 和 Firebase 來建立 I/O FLIP 的技術細節。</p>
+
+<h3>使用 Flutter 建立的紙牌遊戲</h3>
+
+<p>I/O FLIP 的使用者介面、動畫、全息影像效果和後端，都使用 Flutter 和 Dart 建立。</p>
+
+<p>首先，我們利用了 <a href="https://docs.flutter.dev/resources/games-toolkit">Flutter 休閒遊戲工具包</a>。我們使用開箱即用的音訊功能、遊戲生命週期和 <a href="https://pub.dev/packages/go_router">go_router</a> 的應用程式導航作為基礎。從那裡，我們建立了遊戲邏輯和 UI。I/O FLIP 是一個 <a href="https://docs.flutter.dev/ui/layout/adaptive-responsive">響應式 Web 應用程式</a>。它根據玩家的螢幕調整其 UI。該應用程式還根據玩家使用的設備處理輸入。當在行動裝置或平板電腦上訪問時，它接收觸控輸入，而在桌上型電腦上接收滑鼠輸入。</p>
+
+<p>撲克牌是 I/O FLIP 的關鍵元素。成千上萬的牌可能會出現在玩家的牌組中。每張牌都顯示一個 Google 吉祥物、元素和力量值。當元素彼此對抗時，這些元素就會發揮作用。例如，當有人打出一張火牌，而他們的對手打出一張水牌時，水牌會受到 10 分的懲罰。我們還使用紀錄，<a href="https://medium.com/dartlang/dart-3-alpha-f1458fb9d232">Dart 3 的新功能</a>，根據牌的元素來渲染一個框架。</p>
+
+<pre>…<br> (String, SvgPicture) _mapSuitNameToAssets() {<br>    switch (suitName) {
+      case 'fire':<br>
+        if (isRare) {
+          return (
+            Assets.images.cardFrames.holos.cardFire.keyName,
+            Assets.images.suits.card.fire.svg(),
+          );
+        }
+        return (
+          Assets.images.cardFrames.cardFire.keyName,
+          Assets.images.suits.card.fire.svg(),
+        );
+      …</pre>
+
+<h4>使用 AI 生成的圖片和描述建立的牌</h4>
+
+<figure><img alt="I/O FLIP 例子牌，顯示 Dash、Sparky、Android 和 Dino，背景中是各種背景和道具。" src="https://cdn-images-1.medium.com/max/985/1*-8FtGtAwiERpc5_ctA0GKg.png" />
+<figcaption>I/O FLIP 例子牌</figcaption>
+</figure>
+
+<p>I/O FLIP 中的每張牌都是獨特的，因為它包含 AI 生成的圖片和描述。在遊戲開始時，玩家會回答兩個提示。這些提示有助於填充一副包含 12 張牌的牌組，這些牌組的圖片和描述是 AI 模型預先生成的。</p>
+
+<p>Google 團隊使用了兩種技術來預先生成圖片：<a href="https://muse-model.github.io/">Muse</a>，一個 Transformer 文字轉圖片模型，以及 <a href="https://dreambooth.github.io/">Dreambooth</a>。Dreambooth 使得能夠在不同的場景、姿勢、視角和光照條件下合成一個主體。每張牌都包含四個 Google 吉祥物之一：<a href="https://docs.flutter.dev/dash">Dash</a>、Sparky、<a href="https://source.android.com/docs/setup/about/brands#robot-android">Android</a> 或 Dino，以及一個地點。吉祥物還有一個物品，用來指定他們的隊伍。「隊伍類型」提示在遊戲開始時就會被覆蓋，用於建立這個物品。例如，選擇「巫師」可能會導致一個角色戴著巫師帽、魔杖，或其他巫師般的事物！</p>
+
+<p>Google 團隊使用 <a href="https://developers.googleblog.com/2023/03/announcing-palm-api-and-makersuite.html">PaLM API</a> 來預先生成牌的描述。PaLM API 訪問 Google 的大型語言模型。遊戲開始時的提示包含團隊類型和他們團隊的力量類型。假設您選擇了「巫師」團隊和「磁力」力量。當您的牌生成時，一張牌的描述包含與生成的圖片相關的上下文，包括角色的特殊力量。例如，「Dash 巫師和他的寵物龍住在一座城堡裡。他喜歡施法，讓大家開心。」</p>
+
+<p>Flutter 透過 GameCard Widget 組合牌。這個 Widget 接收牌的資料：名稱、描述、圖片和力量。一旦它建立了牌，它就會應用邊框以描繪牌的套裝元素。如果一張牌是特殊牌，Flutter 會應用箔紋理效果。</p>
+
+<p>若要進一步了解遊戲的生成式 AI 方面是如何建立的，請查看 <a href="https://www.google.com/url?q=https://developers.googleblog.com/2023/05/how-its-made-io-flip-adds-twist-to.html&amp;sa=D&amp;source=docs&amp;ust=1684366112610573&amp;usg=AOvVaw1fj9CV5BxCPvxUEGfcZF39">這篇 Google 開發者部落格文章</a>。</p>
+
+<h4>著色器為特殊牌添加箔效果</h4>
+
+<figure><img alt="兩張牌在比賽中，一張牌顯示皇家 Sparky 戴著皇冠，點數為 100，並帶有彩虹箔效果，這是通過使用片段著色器實現的" src="https://cdn-images-1.medium.com/max/664/1*oMUDkIUdJaEb6tX1jdQjKg.gif" />
+<figcaption>I/O FLIP 使用片段著色器來渲染牌上的全息效果</figcaption>
+</figure>
+
+<p>Flutter 支援 <a href="https://docs.flutter.dev/ui/advanced/shaders">片段著色器</a>。為了生成這些逐像素的視覺效果，Flutter 在裝置的 GPU 上運行 OpenGL 著色語言 (GLSL)。集換式卡牌遊戲的收藏家可能會記得打開一包卡牌時，找到一張有閃亮的全息箔的特別版卡牌的感覺 I/O FLIP 也包括特殊的箔牌。它們的點數為 100 分。普通牌的點數範圍為 10 到 99 分。我們使用自訂著色器來渲染箔效果。</p>
+
+<p>我们在 foil.frag 文件中实现了箔着色器。该效果使用以下常量：</p>
+
+<ul>
+  <li>STRENGTH. 这会将原始像素颜色与箔效果的颜色混合。它从 0.0（无效果）到 1.0（全效果）。</li>
+  <li>SATURATION. 这会设置颜色的强度。它从 0.0（灰度或无颜色）到 1.0（全颜色或无黑色）。</li>
+  <li>LIGHTNESS. 这从 0.0（全黑）到 1.0（全白）。</li>
+</ul>
+
+<p>该着色器还通过 <a href="https://docs.flutter.dev/ui/advanced/shaders#uniforms">uniform</a> 接收输入，在本例中为 resolution 和 offset。称为 tSource 的 uniform sampler2d 代表应用了着色器的卡牌图像。最终结果是带有箔效果的卡牌。</p>
+
+<pre>vec4 rainbowEffect(vec2 uv) {
+    vec4 srcColor = texture(tSource, uv);
+    float hue = uv.x / (1.75 + abs(offset.x)) + offset.x / 3.0;
+    float lightness = LIGHTNESS + 0.25 * (0.5 + offset.y * (0.5 - uv.y));
+    hue = fract(hue);
+
+    float c = (1.0 - abs(2.0 * lightness - 1.0)) * SATURATION;
+    float x = c * (1.0 - abs(mod(hue / (1.0 / 6.0), 2.0) - 1.0));
+    float m = LIGHTNESS - c / 2.0;
+
+    vec3 rainbowPrime;
+
+    if (hue &lt; 1.0 / 6.0) {
+        rainbowPrime = vec3(c, x, 0.0);
+    } else if (hue &lt; 1.0 / 3.0) {
+        rainbowPrime = vec3(x, c, 0.0);
+    } else if (hue &lt; 0.5) {
+        rainbowPrime = vec3(0.0, c, x);
+    } else if (hue &lt; 2.0 / 3.0) {
+        rainbowPrime = vec3(0.0, x, c);
+    } else if (hue &lt; 5.0 / 6.0) {
+        rainbowPrime = vec3(x, 0.0, c);
+    } else {
+        rainbowPrime = vec3(c, 0.0, x);
+    }
+
+    vec3 rainbow = rainbowPrime + m;
+    return mix(srcColor, vec4(rainbow, srcColor.a), STRENGTH);
+}</pre>
+
+<h3>Firebase 啟用遊戲託管和分享到社群媒體</h3>
+
+<p>所有遊戲玩法通訊都是透過 <a href="https://firebase.google.com/docs/firestore">Firebase 的 Cloud Firestore</a> 實時進行的。Firebase 儲存空間託管生成玩家牌組的牌的資產。我們還使用 Cloud Firestore 來追蹤排行榜上的「最高連勝紀錄」。當排行榜添加新的領先者時，<a href="https://pub.dev/packages/firedart">firedart</a> 套件會將其添加到 Firestore 中。</p>
+
+<h4>Dart Frog 啟用後端和前端之間的程式碼共享</h4>
+
+<p>I/O FLIP 需要一個後端來防止作弊。這個伺服器授權的遊戲邏輯可以防止惡意的客戶端發送偽造的請求。Dart Frog 將遊戲邏輯（例如每輪的獲勝者）保留在後端。它還將此程式碼在 Flutter 前端和 Firestore 後端之間共享。共享程式碼有一些好處。它允許我們共享邏輯。例如，如果一個玩家贏得一輪，遊戲可以在不每次都需要查詢 Firebase 的情況下顯示獲勝動畫。共享程式碼還加快了開發速度，因為團隊可以使用同一種語言（Dart）撰寫後端和前端程式碼。我們將 I/O FLIP Dart Frog 伺服器部署到 <a href="https://cloud.google.com/run">Cloud Run</a>。這表示伺服器程式碼在 Google Cloud 中運行，並且可以自動縮放，因此應用程式可以同時處理許多玩家。</p>
+
+<pre>FutureOr&lt;Response&gt; onRequest(RequestContext context) async {
+  if (context.request.method == HttpMethod.post) {
+    final cardsRepository = context.read&lt;CardsRepository&gt;();
+    final promptRepository = context.read&lt;PromptRepository&gt;();
+
+    final body = await context.request.json() as Map&lt;String, dynamic&gt;;
+    final prompt = Prompt.fromJson(body);
+
+    if (!await promptRepository.isValidPrompt(prompt)) {
+      return Response(statusCode: HttpStatus.badRequest);
+    }
+
+    final characterClass = prompt.characterClass;
+    if (characterClass == null) {
+      return Response(statusCode: HttpStatus.badRequest);
+    }
+
+    final characterPower = prompt.power;
+    if (characterPower == null) {
+      return Response(statusCode: HttpStatus.badRequest);
+    }
+
+    final cards = await cardsRepository.generateCards(
+      characterClass: characterClass,
+      characterPower: characterPower,
+    );
+    return Response.json(
+      body: {'cards': cards.map((e) => e.toJson()).toList()},
+    );
+  }
+  return Response(statusCode: HttpStatus.methodNotAllowed);
+}</pre>
+
+<p>Dart Frog 還促進了在社群媒體上的分享。當選擇牌時，玩家可以將單張牌分享到 Twitter 或 Facebook。當您將分數提交到排行榜時，您可以將手牌分享到 Twitter 或 Facebook。一旦使用者點擊分享，Dart Frog 會生成一個預先設定好的帖子。此帖子包含文字和指向具有您對應的手牌或牌的網頁的連結，以及一個按鈕，供訪客自己玩 I/O FLIP！</p>
+
+<h3>接下來是什麼</h3>
+
+<p>I/O FLIP 展示了如何在一個全球玩家都可以玩的有趣遊戲中組合 Flutter 和 Firebase，以及 Google 的生成式 AI 工具和技術。</p>
+
+<p><a href="http://flip.withgoogle.com">玩一局遊戲</a>，向我們展示你的手牌，或者深入研究 <a href="https://github.com/flutter/io_flip">開源程式碼</a>！</p>
+
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=da9d8184ef57" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/how-its-made-i-o-flip-da9d8184ef57">製作方法：I&#x2F;O FLIP</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/a0d3f91d.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1143,415 +1709,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/cb368ef1.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/cb368ef1.html" class="post-title-link" itemprop="url">【文章翻譯】Introducing Realm for Dart & Flutter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-02-09 16:02:34" itemprop="dateCreated datePublished" datetime="2023-02-09T16:02:34+08:00">2023-02-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:24:22" itemprop="dateModified" datetime="2024-12-18T15:24:22+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="案例研究：使用-Dart-平台原生指令建立一個豐富的跨平台函式庫，支援-Dart-和-Flutter-應用程式"><a href="#案例研究：使用-Dart-平台原生指令建立一個豐富的跨平台函式庫，支援-Dart-和-Flutter-應用程式" class="headerlink" title="案例研究：使用 Dart 平台原生指令建立一個豐富的跨平台函式庫，支援 Dart 和 Flutter 應用程式"></a>案例研究：使用 Dart 平台原生指令建立一個豐富的跨平台函式庫，支援 Dart 和 Flutter 應用程式</h2><p>我們很興奮地看到 MongoDB 今天宣布 Realm for Dart 和 Flutter 的正式發佈！Realm 是一個反應式、面向物件的跨平台資料庫，在應用程式開發人員中很受歡迎。換句話說，它非常適合 Dart 和 Flutter。因此，在過去的一年中，我們與 MongoDB 合作將 Realm 帶到 Dart 和 Flutter。查看 MongoDB 發布的 <a href="https://www.mongodb.com/developer/products/realm/announcing-realm-flutter-sdk/">部落格文章</a>，了解 Realm 提供的功能、自早期預覽版以來的改進以及未來計畫。我們認為 Realm 將非常適合 Dart 和 Flutter 開發人員。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/530/1*cAi4WO4IfN5Sp6WE6Ex8Ig.png" />
-<figcaption>使用 Dart 將書籍寫入 Realm 資料庫</figcaption>
-</figure>
-
-<p>在這篇伴隨文章中，我們將透過幕後一窺 Realm for Dart 和 Flutter 的建立過程，作為一個實際的範例，說明如何建立新的基於 Dart 的開發人員 SDK。</p>
-<h3 id="Realm-範例"><a href="#Realm-範例" class="headerlink" title="Realm 範例"></a>Realm 範例</h3><p>在深入探討 Realm SDK 的實作之前，讓我們先從快速了解如何使用 SDK 作為在 Dart <a href="https://dart.dev/tutorials/server/cmdline">終端應用程式</a> 上工作的開發人員開始（<em>注意</em>：Flutter 應用程式的步驟略有不同；請參閱 <a href="https://www.mongodb.com/docs/realm/sdk/flutter/install/">文件</a> 以獲取詳細資訊）。</p>
-<p>首先，您定義資料模型。這可以使用帶有額外 Realm 注解的普通 Dart 類別來完成。以下是一個書籍的範例資料類別：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/ca8542a6b2438d675c7f3e20e8b3f36f/href">https://medium.com/media/ca8542a6b2438d675c7f3e20e8b3f36f/href</a></iframe>
-
-<p>定義好模型，並完全生成資料模型（見下文）後，您可以開始將一些書籍寫入 Realm 資料庫：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/e5eb95b84ad9ff3cb9e777f037b9135f/href">https://medium.com/media/e5eb95b84ad9ff3cb9e777f037b9135f/href</a></iframe>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/b25a09e353d2cdfa327fa45d7c3f1c4e/href">https://medium.com/media/b25a09e353d2cdfa327fa45d7c3f1c4e/href</a></iframe>
-
-<h3 id="Realm-for-Dart-和-Flutter-是如何建立的"><a href="#Realm-for-Dart-和-Flutter-是如何建立的" class="headerlink" title="Realm for Dart 和 Flutter 是如何建立的"></a>Realm for Dart 和 Flutter 是如何建立的</h3><p>既然我們已經涵蓋了基本知識，讓我們看看 MongoDB 團隊是如何使用許多 Dart 函式庫和工具建立 Realm for Dart 和 Flutter。我們將看看在初始化 Realm SDK 時會發生什麼，Realm SDK 如何建立在一個共用原生 C++ 函式庫之上，Realm 終端工具是如何建立的，以及 Realm 模型是如何生成的。</p>
-<h3 id="初始化-Realm-SDK"><a href="#初始化-Realm-SDK" class="headerlink" title="初始化 Realm SDK"></a>初始化 Realm SDK</h3><p>Dart 和 Flutter 開發人員將首先將 Realm 加入到他們現有的應用程式中，然後運行安裝程式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dart pub add realm_dart</span><br><span class="line">dart run realm_dart install</span><br></pre></td></tr></table></figure>
-
-<p>第一步只是將 Realm SDK 加入到 <code>pubspec.yaml</code> 中，以 <a href="https://dart.dev/tools/pub/dependencies">註冊它作為應用程式的相依</a>。第二步運行 Realm 終端工具，要求它安裝 SDK。如果我們查看 <a href="https://github.com/realm/realm-dart/blob/main/lib/src/cli/install/install_command.dart">安裝指令的原始碼</a>，我們可以看到安裝會確定我們正在開發的作業系統，然後下載該作業系統的 Realm SDK 二進位檔案。</p>
-<p>但是為什麼安裝指令要下載二進位檔案？Realm SDK 是一個非常全面的產品，可以在各種作業系統和開發人員框架上使用。為了避免必須建立大量 Realm SDK 的實例，Realm 團隊決定將核心 Realm SDK 實作為一個共用的 <a href="https://github.com/realm/realm-core">realm-core C++ 函式庫</a>。因此，安裝指令真正做的事情是下載這個核心函式庫的編譯版本，適用於應用程式支援的所有平台。</p>
-<h3 id="調用-realm-core-SDK"><a href="#調用-realm-core-SDK" class="headerlink" title="調用 realm-core SDK"></a>調用 realm-core SDK</h3><p>使用 Realm SDK 撰寫 Dart 或 Flutter 應用程式的使用者可以獲得不錯的強類型 Dart API，如本文開頭所示。這些 API 如何與 <a href="https://github.com/realm/realm-core">realm-core</a> C++ 函式庫相對應？</p>
-<p>如果我們瀏覽 Realm SDK 的 <code>lib</code> 目錄，我們會找到 <a href="https://github.com/realm/realm-dart/blob/main/lib/src/native/realm_bindings.dart">realm_bindings.dart</a>，它以以下內容開頭：</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/9354147dc5966ded3adbb95280d03a06/href">https://medium.com/media/9354147dc5966ded3adbb95280d03a06/href</a></iframe>
-
-<p>謎團解開了：Realm SDK 使用 Dart 對原生 API 的互操作性支援（透過 <code>dart:ffi</code> 函式庫）來調用 realm-core。為了避免必須為大量可用的 Realm API 手動撰寫 FFI 綁定，這些綁定是使用 Dart 的 <a href="https://pub.dev/packages/ffigen">ffigen</a> 工具自動生成的。這是我們在 Dart 團隊中看到快速發展的模式。</p>
-<h3 id="Realm-終端工具"><a href="#Realm-終端工具" class="headerlink" title="Realm 終端工具"></a>Realm 終端工具</h3><p>讓我們轉向 Realm 終端工具本身。在上面，我們運行了安裝指令，但我們也可以在沒有指定指令的情況下運行這個工具：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ dart run realm_dart</span><br><span class="line">Realm commands for working with Realm Flutter &amp; Dart SDKs.</span><br><span class="line"></span><br><span class="line">Usage: dart run realm|realm_dart &lt;command&gt; [arguments]</span><br><span class="line"></span><br><span class="line">Global options:</span><br><span class="line">-h, --help    Print this usage information.</span><br><span class="line"></span><br><span class="line">Available commands:</span><br><span class="line">  generate   Generate Realm objects from data model classes</span><br><span class="line">  install    Download &amp; install Realm native binaries into a Flutter or Dart project</span><br><span class="line">  metrics    Report anonymized builder metrics to Realm</span><br><span class="line"></span><br><span class="line">Run &quot;dart run realm|realm_dart help &lt;command&gt;&quot; for more information about a command.</span><br></pre></td></tr></table></figure>
-
-<p>您可能會注意到這個輸出看起來很像核心 dart 和 flutter 工具的輸出。這不是巧合；所有三個工具都是使用相同的 Dart 基礎函式庫建立的，這些函式庫來自 <a href="https://pub.dev/packages/args">package:args</a>，專門用於終端工具：</p>
-<ul>
-<li><a href="https://pub.dev/documentation/args/latest/args/args-library.html">args</a> 函式庫對將原始命令列參數解析為選項和標誌有豐富的支援。</li>
-<li><a href="https://pub.dev/documentation/args/latest/command_runner/command_runner-library.html">command_runner</a> 函式庫提供工具支援的指令結構（例如，安裝）。</li>
-</ul>
-<h3 id="生成-Realm-模型"><a href="#生成-Realm-模型" class="headerlink" title="生成 Realm 模型"></a>生成 Realm 模型</h3><p>生成指令特別有趣，因為它根據我們在「Realm 範例」章節中定義的帶有注解的 Dart 模型類別生成完整的 Realm 模型：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dart run realm_dart generate</span><br></pre></td></tr></table></figure>
-
-<p>生成指令是如何工作的？它依賴於 Realm <a href="https://github.com/realm/realm-dart/blob/main/generator/README.md">生成器</a>，該生成器建立在 Dart 的 <a href="https://pub.dev/packages/build_runner">build_runner</a> 之上，這是一個用於生成器的框架，它接收一組輸入檔案，然後建立新的輸出檔案。通常 - 如 Realm 案例 - 輸入是帶有注解的 Dart 原始碼檔案，輸出檔案是額外的生成的 Dart 原始碼。</p>
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>希望您喜歡這次對大型開發人員框架如何從一組可重複使用的 Dart 函式庫中建立起來的幕後一窺。如果您是框架開發人員，希望這能为您提供一些靈感，激發您下一个基於 Dart 的框架的構思。</p>
-<p>對於 Dart 和 Flutter 應用程式開發人員來說，Realm 是 MongoDB 團隊提供的一個很棒的新產品。我們邀請您查看 <a href="https://www.mongodb.com/docs/realm/sdk/flutter/">Realm SDK 文件</a> 以及今天的 <a href="https://www.mongodb.com/developer/products/realm/announcing-realm-flutter-sdk/">Realm 部落格文章</a>。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e30cb05eb313" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/introducing-realm-for-dart-flutter-e30cb05eb313">介紹 Realm for Dart 和 Flutter</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-<p>undefined</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/601e9674.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/601e9674.html" class="post-title-link" itemprop="url">【文章翻譯】What’s next for Flutter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 16:23:56" itemprop="dateCreated datePublished" datetime="2023-01-25T16:23:56+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="肯亞奈洛比-Flutter-Forward-活動上的願景分享"><a href="#肯亞奈洛比-Flutter-Forward-活動上的願景分享" class="headerlink" title="肯亞奈洛比 Flutter Forward 活動上的願景分享"></a>肯亞奈洛比 Flutter Forward 活動上的願景分享</h2><p>今天，我們很興奮能夠在 <a href="https://flutter.dev/events/flutter-forward">Flutter Forward</a> 上與大家分享我們對 Flutter 的願景。Flutter Forward 是我們的開發者活動，正在從肯亞奈洛比現場直播，來自世界各地的開發者們齊聚一堂，線上線下同步參與，了解 Flutter 未來的發展方向。</p>
-<p>Flutter 是一個 UI 工具包，讓應用程式開發者能夠從單一程式碼庫為行動、網頁和桌面構建應用程式。Flutter 使您能夠構建 <strong>美麗</strong> 的應用程式，讓您能夠完全控制螢幕上的每個像素。它 <strong>速度快</strong>，利用手機或電腦的硬體，支援硬體加速圖形和原生編譯的機器碼。它 <strong>生產力高</strong>，擁有狀態熱重載等技術，讓您能夠立即在應用程式中看到程式碼變更。它的 <strong>可移植性</strong> 使您能夠使用相同的原始碼部署到各種平台，而且不會有任何意外。而且它完全 <strong>開源</strong>，不需要支付許可費，也不需要為開發工具付費。</p>
-<p>Flutter 已證明其受歡迎程度，迄今已發佈超過 700,000 個應用程式：從具有 <strong>非凡想法的小型新創公司</strong> 到 <strong>具有關鍵需求的大型企業</strong>。在 Google，我們也發現 Flutter 是一個寶貴的工具，讓 Google Classroom 等團隊能夠為行動和網頁使用者提供高品質的解決方案；我們還在其他開發者工具中加入對它的支援，包括 <a href="https://developers.google.com/admob/flutter/quick-start">Google 廣告</a>、<a href="https://codelabs.developers.google.com/codelabs/google-maps-in-flutter#0">Google 地圖</a>、<a href="https://pub.dev/packages/pay">Google Pay</a>，當然還有 <a href="https://firebase.google.com/docs/flutter/setup?platform=ios">Firebase</a>。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FJVJF_M9bgj4%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DJVJF_M9bgj4&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FJVJF_M9bgj4%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/3f3ea2554e92675ad5b80ec3b5300271/href">https://medium.com/media/3f3ea2554e92675ad5b80ec3b5300271/href</a></iframe>
-
-<blockquote>“使用 Flutter，我們將相同功能的程式碼大小減少了 66%... 這意味著每個平台的錯誤更少，未來技術債務也更少。”（Kenechi Ufondu，Google Classroom 軟體工程師）</blockquote>
-
-<p>Flutter 的第一個版本提供了一個 UI 工具包，用於在 Android 和 iOS 上構建行動應用程式，但隨著 Flutter 3 的推出，我們將生產支援擴展到包含 Windows、macOS、Linux 和網頁，同時也讓嵌入式平台能夠使用 Flutter。在此基礎上，<a href="https://medium.com/flutter/whats-new-in-flutter-3-7-38cbea71133c">本週我們發佈了最新的穩定版本 Flutter 3.7</a>，其中加入了一系列新功能，包括 iOS 上的新渲染引擎、增強對 Material 3 和 iOS 風格 Widget 的支援、改進的國際化支援、背景處理改進以及開發者工具更新。</p>
-<p>但在這次活動中，我們將目光 <strong>展望未來</strong>，預覽我們在 Flutter 上的下一波投資：突破性的圖形效能、網頁和行動的無縫整合、對新興架構的早期支援，以及持續關注開發者體驗。我們將展示將在未來幾個月內逐步交付的工作，我們希望這能讓您對我們對 Flutter 的願景感到興奮，Flutter 將成為任何希望構建高品質、美麗使用者體驗的開發者的強大工具包，這些體驗可以應用在有像素的地方。</p>
-<p><em>免責聲明：我們在此預覽的功能仍在開發中，可能會在未來幾個月內發生重大改變。在這個早期階段展示它們的目的是讓早期採用者有機會做出貢獻。</em></p>
-<figure>
-<img alt="四個主題：突破性的圖形效能、網頁和行動的無縫整合、對新興架構的早期支援，以及持續關注開發者體驗。" src="https://cdn-images-1.medium.com/max/1024/0*1m_CqCW7oMEoqPrl" />
-</figure>
-
-<h3 id="突破性的圖形效能"><a href="#突破性的圖形效能" class="headerlink" title="突破性的圖形效能"></a>突破性的圖形效能</h3><p>從歷史上看，跨平台框架需要在視覺效果上做出妥協，因為創建抽象層存在挑戰。Flutter 採用了與大多數框架不同的方法，它擁有自己的渲染層，提供硬體加速圖形，並在每台設備上呈現一致的視覺外觀。展望未來，我們將投資於 <em>突破性的圖形效能</em>，擴展 Flutter 在這個領域的既有優勢。</p>
-<p>在 Flutter Forward 上，我們展示了在 <a href="https://github.com/flutter/flutter/wiki/Impeller">Impeller</a> 上的更多進展，Impeller 是 Flutter 的下一代渲染引擎。Impeller 針對 Flutter 優化，為我們提供了更大的靈活性，並能夠更好地控制圖形管道，為我們打開了新的機會。Impeller 提供更可預測的效能，使用預先編譯的著色器，消除由著色器編譯引起的運行時掉幀。它利用 Metal 和 Vulkan 中的基元，這些是 iOS 和 Android 中的現代低階 API。而且它有效利用併發性，將單一框架工作負載分配到各個執行緒。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/739/1*QrEupNb6Ebc5_4c0PW4fQw.jpeg" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/624/1*-DXiE7L987-q6zs8hczbOQ.jpeg" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*xoVH5v5x7znMLB6NTjcqCA.jpeg" />
-<figcaption>Impeller 為 Wonderous 等需要大量圖形處理的應用程式提供絲般順滑的效能，Wonderous 是一個美麗的應用程式，帶領您遊覽世界奇觀。如圖所示：Wonderous 的最新版本，它調整 UI 以適應不同的設備和外觀比例，可在 [https://wonderous.app](https://wonderous.app.) 上使用。</figcaption>
-</figure>
-
-<p>除了提供絲般順滑的 UI 之外，Impeller 還可以在某些情況下顯著提高效能。一個示範（如下所示）展示了這個最佳案例。左側是一個使用 SVG 剪裁的萬花筒應用程式，使用當前的預設渲染器構建。向下捲軸頁面時，效能下降，渲染時間超過每幀預算，導致幀速率為 7-10 fps。右側顯示了在 Impeller 下運行的相同應用程式，以無卡頓的 60 fps 渲染。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FZ7v-YRdHusM%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DZ7v-YRdHusM&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FZ7v-YRdHusM%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/e6f4fd96384182e61b27a738d6c6e787/href">https://medium.com/media/e6f4fd96384182e61b27a738d6c6e787/href</a></iframe>
-
-<p>從零開始構建的一個優勢是架構可以支援全新的用例。新引入的 <strong>對自訂著色器的支援</strong> 已經導致了一些 <a href="https://twitter.com/reNotANumber/status/1599717360096620544">令人驚嘆的新示範</a>，展示了與 Flutter Widget 階層的無縫整合。但是，我們在此的工作不僅限於行動設備：我們現在也對網頁上的自訂著色器提供了早期支援，相同的程式碼現在為 iOS、Android 和瀏覽器提供硬體加速的體驗。</p>
-<figure>
-<img alt="Chrome 網頁瀏覽器的螢幕截圖，顯示 Flutter 像素著色器示範。有一個 Flutter 吉祥物 Dash 的圖片，但它有一個馬賽克風格的效果，可以使用滑動控制調節。" src="https://cdn-images-1.medium.com/max/1024/0*aS5btwRMIK-AkltC" />
-<figcaption>Flutter 現在支援網頁上的像素著色器，能夠實現各種很酷的視覺效果。（作者： [Erick Ghaumez](https://medium.com/u/21767146c3d4)。）</figcaption>
-</figure>
-
-<p>現在，我們開始了對 <strong>使用 Flutter 支援 3D</strong> 的早期工作。在主題演講中，我們展示了您可以匯入使用 <a href="https://www.blender.org/">Blender</a> 創建的模型，甚至可以使用熱重載來與 Blender 實時互動，并在正在執行的應用程式中查看結果。這還處於起步階段，但我們對初始性能感到興奮，以及將 3D 整合到其他 Flutter 體驗的潛力。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/750/1*ZaldnkdSaQZqWX5LKWB5Ig.png" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/750/1*MdyKANeEPV0iIQTTwOBGog.png" />
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/750/1*R-Lktrjfd8lLirhC_BBg5Q.png" />
-<figcaption>Impeller 使 Flutter 能够渲染 3D 图形，如 Dash 的这个有趣演示所示。</figcaption>
-</figure>
-
-<p>在可移植的 UI 工具包中加入 3D 和自訂著色器，將圖形效能提升到一個新的水平。我們非常期待您在這些新功能可用後使用它們做出的成果。</p>
-<h3 id="網頁和行動的無縫整合"><a href="#網頁和行動的無縫整合" class="headerlink" title="網頁和行動的無縫整合"></a>網頁和行動的無縫整合</h3><p>雖然您可以完全使用 Flutter 和 Dart 撰寫應用程式，但幾乎任何非微不足道的專案都需要與其他程式碼連接。在網頁上，Flutter 可以作為較大應用程式中的嵌入式組件使用；在行動裝置上，應用程式可能需要呼叫系統 API 或其他使用其他語言編寫的程式碼。因此，我們投資的第二個主要主題是 <em>網頁和行動的無縫整合</em>。</p>
-<p>在網頁上，我們正在預覽一個我們稱之為 <strong>元素嵌入</strong> 的新功能，它允許將 Flutter 內容新增到任何標準網頁 <code>&lt;div&gt;</code>。以這種方式嵌入時，Flutter 只是一個網頁組件，可以與網頁 DOM 整合，甚至可以允許使用 CSS 選擇器和轉換來設定父 Flutter 物件的樣式。</p>
-<p>我們還在對 <a href="http://pub.dev/packages/js">js</a> 套件做出一些重大改變，以實現 JavaScript 和 Dart 程式碼之間的無縫 <strong>互操作性</strong>。使用 js，您可以在 Dart 程式碼中使用 <code>@JSExport</code> 屬性對任何函數進行註釋，然後從 JavaScript 程式碼中呼叫它。</p>
-<p>結合這兩個新功能，為在網頁上使用 Flutter 開啟了一些令人興奮的新場景。在我們在 Flutter Forward 上展示的 <a href="https://flutter-forward-demos.web.app/#/">概念驗證示範</a> 中，您可以看到一個嵌入在基於 HTML 的網頁中的簡單 Flutter 應用程式。使用 CSS，我們應用了一個動畫旋轉效果；即使在旋轉時，Flutter 內容仍然可以互動。示範還顯示，您可以使用 HTML 按鈕和 JavaScript 事件處理程式來更改 Flutter 狀態，反之亦然。當這項工作完成後，我們認為這將為使用 Flutter 將互動性加入到現有的 Web 應用程式中開啟許多新的機會。</p>
-<figure>
-<img alt="Flutter 網頁示範的螢幕截圖。顯示了傳統的 Flutter 計數器應用程式，但它被 CSS 扭曲和轉換，看起來像是照片的一部分，照片中一位女性拿著一部 iPhone。" src="https://cdn-images-1.medium.com/max/1024/1*QjyV-g_N50iwOVNSGglxxA.png" />
-<figcaption>使用元素嵌入，您可以在 `<div>` 元素中嵌入 Flutter，並使用 CSS 為其設定樣式。</figcaption>
-</figure>
-
-<p>轉向 Android 和 iOS，Flutter 已經長期支援使用平台通道與系統 API 整合，平台通道為使用 Kotlin 或 Swift 等語言編寫的程式碼提供了基於訊息的通訊方式。雖然這解鎖了對這些函式庫的存取，但它需要應用程式作者熟悉多種語言，並且需要大量的樣板程式碼。</p>
-<p>我們現在開始了 <strong>針對系統互操作性的新方法</strong> 的工作，允許直接呼叫函式庫。在 iOS 上，我們正在建立在 FFI 用於 C 互操作性的工作基礎之上，加入對 Swift 和 Objective-C 函式庫的支援。在 Android 上，我們正在使用 JNI 來橋接到用 Kotlin 編寫的 Jetpack 函式庫。使用新命令，Dart 會自動為跨語言互操作創建綁定，並適當轉換資料類別。完成後，我們希望這項工作能夠讓 Flutter 開發者能夠呼叫新的 Jetpack 或 iOS 函式庫，而無需使用外掛或學習不同的 API 語法，同時也能大大減輕外掛作者的工作。<a href="https://github.com/flutter/samples/tree/main/experimental/pedometer">查看我們的範例</a> 了解更多！</p>
-<h3 id="對新興架構的早期支援"><a href="#對新興架構的早期支援" class="headerlink" title="對新興架構的早期支援"></a>對新興架構的早期支援</h3><p>由於 Dart 廣泛支援各種處理器架構，以及它高度優化的 JavaScript 編譯器，Flutter 已經可以在各種設備和外觀比例上執行。但隨著一些令人興奮的新選項即將出現，我們第三个主題是 <em>對新興架構的早期支援</em>。</p>
-<p><a href="https://webassembly.org/">WebAssembly</a> 作為一種平台中立的二進制指令格式，已日漸成熟，在現代瀏覽器上獲得了 <a href="https://caniuse.com/wasm">越來越多的支援</a>。令人興奮的是，WebAssembly 為網頁平台打開了除了 JavaScript 之外的其他語言的大門。在最近幾個月裡，我們一直在與 Chrome 團隊和其他 WebAssembly 合作夥伴合作，為 <a href="https://github.com/WebAssembly/gc">垃圾回收語言</a>（如 Dart）提供 <a href="https://github.com/WebAssembly/gc">早期支援</a>。此 WebAssembly 的新擴展現在使用最新開發版本的 Chrome 中的旗標支援。在 Flutter Forward 上，我們正在揭示對 <strong>Flutter 編譯為 WebAssembly</strong> 的早期支援，這將為我們的 Web 支援帶來更快的速度和更小的佔位空間優化。</p>
-<p>另一個引發越來越多人興趣的平台架構是 <a href="https://en.wikipedia.org/wiki/RISC-V">RISC-V</a>，這是一種開放標準指令集架構 (ISA)，旨在廣泛使用。Android 團隊最近發表了關於 <a href="https://www.youtube.com/watch?v=70O_RmTWP58">他們支援 RISC-V 的工作</a> 的演講，我們很高興地宣布 <strong>Dart 現在也支援 RISC-V</strong>，作為了我們自己的旅程的一部分，讓 Flutter 能夠在 RISC-V 設備可用時在其上執行。生產 RISC-V 硬體仍處於起步階段，但在 Flutter Forward 上，我們展示了迄今在 <a href="https://www.clockworkpi.com/product-page/devterm-kit-r01">ClockworkPi DevTerm Kit R-01</a> 上取得的進展，這是一款運行 Linux 的自組裝便攜式終端機。我們相信 RISC-V 支援將特別適用於嵌入式方案，Flutter 可以為各種需求提供強大的 UI 工具包。</p>
-<figure>
-<img alt="ClockworkPi RISC-V 便攜式終端的圖片。這是一個大約與 iPad 大小相同的設備，但帶有微型鍵盤、軌跡球滑鼠和終端機顯示器。" src="https://cdn-images-1.medium.com/max/1024/1*LfW_XnTVxV1dL1CLT7iAWQ.jpeg" />
-<figcaption>ClockworkPi DevTerm R-01，一款實驗性的 RISC-V 電腦，運行 Dart 主控台應用程式。</figcaption>
-</figure>
-
-<h3 id="持续关注开发者体验"><a href="#持续关注开发者体验" class="headerlink" title="持续关注开发者体验"></a>持续关注开发者体验</h3><p>我们上面描述的所有内容的基础都是开发人员的生产力，这是 Flutter 自创建以来一直以来的标志，其功能包括状态热重载。我们对未来的第四个也是最后一个投资领域是 <em>持续关注开发人员体验</em>，涵盖 Flutter 和 Dart。</p>
-<p>在 Flutter Forward 上，我们正在预览我们对一些主要的 Dart 语言新功能的早期工作的部分成果，我们希望这些成果能够证明我们对语言的优雅演进的承诺。在我们的开发频道中，我们现在拥有对 <strong>记录和模式</strong> 的早期支持，这两个新增强功能可以很好地配合使用。</p>
-<figure>
-<img alt="VSCode 运行记录和模式新功能演示的图片。它显示了 Dart 现在可以返回多个值。演示的代码位于 https://gist.github.com/timsneath/a75fd9f76b5b61c42676c9232160d14d" src="https://cdn-images-1.medium.com/max/1024/0*uGTJ0p_XZE_yZ9NS" />
-<figcaption>记录和模式用于返回和接收多个函数参数的简单示例。</figcaption>
-</figure>
-
-<p>我们还 <strong>正式宣布 Dart 3</strong>，这是我们为语言引入健全的空安全而开展的工作的顶峰。Dart 3 还删除了其他长期弃用的功能，以进一步使语言现代化。我们已经开始发布 Dart 3 的 alpha 版本，以及匹配的 Flutter 版本，使开发人员能够测试包和应用程序。有关 Dart 3 的更多信息，请查看 <a href="https://medium.com/dart-lang/dart-3-alpha-f1458fb9d232">Dart 通道的单独博客文章</a>。</p>
-<p>当然，我们也会投资于 Flutter 的开发人员体验。继我们去年在 <a href="https://medium.com/flutter/announcing-the-flutter-casual-games-toolkit-c22e401d8fee">I&#x2F;O</a> 上发布的休闲游戏工具包取得成功之后，我们现在正在共享 <a href="https://medium.com/flutter/announcing-the-flutter-news-toolkit-180a0d32c012">第一个版本的新闻工具包</a>，它可以加速新闻出版商和其他希望触达移动用户，而不必从头开始设计应用程序的內容提供者的移动开发。它包括构建以文章为中心的应用程序所需的一切，包括导航和搜索、身份验证、广告整合、通知、个人资料和订阅，同时还将 Google 新闻倡议研究的最佳实践整合在一起。今天，我们重点介绍了非洲的三个早期采用者，他们正在使用这个工具包构建应用程序，包括 <a href="https://www.hespress.com/">Hespress</a>，摩洛哥最大的新闻网站之一，<a href="https://boldsportsng.com/">Bold Sports</a>，尼日利亚受欢迎的体育网站；以及 <a href="https://www.standardmedia.co.ke/">The Standard</a>，肯尼亚最古老的报纸。</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FYnJwjZ3jCTc%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DYnJwjZ3jCTc&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FYnJwjZ3jCTc%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/d349741327c90c711abcbe3f978dd369/href">https://medium.com/media/d349741327c90c711abcbe3f978dd369/href</a></iframe>
-
-<h3 id="携手共进"><a href="#携手共进" class="headerlink" title="携手共进"></a>携手共进</h3><p>我们希望您与我们一起对 Flutter 的未来感到兴奋。我们正在继续大力投资核心开发人员体验，同时进行一些基础改进，为我们和其他人铺平道路，以便使用 Flutter 构建更强大的体验。</p>
-<p>这张图片总结了我们的方向：</p>
-<figure>
-<img alt="未来工作的四个主题：突破性的图形性能（Impeller、着色器、3D 支持）；网页和移动的无缝集成（元素嵌入、JNIgen 和 FFIgen）；对新兴架构的早期支持（WebAssembly 和 RISC-V）；以及持续关注开发者体验（Dart 语言特性、健全的空安全、Google 新闻工具包和 Wonderous）。" src="https://cdn-images-1.medium.com/max/1024/1*iIgYbZq3WKnUBctIWBap_Q.png" />
-</figure>
-
-<p>除了我们自己的开发主题之外，看到 Flutter 生态系统不断扩展也令人欣慰，例如 <a href="https://flutterflow.io/">FlutterFlow</a> 是一個開發原生行動應用程式的低程式碼建構器，以及 <a href="http://widgetbook.io/">Widgetbook</a>，它提供靈活的工具，讓設計師和開發者能夠在使用者介面開發上進行合作。</p>
-<p>最后，来到肯尼亚，看到当地开发者的创业精神和才华，真是太好了。非洲的 Flutter 社区充满活力，这里很特别；仅 Flutter 肯尼亚用户组的开发人员就超过 1,000 人。我们很高兴 Flutter 能为非洲各地的开发人员提供新的机会，让他们参与到快速增长的应用程序经济中。Klasha 就是这个承诺的一个很好的例子，它使用 Flutter 快速进入市场，并解决当地的难题。以下是他们使用 Flutter 的体验视频：</p>
-<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2Fo8NPZ2ofLbI%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3Do8NPZ2ofLbI&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fo8NPZ2ofLbI%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/66cf87664a2d1cae8b949b194832a985/href">https://medium.com/media/66cf87664a2d1cae8b949b194832a985/href</a></iframe>
-
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=b94ce089f49c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-next-for-flutter-b94ce089f49c">Flutter 的下一步是什麼</a> 最初發表在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/dac042d8.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/dac042d8.html" class="post-title-link" itemprop="url">【文章翻譯】Adapting Wonderous to larger device formats</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2023-01-25 16:05:24" itemprop="dateCreated datePublished" datetime="2023-01-25T16:05:24+08:00">2023-01-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="使用-Flutter-設計在所有設備上看起來都美觀的行動應用程式"><a href="#使用-Flutter-設計在所有設備上看起來都美觀的行動應用程式" class="headerlink" title="使用 Flutter 設計在所有設備上看起來都美觀的行動應用程式"></a>使用 Flutter 設計在所有設備上看起來都美觀的行動應用程式</h2><p>今天，我們宣布 Wonderous 的下一個版本，該版本新增了對可折疊設備、平板電腦和平板電腦橫向模式的支援。這個迭代讓我們能夠測試 Flutter <strong>適應不同設備格式</strong> 的能力，GitHub 上的 <a href="https://github.com/gskinnerTeam/flutter-wonderous-app">程式碼</a> 存放庫提供了利用 <a href="https://docs.flutter.dev/development/ui/layout/building-adaptive-apps">適應性設計</a> 的參考。</p>
-<p>在本文中，我們將回顧我們在其中學習到的一些內容。雖然我們的重點是手持設備的應用程式，但其中許多概念可以適應桌面和網頁。</p>
-<h3 id="縮小焦點"><a href="#縮小焦點" class="headerlink" title="縮小焦點"></a>縮小焦點</h3><p>在思考適應性設計時，設計師應該首先問：「<strong>我們可能支援哪些外形尺寸？</strong>」Flutter 支援幾乎所有設備，但應用程式創建者應該明確說明他們設計和測試過其應用程式的格式。縮小焦點讓設計師可以仔細考慮如何為可用的畫布最佳化數位體驗。沒有仔細設計，適合行動裝置的佈局在較大的外形尺寸上可能看起來不精緻。</p>
-<h3 id="充分利用額外的空間"><a href="#充分利用額外的空間" class="headerlink" title="充分利用額外的空間"></a>充分利用額外的空間</h3><p>在適應應用程式設計以符合更大的螢幕尺寸時，設計師應該考慮如何利用額外的空間。這可能意味著透過顯示不同的佈局來增強呈現方式。例如：</p>
-<figure>
-<img alt="Portrait and landscape version of the Wonder Events page" src="https://cdn-images-1.medium.com/max/1024/1*Y_ROvg5zl7edWeA-G6THzg.png" />
-<figcaption><em>iPad Pro 12.9 英寸直立和橫向</em></figcaption>
-</figure>
-
-<p>新增額外的行或欄：</p>
-<figure>
-<img alt="Showing the artifcats search results on a larger screen with 4 columns, versus a smaller screen with only two columns" src="https://cdn-images-1.medium.com/max/1024/1*G0_f2A0k1sK7aWmFbKAFlg.png" />
-<figcaption><em>iPad Pro 12.9 英寸和 iPhone 11</em></figcaption>
-</figure>
-
-<p>或將欄變為行：</p>
-<figure>
-<img alt="Showing vertically scrollable rows in portrait mode, and a single horizontally scrollable row in landscape." src="https://cdn-images-1.medium.com/max/1024/1*g3j3u2aTh1m5pR4M5CqX_w.png" />
-<figcaption><em>iPad Pro 12.9 英寸直立和橫向</em></figcaption>
-</figure>
-
-<p>或者，您也可以使用額外的畫布來做更多相同的事情。Wonderous 具有美麗的插圖，因此更大的螢幕尺寸讓我們能夠展示更多這項工作：</p>
-<figure>
-<img alt="Showing an image of the Machu Picchu illustration scaled to multiple devices sizes" src="https://cdn-images-1.medium.com/max/1024/1*PpfHUeUH0sr5vDUUdcG81A.png" />
-<figcaption><em>iPhone 11，Samsung Fold4 關閉，iPad Pro 12.9 英寸</em></figcaption>
-</figure>
-
-<p><strong>考慮 UI 組件如何反應的方式</strong></p>
-<p>隨著螢幕變大，您需要考慮應用程式的 UI 組件將如何反應。例如，您可能需要將組件縮放到適合可用空間的大小：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*IURgMIU9x8zzm-p6lZUNwg.png" />
-<figcaption><em>Samsung Fold4 打開和 iPhone 11</em></figcaption>
-</figure>
-
-<p>您也可以考慮保持內容居中加權，或將某些資產固定到設備邊界：</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1000/1*RA_cBWkp9GOQsK_H0-Dg8w.gif" />
-</figure>
-
-<p><strong>使用 Flutter 的適應性設計</strong></p>
-<p>Flutter 架構中有許多功能對適應 Wonderous 很有幫助。例如：</p>
-<ul>
-<li>熱重載讓設計團隊能夠實時做出微調</li>
-<li>動態填充和字體大小</li>
-<li><a href="https://api.flutter.dev/flutter/widgets/Flex-class.html">Flex</a> Widget 動態顯示行或欄</li>
-<li><a href="https://api.flutter.dev/flutter/widgets/MediaQuery-class.html">MediaQuery</a> 返回螢幕尺寸和設備方向等詳細資訊</li>
-</ul>
-<p>您可以在 <a href="https://blog.gskinner.com/archives/2023/01/flutter-adapting-wonderous-for-landscape.html">gSkinner 的網站</a> 上閱讀有關技術實作的更多具體資訊。您還可以在 Android 文件網站上的 <a href="https://developer.android.com/docs/quality-guidelines/large-screen-app-quality">大型螢幕應用程式尺寸</a> 中了解有關為更大螢幕尺寸設計應用程式的更多資訊。</p>
-<p>我們希望您能安裝 Wonderous，並在開發您自己的應用程式時將程式碼用作參考。如果您對應用程式本身有任何回饋，請 <a href="https://github.com/gskinnerTeam/flutter-wonderous-app">在 GitHub 上提交議題</a>。如果您對使用 Flutter 的適應性設計有任何想法，請隨時透過 <a href="https://twitter.com/LeighaJarett">Twitter</a> (@leighajarett) 或 <a href="https://www.linkedin.com/in/leighajarett/">LinkedIn</a> (Leigha Jarett) 傳送訊息給我。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=ac51e1c00bc0" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/adapting-wonderous-to-larger-device-formats-ac51e1c00bc0">將 Wonderous 適應更大的設備格式</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1621,7 +1778,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1657,7 +1814,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

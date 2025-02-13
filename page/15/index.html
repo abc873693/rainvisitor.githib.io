@@ -146,6 +146,369 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/d5e92173.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/d5e92173.html" class="post-title-link" itemprop="url">【文章翻譯】Which factors affected users’ decisions to adopt Flutter? — Q1 2021 user survey results</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-13 02:17:12" itemprop="dateCreated datePublished" datetime="2021-05-13T02:17:12+08:00">2021-05-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h3 id="哪些因素影響了使用者採用-Flutter-的決定？—-2021-年第一季使用者調查結果"><a href="#哪些因素影響了使用者採用-Flutter-的決定？—-2021-年第一季使用者調查結果" class="headerlink" title="哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果"></a>哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果</h3><p>Flutter 團隊在此分享本季使用者調查的結果！本季，我們在 3 月 5 日至 11 日期間，歷時 7 天，收集了超過 8,000 份回覆。這個季度的調查計畫旨在以結構化的形式聽取您的意見，以便 Flutter 團隊能夠專注於對使用者最重要的方面。先前調查的結果也發佈在 <a href="https://medium.com/flutter/search?q=survey">Medium</a> 上。</p>
+<h3 id="使用者滿意度"><a href="#使用者滿意度" class="headerlink" title="使用者滿意度"></a>使用者滿意度</h3><p>在本季度的調查中，8,652 位受訪者中有 92% 表示對 Flutter 感到滿意（55% 非常滿意，37% 有點滿意），與上一季度的結果類似。</p>
+<p>本季值得注意的是，89% 的受訪者也對 Dart 語言感到滿意，創下歷史新高。這個消息讓團隊非常鼓舞，因為這個百分比在 2019 年起步時只有 80%。Dart 團隊做了很多工作來改善開發人員使用 Dart 語言的體驗，以達成此滿意度，包括 <a href="https://dart.dev/null-safety">健全的空安全</a>。我們很高興分享這個調查結果，並感謝那些承認該語言獨特優勢的人。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*9CO8AmwyqIudhgK6" />
+<figcaption><em>對 Dart 感到滿意的使用者比例從 2019 年第三季度的 80% 增加到 2021 年第一季度的 89%，增長了 9%。</em></figcaption>
+</figure>
+
+<h3 id="哪些因素影響了使用者採用-Flutter-的決定？"><a href="#哪些因素影響了使用者採用-Flutter-的決定？" class="headerlink" title="哪些因素影響了使用者採用 Flutter 的決定？"></a>哪些因素影響了使用者採用 Flutter 的決定？</h3><p>Flutter 團隊希望了解不同的因素如何影響使用者為新專案採用 Flutter 的決定。目標是找到團隊應該投入的領域，以減輕使用者的疑慮，並讓使用者感到滿意。此外，透過分享結果，我們希望您也能使用這些資訊來尋找貢獻 Flutter 社群的方式，或在您的組織或社群中宣傳 Flutter。</p>
+<p>由於這次調查的目標是現有的 Flutter 使用者，因此我們詢問了使用者最近評估 Flutter 用於其下一個新專案的經驗。我們了解到 75% 的受訪者在過去 3 個月內評估了 Flutter 與其他技術的比較，其中 67% 是出於商業原因，其次是學習（17%）和興趣（14%）。</p>
+<p>首先，我們詢問什麼因素讓使用者傾向於採用 Flutter。如以下圖表所示，使用者傾向於採用 Flutter 的主要原因是 Flutter 支援以下功能，按重要性排序：</p>
+<ol>
+<li>單一程式碼庫。</li>
+<li>現成的 UI Widget。</li>
+<li>熱重載。</li>
+</ol>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*lmC1UJVINDIXumGt" />
+<figcaption><em>讓開發人員傾向於為其下一個專案採用 Flutter 的因素</em></figcaption>
+</figure>
+
+<p>接下來，我們詢問什麼因素讓使用者傾向於不採用 Flutter。使用者最擔心的因素是以下這些，按重要性排序：</p>
+<ol>
+<li>Google 對 Flutter 的承諾。</li>
+<li>Flutter 對於他們正在構建的應用程式規模的成熟度。</li>
+<li>Flutter 生態系統中提供的套件和插件。</li>
+</ol>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*0d3CyUdb9K75qjt2" />
+<figcaption><em>讓開發人員不願為其下一個專案採用 Flutter 的因素</em></figcaption>
+</figure>
+
+<p>從這些結果中，團隊了解到使用者擔心 Flutter 是否會長期存在。這是一個合理的擔憂，因為您將您的職業或應用程式與我們的框架綁定在一起。因此，我們想再次提到內部採用的規模。在 Flutter Engage 上，我們分享了 Google 有超過 30 個團隊正在使用 Flutter 構建任務關鍵的應用程式。這些團隊包括 <a href="https://youtu.be/IdrCyS7EF8M?t=67">Google Pay、Google Ads、Nest Hub 和 Stadia</a>，這些團隊擁有數千名開發人員致力於 Flutter 開發。今年，Flutter 將再次在 <a href="https://events.google.com/io/">Google I&#x2F;O</a> 上佔據重要地位。請留意我們最新的公告，並從 5 月 5 日開始註冊 <a href="https://events.google.com/io/program/content?4=topic_flutter&lng=en">I&#x2F;O 網站</a> 上列出的 Flutter 會議。</p>
+<p>我們還想指出，Flutter 的成長不僅僅是因為 Google 的支援——Google 外部的貢獻者比 Google 內部的貢獻者更多。全球充滿活力的開源開發人員社群正在為我們共同的成功做出貢獻！看看其他大型和小型貢獻者，例如 <a href="https://youtu.be/IdrCyS7EF8M?t=237">Toyota</a> 或 Ubuntu。</p>
+<p>接下來的擔憂是 Flutter 的成熟度，包括它周圍的生態系統。我們正在投資開發套件和插件生態系統，並致力於核心框架的穩定性和品質。隨著 Flutter 2 的發布和不斷增長的生態系統支援它，我們看到人們在這裡的觀點正在改善。現在網頁支援已穩定，桌面支援也處於 Beta 階段，我們在即將到來的版本中主要將會以完善框架和提升您使用 Flutter 可以達到的生產力為主題。同時，您可以查看 Flutter 網站的 <a href="https://flutter.dev/showcase">展示區</a>，了解 BMW、eBay、Nubank、騰訊、Square 和 Sonos 等主要品牌如何使用 Flutter 構建應用程式。</p>
+<p>我們還收集了數千條關於各種主題的原始評論，以回應開放式問題。我們至少舉辦了三個不同的研討會，Flutter 子團隊的工程師在這些研討會上聚在一起閱讀和消化關於各種主題的評論，包括生態系統、開發人員工具等等。研討會期間產生的想法將作為團隊未來幾個季度目標的輸入。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*_m-0usdhsHPmeZ8U" />
+<figcaption><em>Flutter 團隊用於根據調查中的評論生成和組織有關開發人員工具的想法的線上便利貼</em></figcaption>
+</figure>
+
+<p>社群貢獻者也可以做一些事情。我們從使用者評論中了解到，許多 Flutter 開發人員仍然希望擁有品質更高的套件，並提供更好的維護，儘管他們承認 Flutter 的生態系統隨著時間推移而成熟。有很多關於多媒體套件（如音訊和影片播放器）和藍牙套件的提及，這些套件需要更好的支援。我們歡迎您貢獻這些領域，擴展覆蓋範圍，例如向現有套件提交 PR，因為 Flutter 團隊努力提供高品質的 <a href="https://pub.dev/publishers/flutter.dev/packages">第一方套件</a>。</p>
+<h3 id="基於雲端的服務和產品"><a href="#基於雲端的服務和產品" class="headerlink" title="基於雲端的服務和產品"></a>基於雲端的服務和產品</h3><p>Flutter 團隊知道一些 Flutter 使用者對雲端服務有興趣，但團隊並不清楚使用者在尋找哪種類型的雲端解決方案。感謝調查，我們了解到 40% 的開發人員使用基於雲端的服務，27% 的開發人員計畫在他們的 Flutter 專案中使用基於雲端的服務。</p>
+<p>對於那些已經使用基於雲端的服務的人來說，最受歡迎的雲端解決方案是 Firebase (82%)，其次是 Google Cloud Platform (GCP) (34%) 和 Amazon Web Services (AWS) (25%)。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*VLupMT920gd2acrw" />
+</figure>
+
+<p>使用者表示，他們選擇 Firebase 和 GCP 的原因是它們易於與 Flutter 一起使用。許多選擇 AWS 和 Azure 的使用者表示，這是因為他們已經熟悉這些平台。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*d0IHqqnl0KoeLuT8" />
+</figure>
+
+<p>Flutter 團隊與 Firebase  和 GCP 密切合作。我們將繼續支援 <a href="https://firebase.flutter.dev/">FlutterFire Plugin</a>，團隊也與 GCP 團隊合作，使其更容易與 Flutter 一起使用。</p>
+<h3 id="接下來要做什麼？"><a href="#接下來要做什麼？" class="headerlink" title="接下來要做什麼？"></a>接下來要做什麼？</h3><p>Flutter UXR 團隊將每季度進行調查。您可以在 <a href="https://flutter.dev/">flutter.dev</a> 上，Flutter IDE Plugin 中，或 Twitter 上 @FlutterDev 找到公告。您也可以註冊即將到來的 UX 研究，參與其他研究。請繼續分享您的想法，因為團隊正在尋找重要問題的答案。</p>
+<p>再次感謝所有參與此次調查並提供寶貴意見的人。我們閱讀了每則意見回饋，並將其銘記於心。我們的目標是打造一款您喜愛的產品，我們感謝您的時間和努力幫助我們！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=563e61fc68c9" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/which-factors-affected-users-decisions-to-adopt-flutter-q1-2021-user-survey-results-563e61fc68c9">哪些因素影響了使用者採用 Flutter 的決定？— 2021 年第一季使用者調查結果</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/c738e276.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/c738e276.html" class="post-title-link" itemprop="url">【文章翻譯】AngularDart, Flutter, and the web: Spring update</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-05-12 19:03:33" itemprop="dateCreated datePublished" datetime="2021-05-12T19:03:33+08:00">2021-05-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="AngularDart、Flutter-與網路：春季更新"><a href="#AngularDart、Flutter-與網路：春季更新" class="headerlink" title="AngularDart、Flutter 與網路：春季更新"></a>AngularDart、Flutter 與網路：春季更新</h2><p>兩個月前，我們發布了 <a href="https://medium.com/flutter/flutter-web-support-hits-the-stable-milestone-d6b84e83b425">Flutter 網路支援的首個穩定版本</a>。這對整個客戶端開發來說是一個重要的里程碑，它結合了 Flutter 建立的 UI 框架、Dart 工業級強度的 JavaScript 工具鏈以及 Web 平台的底層能力，在行動裝置和瀏覽器之間提供一致性。</p>
+<p>自該版本發布以來，我們很高興看到開發人員開始在網路上使用 Flutter。即使在這個早期階段，超過 10% 的 flutter build 指令都以網路為目標，這表明 Web 應用程式已經開始使用 Flutter 部署。在 Google 內部，許多團隊開始依賴 Flutter 的網路支援。而且我們自己在 Flutter 開發中也大量使用它，包括 <a href="https://dartpad.dev/e0a2e942e85fde2cd39b2741ff0c49e9?null_safety=true">DartPad</a> 和 <a href="https://flutter.dev/docs/development/tools/devtools/overview">DevTools</a>（我們的效能和除錯工具套件）。</p>
+<p>幾年前，當我們第一次開始為 Flutter 加入網路支援時，我們希望它能帶來好的結果，但這仍然感覺像是一個登月計劃。雖然還有很多工作要做，但我們相信 Flutter 的網路支援有潛力以高品質的解決方案填補一個重要的利基市場。因此，我們正在調整 Dart 開源網路工具的投資，以專注於 Flutter。</p>
+<p>在改變我們的重點的同時，我們也正在縮減我們在 AngularDart 上的外部工作，這是一個從最初的 Angular 專案演變而來的獨立網路框架。六個月前，<a href="https://groups.google.com/a/dartlang.org/g/announce/c/Kz84KNBcf3U">我們宣布了 AngularDart 的路線圖</a>，其中包括發布一個長期穩定的更新（<a href="https://pub.dev/packages/angular/changelog">AngularDart 6</a>）和支援空安全，但優先考慮 AngularDart 工程工作在主要的內部客戶，包括 <a href="https://ads.google.com/">Google 廣告</a> 和 <a href="https://play.google.com/console">Google Play 管理中心</a>。雖然 AngularDart 框架本身相對容易開源，但 Google 的構建和發布系統是 <a href="https://sre.google/sre-book/release-engineering/#continuous-build-and-deployment-Yms8u8">高度專業化的</a>，導致顯著的差異，使得同步內部和外部版本變得非常困難。</p>
+<p>專注於大多數 AngularDart 使用者可以幫助我們充分利用我們才華橫溢的工程資源，我們希望每個人都能因此受益。對於廣告和 Play 管理中心等專案，我們可以更直接地滿足他們的需求，而無需擔心外部影響；對於外部使用者，我們可以將所有精力投入到為您提供一個高品質的 Flutter 產品，該產品適用於網路、桌面、行動和嵌入式場景。</p>
+<blockquote>
+<p>我們可以將所有精力投入到為您提供一個高品質的 Flutter 產品，該產品適用於網路、桌面、行動和嵌入式場景。</p>
+</blockquote>
+<p>在過去的幾個月中，我們一直在與 AngularDart 最大的外部使用者交談，以幫助他們制定自己的路線圖。對於某些人來說，Flutter 的網路支援是一個完美的選擇；其他人則對 AngularDart 的穩定性和成熟度感到滿意；還有一些人正在利用這個機會過渡到 <a href="https://angular.io/">Angular</a>（Google 流行的基於 TypeScript 的網路框架）。</p>
+<p>Angular 本身繼續快速增長。在過去的一年中，<a href="https://www.npmjs.com/package/@angular/core">每週下載量增長了 60% 以上</a>，並且近 <a href="https://github.com/angular/angular/network/dependents?package_id=UGFja2FnZS00NTE2NDYyMzQ=">兩百萬個公共 GitHub 儲存庫依賴於它</a>。它的語法對於今天使用 AngularDart 的人來說會很熟悉，對於尋找現代網路框架的開發人員來說，這是一個合乎邏輯的選擇。</p>
+<p>對於想要使用 Dart 的開發人員，我們認為 Flutter 的網路支援將是一個令人興奮的選擇。例如，<a href="https://propops.com/en/">PropOps</a>——一家房地產領域的科技初創公司——使用 Flutter 建立業務線應用程式取得了巨大的成功，如下面的螢幕截圖所示：</p>
+<figure>
+<img alt="PropOps 網路應用程式的螢幕截圖" src="https://cdn-images-1.medium.com/max/1024/1*TnLjhbuMnphc4ZlsuSdtog.png" />
+<figcaption>PropOps：一個基於雲端的房產管理工具，使用 Flutter 的網路支援構建。</figcaption>
+</figure>
+
+<p>在接下來的幾週內，我們將發布一個穩定的 AngularDart 外部版本，支援空安全；屆時，它將轉入維護模式。如果一個承諾的聯盟或社群團體想要接管該專案的領導權並繼續發展它，我們很樂意收到他們的來信。</p>
+<p>我們正在全力推進 Flutter 的網路支援以及 Angular 本身：請關注下週 <a href="https://events.google.com/io/">Google I&#x2F;O 活動</a> 的更多資訊！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f7f5b8b10001" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/angulardart-flutter-and-the-web-spring-update-f7f5b8b10001">AngularDart、Flutter 與網路：春季更新</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4c254af9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/4c254af9.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing XD to Flutter v2.0!</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-29 14:03:19" itemprop="dateCreated datePublished" datetime="2021-04-29T14:03:19+08:00">2021-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="宣布-XD-to-Flutter-v2-0！"><a href="#宣布-XD-to-Flutter-v2-0！" class="headerlink" title="宣布 XD to Flutter v2.0！"></a>宣布 XD to Flutter v2.0！</h2><h4>* 為設計師提供通往生產 Flutter 程式碼的快速路徑 *</h4>
+
+<figure>
+  <img alt="XD to Flutter" src="https://cdn-images-1.medium.com/max/1024/1*OoVDCYfw18QB91Fpe5jDAg.png" />
+</figure>
+
+<p>Flutter 是 Google 的開源 UI 工具包，可使用單一程式碼庫為行動、桌面、網頁和嵌入式設備構建精美的應用程式。在過去的幾年中，它已成為想要為多個平台構建應用程式的開發人員的領先選擇；但設計師需要一個視覺工具來製作原型和建立 Flutter UI，而不是手工編寫 Dart 原始碼。這就是 <a href="https://github.com/AdobeXD/xd-to-flutter-plugin">XD to Flutter</a> 誕生的原因！</p>
+<p>從插件的第一次預覽發布至今已將近一年，我們一直都在不斷改進和完善它，進行了一些小更新，在去年夏天發布了重大的 v1.0 版本，現在又發布了 v2.0 版本，以配合 Flutter 2 的發布！</p>
+<h3 id="等等，XD-to-Flutter-是什麼？"><a href="#等等，XD-to-Flutter-是什麼？" class="headerlink" title="等等，XD to Flutter 是什麼？"></a>等等，XD to Flutter 是什麼？</h3><p>這個名字可能已經洩露了答案，但 XD to Flutter 插件是一個功能強大、易於使用的工具，可以將您在 <a href="https://www.adobe.com/products/xd.html">Adobe XD</a> 中設計的精美作品匯出為乾淨、功能性的 Flutter 程式碼。您可以從設計中複製特定視覺元素的程式碼，匯出可重複使用的 Widget，甚至可以匯出完整的視圖。</p>
+<iframe src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FraG7NjM0p0k%3Ffeature%3Doembed&amp;display_name=YouTube&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DraG7NjM0p0k&amp;image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FraG7NjM0p0k%2Fhqdefault.jpg&amp;key=a19fcc184b9711e1b4764040d3dc5c07&amp;type=text%2Fhtml&amp;schema=youtube" width="854" height="480" frameborder="0" scrolling="no"><a href="https://medium.com/media/1d6faec4a7d9de9a3356bfb9cedd6126/href">https://medium.com/media/1d6faec4a7d9de9a3356bfb9cedd6126/href</a></iframe>
+
+<p>這意味著，使用 XD to Flutter 插件，您可以透過點擊按鈕，讓您的設計在幾乎任何設備上運行。它不會為您編寫整個應用程式，但會為您提供一個良好的開端。</p>
+<p>XD to Flutter 由 <a href="https://gskinner.com/">gskinner</a> 與 Adobe 合作開發，並作為 Adobe XD 本身的插件發布，因此您可以將它用於您正在建立的任何現有 Adobe XD 設計。</p>
+<h3 id="太棒了！那麼有什麼新功能？"><a href="#太棒了！那麼有什麼新功能？" class="headerlink" title="太棒了！那麼有什麼新功能？"></a>太棒了！那麼有什麼新功能？</h3><p>XD to Flutter 的初始版本對輸出設計中的所有不同視覺元素提供了良好的支援 - 向量圖形、圖片、富文字、背景模糊、混合模式、陰影等 - 但結果可能是靜態且缺乏彈性的。</p>
+<p>雖然它對於擷取圖示或文字樣式很方便，但我們希望它能做更多事情！XD 使設計師能夠使用響應式佈局、可捲軸區域、堆疊和網格等工具來建立動態 UI；我們希望插件支援所有這些功能，而 v2.0 版本讓我們取得了很大進展。</p>
+<h4 id="響應式調整大小"><a href="#響應式調整大小" class="headerlink" title="響應式調整大小"></a>響應式調整大小</h4><p>XD to Flutter 支援 XD 的響應式佈局功能，讓您可以在其封閉的父元素中「固定」元素，並精確控制它們的調整大小方式。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Ep_TKKdQqNDhNGtYjXSmzQ.png" />
+  <figcaption>Adobe XD 中的響應式設計</figcaption>
+</figure>
+
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/707/1*A6Kateq9HjSt3XADTQzaow.gif" />
+  <figcaption>Flutter 中的響應式調整大小</figcaption>
+</figure>
+
+<p>這是透過在開源的 <a href="https://pub.dev/packages/adobe_xd">adobe_xd</a> 套件中使用自訂的 Pinned 佈局 Widget 來實現的，開發人員可以直接在他們的專案中利用它。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*F_lxL7fE3-MkjobRiJLqpA.png" />
+  <figcaption>Pinned Widget 程式碼範例</figcaption>
+</figure>
+
+<h4 id="堆疊和捲軸組"><a href="#堆疊和捲軸組" class="headerlink" title="堆疊和捲軸組"></a>堆疊和捲軸組</h4><p>「堆疊」和捲軸組提供了在 Adobe XD 中以動態方式佈置螢幕上內容的新方法。XD 中的堆疊讓您可以在水平或垂直列表中排列許多不同的元素，元素之間的間距各不相同；它們更類似於 Flutter 中的 Flex Widget，而不是它們的同名 Stack Widget。</p>
+<p>捲軸組預測性地讓您可以在設計中直接定義一個區域，以垂直或水平方式捲軸更大的內容組。</p>
+<p>XD to Flutter v2.0 支援這兩種功能，將它們轉換為常見的 Flutter Widget（<code>Column</code>、<code>Row</code> 和 <code>SingleChildScrollView</code>）。您甚至可以將堆疊放在捲軸組中，輕鬆建立一個捲軸項目列表。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*avGeBrHwEcAyptu0aKyc4w.gif" />
+  <figcaption>XD 中的堆疊和捲軸組（左）以及 Flutter 中的堆疊和捲軸組（右）</figcaption>
+</figure>
+
+<h4 id="填補和背景元素"><a href="#填補和背景元素" class="headerlink" title="填補和背景元素"></a>填補和背景元素</h4><p>另一個新功能是背景元素，讓您可以將視覺元素指定為組的背景。這可以與填補配對，將背景的邊緣與內容分開。</p>
+<p>Flutter 匯出使用 Stack Widget 將背景元素放置在內容後面，內容被放置在 Padding Widget 中。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-nUSSGKplXOzmySlrEUwXg.gif" />
+  <figcaption>XD 中的填補和背景（左）以及 Flutter 中的填補和背景（右）</figcaption>
+</figure>
+
+<h4 id="Flutter-2-和空安全性"><a href="#Flutter-2-和空安全性" class="headerlink" title="Flutter 2 和空安全性"></a>Flutter 2 和空安全性</h4><p>上面描述的佈局功能使 UI 具有更強的響應性，這與 Flutter 2 對桌面和網頁等外觀形式的支援增強相得益彰。</p>
+<p>Flutter 2 還引入了健全的空安全性 - 一個語言功能，可以幫助開發人員在空值問題引發應用程式問題之前捕獲它們。XD to Flutter v2.0 包括一個新的設定「匯出空安全程式碼」，確保生成的程式碼是面向未來的。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*4Gdqc7x5Vk85t47tQIocmw.png" />
+  <figcaption>「匯出空安全程式碼」設定和輸出</figcaption>
+</figure>
+
+<h4 id="聽起來很棒！我該如何開始？"><a href="#聽起來很棒！我該如何開始？" class="headerlink" title="聽起來很棒！我該如何開始？"></a>聽起來很棒！我該如何開始？</h4><p>無論您是使用它來複製複雜漸變的程式碼，還是匯出完全響應式、參數化、互動式 Widget，加入已經使用 XD to Flutter 插件的數千名創意專業人士都很簡單。</p>
+<p>您可以透過從 Adobe XD 的「插件」選單中選擇「瀏覽插件…」並搜尋「Flutter」（奇怪的是，搜尋「XD to Flutter」不起作用）來安裝它，或者只訪問 <a href="https://adobe.com/go/xd_to_flutter">adobe.com&#x2F;go&#x2F;xd_to_flutter</a>。</p>
+<figure>
+  <img alt="" src="https://cdn-images-1.medium.com/max/1024/1*aSDHtLA_ZQyiyXX3y9j2Ng.png" />
+</figure>
+
+<p>安裝好之後，從插件面板中打開 XD to Flutter 面板，然後點擊「需要幫助？」連結以查看 <a href="https://github.com/AdobeXD/xd-to-flutter-plugin/blob/master/README.md">插件文件</a>。</p>
+<p>Flutter 2 是框架向前邁出的令人興奮的一步，重點是構建可以在幾乎任何地方運行的精美應用程式。在 <a href="https://gskinner.com/">gskinner</a>，我們很高興能與 Adobe 和 Google 合作，確保 XD to Flutter 繼續使將迷人的設計忠實地轉換為工作產品的過程變得更加容易。</p>
+<p>敬請期待插件的更多令人興奮的更新！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=c743bac2aeeb" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/announcing-xd-to-flutter-v2-0-c743bac2aeeb">宣布 XD to Flutter v2.0！</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8da387d6.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -177,7 +540,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 22:47:39" itemprop="dateModified" datetime="2024-12-18T22:47:39+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,7 +665,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-19 10:29:32" itemprop="dateModified" datetime="2024-12-19T10:29:32+08:00">2024-12-19</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -880,7 +1243,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 22:46:55" itemprop="dateModified" datetime="2024-12-18T22:46:55+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1056,7 +1419,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 16:01:15" itemprop="dateModified" datetime="2024-12-18T16:01:15+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1346,383 +1709,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9a319309.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/9a319309.html" class="post-title-link" itemprop="url">【文章翻譯】Are you happy with Flutter? — Q4 2020 user survey results</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-02-11 00:46:22" itemprop="dateCreated datePublished" datetime="2021-02-11T00:46:22+08:00">2021-02-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="您對-Flutter-感到滿意嗎？-2020-年第-4-季使用者調查結果"><a href="#您對-Flutter-感到滿意嗎？-2020-年第-4-季使用者調查結果" class="headerlink" title="您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果"></a>您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果</h2><p>Google 的 Flutter 團隊自 2018 年以來便持續進行每季一次的調查，以收集您的意見回饋 <a href="https://medium.com/flutter/search?q=survey">自 2018 年以來</a>。上一季度的調查於 2020 年 11 月 23 日發布，並持續進行了 8 天。團隊收集了 8,285 份回饋，我們想與您分享這些結果！儘管這次調查的長度只有我們平常調查的一半，但我們還是像往常一樣從您的答案中學到了很多。我們非常感謝您撥冗提供寶貴的意見回饋。</p>
-<h3 id="使用者滿意度"><a href="#使用者滿意度" class="headerlink" title="使用者滿意度"></a>使用者滿意度</h3><p>總體而言，92% 的受訪者對 Flutter <em>有些滿意</em> 或 <em>非常滿意</em>。我們很高興能夠持續維持高滿意度。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*vY8rm_jNlGOmZ8eJ" />
-<figcaption><em>92% 的使用者對 Flutter 感到滿意，其中 51% 非常滿意。</em></figcaption>
-</figure>
-
-<p>從圖表中可以看出，我們也學到了以下資訊：</p>
-<ul>
-<li>91% 的受訪者表示 Flutter 很適合他們的專案。</li>
-<li>90% 的受訪者承诺并希望在下一个项目中使用 Flutter。</li>
-<li>58% 的受访者表示 Flutter 对其公司的成功至关重要。</li>
-</ul>
-<p>這些結果表明 Flutter 繼續蓬勃發展，並成為開發者工具箱的重要組成部分。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hs9oiR_zpBhkzT9u" />
-<figcaption><em>90% 的使用者希望在下個專案中使用 Flutter。</em></figcaption>
-</figure>
-
-<p>但是，我們注意到整體滿意度自上一季調查以來略有下降，從 94% 降至 92%。為了了解為什麼您對 Flutter 的各個方面並未完全滿意，團隊仔細審閱了開放式意見回饋。感謝您的回饋，團隊意識到了一些主要問題，並將投資於高優先順序項目。例如，我們計劃 <a href="https://github.com/dart-lang/sdk/projects/24">改進程式碼完成</a>，因為我們發現這是 IDE 相關問題中最常見的挫折來源。</p>
-<h3 id="難點"><a href="#難點" class="headerlink" title="難點"></a>難點</h3><p>這次，我們採用了不同的方法來了解 Flutter 的難點。我們想了解什麼阻礙了您更多地使用 Flutter。當我們詢問「如果不是因為以下原因，我會更多地使用 Flutter」，26% 的受訪者選擇了 <em>缺乏關鍵函式庫</em> 作為原因。作為回應，我們正與 <a href="https://baseflow.com/">Baseflow</a>、<a href="https://invertase.io/">Invertase</a> 和 <a href="https://codemagic.io/">Codemagic</a> 合作，以提高我們第一方套件和外掛的品質。雖然團隊正在努力改進先前研究中識別出的關鍵函式庫，但我們也在使用標籤 <a href="https://github.com/flutter/flutter/issues?q=is:open+label:%22would+be+a+good+package%22+sort:reactions-+1-desc">would be a good package</a> 監控問題追蹤器中的特定需求，以便任何人都可以找出生態系統中缺少什麼，並為其做出貢獻。</p>
-<p>由於 Flutter 相容套件的數量超過 15,000 個，並且 Flutter 團隊無法擴展規模來處理可能被認為是關鍵的數十甚至數百個套件，因此我們為社群提供了一系列機制來 <a href="https://pub.dev/help/scoring">評分套件</a>。我們提供這些機制，以便搜尋結果能產生高品質的結果，包括讚好、靜態分析和 <a href="https://flutter.dev/docs/development/packages-and-plugins/favorites">Flutter Favorite</a> 認證，該認證由一群 Flutter 社群志願者頒發。這樣做不僅鼓勵您貢獻更多套件來涵蓋關鍵方面，而且套件的品質也會隨著時間推移而提升，因為套件作者會因其工作而獲得更好的分數和認可。我們將繼續投資於這個領域，以便生態系統能夠自給自足，並持續自然地提高品質。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*4kA8p14vcnIS5cOG" />
-<figcaption><em>26% 的使用者需要更多函式庫。此結果不包括 19% 表示我目前使用 Flutter 足夠的使用者。</em></figcaption>
-</figure>
-
-<p>為了讓那些從事 Flutter 之外專案的人（19%）更容易，我們將繼續投資於 <a href="https://flutter.dev/docs/development/add-to-app">add-to-app</a>，這有助於您將 Flutter 模組整合到現有的 Android 或 iOS 應用程式中。您可以在 <a href="https://github.com/flutter/flutter/issues/72009">GitHub 議題 72009</a> 上追蹤相關功能的進度。</p>
-<p><em>核心框架中缺少的功能</em> 被 18% 的受訪者選中。在我們仔細查看開放式意見回饋後，發現回饋集中在 Flutter 框架中包含的功能與套件提供的功能之間的界線上。雖然有些人希望框架包含更多超出使用者介面 API 的功能是可以理解的，但我們的重點是我們最擅長的 - 提供出色的 UI 框架。但是，我們想為您提供所需的功能，因此我們與社群貢獻者合作，透過套件和外掛提供特定領域和特定平台的功能。如前所述，我們投資了工具和計畫來認可高品質的套件，並幫助您在生態系統中發現它們。我們歡迎您提供回饋意見和想法，以進一步增強我們的套件生態系統。</p>
-<h3 id="線上社群"><a href="#線上社群" class="headerlink" title="線上社群"></a>線上社群</h3><p>在這次調查中，團隊想知道您在哪裡與其他 Flutter 開發人員交流資訊或想法。雖然 21% 的受訪者表示他們沒有參與任何線上社群，但我們發現 Stack Overflow 是 Flutter 開發人員相互聯繫的最受歡迎的社群。38% 的受訪者選擇 Stack Overflow 作為他們最活躍的線上社群。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*jjBvOh6G9e9TwLQ1" />
-<figcaption><em>Stack Overflow 是 38% 的受訪者的主要線上社群。此圖表省略了 21% 沒有參與任何線上社群的使用者。</em></figcaption>
-</figure>
-
-<p>受訪者最活躍的地方不同，他們對社群有用性的評分也不同。例如，我們詢問「您在多大程度上同意或不同意以下關於您在上一個問題中選擇的線上社群的陳述？」對於回應 *”當我在社群中向其他 Flutter 使用者提問時，我能夠得到答案”*，在 Stack Overflow 上活躍的 75% 受訪者同意他們在 Stack Overflow 上提問時能夠得到答案。此外，61% 主要活躍在即時通訊服務上的受訪者表示他們也得到了答案。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*8JtwdBejYL_ez5rJ" />
-<figcaption><em>受訪者被要求評估他們對 *"當我問…” 的問題時，我能夠得到答案"* 這個陳述的同意程度，結果因他們活躍的社群而異。</em></figcaption>
-</figure>
-
-<p>這是我們第一次評估使用者在線上的分佈情況以及他們對各種線上社群的看法。建立一個有用的和蓬勃發展的社群對 Flutter 的成功至關重要。我們與您分享這些結果，希望幫助提供者和尋求者都能更好地利用這些線上溝通管道。Flutter 團隊將監控這些資料，以指導我們的支援和教育工作，並確保您能夠尋求幫助並保持聯繫。</p>
-<h3 id="Flutter-活動"><a href="#Flutter-活動" class="headerlink" title="Flutter 活動"></a>Flutter 活動</h3><p>每年都会由当地社区小组和 Flutter 贡献者组织许多面向 Flutter 社区的线下和线上活动，约 90% 参加活动的受访者表示他们在活动中了解了 Flutter 的新知识，并认为这些信息很有帮助。虽然这些活动是有效的学习机会，但通过我们的研究，我们现在知道大多数受访者 (61%) 在 2020 年并不知道这些活动。即使我们没有像 2019 年那样举办 <a href="https://www.youtube.com/playlist?list=PLjxrf2q8roU0o0wKRJTjyN0pSUA6TI8lg">Flutter Interact</a> 这样的大型活动来宣传这些活动，但这个百分比仍然高于我们的预期。因此，在计划 2021 年 3 月 3 日的 <a href="http://events.flutter.dev/">Flutter Engage 活动</a> 时，我们将与区域 Google 团队合作，帮助宣传这些活动。我们也正在与当地 Flutter 小组密切合作，以确保我们的活动内容能够传达给更多 Flutter 社区成员。每个人都欢迎参加这个免费的线上活动。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*AkXrQy4YPsBUoYLA" />
-<figcaption><em>61% 的在 2020 年没有参加任何活动 (线上和线下) 的使用者不知道有这些活動。</em></figcaption>
-</figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Z0mRRjjnEDQWqAsl" />
-<figcaption><em>85% 或以上的使用者從各種 Flutter 活動中學到了新東西。</em></figcaption>
-</figure>
-
-<h3 id="接下來會發生什麼事？"><a href="#接下來會發生什麼事？" class="headerlink" title="接下來會發生什麼事？"></a>接下來會發生什麼事？</h3><p>下一項調查將於 2 月底左右在 <a href="https://flutter.dev/">flutter.dev</a>、<a href="https://twitter.com/FlutterDev">FlutteDev</a> (和 <a href="https://flutter.dev/docs/get-started/editor?tab=androidstudio">Flutter IDE Plugin</a> 中宣布。您也可以透過 <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0i4De809KXVCdljGKrjMj3lxhuzbuFKCtY5PEQPCYtGxFMg/viewform">註冊</a> 來參與其他研究，以參與即將到來的 UX 研究。</p>
-<p>請繼續分享您的想法，因為團隊正在尋找重要問題的答案。</p>
-<p>再次感謝所有參與本次調查並提供宝貴意見回饋的人。感謝您的時間和努力！</p>
-<p>在 <a href="https://events.flutter.dev/">Flutter Engage</a> 期待與您相見！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=41cdd90aaa48" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/are-you-happy-with-flutter-q4-2020-user-survey-results-41cdd90aaa48">您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/ac78ba91.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/ac78ba91.html" class="post-title-link" itemprop="url">【文章翻譯】Join us for</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-26 16:14:32" itemprop="dateCreated datePublished" datetime="2021-01-26T16:14:32+08:00">2021-01-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="加入我們，一起參與-30DaysOfFlutter"><a href="#加入我們，一起參與-30DaysOfFlutter" class="headerlink" title="加入我們，一起參與 #30DaysOfFlutter"></a>加入我們，一起參與 #30DaysOfFlutter</h2><figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*v7ytVK_8WbqA7Gc-Uol-wQ.jpeg" />
-<figcaption>30 天 Flutter 活動的標語</figcaption>
-</figure>
-
-<p>新年快樂各位！現在正是學習新事物的好時機！您是否在假期裡想過要開發一個應用程式？如果是的話，我們有一個絕佳的機會等著您！從 2 月 1 日開始，在我們於 3 月 3 日舉行的盛大 <a href="https://events.flutter.dev/?utm_source=30DaysOfFlutter&utm_medium=email&utm_campaign=30Days_Engage">活動</a> 之前，加入我們參與 <strong>#30DaysOfFlutter</strong>，開啟您的學習旅程，並結識社群中的 Flutter 專家。無論您是正在開發您的第一個 Flutter 應用程式，還是在尋找提升 Flutter 技能的方法，我們都準備了精心策劃的內容、程式碼實驗室和示範！</p>
-<p>Flutter 是 Google 的開源 UI 工具包，用於從單一程式碼庫建立精美的原生編譯應用程式，適用於行動、網頁和桌面。它是成長最快速、需求量最大的跨平台框架之一，被全球的自由接案開發員和大型組織使用。Flutter 使用 Dart 語言，因此對於熟悉面向物件語言的許多人來說，它會感覺很自然。</p>
-<h4 id="跳進來吧，水很溫和！"><a href="#跳進來吧，水很溫和！" class="headerlink" title="跳進來吧，水很溫和！"></a><strong>跳進來吧，水很溫和！</strong></h4><p>除了精心策劃的內容，我們還將舉辦四場現場 問我任何問題 (#AMA) 討論會，您可以在其中與 Google 的 Flutter 團隊和社群成員見面。您也可以加入我們在 <a href="https://discord.com/invite/N7Yshp4">FlutterDev Discord 頻道</a> 上，在那裡您可以結識社群中的其他成員，提出和回答問題，甚至還可以交到新的 Flutter 朋友！</p>
-<p>聽起來很令人興奮嗎？請訪問 <a href="http://goo.gle/30daysofflutter">30 天 Flutter 網站</a> 了解更多資訊，並註冊加入。註冊截止日期為 2021 年 1 月 31 日太平洋時間晚上 11:30。</p>
-<h4 id="30DaysOfFlutter-議程"><a href="#30DaysOfFlutter-議程" class="headerlink" title="#30DaysOfFlutter 議程"></a><strong>#30DaysOfFlutter 議程</strong></h4><p>您在本月的 Flutter 學習旅程將如下所示：</p>
-<p><strong>第 1 週</strong></p>
-<p>收到精心策劃的內容到您的收件匣。在 Discord 上結識其他 Flutter 開發人員。參加 2 月 1 日的啟動網路研討會。</p>
-<p><strong>第 2 週</strong></p>
-<p>收到更多內容。開始開發您的第一個 Flutter 應用程式。加入網路研討會並提出您的問題。</p>
-<p><strong>第 3 週</strong></p>
-<p>繼續開發您的應用程式，並參加第 3 場網路研討會，提出您的問題。</p>
-<p><strong>第 4 週</strong></p>
-<p>完成您的專案，學習如何與 Flutter 社群分享您的作品。</p>
-<p>您是否準備好學習世界上最熱門的開發者技能之一？</p>
-<p>請 <a href="http://goo.gle/30daysofflutter">註冊</a> 加入這個旅程，並務必在 Twitter 上關注 <a href="https://twitter.com/FlutterDev">FlutterDev</a> (@FlutterDev)，以獲得有關 <strong>#30DaysOfFlutter</strong> 的最新更新。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9993e3ec847b" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/join-us-for-30daysofflutter-9993e3ec847b">加入我們，一起參與 #30DaysOfFlutter</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2d9b89f9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/2d9b89f9.html" class="post-title-link" itemprop="url">【文章翻譯】Dart and the performance benefits of sound types</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-19 17:02:52" itemprop="dateCreated datePublished" datetime="2021-01-19T17:02:52+08:00">2021-01-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 22:45:07" itemprop="dateModified" datetime="2024-12-18T22:45:07+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
-<h2 id="Dart-與可靠類型帶來的效能優勢"><a href="#Dart-與可靠類型帶來的效能優勢" class="headerlink" title="Dart 與可靠類型帶來的效能優勢"></a>Dart 與可靠類型帶來的效能優勢</h2><figure>
-<img alt="3 screenshots of machine code: much code → less code → 3 lines of code." src="https://cdn-images-1.medium.com/max/722/1*WOmw6jN-nt82uXjGCqRC4g.png" />
-<figcaption>從 Dart 1.24、2.0 和 2.12（從左到右）中的同一個 Dart 方法生成的代碼變得更小。要了解原因（並查看實際生成的代碼），請继续阅读。</figcaption>
-</figure>
-
-<p>在過去的幾年中，我們強化了 Dart 的類型系統。最初的 Dart 語言（Dart 1）有一個不可靠的、可選的類型系統（類似於類型的 JavaScript 方言，例如微軟的 TypeScript 或 Facebook 的 Flow）。Dart 2 引入了一個更嚴格的、<a href="https://dart.dev/guides/language/type-system">可靠的類型系統</a>。在過去的兩年中，我們一直在努力透過 <a href="https://dart.dev/null-safety">可靠的空安全</a> 進一步擴展類型系統。</p>
-<p>雖然可靠的類型系統為開發人員提供了更大的信心，但它也使我們的編譯器能夠安全地使用類型來優化生成的代碼。有了可靠性，我們的工具透過結合靜態和（必要時）運行時檢查來保證類型的正確性。沒有可靠性，類型檢查只能進行到一定程度，並且靜態類型在運行時可能不正確。</p>
-<p>在實踐中，可靠性允許我們的編譯器生成更小、更快的代碼，尤其是在提前 (AOT) 設定中，我們將預編譯的原生代碼傳送給客戶端。</p>
-<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><p>以下範例方法演示了可靠類型如何對相對簡單的代碼產生巨大影響：</p>
-<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> getAge(Animal a) &#123;</span><br><span class="line">  <span class="keyword">return</span> a.age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在我們最後一個穩定的 Dart 1 版本 (1.24.3) 中，這個方法映射到 <strong>26 個原生 x64 指令</strong>——這還是在檢測和設定檔引導的優化之後，這會減慢初始運行時啟動速度。在 Dart 2.12 中使用可靠的空安全，此代碼僅映射到 <strong>3 個指令</strong>，而無需任何設定檔引導的優化。</p>
-<blockquote>
-<p>Dart 編譯為 ARM32&#x2F;64 和 x86&#x2F;x64 架構。在以下範例中，我們使用 x64，但在其他目標上的結果類似。</p>
-</blockquote>
-<p>範例方法的完整 Dart 代碼和上下文顯示在本文末尾，但以下是重點：</p>
-<ul>
-<li><code>Animal</code> 類包含一個類型為 <code>int</code> 的欄位 <code>age</code>。</li>
-<li><code>Animal</code> 有幾個子類別（<code>Cat</code>、<code>Dog</code>、<code>Snake</code>、<code>Hamster</code>）。</li>
-<li>上述方法在運行時在許多這些類型上被調用。</li>
-</ul>
-<h3 id="Dart-物件佈局"><a href="#Dart-物件佈局" class="headerlink" title="Dart 物件佈局"></a>Dart 物件佈局</h3><p>當編譯為原生 (x64) 代碼時，Dart 類 <code>Animal</code> 有一個簡單的佈局：</p>
-<figure>
-<img alt="8 bytes of object header, followed by 8 bytes of `age` field, followed by additional subclass fields." src="https://cdn-images-1.medium.com/max/195/1*GjL59kevCm5NQ5P9Unn_NA.png" />
-</figure>
-
-<p>前 8 個位元組是一個標題，提供具體化的類型資訊（即物件的運行時類型）。第二個 8 個位元組包含 <code>age</code> 欄位。所有子類別都保留（並可能添加到）此結構：任何額外的欄位都佈局在後面，保留基本類型的結構。給定 <code>Animal</code>（或任何子類別）的實例，<code>getAge</code> 方法應從 8 位元組偏移量載入欄位並返回它。</p>
-<h3 id="Dart-1：不可靠的類型"><a href="#Dart-1：不可靠的類型" class="headerlink" title="Dart 1：不可靠的類型"></a>Dart 1：不可靠的類型</h3><p>然而，在 Dart 1 中，靜態類型並不可靠，並且在編譯期間實際上被忽略。在運行時，我們不能假設靜態類型是正確的（因此，佈局也是預期的）。對 <code>age</code> 的存取可能是對不同偏移量處的欄位、對觸發更多可執行代碼的 getter 或對不存在的欄位（觸發可捕獲的運行時錯誤）的存取。</p>
-<p>Dart 1 被設計為依賴於客戶端設備上的即時編譯器和虛擬機器，該編譯器使用運行時類型資訊來優化代碼。在這種方案中，我們實際上編譯了每個方法兩次：第一次是為了收集資訊，第二次（對於熱點方法）是根據觀察到的運行時行為生成更優化的代碼。</p>
-<h4 id="Dart-1：第一次編譯"><a href="#Dart-1：第一次編譯" class="headerlink" title="Dart 1：第一次編譯"></a>Dart 1：第一次編譯</h4><p><code>getAge</code> 的第一次編譯在 x64 上產生了以下 47 個指令：</p>
-<figure>
-<img alt="2 columns full of assembly code." src="https://cdn-images-1.medium.com/max/1024/1*BmagjRb3ei3C-HjyYfLNyw.png" />
-</figure>
-
-<p>請注意，此代碼已檢測以確定運行時會發生什麼。它對傳遞的物件沒有任何假設，並且有效地執行等效於雜湊表查找以正確找到欄位、執行 getter 或拋出錯誤。</p>
-<h4 id="Dart-1：第二次編譯"><a href="#Dart-1：第二次編譯" class="headerlink" title="Dart 1：第二次編譯"></a>Dart 1：第二次編譯</h4><p>在這種情況下，代碼會被重複調用，並觸發第二次優化編譯，生成以下 26 個指令：</p>
-<figure>
-<img alt="2 columns of assembly code (but less than before). Most of the code is blue (prologue/epilogue) or red (various checks)." src="https://cdn-images-1.medium.com/max/1024/1*1bEjUe15A0s47XMsZPqdNQ.png" />
-</figure>
-
-<p>這個優化的代碼仍然很大。它基於設定檔資訊，發現該方法僅在 <code>Cat</code>、<code>Hamster</code> 和 <code>Dog</code> 的實例上被調用，並根據未來也將如此的假設進行了優化。</p>
-<p><strong>藍色</strong> 代碼是方法的序言和結尾（用於設置和恢復堆疊框架）。<strong>紅色</strong> 代碼檢查預期的情況——實例非空且屬於先前看到的類型之一——並為其他情況調用慢路徑。<strong>粗體</strong> 代碼是載入欄位的實際工作。</p>
-<p>如果未來的行為與過去不同，優化的代碼實際上可能會更慢：如果在新的實例（例如 <code>Snake</code>）上調用 <code>getAge</code>，代碼將執行額外的檢查，但仍然會進入慢路徑。</p>
-<h4 id="Dart-1-生成的代碼的問題"><a href="#Dart-1-生成的代碼的問題" class="headerlink" title="Dart 1 生成的代碼的問題"></a>Dart 1 生成的代碼的問題</h4><p>上面的生成的代碼在結構上與 Chrome 中的 JavaScript 引擎 V8 在給定或多或少等效的 JavaScript&#x2F;TypeScript&#x2F;Flow 程序時生成的代碼非常相似。雖然這種方法（和相應的生成的代碼）可以在許多情況下提供良好的效能，但當我們開始（尤其是使用 Flutter）面向更廣泛的客戶端平台（包括對大小和記憶體佔用更敏感的行動設備）時，它就不再適合了：</p>
-<ul>
-<li>首先，客戶端編譯的成本增加了 Dart 應用程式的整體佔用空間。</li>
-<li>其次，兩階段推測編譯的成本對應用程式啟動不利。</li>
-<li>第三，iOS 上不允許即時編譯：我們至少需要針對某些目標的替代策略。</li>
-</ul>
-<p>我們轉而採用提前編譯方法，但使用 Dart 1 會導致代碼質量差很多。即使使用複雜的、全程序分析，我們也無法始終在編譯時確定類型資訊，尤其是在應用程式變得更大時。此外，當整個應用程式都被預編譯時，推測的成本（上面的紅色代碼）變得過高。</p>
-<h3 id="Dart-2：可靠的類型"><a href="#Dart-2：可靠的類型" class="headerlink" title="Dart 2：可靠的類型"></a>Dart 2：可靠的類型</h3><p>在 Dart 2 中，我們引入了可靠性，這使我們能夠安全地根據類型資訊編譯代碼，並減少了對設定檔以獲得效能的依賴。使用 Dart 2，在單個提前編譯上，我們在 x64 上生成 10 個指令：</p>
-<figure>
-<img alt="Much less code, but still there’s some blue code (prologue/epilogue) and red code (null checks)." src="https://cdn-images-1.medium.com/max/1024/1*x0UcFY8XwG-3vHe5hYxyQw.png" />
-</figure>
-
-<p>此代碼仍然執行空檢查（紅色），如果發現空則調用輔助方法。</p>
-<h3 id="Dart-2-12：可靠的空安全"><a href="#Dart-2-12：可靠的空安全" class="headerlink" title="Dart 2.12：可靠的空安全"></a>Dart 2.12：可靠的空安全</h3><p>有了可靠的空安全，類型系統更加豐富，我們的編譯器可以利用這一點。編譯器可以安全地依賴於（現在的）非空類型，並消除上面的紅色代碼。在 Dart 2.12 beta 中，我們減少生成了 3 個指令：</p>
-<figure>
-<img alt="Some blue code (prologue/epilogue) but no red code! No null checks needed!" src="https://cdn-images-1.medium.com/max/1024/1*xVdpKVxtt_TtfoXZDlu1Qw.png" />
-</figure>
-
-<p>事實上，隨著代碼變得更簡單，我們也能够簡化序言和結尾。在我們即將發布的穩定版本中，我們將只為範例方法生成 3 個指令：</p>
-<figure>
-<img alt="Even less blue code (prologue/epilogue) than before." src="https://cdn-images-1.medium.com/max/1024/1*JPFuwgxqf2K-7tVD52M5uQ.png" />
-</figure>
-
-<p>有了可靠的空安全，我們可以將此方法的生成的代碼減少到其本質：欄位載入。在實踐中，對此方法的調用將始終被內聯，因為編譯器現在可以輕鬆地看到內聯是效能和代碼大小的雙贏。不再需要運行時檢查和補償代碼：更多的繁重工作在編譯時完成。我們不再需要客戶端編譯的啟動和記憶體開銷。因此，我們的用戶可以獲得更小、更快的代碼。</p>
-<h3 id="試試看！"><a href="#試試看！" class="headerlink" title="試試看！"></a>試試看！</h3><p>我們鼓勵您嘗試 <a href="https://dart.dev/null-safety">空安全</a>。它在 Dart 2.12 中可用，現在在我們的 beta 頻道中。一旦您的上游相依項被遷移，您就可以遷移您自己的套件和應用程式。正如這裡的範例所示，您可能不需要做太多更改。</p>
-<p>請記住，要獲得空安全的效能優勢，您需要一個完全遷移的應用程式。一旦您的應用程式完全遷移，我們的編譯器將自動利用空安全來生成更好、更小的代碼。</p>
-<h3 id="附註：代碼"><a href="#附註：代碼" class="headerlink" title="附註：代碼"></a>附註：代碼</h3><p>這是完整的 Dart 代碼，我編譯它生成了本文中的所有代碼。雖然這裡的範例是人為設計的，但模式（類別層次結構中的欄位）相當常見。</p>
-<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href">https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href</a></iframe>
-<img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ceedd5b6cdc" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">Dart 與可靠類型帶來的效能優勢</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
-
-
-<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1792,7 +1778,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1828,7 +1814,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-tw,default">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.rainvisitor.me","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 3.7新年新氣象，也是時候推出新的 Dart 穩定版本了。歡迎來到 Dart 3.7！ 此版本的主题是開發者生產力。我們透過調整 Dart 處理萬用字元變數的方式，使其更加一致。Dart 格式化工具中還有一種全新的樣式、分析器中新增了快速修復和程式碼檢查，以及 pub.dev 上的幾個很酷的新功能。讓我們來看看詳細資訊吧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【文章翻譯】Announcing Dart 3.7">
+<meta property="og:url" content="https://blog.rainvisitor.me/archives/1c16c151.html">
+<meta property="og:site_name" content="RainVisitor Blog">
+<meta property="og:description" content="【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】 宣佈 Dart 3.7新年新氣象，也是時候推出新的 Dart 穩定版本了。歡迎來到 Dart 3.7！ 此版本的主题是開發者生產力。我們透過調整 Dart 處理萬用字元變數的方式，使其更加一致。Dart 格式化工具中還有一種全新的樣式、分析器中新增了快速修復和程式碼檢查，以及 pub.dev 上的幾個很酷的新功能。讓我們來看看詳細資訊吧">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/1*tdCaUfGrIk42FIuu2qs9Yw.gif">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*67af_RLHqiWxsXXL">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*Cctb0O4F1D-0YYHY">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*j4Vh_XoLle5-RMQ2">
+<meta property="og:image" content="https://cdn-images-1.medium.com/max/1024/0*kd0l2oZq_mg9g8YO">
+<meta property="og:image" content="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bf864a1b195c">
+<meta property="article:published_time" content="2025-02-12T11:10:27.000Z">
+<meta property="article:modified_time" content="2025-02-13T16:42:52.486Z">
+<meta property="article:author" content="Rainvisitor">
+<meta property="article:tag" content="dart">
+<meta property="article:tag" content="dartlang">
+<meta property="article:tag" content="flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn-images-1.medium.com/max/1024/1*tdCaUfGrIk42FIuu2qs9Yw.gif">
+
+<link rel="canonical" href="https://blog.rainvisitor.me/archives/1c16c151.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>【文章翻譯】Announcing Dart 3.7 | RainVisitor Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">RainVisitor Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">RainVisitor</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1c16c151.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【文章翻譯】Announcing Dart 3.7
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-12 19:10:27" itemprop="dateCreated datePublished" datetime="2025-02-12T19:10:27+08:00">2025-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-14 00:42:52" itemprop="dateModified" datetime="2025-02-14T00:42:52+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-3-7"><a href="#宣佈-Dart-3-7" class="headerlink" title="宣佈 Dart 3.7"></a>宣佈 Dart 3.7</h2><p>新年新氣象，也是時候推出新的 Dart 穩定版本了。歡迎來到 Dart 3.7！</p>
+<p>此版本的主题是<em>開發者生產力</em>。我們透過調整 Dart 處理萬用字元變數的方式，使其更加一致。Dart 格式化工具中還有一種全新的樣式、分析器中新增了快速修復和程式碼檢查，以及 pub.dev 上的幾個很酷的新功能。讓我們來看看詳細資訊吧！</p>
+<figure>
+<img alt="Announcing Dart 3.7" src="https://cdn-images-1.medium.com/max/1024/1*tdCaUfGrIk42FIuu2qs9Yw.gif" />
+<figcaption>宣佈 Dart 3.7</figcaption>
+</figure>
+
+<h3 id="巨集更新"><a href="#巨集更新" class="headerlink" title="巨集更新"></a>巨集更新</h3><p>我們最近在<a href="https://github.com/dart-lang/language/issues/1482#issuecomment-2622895490">議題追蹤器</a>以及一篇<a href="https://medium.com/dartlang/an-update-on-dart-macros-data-serialization-06d3037d4f12">部落格文章</a>中發佈了更新，聲明我們將停止開發實驗性的巨集功能。對於這個令人遺憾的結果，我們感謝社群的理解。</p>
+<p>然而，隨著這一變化，團隊重新獲得了一些能力來投入其他有價值的開發。我們已經在研究<a href="https://github.com/dart-lang/build/issues/3800"><code>build_runner</code> 效能的改進</a>，我們仍然希望推出<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">擴充語言功能</a>（可能以略微不同的形式），並且我們希望找到新的更直接的方法來支援建模資料和處理<a href="https://github.com/dart-lang/language/issues/4232">序列化和反序列化</a>（例如，與 JSON 之間的轉換）。</p>
+<h3 id="萬用字元變數語言功能"><a href="#萬用字元變數語言功能" class="headerlink" title="萬用字元變數語言功能"></a>萬用字元變數語言功能</h3><p>名稱為 <code>_</code> 的局部變數和參數現在是函數式語言中所說的「萬用字元」。這意味著名稱是一個佔位符，並且不宣告實際變數。</p>
+<p>目前在 Dart 中，如果回調的程式碼主體實際上不需要使用參數，則通常使用 <code>_</code> 作為回調參數的名稱，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> announceCompletion(Future&lt;<span class="keyword">void</span>&gt; future) &#123;</span><br><span class="line">  future.then((_) &#123; <span class="comment">// &lt;--</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Complete!&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果回調有多個您不需要使用的參數，您最終會將它們命名為 <code>_</code>、<code>__</code>、<code>___</code> 等，因為否則名稱會衝突。現在，在 Dart 3.7 中，名為 <code>_</code> 的參數和局部變數實際上並不建立變數，因此不存在名稱衝突的可能性。您可以對多個參數使用 <code>_</code>，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> announceFailure(Future&lt;<span class="keyword">void</span>&gt; future) &#123;</span><br><span class="line">  future.onError((_, _) &#123; <span class="comment">// &lt;--</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Error!&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果您有宣告名為 <code>_</code> <em>並使用它</em>的參數或變數的程式碼，則該程式碼將不再適用於 Dart 3.7。例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].map((_) &#123;</span><br><span class="line">  <span class="keyword">return</span> _.toString();</span><br><span class="line">  <span class="comment">//     ^ 錯誤！參考未知變數。</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在這種情況下，您必須重新命名參數或局部變數。此語言變更僅適用於參數和局部變數（不適用於頂層變數或成員），因此您可以執行此重新命名而不會破壞程式庫的公共 API。</p>
+<p>萬用字元變數是一個小功能，使語言更加一致。在<a href="https://dart.dev/language/patterns">模式</a>中，名為 <code>_</code> 的變數一直都是這種行為：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> [_, _, third, _, _] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="built_in">print</span>(third); <span class="comment">// 輸出 &quot;3&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>現在參數和局部變數的行為方式相同。</p>
+<h3 id="Dart-格式化工具中的新格式化樣式"><a href="#Dart-格式化工具中的新格式化樣式" class="headerlink" title="Dart 格式化工具中的新格式化樣式"></a>Dart 格式化工具中的新格式化樣式</h3><p>Dart 3.7 包含一個重新編寫的 Dart 格式化工具 (<code>dart format</code>)，具有<a href="https://github.com/dart-lang/dart_style/issues/1253">新的格式化樣式</a>。新樣式看起來與您在參數列表中加入尾隨逗號時獲得的樣式相似，只是現在格式化工具會為您加入和移除這些逗號。例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 舊樣式：</span></span><br><span class="line"><span class="keyword">void</span> writeArgumentList(</span><br><span class="line">    Token leftBracket, <span class="built_in">List</span>&lt;AstNode&gt; elements, Token rightBracket) &#123;</span><br><span class="line">  writeList(</span><br><span class="line">      leftBracket: leftBracket,</span><br><span class="line">      elements,</span><br><span class="line">      rightBracket: rightBracket,</span><br><span class="line">      allowBlockArgument: <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新樣式：</span></span><br><span class="line"><span class="keyword">void</span> writeArgumentList(</span><br><span class="line">  Token leftBracket,</span><br><span class="line">  <span class="built_in">List</span>&lt;AstNode&gt; elements,</span><br><span class="line">  Token rightBracket,</span><br><span class="line">) &#123;</span><br><span class="line">  writeList(</span><br><span class="line">    leftBracket: leftBracket,</span><br><span class="line">    elements,</span><br><span class="line">    rightBracket: rightBracket,</span><br><span class="line">    allowBlockArgument: <span class="keyword">true</span>,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這是對工具、其產生的輸出及其行為方式的重大變更。為了使轉換盡可能順暢，您獲得的格式化樣式取決於您正在格式化的程式碼的<a href="https://dart.dev/guides/language/evolution">語言版本</a>。如果語言版本是 3.6 或更早版本，則程式碼將使用舊樣式格式化。如果是 3.7 或更高版本，則會使用新樣式。</p>
+<p>當您透過修改套件的 <code>pubspec</code> 中的 SDK 約束（並運行 <code>dart pub get</code>！）將套件升級到使用 Dart 3.7 時，您將選擇使用新的格式化樣式。</p>
+<p>為了確定它格式化的每個檔案的語言版本，<code>dart format</code> 會尋找 <code>package_config.json</code>。這意味著**您需要在格式化套件中的程式碼之前運行 <code>dart pub get</code>**。如果您的持續整合伺服器中有格式檢查，請確保它也運行 <code>dart pub get</code>。</p>
+<p>我們不打算無限期地支援這兩種樣式。在未來的某個時間點，當大多數生態系統都在 3.7 或更高版本上時，對舊樣式的支援將被移除。</p>
+<p>新樣式包含一些長期以來要求的功能：</p>
+<ul>
+<li><strong>專案範圍頁面寬度設定。</strong> 您現在可以在 <code>analysis_options.yaml</code> 檔案中以專案範圍的方式設定您喜歡的格式化頁面寬度，如下所示：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">formatter:</span></span><br><span class="line">  <span class="attr">page_width:</span> <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>選擇不格式化程式碼區域。</strong> 您可以使用一對特殊的標記註釋來選擇不格式化程式碼區域：</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="comment">// dart format off</span></span><br><span class="line">  no   +   formatting     +     here;</span><br><span class="line">  <span class="comment">// dart format on</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>還有一個<strong>重大變更</strong>。格式化工具不再支援 <code>dart format --fix</code>。請改用 <code>dart fix</code> 來套用 <code>dart format</code> 可以套用的所有修復，以及更多修復。</p>
+<p>您可以在<a href="https://github.com/dart-lang/dart_style/blob/cea5a1a3e974c5065e6f4cc19b2838cd62448f0a/CHANGELOG.md#300">變更日誌</a>和<a href="https://github.com/dart-lang/dart_style/wiki/FAQ">常見問題</a>中找到更多詳細資訊。</p>
+<h3 id="Dart-分析器中更新的快速修復和新的程式碼檢查"><a href="#Dart-分析器中更新的快速修復和新的程式碼檢查" class="headerlink" title="Dart 分析器中更新的快速修復和新的程式碼檢查"></a>Dart 分析器中更新的快速修復和新的程式碼檢查</h3><p>我們一直在積極改進 Dart 以提高開發者的生產力，這意味著在 Dart 3.7 中透過新的程式碼檢查、快速修復和輔助來改進分析器。一個值得注意的補充是 <code>unnecessary_underscores</code> 程式碼檢查，它支援新的萬用字元變數功能。</p>
+<p>Dart 3.7 包含了廣泛的新快速修復和輔助，包括修復常見問題，例如缺少 <code>await</code> 關鍵字、不正確的匯入前綴以及違反程式碼檢查規則，例如 <code>cascade_invocations</code>。還有一些方便的重構程式碼的輔助，例如將 <code>else</code> 區塊轉換為 <code>else if</code>，以及使用 <code>Expanded</code> 或 <code>Flexible</code> 包裝 Flutter Widget。</p>
+<p>您可以在<a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#analyzer-1">分析器變更</a>的完整列表中找到所有這些以及更多詳細資訊。</p>
+<h3 id="在-Dart-Web-平台上前進"><a href="#在-Dart-Web-平台上前進" class="headerlink" title="在 Dart Web 平台上前進"></a>在 Dart Web 平台上前進</h3><p>一年前，我們推出了<a href="https://medium.com/dartlang/dart-3-3-325bf2bf6c13">新的程式庫和套件</a>，用於從 Dart 與 JavaScript 和瀏覽器 API 互操作。展望未來，主要的 JavaScript 程式庫是 <a href="https://api.dart.dev/dart-js_interop/dart-js_interop-library.html"><code>dart:js_interop</code></a>。對於瀏覽器 API，請使用 <a href="https://pub.dev/packages/web"><code>package:web</code></a>。</p>
+<p>作為我們持續努力將 Dart 和 Flutter 生態系統遷移到與 WebAssembly 相容的 API 的一部分，我們正在棄用 Dart SDK 中相關的舊 API。在 Dart 3.7 版本中，七個 Dart SDK 程式庫已被棄用：</p>
+<ul>
+<li><code>dart:html</code></li>
+<li><code>dart:indexed_db</code></li>
+<li><code>dart:js</code></li>
+<li><code>dart:js_util</code></li>
+<li><code>dart:web_audio</code></li>
+<li><code>dart:web_gl</code></li>
+</ul>
+<p>我們計劃在 2025 年底移除這些程式庫。您可以在<a href="https://dart.dev/interop/js-interop">JavaScript 互操作性頁面</a>上了解它們的替代品。</p>
+<h3 id="pub-dev-套件網站上的新生產力功能"><a href="#pub-dev-套件網站上的新生產力功能" class="headerlink" title="pub.dev 套件網站上的新生產力功能"></a>pub.dev 套件網站上的新生產力功能</h3><p>12 月，我們在 pub.dev 上推出了<a href="https://medium.com/dartlang/announcing-dart-3-6-778dd7a80983">套件下載計數</a>。這些顯示每月下載量以及一個顯示每周下載量隨時間變化的</p>
+<p>小型圖表。</p>
+<p>今天，我們正在擴展它，支援檢視每個套件版本的下載計數。現在可以指示有多少套件使用者已升級到最新版本（或僅最新主要版本）。這些見解旨在幫助套件作者評估將修復程式碼移植到套件舊主要版本的價值。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*67af_RLHqiWxsXXL" />
+<figcaption>每週下載圖表</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Cctb0O4F1D-0YYHY" />
+<figcaption>每週下載圖表</figcaption>
+</figure>
+
+<p><strong>pub.dev 的深色模式</strong></p>
+<p>pub.dev 的深色模式長期以來一直是一個<a href="https://github.com/dart-lang/pub-dev/issues/4416">熱門請求</a>，從今天起，現在可以將 pub.dev 切換到深色模式。此切換會影響套件頁面和 pub.dev 上託管的套件 API 文件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*j4Vh_XoLle5-RMQ2" />
+<figcaption>pub.dev 的深色模式</figcaption>
+</figure>
+
+<p><strong>pub.dev 的主題</strong></p>
+<p>去年，我們在 pub.dev 上推出了對<a href="https://pub.dev/topics">主題</a>的支援。您可以在 <code>pubspec.yaml</code> 中<a href="https://dart.dev/tools/pub/pubspec#topics">加入主題</a>，如果您看到應該合併的相關主題，您可以透過拉取請求提出<a href="https://github.com/dart-lang/pub-dev/blob/master/doc/topics.yaml">規範化</a>。</p>
+<p>瀏覽 pub.dev 的使用者可以點擊主題來瀏覽相關套件。我們之前介紹了在 pub.dev 上搜尋主題的功能，使用<a href="https://pub.dev/help/search">搜尋關鍵字</a>（例如「topic:widget」），但找到這些關鍵字並非易事。因此，我們在 pub.dev 上推出了一個類似 IDE 的搜尋關鍵字自動完成工具。您可以透過按下 <code>ctrl+space</code> 來觸發它，或者在您輸入匹配的前綴（例如「topic:」或「license:」）時自動觸發它。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*kd0l2oZq_mg9g8YO" />
+<figcaption>主題搜尋關鍵字</figcaption>
+</figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這就是我們今天為 Dart 3.7 準備的全部內容。與往常一樣，請告訴我們您的想法！另外，別忘了查看今天的<a href="https://medium.com/flutter/f90c380c2317">Flutter 3.29 版本</a>的部落格文章。下次再見！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bf864a1b195c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-3-7-bf864a1b195c">宣佈 Dart 3.7</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/dart/" rel="tag"># dart</a>
+              <a href="/tags/dartlang/" rel="tag"># dartlang</a>
+              <a href="/tags/flutter/" rel="tag"># flutter</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/archives/98cfc87.html" rel="prev" title="【文章翻譯】What’s new in Flutter 3.29">
+      <i class="fa fa-chevron-left"></i> 【文章翻譯】What’s new in Flutter 3.29
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A3%E4%BD%88-Dart-3-7"><span class="nav-number">1.</span> <span class="nav-text">宣佈 Dart 3.7</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A8%E9%9B%86%E6%9B%B4%E6%96%B0"><span class="nav-number">1.1.</span> <span class="nav-text">巨集更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%90%AC%E7%94%A8%E5%AD%97%E5%85%83%E8%AE%8A%E6%95%B8%E8%AA%9E%E8%A8%80%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.</span> <span class="nav-text">萬用字元變數語言功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%B7%A5%E5%85%B7%E4%B8%AD%E7%9A%84%E6%96%B0%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%A8%A3%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">Dart 格式化工具中的新格式化樣式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dart-%E5%88%86%E6%9E%90%E5%99%A8%E4%B8%AD%E6%9B%B4%E6%96%B0%E7%9A%84%E5%BF%AB%E9%80%9F%E4%BF%AE%E5%BE%A9%E5%92%8C%E6%96%B0%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC%E6%AA%A2%E6%9F%A5"><span class="nav-number">1.4.</span> <span class="nav-text">Dart 分析器中更新的快速修復和新的程式碼檢查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Dart-Web-%E5%B9%B3%E5%8F%B0%E4%B8%8A%E5%89%8D%E9%80%B2"><span class="nav-number">1.5.</span> <span class="nav-text">在 Dart Web 平台上前進</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pub-dev-%E5%A5%97%E4%BB%B6%E7%B6%B2%E7%AB%99%E4%B8%8A%E7%9A%84%E6%96%B0%E7%94%9F%E7%94%A2%E5%8A%9B%E5%8A%9F%E8%83%BD"><span class="nav-number">1.6.</span> <span class="nav-text">pub.dev 套件網站上的新生產力功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B8%BD%E7%B5%90"><span class="nav-number">1.7.</span> <span class="nav-text">總結</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Rainvisitor</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">239</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rainvisitor</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

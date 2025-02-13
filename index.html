@@ -146,6 +146,490 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/1c16c151.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/1c16c151.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 3.7</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-12 19:10:27" itemprop="dateCreated datePublished" datetime="2025-02-12T19:10:27+08:00">2025-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-14 00:42:52" itemprop="dateModified" datetime="2025-02-14T00:42:52+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="宣佈-Dart-3-7"><a href="#宣佈-Dart-3-7" class="headerlink" title="宣佈 Dart 3.7"></a>宣佈 Dart 3.7</h2><p>新年新氣象，也是時候推出新的 Dart 穩定版本了。歡迎來到 Dart 3.7！</p>
+<p>此版本的主题是<em>開發者生產力</em>。我們透過調整 Dart 處理萬用字元變數的方式，使其更加一致。Dart 格式化工具中還有一種全新的樣式、分析器中新增了快速修復和程式碼檢查，以及 pub.dev 上的幾個很酷的新功能。讓我們來看看詳細資訊吧！</p>
+<figure>
+<img alt="Announcing Dart 3.7" src="https://cdn-images-1.medium.com/max/1024/1*tdCaUfGrIk42FIuu2qs9Yw.gif" />
+<figcaption>宣佈 Dart 3.7</figcaption>
+</figure>
+
+<h3 id="巨集更新"><a href="#巨集更新" class="headerlink" title="巨集更新"></a>巨集更新</h3><p>我們最近在<a href="https://github.com/dart-lang/language/issues/1482#issuecomment-2622895490">議題追蹤器</a>以及一篇<a href="https://medium.com/dartlang/an-update-on-dart-macros-data-serialization-06d3037d4f12">部落格文章</a>中發佈了更新，聲明我們將停止開發實驗性的巨集功能。對於這個令人遺憾的結果，我們感謝社群的理解。</p>
+<p>然而，隨著這一變化，團隊重新獲得了一些能力來投入其他有價值的開發。我們已經在研究<a href="https://github.com/dart-lang/build/issues/3800"><code>build_runner</code> 效能的改進</a>，我們仍然希望推出<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">擴充語言功能</a>（可能以略微不同的形式），並且我們希望找到新的更直接的方法來支援建模資料和處理<a href="https://github.com/dart-lang/language/issues/4232">序列化和反序列化</a>（例如，與 JSON 之間的轉換）。</p>
+<h3 id="萬用字元變數語言功能"><a href="#萬用字元變數語言功能" class="headerlink" title="萬用字元變數語言功能"></a>萬用字元變數語言功能</h3><p>名稱為 <code>_</code> 的局部變數和參數現在是函數式語言中所說的「萬用字元」。這意味著名稱是一個佔位符，並且不宣告實際變數。</p>
+<p>目前在 Dart 中，如果回調的程式碼主體實際上不需要使用參數，則通常使用 <code>_</code> 作為回調參數的名稱，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> announceCompletion(Future&lt;<span class="keyword">void</span>&gt; future) &#123;</span><br><span class="line">  future.then((_) &#123; <span class="comment">// &lt;--</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Complete!&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是，如果回調有多個您不需要使用的參數，您最終會將它們命名為 <code>_</code>、<code>__</code>、<code>___</code> 等，因為否則名稱會衝突。現在，在 Dart 3.7 中，名為 <code>_</code> 的參數和局部變數實際上並不建立變數，因此不存在名稱衝突的可能性。您可以對多個參數使用 <code>_</code>，如下所示：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> announceFailure(Future&lt;<span class="keyword">void</span>&gt; future) &#123;</span><br><span class="line">  future.onError((_, _) &#123; <span class="comment">// &lt;--</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;Error!&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果您有宣告名為 <code>_</code> <em>並使用它</em>的參數或變數的程式碼，則該程式碼將不再適用於 Dart 3.7。例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].map((_) &#123;</span><br><span class="line">  <span class="keyword">return</span> _.toString();</span><br><span class="line">  <span class="comment">//     ^ 錯誤！參考未知變數。</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在這種情況下，您必須重新命名參數或局部變數。此語言變更僅適用於參數和局部變數（不適用於頂層變數或成員），因此您可以執行此重新命名而不會破壞程式庫的公共 API。</p>
+<p>萬用字元變數是一個小功能，使語言更加一致。在<a href="https://dart.dev/language/patterns">模式</a>中，名為 <code>_</code> 的變數一直都是這種行為：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> [_, _, third, _, _] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="built_in">print</span>(third); <span class="comment">// 輸出 &quot;3&quot;。</span></span><br></pre></td></tr></table></figure>
+
+<p>現在參數和局部變數的行為方式相同。</p>
+<h3 id="Dart-格式化工具中的新格式化樣式"><a href="#Dart-格式化工具中的新格式化樣式" class="headerlink" title="Dart 格式化工具中的新格式化樣式"></a>Dart 格式化工具中的新格式化樣式</h3><p>Dart 3.7 包含一個重新編寫的 Dart 格式化工具 (<code>dart format</code>)，具有<a href="https://github.com/dart-lang/dart_style/issues/1253">新的格式化樣式</a>。新樣式看起來與您在參數列表中加入尾隨逗號時獲得的樣式相似，只是現在格式化工具會為您加入和移除這些逗號。例如：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 舊樣式：</span></span><br><span class="line"><span class="keyword">void</span> writeArgumentList(</span><br><span class="line">    Token leftBracket, <span class="built_in">List</span>&lt;AstNode&gt; elements, Token rightBracket) &#123;</span><br><span class="line">  writeList(</span><br><span class="line">      leftBracket: leftBracket,</span><br><span class="line">      elements,</span><br><span class="line">      rightBracket: rightBracket,</span><br><span class="line">      allowBlockArgument: <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 新樣式：</span></span><br><span class="line"><span class="keyword">void</span> writeArgumentList(</span><br><span class="line">  Token leftBracket,</span><br><span class="line">  <span class="built_in">List</span>&lt;AstNode&gt; elements,</span><br><span class="line">  Token rightBracket,</span><br><span class="line">) &#123;</span><br><span class="line">  writeList(</span><br><span class="line">    leftBracket: leftBracket,</span><br><span class="line">    elements,</span><br><span class="line">    rightBracket: rightBracket,</span><br><span class="line">    allowBlockArgument: <span class="keyword">true</span>,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>這是對工具、其產生的輸出及其行為方式的重大變更。為了使轉換盡可能順暢，您獲得的格式化樣式取決於您正在格式化的程式碼的<a href="https://dart.dev/guides/language/evolution">語言版本</a>。如果語言版本是 3.6 或更早版本，則程式碼將使用舊樣式格式化。如果是 3.7 或更高版本，則會使用新樣式。</p>
+<p>當您透過修改套件的 <code>pubspec</code> 中的 SDK 約束（並運行 <code>dart pub get</code>！）將套件升級到使用 Dart 3.7 時，您將選擇使用新的格式化樣式。</p>
+<p>為了確定它格式化的每個檔案的語言版本，<code>dart format</code> 會尋找 <code>package_config.json</code>。這意味著**您需要在格式化套件中的程式碼之前運行 <code>dart pub get</code>**。如果您的持續整合伺服器中有格式檢查，請確保它也運行 <code>dart pub get</code>。</p>
+<p>我們不打算無限期地支援這兩種樣式。在未來的某個時間點，當大多數生態系統都在 3.7 或更高版本上時，對舊樣式的支援將被移除。</p>
+<p>新樣式包含一些長期以來要求的功能：</p>
+<ul>
+<li><strong>專案範圍頁面寬度設定。</strong> 您現在可以在 <code>analysis_options.yaml</code> 檔案中以專案範圍的方式設定您喜歡的格式化頁面寬度，如下所示：</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">formatter:</span></span><br><span class="line">  <span class="attr">page_width:</span> <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>選擇不格式化程式碼區域。</strong> 您可以使用一對特殊的標記註釋來選擇不格式化程式碼區域：</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  <span class="comment">// dart format off</span></span><br><span class="line">  no   +   formatting     +     here;</span><br><span class="line">  <span class="comment">// dart format on</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>還有一個<strong>重大變更</strong>。格式化工具不再支援 <code>dart format --fix</code>。請改用 <code>dart fix</code> 來套用 <code>dart format</code> 可以套用的所有修復，以及更多修復。</p>
+<p>您可以在<a href="https://github.com/dart-lang/dart_style/blob/cea5a1a3e974c5065e6f4cc19b2838cd62448f0a/CHANGELOG.md#300">變更日誌</a>和<a href="https://github.com/dart-lang/dart_style/wiki/FAQ">常見問題</a>中找到更多詳細資訊。</p>
+<h3 id="Dart-分析器中更新的快速修復和新的程式碼檢查"><a href="#Dart-分析器中更新的快速修復和新的程式碼檢查" class="headerlink" title="Dart 分析器中更新的快速修復和新的程式碼檢查"></a>Dart 分析器中更新的快速修復和新的程式碼檢查</h3><p>我們一直在積極改進 Dart 以提高開發者的生產力，這意味著在 Dart 3.7 中透過新的程式碼檢查、快速修復和輔助來改進分析器。一個值得注意的補充是 <code>unnecessary_underscores</code> 程式碼檢查，它支援新的萬用字元變數功能。</p>
+<p>Dart 3.7 包含了廣泛的新快速修復和輔助，包括修復常見問題，例如缺少 <code>await</code> 關鍵字、不正確的匯入前綴以及違反程式碼檢查規則，例如 <code>cascade_invocations</code>。還有一些方便的重構程式碼的輔助，例如將 <code>else</code> 區塊轉換為 <code>else if</code>，以及使用 <code>Expanded</code> 或 <code>Flexible</code> 包裝 Flutter Widget。</p>
+<p>您可以在<a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#analyzer-1">分析器變更</a>的完整列表中找到所有這些以及更多詳細資訊。</p>
+<h3 id="在-Dart-Web-平台上前進"><a href="#在-Dart-Web-平台上前進" class="headerlink" title="在 Dart Web 平台上前進"></a>在 Dart Web 平台上前進</h3><p>一年前，我們推出了<a href="https://medium.com/dartlang/dart-3-3-325bf2bf6c13">新的程式庫和套件</a>，用於從 Dart 與 JavaScript 和瀏覽器 API 互操作。展望未來，主要的 JavaScript 程式庫是 <a href="https://api.dart.dev/dart-js_interop/dart-js_interop-library.html"><code>dart:js_interop</code></a>。對於瀏覽器 API，請使用 <a href="https://pub.dev/packages/web"><code>package:web</code></a>。</p>
+<p>作為我們持續努力將 Dart 和 Flutter 生態系統遷移到與 WebAssembly 相容的 API 的一部分，我們正在棄用 Dart SDK 中相關的舊 API。在 Dart 3.7 版本中，七個 Dart SDK 程式庫已被棄用：</p>
+<ul>
+<li><code>dart:html</code></li>
+<li><code>dart:indexed_db</code></li>
+<li><code>dart:js</code></li>
+<li><code>dart:js_util</code></li>
+<li><code>dart:web_audio</code></li>
+<li><code>dart:web_gl</code></li>
+</ul>
+<p>我們計劃在 2025 年底移除這些程式庫。您可以在<a href="https://dart.dev/interop/js-interop">JavaScript 互操作性頁面</a>上了解它們的替代品。</p>
+<h3 id="pub-dev-套件網站上的新生產力功能"><a href="#pub-dev-套件網站上的新生產力功能" class="headerlink" title="pub.dev 套件網站上的新生產力功能"></a>pub.dev 套件網站上的新生產力功能</h3><p>12 月，我們在 pub.dev 上推出了<a href="https://medium.com/dartlang/announcing-dart-3-6-778dd7a80983">套件下載計數</a>。這些顯示每月下載量以及一個顯示每周下載量隨時間變化的</p>
+<p>小型圖表。</p>
+<p>今天，我們正在擴展它，支援檢視每個套件版本的下載計數。現在可以指示有多少套件使用者已升級到最新版本（或僅最新主要版本）。這些見解旨在幫助套件作者評估將修復程式碼移植到套件舊主要版本的價值。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*67af_RLHqiWxsXXL" />
+<figcaption>每週下載圖表</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Cctb0O4F1D-0YYHY" />
+<figcaption>每週下載圖表</figcaption>
+</figure>
+
+<p><strong>pub.dev 的深色模式</strong></p>
+<p>pub.dev 的深色模式長期以來一直是一個<a href="https://github.com/dart-lang/pub-dev/issues/4416">熱門請求</a>，從今天起，現在可以將 pub.dev 切換到深色模式。此切換會影響套件頁面和 pub.dev 上託管的套件 API 文件。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*j4Vh_XoLle5-RMQ2" />
+<figcaption>pub.dev 的深色模式</figcaption>
+</figure>
+
+<p><strong>pub.dev 的主題</strong></p>
+<p>去年，我們在 pub.dev 上推出了對<a href="https://pub.dev/topics">主題</a>的支援。您可以在 <code>pubspec.yaml</code> 中<a href="https://dart.dev/tools/pub/pubspec#topics">加入主題</a>，如果您看到應該合併的相關主題，您可以透過拉取請求提出<a href="https://github.com/dart-lang/pub-dev/blob/master/doc/topics.yaml">規範化</a>。</p>
+<p>瀏覽 pub.dev 的使用者可以點擊主題來瀏覽相關套件。我們之前介紹了在 pub.dev 上搜尋主題的功能，使用<a href="https://pub.dev/help/search">搜尋關鍵字</a>（例如「topic:widget」），但找到這些關鍵字並非易事。因此，我們在 pub.dev 上推出了一個類似 IDE 的搜尋關鍵字自動完成工具。您可以透過按下 <code>ctrl+space</code> 來觸發它，或者在您輸入匹配的前綴（例如「topic:」或「license:」）時自動觸發它。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*kd0l2oZq_mg9g8YO" />
+<figcaption>主題搜尋關鍵字</figcaption>
+</figure>
+
+<h3 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h3><p>這就是我們今天為 Dart 3.7 準備的全部內容。與往常一樣，請告訴我們您的想法！另外，別忘了查看今天的<a href="https://medium.com/flutter/f90c380c2317">Flutter 3.29 版本</a>的部落格文章。下次再見！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=bf864a1b195c" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/announcing-dart-3-7-bf864a1b195c">宣佈 Dart 3.7</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過醒目顯示和回應這個故事來繼續對話。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/98cfc87.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/98cfc87.html" class="post-title-link" itemprop="url">【文章翻譯】What’s new in Flutter 3.29</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-02-12 19:09:57" itemprop="dateCreated datePublished" datetime="2025-02-12T19:09:57+08:00">2025-02-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-14 00:37:33" itemprop="dateModified" datetime="2025-02-14T00:37:33+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Flutter-3-29-的新功能"><a href="#Flutter-3-29-的新功能" class="headerlink" title="Flutter 3.29 的新功能"></a>Flutter 3.29 的新功能</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*-XHpdhmBoEU-K3pSPWTX3g.png" />
+</figure>
+
+<h4 id="提升跨平台的效能和保真度"><a href="#提升跨平台的效能和保真度" class="headerlink" title="提升跨平台的效能和保真度"></a>提升跨平台的效能和保真度</h4><h3 id="簡介"><a href="#簡介" class="headerlink" title="簡介"></a>簡介</h3><p>深入了解 Flutter 3.29！此版本改進了開發並提升了效能，其中包括對 Impeller、Cupertino、DevTools 等的更新。Flutter 3.29 在此版本週期中有 104 位獨特的作者貢獻，展現了社群的奉獻精神。讓我們一起探索新功能！</p>
+<h3 id="架構"><a href="#架構" class="headerlink" title="架構"></a>架構</h3><h4 id="Cupertino-更新"><a href="#Cupertino-更新" class="headerlink" title="Cupertino 更新"></a>Cupertino 更新</h4><p><code>CupertinoNavigationBar</code> 和 <code>CupertinoSliverNavigationBar</code> 現在接受一個 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar/bottom.html"><code>bottom</code> widget</a>，通常是一個搜尋欄位或分段控制項。</p>
+<p>在 <code>CupertinoSliverNavigationBar</code> 中，可以使用 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoSliverNavigationBar/bottomMode.html"><code>bottomMode</code> 屬性</a> 來設定這個底部 widget，使其自動調整大小直到隱藏，或在捲軸導航欄時始終顯示。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/756/0*QDKLR7NHxkMNHUYV" />
+<figcaption>.automatic</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/756/0*7a_CUVACLu_PiizR" />
+<figcaption>.always</figcaption>
+</figure>
+
+<p>導航欄的其他變更包括：</p>
+<ul>
+<li>部分捲軸時，<a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar-class.html">CupertinoSliverNavigationBar</a> 會在其展開和摺疊狀態之間快速切換。</li>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoNavigationBar/CupertinoNavigationBar.large.html">CupertinoNavigationBar.large</a> 建構函式允許靜態導航欄顯示大標題。</li>
+<li>感謝社群貢獻者 <a href="http://github.com/davidhicks980">davidhicks980</a>，Cupertino 彈出視窗現在具有 <a href="https://github.com/flutter/flutter/pull/159272">更鮮豔的背景模糊</a>，從而提高了原生保真度。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*9o5hT9CkjtAs9PsH" />
+</figure>
+
+<ul>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/CupertinoSheetRoute-class.html">CupertinoSheetRoute</a> 顯示一個 iOS 風格的模態表單視圖，可以使用拖動關閉手勢移除。</li>
+<li>新的 <a href="https://main-api.flutter.dev/flutter/cupertino/showCupertinoSheet.html">showCupertinoSheet</a> 函式顯示帶有內建巢狀導航的常用設定的表單。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/221/0*wkUFtSuMJHMV7VBJ" />
+</figure>
+
+<ul>
+<li>社群成員 <a href="http://github.com/thejitenpatel">thejitenpatel</a> 改進了 <a href="https://api.flutter.dev/flutter/cupertino/CupertinoAlertDialog-class.html">CupertinoAlertDialog</a> 在深色模式下的原生保真度，如下面的螢幕截圖所示：</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*R83UkKDD_CWQyHJCbiEUoQ.png" />
+<figcaption>改進前 - 左側是原生視圖，右側是 Flutter 視圖</figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*RfA62aWh5rI6v1S7zGzerw.png" />
+<figcaption>改進後 - 左側是原生視圖，右側是 Flutter 視圖</figcaption>
+</figure>
+
+<ul>
+<li>反轉時，Flutter 的文字選取控制碼會在 iOS 上交換順序，文字選取放大鏡的邊框顏色現在與目前主題相符。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/750/0*Zz4XclkgqvYfadFw" />
+</figure>
+
+<h4 id="Material"><a href="#Material" class="headerlink" title="Material"></a>Material</h4><ul>
+<li><a href="https://main-api.flutter.dev/flutter/material/FadeForwardsPageTransitionsBuilder-class.html">FadeForwardsPageTransitionsBuilder</a> 是新的 Material 3 (M3) 頁面轉場建構器，旨在與 Android 的最新頁面轉場行為相符。在轉場期間，進入的頁面從右向左滑入的同時淡入，而離開的頁面從右向左滑出的同時淡出。這個新的轉場還解決了之前由 <code>ZoomPageTransitionsBuilder</code> 引起的效能問題。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*4UHEVkh3Lnmhzzfa" />
+</figure>
+
+<ul>
+<li>此版本更新了 <code>CircularProgressIndicator</code> 和 <code>LinearProgressIndicator</code>，以符合最新的 Material Design 3 規範。要使用更新的樣式，請將 <code>year2023</code> 屬性設定為 <code>false</code>，或將 <a href="https://main-api.flutter.dev/flutter/material/ProgressIndicatorThemeData/year2023.html">ProgressIndicatorThemeData.year2023</a> 設定為 <code>false</code>。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/770/0*HAZCXocwTzLyq3iO" />
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/800/0*IhJCAxTPoV0EOc9I" />
+</figure>
+
+<ul>
+<li>此版本還引入了最新的 Material 3 Slider 設計，其中包含更新的軌跡和控制碼形狀。Slider 預設為先前的 Material 3 樣式。要啟用最新設計，請將 <code>year2023</code> 設定為 <code>false</code>，或將 <a href="https://main-api.flutter.dev/flutter/material/SliderThemeData/year2023.html">SliderThemeData.year2023</a> 設定為 <code>false</code>。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*RP8usLpbhUNSCOhS" />
+</figure>
+
+<p>此版本包含 Material 函式庫的多個錯誤修復和功能增強。值得注意的修復包括：</p>
+<ul>
+<li>鍵盤導航現在可以正確觸發 <a href="https://main-api.flutter.dev/flutter/material/DropdownMenu/onSelected.html">DropdownMenu.onSelected</a> 回調。</li>
+<li>改進的 TabBar 彈性標籤動畫。</li>
+<li>改進的 RangeSlider 與分割的拇指對齊、拇指填充和圓角。</li>
+</ul>
+<p>除了錯誤修復之外，此版本還增強了多個 Material 元件的自訂性。<code>mouseCursor</code> 屬性已加入到 <code>Chip</code>、<code>Tooltip</code> 和 <code>ReorderableListView</code> 中，允許在懸停時使用自訂滑鼠游標。</p>
+<h4 id="文字選取"><a href="#文字選取" class="headerlink" title="文字選取"></a>文字選取</h4><p>Flutter 現在透過 <a href="https://main-api.flutter.dev/flutter/widgets/SelectionListener-class.html">SelectionListener</a> 和 <code>SelectionListenerNotifier</code> 提供有關 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 下選取範圍的更多資訊。透過 <code>SelectionListenerNotifier</code> 提供的 <a href="https://main-api.flutter.dev/flutter/widgets/SelectionDetails-class.html">SelectionDetails</a> 物件，您可以獲得選取範圍的開始和結束偏移量（相對於包裝的子樹），並指示是否存在選取範圍以及是否已摺疊。對於您想要監聽的 widget 或可選取的子樹，請使用 <code>SelectionListener</code> widget 包裝它。</p>
+<p>Flutter 還透過 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatusScope-class.html">SelectableRegionSelectionStatusScope</a> 繼承 widget 提供有關 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 狀態的資訊。您可以使用 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatusScope/maybeOf.html">SelectableRegionSelectionStatusScope.maybeOf(context)</a> 並檢查 <a href="https://main-api.flutter.dev/flutter/widgets/SelectableRegionSelectionStatus.html">SelectableRegionSelectionStatus</a> 來檢查父 <code>SelectionArea</code> 或 <code>SelectableRegion</code> 是否正在主動變更或已完成選取。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/918/0*6P3X5mGDk25AoIW6" />
+</figure>
+
+<h4 id="輔助功能"><a href="#輔助功能" class="headerlink" title="輔助功能"></a>輔助功能</h4><p>此版本改進了多個 Material widget 的輔助功能：</p>
+<ul>
+<li>啟用螢幕閱讀器時，<code>Form</code> widget 只會播報它遇到的第一個錯誤。</li>
+<li>螢幕閱讀器現在會播報下拉式選單的正確標籤。</li>
+</ul>
+<h3 id="網頁"><a href="#網頁" class="headerlink" title="網頁"></a>網頁</h3><p>Flutter 的 WebAssembly (wasm) 支援在 2024 年 5 月首次發佈時，需要您使用特殊的 HTTP 回應標頭來託管 Flutter 應用程式。現在，此要求已放寬。雖然更新標頭允許使用 wasm 建構的 Flutter 網頁應用程式以多執行緒運行，但使用預設標頭現在允許應用程式以 wasm 運行，但僅限於單執行緒。</p>
+<p>我們已經修復了 WebGL 後端中與圖片相關的多個問題，但最重要的是：</p>
+<ul>
+<li><a href="https://github.com/flutter/engine/pull/53201">非同步解碼 UI 執行緒之外的圖片以避免卡頓</a></li>
+<li><a href="https://github.com/flutter/flutter/pull/157755">使 Image.network 與 CORS 圖片開箱即用</a></li>
+</ul>
+<h3 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h3><h4 id="Impeller-Vulkan-穩定性"><a href="#Impeller-Vulkan-穩定性" class="headerlink" title="Impeller Vulkan 穩定性"></a>Impeller Vulkan 穩定性</h4><p>感謝 3.27 beta 和穩定版本的回饋和錯誤報告，我們對 Vulkan 後端進行了許多正確性和效能方面的改進，包括：</p>
+<ul>
+<li>修復了許多使用者在舊版 Vulkan 相容設備上報告的可重現閃爍和視覺抖動。</li>
+<li>禁用了 Android 硬體緩衝區交換鏈。此功能已放置在功能標記後面，直到確定它在所有 Android 設備上都能正常工作。</li>
+<li>大量的黑屏和崩潰報告是由於在聯發科&#x2F;PowerVR soc 上使用 Vulkan 造成的，現在已停用。這些設備現在只使用 Impeller OpenGLES（見下文）。</li>
+<li>Android 模擬器已更新為使用 Impeller GLES 後端。</li>
+</ul>
+<h4 id="Impeller-OpenGLES"><a href="#Impeller-OpenGLES" class="headerlink" title="Impeller OpenGLES"></a>Impeller OpenGLES</h4><p>在 3.29 中，沒有功能性 Vulkan 驅動程式的 Android 設備將會回退到在 OpenGLES 上運行的 Impeller，而不是使用 Skia。此行為預設啟用，無需設定。這使得 Impeller 對 Android 的支援涵蓋了 Flutter 支援的所有 Android 設備的 100%。</p>
+<h4 id="iOS-上的-Impeller"><a href="#iOS-上的-Impeller" class="headerlink" title="iOS 上的 Impeller"></a>iOS 上的 Impeller</h4><p>Skia 支援已從 iOS 後端移除，<code>FLTEnableImpeller</code> 選擇不使用標記不再有效。隨著我們開始從 iOS 建構中移除 Skia 元件，預計未來版本中二進位制大小會進一步縮小。</p>
+<h4 id="新功能"><a href="#新功能" class="headerlink" title="新功能"></a>新功能</h4><p>此版本包含許多利用 Impeller 後端的新功能。</p>
+<h4 id="背景濾鏡優化"><a href="#背景濾鏡優化" class="headerlink" title="背景濾鏡優化"></a>背景濾鏡優化</h4><p>顯示多個背景濾鏡的應用程式現在可以使用新的 widget <code>BackdropGroup</code> 和新的 <code>BackdropFilter.grouped</code> 建構函式。這些可以比 Skia 後端進一步提高多個模糊的效能。範例請參考 <a href="https://github.com/flutter/flutter/blob/flutter-3.29-candidate.0/packages/flutter/lib/src/widgets/basic.dart#L502">basic.dart</a> 原始碼。</p>
+<h4 id="ImageFilter-shader"><a href="#ImageFilter-shader" class="headerlink" title="ImageFilter.shader"></a>ImageFilter.shader</h4><p>新的 <code>ImageFilter</code> 建構函式允許將自訂著色器應用於任何子 widget。這提供了與 <code>package:flutter_shaders</code> 中的 <code>AnimatedSampler</code> widget 類似的功能，不同之處在於它也適用於背景濾鏡。範例請參考 <a href="https://github.com/flutter/flutter/blob/flutter-3.29-candidate.0/engine/src/flutter/lib/ui/painting.dart#L4239">painting.dart</a> 原始碼。</p>
+<h4 id="Android-iOS-上的-Dart-執行緒變更"><a href="#Android-iOS-上的-Dart-執行緒變更" class="headerlink" title="Android&#x2F;iOS 上的 Dart 執行緒變更"></a>Android&#x2F;iOS 上的 Dart 執行緒變更</h4><p>以前，Flutter 在與平台主執行緒不同的執行緒（UI 執行緒）上執行 Dart 程式碼。如果平台和 UI 執行緒都被佔用，這允許更高的理論吞吐量，但代價是大多數平台互操作都需要序列化和非同步訊息傳遞。這種架構還會對文字輸入、輔助功能、Plugin 等產生連鎖反應。</p>
+<p>從 3.29 開始，Android 和 iOS 上的 Flutter 在應用程式的主執行緒上執行 Dart 程式碼，不再有單獨的 UI 執行緒。這是一系列改進行動平台上平台互操作性變更的第一部分，因為它允許在沒有序列化和訊息傳遞開銷的情況下與平台進行同步調用。</p>
+<h3 id="DevTools-和-IDE"><a href="#DevTools-和-IDE" class="headerlink" title="DevTools 和 IDE"></a>DevTools 和 IDE</h3><h4 id="新的-DevTools-檢查器"><a href="#新的-DevTools-檢查器" class="headerlink" title="新的 DevTools 檢查器"></a>新的 DevTools 檢查器</h4><p>新的 DevTools 檢查器預設為所有使用者啟用。新的檢查器具有簡潔的 widget 樹、新的 widget 屬性視圖，以及一個選項，可以自動更新以響應熱重載和導航事件。更多詳情，請造訪 docs.flutter.dev 上的 <a href="https://docs.flutter.dev/tools/devtools/inspector#new">新的檢查器頁面</a>。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*u75a-VoDr43H_xxK" />
+</figure>
+
+<h4 id="設備上-widget-選取的變更"><a href="#設備上-widget-選取的變更" class="headerlink" title="設備上 widget 選取的變更"></a>設備上 widget 選取的變更</h4><p>從 DevTools 檢查器啟用 widget 選取模式後，設備上的任何選取都將被視為 widget 選取，直到您退出 widget 選取模式為止。以前，在初始 widget 選取之後，您需要點擊設備上的<strong>選取 widget</strong> 按鈕才能選取另一個 widget。現在，設備上有一個按鈕，可以用於快速退出 widget 選取模式。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/386/0*BcgxalxFMTEB_RFP" />
+</figure>
+
+<h4 id="記錄工具改進"><a href="#記錄工具改進" class="headerlink" title="記錄工具改進"></a>記錄工具改進</h4><p>DevTools 中的記錄工具已透過以下方式進行改進：</p>
+<ul>
+<li>記錄包含並顯示更多中繼資料，例如記錄嚴重性、類別、區域和隔離區。</li>
+<li>加入依記錄嚴重性級別進行篩選的支援。</li>
+<li>效能和初始載入時間的顯著改進。</li>
+</ul>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/763/0*mIvmDgvoydaAWE05" />
+</figure>
+
+<p>這些只是此版本中的一些亮點。要進一步了解 Flutter 3.29 中包含的所有更新，請查看 DevTools <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.41.0">2.41.0</a> 和 <a href="https://docs.flutter.dev/tools/devtools/release-notes/release-notes-2.42.2">2.42.2</a> 的發行說明。</p>
+<h3 id="重大變更和棄用"><a href="#重大變更和棄用" class="headerlink" title="重大變更和棄用"></a>重大變更和棄用</h3><h4 id="停止套件支援"><a href="#停止套件支援" class="headerlink" title="停止套件支援"></a>停止套件支援</h4><p>我們計劃在 2025 年 4 月 30 日停止對以下套件的支援：</p>
+<ul>
+<li><code>ios_platform_images</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162961">#162961</a></li>
+<li><code>css_colors</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162962">#162962</a></li>
+<li><code>palette_generator</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162963">#162963</a></li>
+<li><code>flutter_image</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162964">#162964</a></li>
+<li><code>flutter_adaptive_scaffold</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162965">#162965</a></li>
+<li><code>flutter_markdown</code>；請參閱 <a href="https://github.com/flutter/flutter/issues/162966">#162966</a></li>
+</ul>
+<p>我們鼓勵社群中任何感興趣的成員協調建立和維護分支。上面提供了用於討論和協調的議題連結。</p>
+<h4 id="移除基於腳本的-Flutter-Gradle-Plugin-應用"><a href="#移除基於腳本的-Flutter-Gradle-Plugin-應用" class="headerlink" title="移除基於腳本的 Flutter Gradle Plugin 應用"></a>移除基於腳本的 Flutter Gradle Plugin 應用</h4><p>移除基於腳本的 Flutter Gradle Plugin 應用，自 3.19 起已棄用。這支援將 Flutter Gradle Plugin 從 Groovy 轉換為 Kotlin，並將其遷移到使用 AGP 的公共 API。預計這項工作可以減少發佈新的 AGP 版本時損壞的頻率，並減少基於建構的回歸。</p>
+<p>在 3.16 之前建立且尚未遷移的專案可能會受到影響。如果 flutter 工具在建構您的專案時記錄警告：「您正在強制性地應用 Flutter 的主要 Gradle Plugin」，則您會受到影響，並且需要根據 docs.flutter.dev 上的 <a href="https://docs.flutter.dev/release/breaking-changes/flutter-gradle-plugin-apply">Flutter Gradle Plugin 的強制性應用已棄用</a> 進行遷移。</p>
+<h4 id="移除網頁-HTML-渲染器"><a href="#移除網頁-HTML-渲染器" class="headerlink" title="移除網頁 HTML 渲染器"></a>移除網頁 HTML 渲染器</h4><p>這是第一個從 Flutter 網頁中移除 HTML 渲染器的版本。更多資訊，請造訪 <a href="https://docs.google.com/document/d/1DGamHsa2lz_Qtgfrfa3j3fRaEopJXc7tCFVM1TQlck8/edit?resourcekey=0-IjkqrCoo_EcRRS2bPYKI8w&tab=t.0">計劃棄用並移除 Flutter 網頁中的 HTML 渲染器</a> 和 <a href="https://github.com/flutter/flutter/issues/145954">議題 145584：計劃棄用並移除 Flutter 網頁中的 HTML 渲染器</a>。</p>
+<h4 id="網頁圖片處理"><a href="#網頁圖片處理" class="headerlink" title="網頁圖片處理"></a>網頁圖片處理</h4><p>此版本還讓您可以 <a href="https://github.com/flutter/flutter/pull/159917">更好地控制圖片在網頁上的顯示方式</a>。在先前的 beta 版本 (3.28) 中，當發生 CORS 錯誤時，<code>Image</code> widget 會自動使用 <code>&lt;img&gt;</code> 元素來顯示來自 URL 的圖片。這可能會導致不一致的行為。現在，<code>webHtmlElementStrategy</code> 標記可讓您選擇何時使用 <code>&lt;img&gt;</code> 元素。雖然此回退預設停用，但如果您的應用程式需要，您仍然可以啟用回退，甚至可以優先使用 <code>&lt;img&gt;</code> 元素。</p>
+<h4 id="Material-標準化"><a href="#Material-標準化" class="headerlink" title="Material 標準化"></a>Material 標準化</h4><p>作為我們正在進行的 Material 主題標準化專案的一部分，此版本棄用了 <code>ThemeData.dialogBackgroundColor</code>，轉而使用 <code>DialogThemeData.backgroundColor</code>。您可以使用 <code>dart fix</code> 命令來遷移受影響的程式碼。</p>
+<p>同樣在 Material 中，在將 <code>ButtonStyleButton.iconAlignment</code> 屬性加入到 <code>ButtonStyle</code> 和相關的 <code>styleFrom</code> 方法之後，該屬性已棄用。</p>
+<p>此版本中的所有 <a href="https://docs.flutter.dev/release/breaking-changes">重大變更</a>，請參閱網站重大變更頁面上的完整遷移指南列表。</p>
+<p>與往常一樣，非常感謝社群為 <a href="https://github.com/flutter/tests/blob/master/README.md">貢獻測試</a> - 這些測試幫助我們識別重大變更。要進一步了解，請查看 <a href="https://github.com/flutter/flutter/wiki/Tree-hygiene#handling-breaking-changes">Flutter 的重大變更政策</a>。</p>
+<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*Mk6_aE2XEiK3Iq_H-q1L5Q.jpeg" />
+</figure>
+
+<p>感謝 Flutter 社群讓此版本成為可能！我們對未來感到興奮，並迫不及待地想看到您的應用程式。查看 <a href="https://docs.flutter.dev/release/release-notes/release-notes-3.29.0">發行說明和變更日誌</a>，然後運行 <code>flutter upgrade</code> 並開始建構吧！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=f90c380c2317" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/whats-new-in-flutter-3-29-f90c380c2317">Flutter 3.29 的新功能</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/131966d5.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/131966d5.html" class="post-title-link" itemprop="url">【文章翻譯】An update on Dart macros & data serialization</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2025-01-29 21:23:22" itemprop="dateCreated datePublished" datetime="2025-01-29T21:23:22+08:00">2025-01-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-14 00:43:13" itemprop="dateModified" datetime="2025-02-14T00:43:13+08:00">2025-02-14</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="關於-Dart-巨集和資料序列化更新"><a href="#關於-Dart-巨集和資料序列化更新" class="headerlink" title="關於 Dart 巨集和資料序列化更新"></a>關於 Dart 巨集和資料序列化更新</h2><p>在過去幾年中，我們投入了大量的時間和資源來構建<a href="https://dart.dev/language/macros">巨集</a>的原型。遺憾的是，每次我們解決一個主要的技術障礙時，都會出現新的障礙。目前，我們認為巨集在短期內無法達到我們可以安心發佈的功能水準，並且達到我們期望的品質和開發時間效能。</p>
+<p>在考慮了機會成本之後，特別是我們可以向社群提供的其他功能，我們做出了艱難的決定，停止巨集的開發工作。</p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我們相信 Dart 提供了獨特的優勢組合：(1) 預先編譯和靜態語言的典型效能，以及 (2) 動態語言的快速開發週期（例如，狀態熱重載）。隨著 Dart 的發展，我們一直謹慎地評估語言的變更是否符合這兩個標準。</p>
+<p>在這種情況下，基於豐富內省功能的強大元程式設計一直是一個挑戰。運行時內省（例如，反射）使得執行樹搖優化變得困難，而樹搖優化可以讓我們產生更小的二進位檔案。靜態內省（例如，巨集）可以採用幾種形式。大多數語言採用語法方法，對程式的語法進行有限的靜態反射。我們認為這不足以實現我們的目標。相反，我們的目標是構建一個巨集系統，支援在編譯時對程式進行深度語義內省。遺憾的是，語義內省會帶來大量的編譯時間成本，這使得狀態熱重載難以保持<em>熱</em>狀態。</p>
+<p>我們的結論是，我們離以我們要求的開發時間效能發佈巨集還差得很遠。我們目前的實作會降低編輯（例如，靜態分析和程式碼完成）和增量編譯（熱重載的第一步）的效能。我們不確定我們是否能在合理的時間範圍內充分解決這些問題。</p>
+<h3 id="展望未來"><a href="#展望未來" class="headerlink" title="展望未來"></a>展望未來</h3><p>我們已決定專注於我們更有信心發佈的其他功能。</p>
+<p>我們將投入的一個領域是在 Dart 中更好地支援資料。這是 Dart 和 Flutter 問題追蹤器中<a href="https://github.com/dart-lang/language/issues/314">請求最多的問題</a>。事實上，我們開發巨集的主要動機是提供更好的資料處理、序列化和反序列化。我們仍然會追求更好的資料處理方式，但我們打算使用更專門的語言功能來做到這一點。</p>
+<p>我們將投入的另一個領域是改進構建時間和整體程式碼生成體驗。我們已經確定了 <a href="https://github.com/dart-lang/build/issues/3800">build_runner 的改進</a>。我們還計劃發佈<a href="https://github.com/dart-lang/language/blob/main/working/augmentation-libraries/feature-specification.md">擴充</a>，這是我們作為巨集的一部分構建的原型功能。我們相信這個語言功能可以獨立存在，並且會改進現有的程式碼生成。我們仍然打算<a href="https://github.com/dart-lang/language/issues/4154">單獨發佈這個功能</a>。</p>
+<p>我們理解這個消息會讓你們中的許多人感到失望。從長遠來看，我們仍然有興趣<a href="https://github.com/dart-lang/language/issues/1482">探索通用的元程式設計</a>，因為它除了資料之外還有許多潛在的用例。儘管如此，我們也要向我們的社群明確表示，在可預見的未來，我們不會發佈巨集。</p>
+<p>我們要感謝所有嘗試巨集、提供回饋以及透過 PR 直接貢獻的人。這些投入和精力將有助於我們接下來的工作。我們對今年可以提供的改進感到興奮。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=06d3037d4f12" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/an-update-on-dart-macros-data-serialization-06d3037d4f12">Dart 巨集和資料序列化更新</a> 最初發佈在 Medium 的 <a href="https://medium.com/dartlang">Dart</a> 上，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/6475a63d.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -589,7 +1073,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 12:28:53" itemprop="dateModified" datetime="2024-12-18T12:28:53+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1131,537 +1615,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4fcc687c.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/4fcc687c.html" class="post-title-link" itemprop="url">【文章翻譯】Google Summer of Code 2024 Results</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-10-14 17:23:41" itemprop="dateCreated datePublished" datetime="2024-10-14T17:23:41+08:00">2024-10-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 12:35:35" itemprop="dateModified" datetime="2024-12-18T12:35:35+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 2.0 自動翻譯產生】</p>
-<h2 id="Google-暑期程式碼計劃-2024-成果"><a href="#Google-暑期程式碼計劃-2024-成果" class="headerlink" title="Google 暑期程式碼計劃 2024 成果"></a>Google 暑期程式碼計劃 2024 成果</h2><p><a href="https://summerofcode.withgoogle.com/">Google 暑期程式碼計劃</a> (GSoC) 的重點是讓全球新的開發人員參與開源軟體開發。Google 贊助貢獻者在夏季與輔導開源組織合作進行為期 12 週的程式設計專案。在過去的 19 年裡，已有超過 20,000 名貢獻者參與了 Google 暑期程式碼計劃。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/674/0*vm7AfKyip_pXJGCd" />
-</figure>
-
-<p>2024 年，Dart 連續第五年作為輔導組織參與 Google 暑期程式碼計劃。今年，我們收到了來自世界各地潛在參與者的 50 份專案提案。今天，我們重點介紹了今年夏天我們輔導的一些專案。貢獻者在此文章中描述了他們的專案。</p>
-<h3 id="使用-OkHttp-的-JNI-綁定的-HTTP-客戶端"><a href="#使用-OkHttp-的-JNI-綁定的-HTTP-客戶端" class="headerlink" title="使用 OkHttp 的 JNI 綁定的 HTTP 客戶端"></a>使用 OkHttp 的 JNI 綁定的 HTTP 客戶端</h3><p><em>作者：Anikate De</em></p>
-<p>現有的 Dart HTTP 客戶端無法與原生 Android API 互動，限制了對 KeyStore 私鑰、系統代理和使用者安裝憑證的支援（所有這些都是 Dart 使用者強烈要求的功能）。</p>
-<p>開源專案 <a href="https://square.github.io/okhttp/">OkHttp</a> 是 Android 上網路密集型應用程式的熱門選擇，它擁有的 API 可以無縫地實作上述功能。因此，OkHttp 被選為此專案的起點。使用 GSoC 2022 專案，<a href="https://pub.dev/packages/jnigen">package:jnigen</a>，為多個 OkHttp API 生成了 Dart 的 JNI 綁定。OkHttpClient 與現有的 HTTP 客戶端完全相容，允許從任何替代方案無縫過渡到使用 OkHttpClient。</p>
-<p>除了非同步 HTTP 請求之外，<a href="https://pub.dev/packages/ok_http">package:ok_http</a> 還支援 WebSockets，這需要通過 package:web_socket_conformance_test 中的所有測試。這允許從任何 WebSocket 替代方案平穩過渡。使用 package:ok_http 基準測試的 Flutter 應用程式報告了所有其他 Dart 提供的 HTTP 客戶端中最小的 APK 大小。</p>
-<p>在您的 Flutter 專案中利用 OkHttpClient 的優點就像匯入它一樣簡單，並編輯您目前的 Client 物件！</p>
-<p>在 <a href="https://github.com/Anikate-De/gsoc-2024-project-report">GSoC 貢獻者報告</a> 中閱讀更多關於專案的詳細資訊。</p>
-<h3 id="Swift2ObjC：ObjC-包裝器產生器"><a href="#Swift2ObjC：ObjC-包裝器產生器" class="headerlink" title="Swift2ObjC：ObjC 包裝器產生器"></a>Swift2ObjC：ObjC 包裝器產生器</h3><p><em>作者：Mohammad Eid</em></p>
-<p>Dart 可以（間接）與 Swift 程式碼通訊。這是透過 ObjC 完成的，因為 Dart 可以使用 <a href="https://dart.dev/interop/c-interop">ffi</a> 套件與基於 C 語言（如 ObjC）通訊。Swift API 可以使用 <code>@objc</code> 註釋，以請求編譯器為它們產生 ObjC 標頭。使用 <a href="https://pub.dev/packages/ffigen">ffigen</a> 自動為 Dart 產生 ffi 綁定。對於 Swift，您需要手動註釋您想要與之通訊的 API。</p>
-<p>註釋 Swift API 可能比加入 <code>@objc</code> 註釋更複雜。如果您不擁有該模組怎麼辦？如果您無法編輯它，您必須建立一個自訂包裝器來鏡像 API，以便您可以註釋方法。此外，由於 Swift 是一種現代語言，而 ObjC 不是，您可能會遇到一些 API，這些 API 無法直接在 ObjC 中表示，因此您也必須解決這些情況。</p>
-<p>Swift2ObjC 為您處理這些事情：它為 Swift 模組產生包裝器，並使用 <code>@objc</code> 註釋它們，同時確保所有 API 都可以在 ObjC 中表示 - 否則 Swift 模組將無法編譯。我在 Medium 上的這篇文章 (<a href="https://medium.com/@mohammad.mossad.eid/swift2objc-more-convenient-swift-dart-interoperability-b152dd5bed13">文章連結</a>) 中解釋了實作細節（如果您正在考慮為該工具做出貢獻，可以參考這篇文章，因為它仍在積極開發中）。您還可以在 GitHub 上的 <a href="https://github.com/dart-lang/native/tree/cf13658c3bc92e62893ec15659dc1370a7d07e8a/pkgs/swift2objc">swift2objc 儲存庫</a> 中深入研究原始碼。</p>
-<h3 id="使用-dartdoc-test-測試文件註釋"><a href="#使用-dartdoc-test-測試文件註釋" class="headerlink" title="使用 dartdoc_test 測試文件註釋"></a>使用 dartdoc_test 測試文件註釋</h3><p><em>作者：Takuma Ichikawa</em></p>
-<p>Dart 允許在文件註釋中嵌入程式碼範例。這是一個有益的做法，因為它也會作為 API 文件發佈，並以套件使用者和開發人員都容易理解的方式展示如何使用套件。但是，文件註釋中的程式碼範例不會被分析或測試，因此很難發現錯誤，並且難以維護。隨著專案和文件的增長，這個問題變得更加嚴重。</p>
-<p>因此，對於 GSOC，我開發了 <a href="https://pub.dev/packages/dartdoc_test">dartdoc_test</a> 套件來解決此類問題。dartdoc_test 工具可以提取和分析文件註釋中的程式碼範例，以發現潛在的錯誤。透過將套件加入到您的專案中，並從命令列運行它，您可以發現所有程式碼範例中的錯誤。您還可以在運行 <code>dart test</code> 命令時，透過加入 <code>dartdoc_test</code> 測試檔案來執行程式碼範例的靜態分析。</p>
-<p>透過運行以下兩個命令，您可以輕鬆地在 Dart 專案中試用 dartdoc_test。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dart pub add dev:dartdoc_test</span><br><span class="line">dart run dartdoc_test</span><br></pre></td></tr></table></figure>
-
-<p>要了解更多資訊，請在 pub.dev 上查看 <a href="https://pub.dev/packages/dartdoc_test">dartdoc_test</a>。</p>
-<h3 id="使用-FFIgenPad-在-Web-上使用-WASM-產生-dart-ffi-綁定"><a href="#使用-FFIgenPad-在-Web-上使用-WASM-產生-dart-ffi-綁定" class="headerlink" title="使用 FFIgenPad 在 Web 上使用 WASM 產生 dart:ffi 綁定"></a>使用 FFIgenPad 在 Web 上使用 WASM 產生 dart:ffi 綁定</h3><p><em>作者：TheComputerM</em></p>
-<p>Dart 作為一種可以編譯成各種目標的語言，包含了促進與原生二進位制檔案通訊的功能。您可以使用 <a href="https://dart.dev/interop/c-interop">dart:ffi</a> 等套件與 C API 互動，並使用 <a href="https://pub.dev/packages/jni">package:jni</a> 與 Java 程式碼互動。您只需編寫一些黏合程式碼來指定您正在呼叫的原生函數的類型簽章。</p>
-<p>當您使用一個具有許多匯出的函式庫時，問題就出現了，手動編寫太多匯出。這個問題可以使用 <a href="https://pub.dev/packages/ffigen">ffigen</a>（一個先前的 GSoC 專案）來解決，這是一個僅使用函式庫的標頭檔來產生綁定的工具。要做到這一點，您必須安裝 ffigen，設定所有正確的依賴項和需求，然後（可能）一次又一次地迭代。這並不是無縫且簡單的定義。因此，FFIgenPad 誕生了。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*sB2hJW3ZkMCeF9Mp" />
-</figure>
-
-<p>該專案的另一個目標是測試 dart2wasm 編譯器（您可以在 <a href="https://thecomputerm.hashnode.dev/dirty-deeds-done-dart-cheap-experiments-with-dart2wasm">此部落格文章</a> 中找到我的實驗）。當然，我們可以在伺服器上運行 ffigen，並在其上放置一個 UI。相反，我透過將 libclang 和 ffigen 都編譯成 WebAssembly 來確保 FFIgenPad 完全在瀏覽器上運行（當您可以使用客戶端的系統時，為什麼還要使用伺服器進行計算）。</p>
-<p>在 <a href="https://ffigenpad.surge.sh/">https://ffigenpad.surge.sh/</a> 查看演示，並在 GitHub 上的 <a href="https://github.com/TheComputerM/dart-native/tree/ffigenpad">我的分支</a> 中查看原始程式碼。我要感謝我的導師 Prerak Mann、Daco Harkes 和 Jackson Gardner，感謝他們在我請求幫助時隨時提供協助。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=ae925357d2d7" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/google-summer-of-code-2024-results-ae925357d2d7">Google 暑期程式碼計劃 2024 成果</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/14c13b13.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/14c13b13.html" class="post-title-link" itemprop="url">【文章翻譯】Announcing Dart 3.5, and an update on the Dart roadmap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-08-06 18:02:40" itemprop="dateCreated datePublished" datetime="2024-08-06T18:02:40+08:00">2024-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 12:36:40" itemprop="dateModified" datetime="2024-12-18T12:36:40+08:00">2024-12-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 2.0 自動翻譯產生】</p>
-<h2 id="宣布-Dart-3-5-和-Dart-路線圖更新"><a href="#宣布-Dart-3-5-和-Dart-路線圖更新" class="headerlink" title="宣布 Dart 3.5 和 Dart 路線圖更新"></a>宣布 Dart 3.5 和 Dart 路線圖更新</h2><p>我們又到了季度 Dart SDK 發佈的時間。我們在互操作性方面進行了改進，在我們的 pub.dev 套件管理器中加入了新功能，並且我們已將新的 Web 整合 API 升級到穩定版和 1.0 版。</p>
-<p>我們的大部分時間都花在更大、跨多個季度的努力上，因此我們也更新了 Dart 路線圖，詳細說明了我們希望在未來幾個季度取得的進展。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*PVj9TIzP50I00tavJqAg_Q.gif" />
-<figcaption>Dart 3.5 發佈圖片。</figcaption>
-</figure>
-
-<h3 id="Dart-3-5-的新功能"><a href="#Dart-3-5-的新功能" class="headerlink" title="Dart 3.5 的新功能"></a>Dart 3.5 的新功能</h3><p>Dart 3.5 具有以下討論的許多新功能。核心函式庫 API 也有一些較小的變更，以及大約 10 個非常小的重大變更，這些變更涵蓋在 <a href="https://github.com/dart-lang/sdk/blob/master/CHANGELOG.md#350">變更日誌</a> 中。</p>
-<h3 id="Web-平台和-JS-互操作性"><a href="#Web-平台和-JS-互操作性" class="headerlink" title="Web 平台和 JS 互操作性"></a>Web 平台和 JS 互操作性</h3><p>在 Dart 3.4 和 Flutter 3.22 中，我們引入了對 <a href="https://docs.flutter.dev/platform-integration/web/wasm">將 Flutter Web 應用程式編譯為 WebAssembly</a> 的支援。編譯為 WebAssembly 需要使用我們新的 <a href="https://dart.dev/interop/js-interop">Dart 到 JS 互操作模型</a>，該模型之前處於預覽階段。從 Dart 3.5 開始，它現在被認為是穩定且完整的，我們已將 <a href="https://pub.dev/packages/web">package:web</a>（它取代了舊的 dart:html 函式庫）中的瀏覽器 API 繫結更新到 1.0 版。</p>
-<p>我們鼓勵所有 Web 套件作者 <a href="https://dart.dev/interop/js-interop/package-web">遷移到 package:web</a>。我們計劃在下一個 Dart 版本中棄用舊的互操作 API（dart:html、dart:js、package:js 等），並在明年晚些時候完全停止使用它們。我們邀請您在 <a href="https://github.com/dart-lang/sdk/issues/56358">追蹤議題</a> 中就此計劃提供回饋。我們還計劃更新 pub.dev 套件管理器上的 <a href="https://pub.dev/help/scoring">評分</a>，以獎勵支援新互操作模型的 Web 套件。</p>
-<p>我們還加入了 <a href="https://dart.dev/tools/linter-rules/invalid_runtime_check_with_js_interop_types">一個新的 lint</a>，它驗證您的程式碼是否正確使用了新的 JS 互操作類型。我們建議您在遷移 Web 套件時將此 lint 加入到您的 analysis_options.yaml 檔案中。</p>
-<h3 id="Dart-原生互操作性"><a href="#Dart-原生互操作性" class="headerlink" title="Dart 原生互操作性"></a>Dart 原生互操作性</h3><p>我們還對原生互操作性進行了一系列改進，它支援從 Dart 直接調用到 C、Java、Kotlin、Objective-C 和 Swift。</p>
-<p>C 互操作由我們的 <a href="https://dart.dev/interop/c-interop">FFI</a>（外部函式介面）函式庫啟用，我們已經支援了幾年。在 Dart 3.5 中，我們進行了漸進式改進，以支援將 Dart TypedData 物件的指標直接傳遞給 FFI，避免必須先將記憶體從 Dart 複製到原生（<a href="https://github.com/dart-lang/sdk/issues/44589">詳細資訊</a>）。</p>
-<p>Java 和 Kotlin 互操作由 <a href="https://pub.dev/packages/jnigen">JNIgen</a> 生成器（目前處於預覽階段）啟用，它自動建立繫結程式碼，以透過 Java 原生介面 (<a href="https://developer.android.com/training/articles/perf-jni">JNI</a>) 從 Dart 調用到 Java 和 Kotlin。我們改進了效能，並加入了對 Java 異常和 Kotlin 頂層函式的支援。我們還停止了以前的 <a href="https://github.com/dart-lang/native/issues/660">基於 C 的繫結</a>，因為現在替代的僅 Dart 繫結具有相當的效能和功能，並且更容易使用。有關詳細資訊，請參閱 <a href="https://pub.dev/packages/jnigen/changelog">變更日誌</a>。</p>
-<p>Objective-C 互操作建立在 FFI 和我們的 <a href="https://pub.dev/packages/ffigen">FFIgen</a> 生成器（目前處於預覽階段）之上。我們加入了對 Objective-C 協議和常見類型（例如 NSString）的支援。有關使用 FFIgen 建立的套件的大型範例，請參閱 <a href="https://github.com/dart-lang/http/tree/master/pkgs/cupertino_http">cupertino_http</a>，它與 Apple 的 URL Loading System 網路函式庫互操作。</p>
-<p>我們將繼續在未來的版本中進一步投資互操作性——無論是在完成上述函式庫方面，還是在支援 Swift 方面。有關詳細資訊，請參閱下面的路線圖部分。</p>
-<h3 id="Pub-dev-套件儲存庫"><a href="#Pub-dev-套件儲存庫" class="headerlink" title="Pub.dev 套件儲存庫"></a>Pub.dev 套件儲存庫</h3><p>Pub.dev 是我們的套件儲存庫，社群可以在其中分享和找到具有豐富功能的套件。我們在這裡進行了一些改進。首先，我們改進了對 <a href="https://dart.dev/tools/pub/pubspec#topics">主題</a> 的支援：套件作者可以透過這種機制使用它們所屬的類別（例如 widget）來標記他們的套件。我們現在 <a href="https://github.com/dart-lang/pub-dev/blob/master/doc/topics.yaml">整合</a> 涵蓋相同類別但措辭略有不同的常見主題（例如 widgets vs widget）。</p>
-<p>其次，我們加入了一個新的 <code>pub unpack</code> 命令。這提供了一種快速簡便的方法來將套件下載到您的檔案系統。例如，如果您想在本地機器上運行套件的範例程式，可以使用此命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ dart pub unpack path</span><br><span class="line">Downloading path 1.9.0 to `./path-1.9.0`...</span><br><span class="line"></span><br><span class="line">$ cd path-1.9.0/example/</span><br><span class="line"></span><br><span class="line">$ dart run example.dart</span><br><span class="line">Current path style: posix</span><br><span class="line">Current process path: /Users/mit/tmp/path-1.9.0/example</span><br></pre></td></tr></table></figure>
-
-<p>第三，我們加入了一個新的 <code>pub downgrade --tighten</code> 命令。這可以用於檢查套件相依中的所有版本限制。運行時，它會將較低的限制更新為 pub 能夠解析的最低版本。</p>
-<h3 id="Dart-路線圖更新"><a href="#Dart-路線圖更新" class="headerlink" title="Dart 路線圖更新"></a>Dart 路線圖更新</h3><p>除了上述已完成的功能外，我們還在許多領域開展了工作，以推進我們的長期路線圖。</p>
-<h3 id="大型-monorepos-的-IDE-和分析器效能"><a href="#大型-monorepos-的-IDE-和分析器效能" class="headerlink" title="大型 monorepos 的 IDE 和分析器效能"></a>大型 monorepos 的 IDE 和分析器效能</h3><p>「monorepo」是一種常見的程式碼結構方式，用於將一組相關套件和應用程式的程式碼放在單個儲存庫中，例如 Flutter 的 <a href="https://github.com/flutter/packages/tree/main">套件儲存庫</a>。monorepo 不僅僅是為了方便將所有程式碼「放在一起」，而且還可以作為確保儲存庫中的各個套件和應用程式相互相容的關鍵工具。</p>
-<p>我們一直收到在大型 monorepos 中工作的開發人員的回饋，認為我們的工具，尤其是分析器的效能可能不足。我們對這些問題的分析表明，根本原因是我們最終為每個套件及其所有相依載入了多個重疊的分析上下文，導致記憶體中同時存在多個套件分析副本。我們相信根本的解決方案是在此類儲存庫中建立每個相依版本的單個共用解析，並正在透過一個名為 <a href="https://github.com/dart-lang/sdk/issues/53875">workspaces</a> 的新 pub 功能來開發此功能。我們將在下一個 Dart 版本中分享更多關於此的資訊，但現在您可以先看看這是如何 <a href="https://github.com/flutter/engine/pull/54157/files">最近應用</a> 於 Flutter 引擎儲存庫的。</p>
-<h3 id="Pub-dev-套件儲存庫-1"><a href="#Pub-dev-套件儲存庫-1" class="headerlink" title="Pub.dev 套件儲存庫"></a>Pub.dev 套件儲存庫</h3><p>pub.dev 套件儲存庫的使用者長期以來一直要求改進 <a href="https://github.com/dart-lang/pub-dev/issues/2714">每個套件的使用&#x2F;下載</a> 指標。這對於套件作者來說，可以作為一個指標，表明有多少使用者從他們的工作中受益；對於套件使用者來說，可以作為一個指標，表明其他開發人員正在使用哪些套件。我們很高興地與大家分享，我們在這項功能上取得了良好的進展，並希望在年底前推出預覽版。</p>
-<h3 id="Dart-原生互操作"><a href="#Dart-原生互操作" class="headerlink" title="Dart 原生互操作"></a>Dart 原生互操作</h3><p>對於使用 JNIgen 的 Java 和 Kotlin 互操作，我們預計將在接下來的兩個季度內完成核心支援，並從實驗版升級到穩定版 1.0。有關詳細資訊，請參閱 <a href="https://github.com/orgs/dart-lang/projects/69/">JNIgen 追蹤器</a>。對於 ObjectiveC 互操作，我們有一個類似的目標；請參閱 <a href="https://github.com/orgs/dart-lang/projects/87">Objective-C 追蹤器</a>。</p>
-<p>接下來，我們正在研究與 Swift 程式碼的直接互操作。初步實驗看起來很有希望，我們希望在明年年初加入實驗性支援。</p>
-<h3 id="原生互操作和原生程式碼的捆綁"><a href="#原生互操作和原生程式碼的捆綁" class="headerlink" title="原生互操作和原生程式碼的捆綁"></a>原生互操作和原生程式碼的捆綁</h3><p>在許多情況下，直接互操作用於調用到作業系統中存在的 API，這意味著這些 API 在這些主機平台上始終可用。但是，在某些情況下，Dart 互操作的程式碼是主機上未直接包含的原生<em>程式碼</em>，這對使用此類互操作的套件作者提出了一個實際挑戰：如何在不將大量手動步驟推給套件使用者的情況下捆綁和構建該原生程式碼？為了支援這一點，我們正在探索一個 <a href="https://github.com/dart-lang/sdk/issues/50565">原生資源系統</a>，它可以支援發佈包含原生程式碼的 Dart 套件，以及一個標準化協議，以啟用 dart 和 flutter CLI 工具自動構建和捆綁該程式碼。我們預計這將啟用一組新的互操作使用案例，同時為使用依賴原生程式碼的套件的開發人員提供簡單的使用者體驗。</p>
-<h3 id="Dart-語言和巨集"><a href="#Dart-語言和巨集" class="headerlink" title="Dart 語言和巨集"></a>Dart 語言和巨集</h3><p>Dart 語言和編譯器團隊目前的大部分時間都花在推進大型語言功能巨集上，我們在 <a href="https://medium.com/dartlang/dart-3-4-bd8d23b4462a">Dart 3.4 部落格文章</a> 中介紹了巨集。正如我們當時所說，這是一項巨大的任務，可能會在我們的一些核心使用案例（例如熱重載）中造成回歸，因此我們正在採取一種徹底的方法，並且在我們能夠分享下一步的詳細資訊之前，可能需要幾個季度的進一步工作。</p>
-<p>除了巨集之外，我們還同時探索許多其他較小的語言功能，如 <a href="https://github.com/orgs/dart-lang/projects/90/views/1">Dart 語言漏斗</a> 中所述。</p>
-<p>自去年秋季以來，我們一直在重寫 Dart 格式化程式。舊的設計在很多年裡都運行良好，但隨著 Flutter 的成功，我們希望轉向 <a href="https://github.com/dart-lang/dart_style/issues/1253">一種新風格</a>，這種風格更適合 Flutter 使用者經常撰寫的宣告式程式碼。舊的格式化程式無法產生這種輸出。重寫工作接近完成，很快就會發佈。如果您想試用它，請傳遞實驗旗標 tall-style（<a href="https://dart.dev/tools/experiment-flags">旗標說明</a>）。如果您看到奇怪的輸出，歡迎提供 <a href="https://github.com/dart-lang/dart_style/issues">回饋</a>。</p>
-<h3 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h3><p>這就是我們今天要分享的全部內容。我們歡迎您提供回饋，無論是關於討論的路線圖項目，還是關於 Dart 3.5 中的新功能，這些功能可以從 <a href="https://dart.dev/get-dart">Dart.dev</a> 獲取，或捆綁在今天的 <a href="https://medium.com/flutter/whats-new-in-flutter-3-24-6c040f87d1e4">Flutter 3.24 版本</a> 中。</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ca36259fa2f" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-3-5-6ca36259fa2f">宣布 Dart 3.5 和 Dart 路線圖更新</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/8ddf18fb.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/8ddf18fb.html" class="post-title-link" itemprop="url">【文章翻譯】Getting started with Flutter GPU</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2024-08-06 18:02:39" itemprop="dateCreated datePublished" datetime="2024-08-06T18:02:39+08:00">2024-08-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 01:40:49" itemprop="dateModified" datetime="2024-09-30T01:40:49+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="在-Flutter-中建立自訂渲染器並渲染-3D-場景。"><a href="#在-Flutter-中建立自訂渲染器並渲染-3D-場景。" class="headerlink" title="在 Flutter 中建立自訂渲染器並渲染 3D 場景。"></a>在 Flutter 中建立自訂渲染器並渲染 3D 場景。</h2><p>Flutter 3.24 版本引進了一個新的低階圖形 API，稱為 <a href="https://github.com/flutter/engine/blob/main/docs/impeller/Flutter-GPU.md">Flutter GPU</a>。還有一個由 Flutter GPU 支援的 3D 渲染函式庫，稱為 <a href="https://pub.dev/packages/flutter_scene">Flutter Scene</a>（套件：flutter_scene）。Flutter GPU 和 Flutter Scene 目前都處於預覽階段，僅在 Flutter 的 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 上可用（由於依賴實驗性功能），需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>，並且可能偶爾會引入重大變更。</p>
-<p>本文包含這兩個套件的兩個「入門」指南：</p>
-<ol>
-<li>🔺 <strong>進階：</strong><a href="#d558">使用 Flutter GPU 入門</a><br>如果您是經驗豐富的圖形程式設計師，或者您對低階圖形感興趣，並想在 Flutter 中從頭開始建立渲染器，那麼本指南將幫助您開始使用 Flutter GPU。您將從頭開始繪製第一個三角形… 在 Flutter 中！</li>
-<li>💚 <strong>中級：</strong><a href="#6b35">使用 Flutter Scene 進行 3D 渲染</a><br>如果您是想要將 3D 功能添加到應用程式中的 Flutter 開發人員，或者您想要使用 Dart 和 Flutter 建立 3D 遊戲，那麼本指南適合您！您將設定一個專案，在 Flutter 中匯入和渲染 3D 資產。</li>
-</ol>
-<h3 id="使用-Flutter-GPU-入門"><a href="#使用-Flutter-GPU-入門" class="headerlink" title="使用 Flutter GPU 入門"></a>使用 Flutter GPU 入門</h3><p>⚠️ 警告！⚠️ Flutter GPU 最終是一個低階 API。絕大多數將從 Flutter GPU 的存在中受益的 Flutter 開發人員很可能會透過使用在 pub.dev 上發佈的更高階渲染函式庫來做到這一點，例如 Flutter Scene 渲染套件。如果您對 Flutter GPU API 本身不感興趣，而只是對 3D 渲染感興趣，請跳到 <a href="#6b35">使用 Flutter Scene 進行 3D 渲染</a>。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/900/0*hAqIOVkaI1IWnOHE" />
-<figcaption>哦，真閃亮。這是一個射線行進的符號距離場。您可以使用 Flutter GPU 渲染它，但使用 [自訂片段著色器](https://docs.flutter.dev/ui/design/graphics/fragment-shaders) 也完全有可能。 </figcaption>
-</figure>
-
-<h3 id="使用-Flutter-GPU-入門-1"><a href="#使用-Flutter-GPU-入門-1" class="headerlink" title="使用 Flutter GPU 入門"></a>使用 Flutter GPU 入門</h3><p>Flutter GPU 是 Flutter 內建的低階圖形 API。它允許您透過撰寫 Dart 程式碼和 GLSL 著色器在 Flutter 中建立和整合自訂渲染器。不需要原生平台程式碼。</p>
-<p>目前，Flutter GPU 處於早期預覽階段，並提供基本的柵格化 API，但隨著 API 逐漸穩定，將會繼續新增和改進更多功能。</p>
-<p>Flutter GPU 還需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。這表示它只能在 Impeller 支援的平台上使用。在撰寫本文時，Impeller 支援：</p>
-<ul>
-<li>iOS（預設啟用）</li>
-<li>macOS（選擇性預覽）</li>
-<li>Android（選擇性預覽）</li>
-</ul>
-<p>我們對 Flutter GPU 的目標是最終支援所有 Flutter 的平台目標。最終目標是促進 Flutter 中跨平台渲染解決方案的生態系統，這些解決方案對於套件作者來說易於維護，對於使用者來說易於安裝。</p>
-<p>3D 渲染只是一個可能的用例。Flutter GPU 也可以用於建立專用的 2D 渲染器，或者執行更非正統的操作，例如渲染 4D 空間的 3D 切片，或投影非歐幾里德空間。</p>
-<p>由 Flutter GPU 支援的自訂 2D 渲染器的絕佳用例範例將是依賴骨骼網格變形的 2D 角色動畫格式。Spine 2D 就是一個很好的例子。這種骨骼網格解決方案通常具有動畫剪輯，這些剪輯會操縱層次結構中骨骼的平移、旋轉和縮放屬性，並且每個頂點都具有一些關聯的「骨骼權重」，這些權重決定哪些骨骼應該影響頂點，以及影響程度。</p>
-<p>使用像 drawVertices 這樣的 Canvas 解決方案，需要在 CPU 上對每個頂點應用骨骼權重轉換。使用 Flutter GPU，骨骼轉換可以以統一陣列或甚至紋理取樣器的形式傳遞到頂點著色器，允許根據骨骼狀態和每個頂點的骨骼權重在 GPU 上並行計算每個頂點的最終位置。</p>
-<p>說到此，讓我們透過一個溫和的介紹來開始使用 Flutter GPU：繪製您的第一個三角形！</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*JEI3fLDGcRHWKruT" />
-</figure>
-
-<h3 id="將-Flutter-GPU-加入您的專案"><a href="#將-Flutter-GPU-加入您的專案" class="headerlink" title="將 Flutter GPU 加入您的專案"></a>將 Flutter GPU 加入您的專案</h3><p>首先，請注意 Flutter GPU 目前處於早期預覽狀態，可能會發生 API 斷裂。目前 API 已經可以實現很多功能，但是有經驗的圖形工程師可能會注意到一些缺失的常見功能。Flutter GPU 在接下來的幾個月裡將會新增許多功能。</p>
-<p>基於這些原因，強烈建議您在針對 Flutter GPU 開發套件時，暫時使用 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 的頂端。如果您遇到任何意外行為、錯誤或有功能請求，請使用標準的 <a href="https://github.com/flutter/flutter/issues/new/choose">Flutter 問題範本</a> 在 GitHub 上提交問題。與 Flutter GPU 相關的所有追蹤問題都標記為 <a href="https://github.com/flutter/flutter/labels/flutter-gpu">flutter-gpu 標籤</a>。</p>
-<p>因此，在試驗 Flutter GPU 之前，請透過執行以下命令將 Flutter 切換到 main channel。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter channel main</span><br><span class="line">flutter upgrade</span><br></pre></td></tr></table></figure>
-
-<p>現在建立一個新的 Flutter 專案。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter create my_cool_renderer</span><br><span class="line">cd my_cool_renderer</span><br></pre></td></tr></table></figure>
-
-<p>接下來，將 flutter_gpu SDK 套件加入到您的 pubspec 中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_gpu --sdk=flutter</span><br></pre></td></tr></table></figure>
-
-<h3 id="建立和匯入著色器捆綁包。"><a href="#建立和匯入著色器捆綁包。" class="headerlink" title="建立和匯入著色器捆綁包。"></a>建立和匯入著色器捆綁包。</h3><p>為了使用 Flutter GPU 渲染任何東西，您需要撰寫一些 GLSL 著色器。Flutter GPU 的著色器與 Flutter 的 <a href="https://docs.flutter.dev/ui/design/graphics/fragment-shaders">片段著色器</a> 功能所使用的著色器具有不同的語義，特別是在統一繫結方面。您還需要定義一個頂點著色器，與片段著色器一起使用。</p>
-<p>從定義最簡單的著色器開始。您可以將著色器放置在專案中的任何位置，但是對於此範例，請建立一個 shaders 目錄，並使用兩個著色器填充它：simple.vert 和 simple.frag。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：shaders/simple.vert</span><br><span class="line"></span><br><span class="line">in vec2 position;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  gl_Position = vec4(position, 0.0, 1.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>在繪製三角形時，您將擁有一個定義每個頂點的資料列表。在本例中，它僅列出 2D 位置。對於這些頂點中的每一個，簡單的頂點著色器都會將這些 2D 位置分配給剪輯空間輸出內在 gl_Position。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：shaders/simple.frag</span><br><span class="line"></span><br><span class="line">out vec4 frag_color;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  frag_color = vec4(0, 1, 0, 1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>片段著色器甚至更簡單；它輸出一個 RGBA 顏色，範圍為 (0, 0, 0, 0) 到 (1, 1, 1, 1)。因此，所有內容都將被著色為綠色。</p>
-<p>好的，現在您有了著色器，請使用 Flutter 的提前編譯 (AOT) 著色器編譯器將它們編譯。為了為著色器捆綁包設定自動化的建置，我們建議您使用 <a href="https://pub.dev/packages/flutter_gpu_shaders">flutter_gpu_shaders</a> 套件。</p>
-<p>使用 pub 將 flutter_gpu_shaders 作為專案中的常規相依性加入。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_gpu_shaders</span><br></pre></td></tr></table></figure>
-
-<p>Flutter GPU 著色器捆綁到 .shaderbundle 檔案中，可以作為常規資產添加到專案的資產捆綁包中。著色器捆綁包包含針對平台目標的編譯著色器來源。</p>
-<p>接下來，建立一個著色器捆綁包宣告檔案，描述著色器捆綁包的內容。將以下內容添加到專案根目錄中的 my_renderer.shaderbundle.json。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;SimpleVertex&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;vertex&quot;,</span><br><span class="line">        &quot;file&quot;: &quot;shaders/simple.vert&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;SimpleFragment&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;fragment&quot;,</span><br><span class="line">        &quot;file&quot;: &quot;shaders/simple.frag&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>著色器捆綁包中的每個條目都可以具有任意名稱。在本例中，名稱是「SimpleVertex」和「SimpleFragment」。這些名稱用於在您的應用程式中查找著色器。</p>
-<p>接下來，使用 flutter_gpu_shaders 套件建置 shaderbundle。您可以透過啟用實驗性的「原生資產」功能來新增一個掛鉤，該掛鉤會自動觸發建置。使用以下命令來啟用原生資產並安裝 native_assets_cli 套件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter config --enable-native-assets</span><br><span class="line">flutter pub add native_assets_cli</span><br></pre></td></tr></table></figure>
-
-<p>啟用原生資產功能後，在掛鉤目錄下新增一個 build.dart 脚本，它將自動觸發建置著色器捆綁包。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：hook/build.dart</span><br><span class="line"></span><br><span class="line">import &#x27;package:native_assets_cli/native_assets_cli.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_gpu_shaders/build.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main(List&lt;String&gt; args) async &#123;</span><br><span class="line">  await build(args, (config, output) async &#123;</span><br><span class="line">    await buildShaderBundleJson(</span><br><span class="line">        buildConfig: config,</span><br><span class="line">        buildOutput: output,</span><br><span class="line">        manifestFileName: &#x27;my_renderer.shaderbundle.json&#x27;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>進行此更改後，當 Flutter 工具建置專案時，buildShaderBundleJson 將建置著色器捆綁包，並將結果輸出到套件根目錄下的 build&#x2F;shaderbundles&#x2F;my_renderer.shaderbundle。</p>
-<p>著色器捆綁包格式本身與您使用的 Flutter 特定版本綁定，並且可能會隨著時間推移而改變。如果您正在撰寫一個建置著色器捆綁包的套件，請不要將生成的 .shaderbundle 檔案檢查到您的原始碼樹中。相反，請使用建置掛鉤來自動化建置流程（如前所述）。</p>
-<p>這樣一來，使用您函式庫的開發人員將始終使用正確格式建置新的著色器捆綁包！</p>
-<p>現在，您已經自動化了著色器捆綁包的建置，請像常規資產一樣匯入它。將資產條目添加到專案的 pubspec.yaml 中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter:</span><br><span class="line">  assets:</span><br><span class="line">    - build/shaderbundles/</span><br></pre></td></tr></table></figure>
-
-<p>在未來，原生資產功能將允許建置掛鉤將資料資產附加到捆綁包中。一旦發生這種情況，就不需要再在建置掛鉤旁邊新增資 * * * * *產匯入規則了。</p>
-<p>接下來，新增一些程式碼，在執行時載入著色器。建立 lib&#x2F;shaders.dart 並新增以下程式碼。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 複製到：lib/shaders.dart</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter_gpu/gpu.dart&#x27; as gpu;</span><br><span class="line"></span><br><span class="line">const String _kShaderBundlePath =</span><br><span class="line">    &#x27;build/shaderbundles/my_renderer.shaderbundle&#x27;;</span><br><span class="line">// 注意：如果您正在建立函式庫，則路徑必須以套件名稱為前綴</span><br><span class="line">//      例如：</span><br><span class="line">//      &#x27;packages/my_cool_renderer/build/shaderbundles/my_renderer.shaderbundle&#x27;</span><br><span class="line"></span><br><span class="line">gpu.ShaderLibrary? _shaderLibrary;</span><br><span class="line">gpu.ShaderLibrary get shaderLibrary &#123;</span><br><span class="line">  if (_shaderLibrary != null) &#123;</span><br><span class="line">    return _shaderLibrary!;</span><br><span class="line">  &#125;</span><br><span class="line">  _shaderLibrary = gpu.ShaderLibrary.fromAsset(_kShaderBundlePath);</span><br><span class="line">  if (_shaderLibrary != null) &#123;</span><br><span class="line">    return _shaderLibrary!;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  throw Exception(&quot;Failed to load shader bundle! ($_kShaderBundlePath)&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此程式碼為 Flutter GPU 著色器執行時函式庫建立一個單例 getter。第一次訪問 shaderLibrary 時，會使用 gpu.ShaderLibrary.fromAsset(shader_bundle_path) 使用建置的資產捆綁包初始化執行時著色器函式庫。</p>
-<p>專案現在已經設定好使用 Flutter GPU 著色器。是時候渲染那個三角形了！</p>
-<h3 id="绘制您的第一個三角形"><a href="#绘制您的第一個三角形" class="headerlink" title="绘制您的第一個三角形"></a>绘制您的第一個三角形</h3><p>對於本指南，您將建立一個 RGBA Flutter GPU 紋理和一個 RenderPass，將紋理作為顏色輸出附加到它。然後，您將使用 <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImage.html">Canvas.drawImage</a> 在 Widget 中渲染紋理。</p>
-<p>為了簡潔起見，您將放棄最佳實務，只會為每一幀重新建置所有資源。</p>
-<p>只要您在分配紋理時將其標記為「著色器可讀取」，您就可以將其轉換為 dart:ui.Image。若要將渲染結果顯示在 Widget 樹中，請將其繪製到 dart:ui.Canvas 上！</p>
-<p>您可以透過使用自訂畫家為 Widget 樹架設腳手架來存取 Canvas。將 lib&#x2F;main.dart 的內容替換為以下內容：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:typed_data&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_gpu/gpu.dart&#x27; as gpu;</span><br><span class="line"></span><br><span class="line">// 注意：我們之前在設定著色器捆綁包匯入時建立了它!</span><br><span class="line">import &#x27;shaders.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatelessWidget &#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;Flutter GPU Triangle Example&#x27;,</span><br><span class="line">      home: CustomPaint(</span><br><span class="line">        painter: TrianglePainter(),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class TrianglePainter extends CustomPainter &#123;</span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    // 嘗試存取 `gpu.gpuContext`。</span><br><span class="line">    // 如果 Flutter GPU 不受支援，將會拋出異常。</span><br><span class="line">    print(&#x27;Default color format: &#x27; +</span><br><span class="line">        gpu.gpuContext.defaultColorFormat.toString());</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>現在，執行應用程式。提醒一下，Flutter GPU 目前需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。因此，您必須使用 Impeller 支援的平台。對於本指南，我將以 macOS 為目標。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*lKTtaX2ih6dFpSMQ" />
-</figure>
-
-<p>如果 Flutter GPU 正常工作，那麼您應該會看到預設顏色格式被列印到主控台中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter: Default color format: PixelFormat.b8g8r8a8UNormInt</span><br></pre></td></tr></table></figure>
-
-<p>如果 Impeller 未啟用，則在嘗試存取 gpu.gpuContext 時會拋出異常。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception: Flutter GPU requires the Impeller rendering backend to be enabled.</span><br><span class="line"></span><br><span class="line">The relevant error-causing widget was:</span><br><span class="line">  CustomPaint</span><br></pre></td></tr></table></figure>
-
-<p>為了簡便起見，您只會從這裡開始修改 paint 方法。</p>
-<p>首先，建立一個 Flutter GPU 紋理，清除它，然後透過將其繪製到 Canvas 上來顯示它。</p>
-<p>建立一個與 Canvas 大小相同的紋理。必須選擇一個 <code>StorageMode</code>。在本例中，您將紋理標記為 devicePrivate，因為您將只使用從設備 (GPU) 存取紋理記憶體的指令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final texture = gpu.gpuContext.createTexture(gpu.StorageMode.devicePrivate,</span><br><span class="line">    size.width.toInt(), size.height.toInt())!;</span><br></pre></td></tr></table></figure>
-
-<p>如果透過從主機 (CPU) 上傳資料來覆蓋紋理的資料，則使用 <code>StorageMode.hostVisible</code>。</p>
-<p>第三個可用的選項是 <code>StorageMode.deviceTransient</code>，它對於不需要超過單個 RenderPass 壽命的附件很有用（因此它們可以只存在於瓦片記憶體中，並且不需要由 VRAM 分配支援）。通常，深度&#x2F;模板紋理符合此標準。</p>
-<p>接下來，定義一個 <code>RenderTarget</code>。渲染目標包含一組「附件」，描述每個片段的記憶體佈局及其在 RenderPass 開始和結束時的設定&#x2F;拆卸行為。</p>
-<p>本質上，RenderTarget 是 RenderPass 的可重複使用描述器。</p>
-<p>現在，定義一個非常簡單的 <code>RenderTarget</code>，它只包含一個顏色附件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final renderTarget = gpu.RenderTarget.singleColor(</span><br><span class="line">gpu.ColorAttachment(texture: texture, clearValue: Colors.lightBlue));</span><br></pre></td></tr></table></figure>
-
-<p>請注意，此程式碼將 clearValue 設定為淡藍色。每個附件都具有 <code>LoadAction</code> 和 <code>StoreAction</code>，它們分別確定在傳遞的開始和結束時應該對附件的臨時瓦片記憶體執行什麼操作。</p>
-<p>預設情況下，顏色附件被設定為 <code>LoadAction.clear</code>（它將瓦片記憶體初始化為給定的顏色）和 <code>StoreAction.store</code>（它將結果儲存到附加的紋理的 VRAM 分配中）。</p>
-<p>現在，建立一個 <code>CommandBuffer</code>，使用前面的 RenderTarget 從其中產生一個 RenderPass，然後立即提交 CommandBuffer 以清除紋理。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">final commandBuffer = gpu.gpuContext.createCommandBuffer();</span><br><span class="line">final renderPass = commandBuffer.createRenderPass(renderTarget);</span><br><span class="line">// ... 繪製調用將放在這裡!</span><br><span class="line">commandBuffer.submit();</span><br></pre></td></tr></table></figure>
-
-<p>剩下的就是將初始化的紋理繪製到 Canvas 上！</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final image = texture.asImage();</span><br><span class="line">canvas.drawImage(image, Offset.zero, Paint());</span><br></pre></td></tr></table></figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*ebUDtzQOuIGmdlop" />
-</figure>
-
-<p>現在您有了連接到螢幕顯示結果的 RenderPass，您就可以開始繪製三角形了。若要執行此操作，請設定以下內容：</p>
-<ol>
-<li>從著色器建立的 RenderPipeline，以及</li>
-<li>包含幾何形狀的 GPU 可存取緩衝區（三個頂點位置）。</li>
-</ol>
-<p>建立 RenderPipeline 很容易。您只需將函式庫中的頂點和片段著色器組合在一起。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">final vert = shaderLibrary[&#x27;SimpleVertex&#x27;]!;</span><br><span class="line">final frag = shaderLibrary[&#x27;SimpleFragment&#x27;]!;</span><br><span class="line">final pipeline = gpu.gpuContext.createRenderPipeline(vert, frag);</span><br></pre></td></tr></table></figure>
-
-<p>現在是幾何形狀。回想一下，「SimpleVertex」著色器只有一個輸入：<code>in vec2 position</code>。因此，若要繪製三個頂點，您需要三組兩個浮點數。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">final vertices = Float32List.fromList([</span><br><span class="line">  -0.5, -0.5, // 第一個頂點</span><br><span class="line">   0.5, -0.5, // 第二個頂點</span><br><span class="line">   0.0,  0.5, // 第三個頂點</span><br><span class="line">]);</span><br><span class="line">final verticesDeviceBuffer = gpu.gpuContext</span><br><span class="line">    .createDeviceBufferWithCopy(ByteData.sublistView(vertices))!;</span><br></pre></td></tr></table></figure>
-
-<p>剩下的就是繫結新的資源，並呼叫 renderPass.draw() 以完成記錄繪製調用。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">renderPass.bindPipeline(pipeline);</span><br><span class="line"></span><br><span class="line">final verticesView = gpu.BufferView(</span><br><span class="line">  verticesDeviceBuffer,</span><br><span class="line">  offsetInBytes: 0,</span><br><span class="line">  lengthInBytes: verticesDeviceBuffer.sizeInBytes,</span><br><span class="line">);</span><br><span class="line">renderPass.bindVertexBuffer(verticesView, 3);</span><br><span class="line"></span><br><span class="line">renderPass.draw();</span><br></pre></td></tr></table></figure>
-
-<p>如果您啟動應用程式，您現在應該會看到一個綠色的三角形！</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*LWnGU5WPT_Eom0wJ" />
-</figure>
-
-<p>太棒了，您使用 Flutter、Dart 和一點 GLSL 從頭開始建立了一個渲染器！</p>
-<p>無論這是否是您第一次渲染三角形，或者您是經驗豐富的圖形專家，我都希望您能繼續使用 Flutter GPU，並查看我們正在開發的套件，例如 Flutter Scene。</p>
-<p>在未來，我們希望發佈友好的初學者程式碼實驗室，深入探討 Flutter GPU 的預設行為和最佳實務。我們還沒討論頂點屬性佈局、紋理繫結、統一和對齊要求、管道混合、深度和模板附件、透視校正等等！</p>
-<p>在那之前，我建議您探索 <a href="https://github.com/bdero/flutter_scene">Flutter Scene</a> 作為如何使用 Flutter GPU 的更全面的範例。</p>
-<h3 id="使用-Flutter-Scene-進行-3D-渲染"><a href="#使用-Flutter-Scene-進行-3D-渲染" class="headerlink" title="使用 Flutter Scene 進行 3D 渲染"></a>使用 Flutter Scene 進行 3D 渲染</h3><p>Flutter Scene（套件 flutter_scene）是一個新的 3D 場景圖套件，由 Flutter GPU 支援，它使 Flutter 開發人員能夠匯入動畫 glTF 模型並渲染即時 3D 場景。</p>
-<p>目的是提供一個套件，讓在 Flutter 中輕鬆建立互動式 3D 應用程式和遊戲。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*tC68CbPLef2rJp1e" />
-</figure>
-
-<p>該套件最初是作為一個 dart:ui 擴展，用於用 C++ 編寫的 3D 渲染器，並直接建置到 Flutter 的原生執行時中，但它已經使用更靈活的介面針對 Flutter GPU 重新撰寫。</p>
-<p>與 Flutter GPU API 本身一樣，Flutter Scene 目前處於早期預覽狀態，需要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>。Flutter Scene 通常與 Flutter GPU API 的重大變更保持同步，因此強烈建議您在試驗 Flutter Scene 時使用 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a>。</p>
-<p>接下來，使用 Flutter Scene 建立一個應用程式！</p>
-<h3 id="設定-Flutter-Scene-專案"><a href="#設定-Flutter-Scene-專案" class="headerlink" title="設定 Flutter Scene 專案"></a>設定 Flutter Scene 專案</h3><p>由於強烈建議您針對 <a href="https://docs.flutter.dev/release/upgrade#other-channels">主頻道</a> 使用 Flutter Scene，請從切換到主頻道開始。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter channel main</span><br><span class="line">flutter upgrade</span><br></pre></td></tr></table></figure>
-
-<p>接下來，建立一個新的 Flutter 專案。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flutter create my_3d_app</span><br><span class="line">cd my_3d_app</span><br></pre></td></tr></table></figure>
-
-<p>Flutter Scene 依靠實驗性的「原生資產」功能來自動化著色器的建置。您將在稍後使用原生資產來設定自動匯入 Flutter Scene 的 3D 模型。</p>
-<p>使用以下命令啟用原生資產。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter config --enable-native-assets</span><br></pre></td></tr></table></figure>
-
-<p>最後，將 Flutter Scene 添加為專案相依性。</p>
-<p>您還需要在與 Flutter Scene 的 API 互動時使用一些 vector_math 構造，因此也添加 vector_math 套件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_scene vector_math</span><br></pre></td></tr></table></figure>
-
-<p>接下來，匯入一個 3D 模型！</p>
-<h3 id="匯入-3D-模型"><a href="#匯入-3D-模型" class="headerlink" title="匯入 3D 模型"></a>匯入 3D 模型</h3><p>首先，您需要一個要渲染的 3D 模型。對於本指南，您將使用常見的 <a href="https://en.wikipedia.org/wiki/GlTF">glTF</a> 樣本資產： <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/DamagedHelmet">DamagedHelmet.glb</a>。以下是它的樣子。</p>
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/912/0*vVWRLxJ348tCxv7T" />
-<figcaption>原始的 Damaged Helmet 模型由 theblueturtle_ 在 2016 年建立（授權： [CC BY-NC 4.0 國際](https://creativecommons.org/licenses/by-nc/4.0/legalcode)）。轉換後的 glTF 版本由 ctxwing 在 2018 年建立（授權： [CC BY 4.0 國際](https://creativecommons.org/licenses/by/4.0/legalcode)）。 </figcaption>
-</figure>
-
-<p>您可以從 GitHub 上託管的 <a href="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/DamagedHelmet/glTF-Binary/DamagedHelmet.glb">glTF 樣本資產儲存庫</a> 中獲取它。將 DamagedHelmet.glb 放置在您的專案根目錄中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/DamagedHelmet/glTF-Binary/DamagedHelmet.glb</span><br></pre></td></tr></table></figure>
-
-<p>像大多數即時 3D 渲染器一樣，Flutter Scene 在內部使用專用的 3D 模型格式。您可以使用 Flutter Scene 的離線匯入器工具將標準 glTF 二進制檔案（.glb 檔案）轉換為此格式。</p>
-<p>將 flutter_scene_importer 套件作為常規相依性添加到專案中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add flutter_scene_importer</span><br></pre></td></tr></table></figure>
-
-<p>添加此套件可以使用 dart run 手動呼叫匯入器。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dart --enable-experiment=native-assets \</span><br><span class="line">     run flutter_scene_importer:import \</span><br><span class="line">     --input &quot;path/to/my/source_model.glb&quot; \</span><br><span class="line">     --output &quot;path/to/my/imported_model.model&quot;</span><br></pre></td></tr></table></figure>
-
-<p>您可以透過使用原生資產建置掛鉤來自動執行匯入器。若要執行此操作，請先將 native_assets_cli 作為常規專案相依性安裝。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter pub add native_assets_cli</span><br></pre></td></tr></table></figure>
-
-<p>現在您可以撰寫建置掛鉤了。使用以下內容建立 hook&#x2F;build.dart。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;package:native_assets_cli/native_assets_cli.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene_importer/build_hooks.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main(List&lt;String&gt; args) &#123;</span><br><span class="line">  build(args, (config, output) async &#123;</span><br><span class="line">    buildModels(buildConfig: config, inputFilePaths: [</span><br><span class="line">      &#x27;DamagedHelmet.glb&#x27;,</span><br><span class="line">    ]);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用 flutter_scene_importer 中的 buildModels 公用程式，提供要建置的模型列表。路徑相對於專案的建置根目錄。</p>
-<p>當 Flutter 工具建置專案時，buildModels 現在將建置著色器捆綁包，並將結果輸出到套件根目錄下的 build&#x2F;models&#x2F;DamagedModel.model。</p>
-<p>匯入的模型格式本身與您使用的 Flutter Scene 特定版本綁定，並且會隨著時間推移而改變。在撰寫使用 Flutter Scene 的應用程式或函式庫時，請勿將生成的 .model 檔案檢查到您的原始碼樹中。相反，請使用建置掛鉤從您的原始模型中生成它們（如前所述）。</p>
-<p>這樣一來，隨著時間推移升級 Flutter Scene 時，您將始終使用正確格式建置新的 .model 檔案！</p>
-<p>接下來，像常規資產一樣匯入模型。將資產條目添加到專案的 pubspec.yaml 中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flutter:</span><br><span class="line">  assets:</span><br><span class="line">    - build/models/</span><br></pre></td></tr></table></figure>
-
-<p>在未來，原生資產功能將允許建置掛鉤將資料資產附加到捆綁包中。一旦發生這種情況，就不需要再在建置掛鉤旁邊新增資產匯入規則了。</p>
-<h3 id="渲染-3D-場景"><a href="#渲染-3D-場景" class="headerlink" title="渲染 3D 場景"></a>渲染 3D 場景</h3><p>現在是應用程式的程式碼了。</p>
-<p>首先，建立一個有狀態的 Widget，用於在多個幀中保留 Scene。</p>
-<p>您將根據時間進行動畫處理，因此將 SingleTickerProviderStateMixin 添加到狀態，以及一個 elapsedSeconds 成員。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter/scheduler.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/camera.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/node.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/scene.dart&#x27;;</span><br><span class="line">import &#x27;package:vector_math/vector_math.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatefulWidget&#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  MyAppState createState() =&gt; MyAppState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyAppState extends State&lt;MyApp&gt; with SingleTickerProviderStateMixin &#123;</span><br><span class="line">  double elapsedSeconds = 0;</span><br><span class="line">  Scene scene = Scene();</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;My 3D app&#x27;,</span><br><span class="line">      home: Placeholder(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>執行應用程式作為冒煙測試，以確保沒有錯誤。請記住要 <a href="https://docs.flutter.dev/perf/impeller#availability">啟用 Impeller</a>！</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/912/0*74qs6ytcTjyVHwML" />
-</figure>
-
-<p>在繼續之前，請為動畫設定計時器。覆蓋 MyAppState 中的 initState 以呼叫 createTicker。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">void initState() &#123;</span><br><span class="line">  createTicker((elapsed) &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).start();</span><br><span class="line">  </span><br><span class="line">  super.initState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>只要 Widget 可見，計時器回呼就會為每一幀被呼叫。呼叫 setState 會觸發此 Widget 在每一幀重建。</p>
-<p>接下來，載入之前放置在專案中的 3D 模型，並將其添加到 Scene 中。</p>
-<p>使用 Node.fromAsset 從資產捆綁包中載入模型。將以下程式碼放置在 initState 中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">  model.name = &#x27;Helmet&#x27;;</span><br><span class="line">  scene.add(model);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<p>Node.fromAsset 會異步地從資產捆綁包中反序列化模型，並在模型準備好添加到場景中時解析返回的 Future<Node>。</p>
-<p>現在，MyAppState.initState 應該如下所示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">void initState() &#123;</span><br><span class="line">  createTicker((elapsed) &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;).start();</span><br><span class="line">  </span><br><span class="line">  Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">    model.name = &#x27;Helmet&#x27;;</span><br><span class="line">    scene.add(model);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  super.initState();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但是，您仍然沒有實際渲染 3D Scene！若要執行此操作，請使用 <code>Scene.render</code>，它需要 UI Canvas、Flutter Scene Camera 和一個大小。</p>
-<p>存取 Canvas 的一種方法是建立一個 CustomPainter：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class ScenePainter extends CustomPainter &#123;</span><br><span class="line">  ScenePainter(&#123;required this.scene, required this.camera&#125;);</span><br><span class="line">  Scene scene;</span><br><span class="line">  Camera camera;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    scene.render(camera, canvas, viewport: Offset.zero &amp; size);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>不要忘記將 shouldRepaint 覆蓋設置為返回 true，以便在每次重建發生時自訂畫家都會重新繪畫。</p>
-<p>最後，將 CustomPainter 添加到源樹中。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@override</span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  final painter = ScenePainter(</span><br><span class="line">    scene: scene,</span><br><span class="line">    camera: PerspectiveCamera(</span><br><span class="line">      position: Vector3(sin(elapsedSeconds) * 3, 2, cos(elapsedSeconds) * 3),</span><br><span class="line">      target: Vector3(0, 0, 0),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  return MaterialApp(</span><br><span class="line">    title: &#x27;My 3D app&#x27;,</span><br><span class="line">    home: CustomPaint(painter: painter),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>此程式碼指示相機沿著一個連續的圓圈移動，但始終面向原點。</p>
-<p>最後，啟動應用程式！</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flutter run -d macos --enable-impeller</span><br></pre></td></tr></table></figure>
-
-<figure>
-<img alt="" src="https://cdn-images-1.medium.com/max/796/0*_-OFc0vhBHAhrPrO" />
-</figure>
-
-<p>以下是我們組合的完整源程式碼。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">import &#x27;dart:math&#x27;;</span><br><span class="line"></span><br><span class="line">import &#x27;package:flutter/material.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/camera.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/node.dart&#x27;;</span><br><span class="line">import &#x27;package:flutter_scene/scene.dart&#x27;;</span><br><span class="line">import &#x27;package:vector_math/vector_math.dart&#x27;;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  runApp(const MyApp());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyApp extends StatefulWidget &#123;</span><br><span class="line">  const MyApp(&#123;super.key&#125;);</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  MyAppState createState() =&gt; MyAppState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class MyAppState extends State&lt;MyApp&gt; with SingleTickerProviderStateMixin &#123;</span><br><span class="line">  double elapsedSeconds = 0;</span><br><span class="line">  Scene scene = Scene();</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void initState() &#123;</span><br><span class="line">    createTicker((elapsed) &#123;</span><br><span class="line">      setState(() &#123;</span><br><span class="line">        elapsedSeconds = elapsed.inMilliseconds.toDouble() / 1000;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;).start();</span><br><span class="line"></span><br><span class="line">    Node.fromAsset(&#x27;build/models/DamagedHelmet.model&#x27;).then((model) &#123;</span><br><span class="line">      model.name = &#x27;Helmet&#x27;;</span><br><span class="line">      scene.add(model);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    super.initState();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    final painter = ScenePainter(</span><br><span class="line">      scene: scene,</span><br><span class="line">      camera: PerspectiveCamera(</span><br><span class="line">        position: Vector3(sin(elapsedSeconds) * 3, 2, cos(elapsedSeconds) * 3),</span><br><span class="line">        target: Vector3(0, 0, 0),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    return MaterialApp(</span><br><span class="line">      title: &#x27;My 3D app&#x27;,</span><br><span class="line">      home: CustomPaint(painter: painter),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class ScenePainter extends CustomPainter &#123;</span><br><span class="line">  ScenePainter(&#123;required this.scene, required this.camera&#125;);</span><br><span class="line">  Scene scene;</span><br><span class="line">  Camera camera;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  void paint(Canvas canvas, Size size) &#123;</span><br><span class="line">    scene.render(camera, canvas, viewport: Offset.zero &amp; size);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  @override</span><br><span class="line">  bool shouldRepaint(covariant CustomPainter oldDelegate) =&gt; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="Flutter-光明的未來"><a href="#Flutter-光明的未來" class="headerlink" title="Flutter 光明的未來"></a>Flutter 光明的未來</h3><p>如果您能夠成功地遵循這些指南中的其中一個並讓它運行起來：太棒了，恭喜！</p>
-<p>Flutter GPU 和 Flutter Scene 都非常年輕，平台支援有限。但我想總有一天，我們會懷念這些不起眼的開端。</p>
-<p>隨著 Impeller 的推廣，Flutter 團隊完全掌控了渲染堆疊，因為我们需要針對 Flutter 的用例專門化渲染器。現在，我們正在開啟 Flutter 歷史上的一個新篇章。一個由您共同掌控渲染的篇章！</p>
-<p>Flutter Scene 最初是 Impeller 中的 C++ 組件，與 2D Canvas 渲染器一起，帶有一個精簡的 dart:ui 擴展。在我構建它時，我已經意識到 Flutter Engine 不會是它的最終目的地。</p>
-<p>3D 渲染器的架構決策海洋是廣闊</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1731,7 +1684,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1767,7 +1720,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

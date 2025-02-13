@@ -146,6 +146,383 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/9a319309.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/9a319309.html" class="post-title-link" itemprop="url">【文章翻譯】Are you happy with Flutter? — Q4 2020 user survey results</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-11 00:46:22" itemprop="dateCreated datePublished" datetime="2021-02-11T00:46:22+08:00">2021-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="您對-Flutter-感到滿意嗎？-2020-年第-4-季使用者調查結果"><a href="#您對-Flutter-感到滿意嗎？-2020-年第-4-季使用者調查結果" class="headerlink" title="您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果"></a>您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果</h2><p>Google 的 Flutter 團隊自 2018 年以來便持續進行每季一次的調查，以收集您的意見回饋 <a href="https://medium.com/flutter/search?q=survey">自 2018 年以來</a>。上一季度的調查於 2020 年 11 月 23 日發布，並持續進行了 8 天。團隊收集了 8,285 份回饋，我們想與您分享這些結果！儘管這次調查的長度只有我們平常調查的一半，但我們還是像往常一樣從您的答案中學到了很多。我們非常感謝您撥冗提供寶貴的意見回饋。</p>
+<h3 id="使用者滿意度"><a href="#使用者滿意度" class="headerlink" title="使用者滿意度"></a>使用者滿意度</h3><p>總體而言，92% 的受訪者對 Flutter <em>有些滿意</em> 或 <em>非常滿意</em>。我們很高興能夠持續維持高滿意度。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*vY8rm_jNlGOmZ8eJ" />
+<figcaption><em>92% 的使用者對 Flutter 感到滿意，其中 51% 非常滿意。</em></figcaption>
+</figure>
+
+<p>從圖表中可以看出，我們也學到了以下資訊：</p>
+<ul>
+<li>91% 的受訪者表示 Flutter 很適合他們的專案。</li>
+<li>90% 的受訪者承诺并希望在下一个项目中使用 Flutter。</li>
+<li>58% 的受访者表示 Flutter 对其公司的成功至关重要。</li>
+</ul>
+<p>這些結果表明 Flutter 繼續蓬勃發展，並成為開發者工具箱的重要組成部分。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*hs9oiR_zpBhkzT9u" />
+<figcaption><em>90% 的使用者希望在下個專案中使用 Flutter。</em></figcaption>
+</figure>
+
+<p>但是，我們注意到整體滿意度自上一季調查以來略有下降，從 94% 降至 92%。為了了解為什麼您對 Flutter 的各個方面並未完全滿意，團隊仔細審閱了開放式意見回饋。感謝您的回饋，團隊意識到了一些主要問題，並將投資於高優先順序項目。例如，我們計劃 <a href="https://github.com/dart-lang/sdk/projects/24">改進程式碼完成</a>，因為我們發現這是 IDE 相關問題中最常見的挫折來源。</p>
+<h3 id="難點"><a href="#難點" class="headerlink" title="難點"></a>難點</h3><p>這次，我們採用了不同的方法來了解 Flutter 的難點。我們想了解什麼阻礙了您更多地使用 Flutter。當我們詢問「如果不是因為以下原因，我會更多地使用 Flutter」，26% 的受訪者選擇了 <em>缺乏關鍵函式庫</em> 作為原因。作為回應，我們正與 <a href="https://baseflow.com/">Baseflow</a>、<a href="https://invertase.io/">Invertase</a> 和 <a href="https://codemagic.io/">Codemagic</a> 合作，以提高我們第一方套件和外掛的品質。雖然團隊正在努力改進先前研究中識別出的關鍵函式庫，但我們也在使用標籤 <a href="https://github.com/flutter/flutter/issues?q=is:open+label:%22would+be+a+good+package%22+sort:reactions-+1-desc">would be a good package</a> 監控問題追蹤器中的特定需求，以便任何人都可以找出生態系統中缺少什麼，並為其做出貢獻。</p>
+<p>由於 Flutter 相容套件的數量超過 15,000 個，並且 Flutter 團隊無法擴展規模來處理可能被認為是關鍵的數十甚至數百個套件，因此我們為社群提供了一系列機制來 <a href="https://pub.dev/help/scoring">評分套件</a>。我們提供這些機制，以便搜尋結果能產生高品質的結果，包括讚好、靜態分析和 <a href="https://flutter.dev/docs/development/packages-and-plugins/favorites">Flutter Favorite</a> 認證，該認證由一群 Flutter 社群志願者頒發。這樣做不僅鼓勵您貢獻更多套件來涵蓋關鍵方面，而且套件的品質也會隨著時間推移而提升，因為套件作者會因其工作而獲得更好的分數和認可。我們將繼續投資於這個領域，以便生態系統能夠自給自足，並持續自然地提高品質。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*4kA8p14vcnIS5cOG" />
+<figcaption><em>26% 的使用者需要更多函式庫。此結果不包括 19% 表示我目前使用 Flutter 足夠的使用者。</em></figcaption>
+</figure>
+
+<p>為了讓那些從事 Flutter 之外專案的人（19%）更容易，我們將繼續投資於 <a href="https://flutter.dev/docs/development/add-to-app">add-to-app</a>，這有助於您將 Flutter 模組整合到現有的 Android 或 iOS 應用程式中。您可以在 <a href="https://github.com/flutter/flutter/issues/72009">GitHub 議題 72009</a> 上追蹤相關功能的進度。</p>
+<p><em>核心框架中缺少的功能</em> 被 18% 的受訪者選中。在我們仔細查看開放式意見回饋後，發現回饋集中在 Flutter 框架中包含的功能與套件提供的功能之間的界線上。雖然有些人希望框架包含更多超出使用者介面 API 的功能是可以理解的，但我們的重點是我們最擅長的 - 提供出色的 UI 框架。但是，我們想為您提供所需的功能，因此我們與社群貢獻者合作，透過套件和外掛提供特定領域和特定平台的功能。如前所述，我們投資了工具和計畫來認可高品質的套件，並幫助您在生態系統中發現它們。我們歡迎您提供回饋意見和想法，以進一步增強我們的套件生態系統。</p>
+<h3 id="線上社群"><a href="#線上社群" class="headerlink" title="線上社群"></a>線上社群</h3><p>在這次調查中，團隊想知道您在哪裡與其他 Flutter 開發人員交流資訊或想法。雖然 21% 的受訪者表示他們沒有參與任何線上社群，但我們發現 Stack Overflow 是 Flutter 開發人員相互聯繫的最受歡迎的社群。38% 的受訪者選擇 Stack Overflow 作為他們最活躍的線上社群。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*jjBvOh6G9e9TwLQ1" />
+<figcaption><em>Stack Overflow 是 38% 的受訪者的主要線上社群。此圖表省略了 21% 沒有參與任何線上社群的使用者。</em></figcaption>
+</figure>
+
+<p>受訪者最活躍的地方不同，他們對社群有用性的評分也不同。例如，我們詢問「您在多大程度上同意或不同意以下關於您在上一個問題中選擇的線上社群的陳述？」對於回應 *”當我在社群中向其他 Flutter 使用者提問時，我能夠得到答案”*，在 Stack Overflow 上活躍的 75% 受訪者同意他們在 Stack Overflow 上提問時能夠得到答案。此外，61% 主要活躍在即時通訊服務上的受訪者表示他們也得到了答案。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*8JtwdBejYL_ez5rJ" />
+<figcaption><em>受訪者被要求評估他們對 *"當我問…” 的問題時，我能夠得到答案"* 這個陳述的同意程度，結果因他們活躍的社群而異。</em></figcaption>
+</figure>
+
+<p>這是我們第一次評估使用者在線上的分佈情況以及他們對各種線上社群的看法。建立一個有用的和蓬勃發展的社群對 Flutter 的成功至關重要。我們與您分享這些結果，希望幫助提供者和尋求者都能更好地利用這些線上溝通管道。Flutter 團隊將監控這些資料，以指導我們的支援和教育工作，並確保您能夠尋求幫助並保持聯繫。</p>
+<h3 id="Flutter-活動"><a href="#Flutter-活動" class="headerlink" title="Flutter 活動"></a>Flutter 活動</h3><p>每年都会由当地社区小组和 Flutter 贡献者组织许多面向 Flutter 社区的线下和线上活动，约 90% 参加活动的受访者表示他们在活动中了解了 Flutter 的新知识，并认为这些信息很有帮助。虽然这些活动是有效的学习机会，但通过我们的研究，我们现在知道大多数受访者 (61%) 在 2020 年并不知道这些活动。即使我们没有像 2019 年那样举办 <a href="https://www.youtube.com/playlist?list=PLjxrf2q8roU0o0wKRJTjyN0pSUA6TI8lg">Flutter Interact</a> 这样的大型活动来宣传这些活动，但这个百分比仍然高于我们的预期。因此，在计划 2021 年 3 月 3 日的 <a href="http://events.flutter.dev/">Flutter Engage 活动</a> 时，我们将与区域 Google 团队合作，帮助宣传这些活动。我们也正在与当地 Flutter 小组密切合作，以确保我们的活动内容能够传达给更多 Flutter 社区成员。每个人都欢迎参加这个免费的线上活动。</p>
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*AkXrQy4YPsBUoYLA" />
+<figcaption><em>61% 的在 2020 年没有参加任何活动 (线上和线下) 的使用者不知道有这些活動。</em></figcaption>
+</figure>
+
+<figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/0*Z0mRRjjnEDQWqAsl" />
+<figcaption><em>85% 或以上的使用者從各種 Flutter 活動中學到了新東西。</em></figcaption>
+</figure>
+
+<h3 id="接下來會發生什麼事？"><a href="#接下來會發生什麼事？" class="headerlink" title="接下來會發生什麼事？"></a>接下來會發生什麼事？</h3><p>下一項調查將於 2 月底左右在 <a href="https://flutter.dev/">flutter.dev</a>、<a href="https://twitter.com/FlutterDev">FlutteDev</a> (和 <a href="https://flutter.dev/docs/get-started/editor?tab=androidstudio">Flutter IDE Plugin</a> 中宣布。您也可以透過 <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0i4De809KXVCdljGKrjMj3lxhuzbuFKCtY5PEQPCYtGxFMg/viewform">註冊</a> 來參與其他研究，以參與即將到來的 UX 研究。</p>
+<p>請繼續分享您的想法，因為團隊正在尋找重要問題的答案。</p>
+<p>再次感謝所有參與本次調查並提供宝貴意見回饋的人。感謝您的時間和努力！</p>
+<p>在 <a href="https://events.flutter.dev/">Flutter Engage</a> 期待與您相見！</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=41cdd90aaa48" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/are-you-happy-with-flutter-q4-2020-user-survey-results-41cdd90aaa48">您對 Flutter 感到滿意嗎？ - 2020 年第 4 季使用者調查結果</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/ac78ba91.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/ac78ba91.html" class="post-title-link" itemprop="url">【文章翻譯】Join us for</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-26 16:14:32" itemprop="dateCreated datePublished" datetime="2021-01-26T16:14:32+08:00">2021-01-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
+<h2 id="加入我們，一起參與-30DaysOfFlutter"><a href="#加入我們，一起參與-30DaysOfFlutter" class="headerlink" title="加入我們，一起參與 #30DaysOfFlutter"></a>加入我們，一起參與 #30DaysOfFlutter</h2><figure>
+<img alt="" src="https://cdn-images-1.medium.com/max/1024/1*v7ytVK_8WbqA7Gc-Uol-wQ.jpeg" />
+<figcaption>30 天 Flutter 活動的標語</figcaption>
+</figure>
+
+<p>新年快樂各位！現在正是學習新事物的好時機！您是否在假期裡想過要開發一個應用程式？如果是的話，我們有一個絕佳的機會等著您！從 2 月 1 日開始，在我們於 3 月 3 日舉行的盛大 <a href="https://events.flutter.dev/?utm_source=30DaysOfFlutter&utm_medium=email&utm_campaign=30Days_Engage">活動</a> 之前，加入我們參與 <strong>#30DaysOfFlutter</strong>，開啟您的學習旅程，並結識社群中的 Flutter 專家。無論您是正在開發您的第一個 Flutter 應用程式，還是在尋找提升 Flutter 技能的方法，我們都準備了精心策劃的內容、程式碼實驗室和示範！</p>
+<p>Flutter 是 Google 的開源 UI 工具包，用於從單一程式碼庫建立精美的原生編譯應用程式，適用於行動、網頁和桌面。它是成長最快速、需求量最大的跨平台框架之一，被全球的自由接案開發員和大型組織使用。Flutter 使用 Dart 語言，因此對於熟悉面向物件語言的許多人來說，它會感覺很自然。</p>
+<h4 id="跳進來吧，水很溫和！"><a href="#跳進來吧，水很溫和！" class="headerlink" title="跳進來吧，水很溫和！"></a><strong>跳進來吧，水很溫和！</strong></h4><p>除了精心策劃的內容，我們還將舉辦四場現場 問我任何問題 (#AMA) 討論會，您可以在其中與 Google 的 Flutter 團隊和社群成員見面。您也可以加入我們在 <a href="https://discord.com/invite/N7Yshp4">FlutterDev Discord 頻道</a> 上，在那裡您可以結識社群中的其他成員，提出和回答問題，甚至還可以交到新的 Flutter 朋友！</p>
+<p>聽起來很令人興奮嗎？請訪問 <a href="http://goo.gle/30daysofflutter">30 天 Flutter 網站</a> 了解更多資訊，並註冊加入。註冊截止日期為 2021 年 1 月 31 日太平洋時間晚上 11:30。</p>
+<h4 id="30DaysOfFlutter-議程"><a href="#30DaysOfFlutter-議程" class="headerlink" title="#30DaysOfFlutter 議程"></a><strong>#30DaysOfFlutter 議程</strong></h4><p>您在本月的 Flutter 學習旅程將如下所示：</p>
+<p><strong>第 1 週</strong></p>
+<p>收到精心策劃的內容到您的收件匣。在 Discord 上結識其他 Flutter 開發人員。參加 2 月 1 日的啟動網路研討會。</p>
+<p><strong>第 2 週</strong></p>
+<p>收到更多內容。開始開發您的第一個 Flutter 應用程式。加入網路研討會並提出您的問題。</p>
+<p><strong>第 3 週</strong></p>
+<p>繼續開發您的應用程式，並參加第 3 場網路研討會，提出您的問題。</p>
+<p><strong>第 4 週</strong></p>
+<p>完成您的專案，學習如何與 Flutter 社群分享您的作品。</p>
+<p>您是否準備好學習世界上最熱門的開發者技能之一？</p>
+<p>請 <a href="http://goo.gle/30daysofflutter">註冊</a> 加入這個旅程，並務必在 Twitter 上關注 <a href="https://twitter.com/FlutterDev">FlutterDev</a> (@FlutterDev)，以獲得有關 <strong>#30DaysOfFlutter</strong> 的最新更新。</p>
+<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=9993e3ec847b" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/join-us-for-30daysofflutter-9993e3ec847b">加入我們，一起參與 #30DaysOfFlutter</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p> </p>
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
+    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2d9b89f9.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Rainvisitor">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="RainVisitor Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/archives/2d9b89f9.html" class="post-title-link" itemprop="url">【文章翻譯】Dart and the performance benefits of sound types</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-19 17:02:52" itemprop="dateCreated datePublished" datetime="2021-01-19T17:02:52+08:00">2021-01-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index"><span itemprop="name">Dart</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>【文章內容使用 Gemini 1.5 Pro 自動翻譯產生】</p>
+<h2 id="Dart-與可靠類型帶來的效能優勢"><a href="#Dart-與可靠類型帶來的效能優勢" class="headerlink" title="Dart 與可靠類型帶來的效能優勢"></a>Dart 與可靠類型帶來的效能優勢</h2><figure>
+<img alt="3 screenshots of machine code: much code → less code → 3 lines of code." src="https://cdn-images-1.medium.com/max/722/1*WOmw6jN-nt82uXjGCqRC4g.png" />
+<figcaption>從 Dart 1.24、2.0 和 2.12（從左到右）中的同一個 Dart 方法生成的代碼變得更小。要了解原因（並查看實際生成的代碼），請继续阅读。</figcaption>
+</figure>
+
+<p>在過去的幾年中，我們強化了 Dart 的類型系統。最初的 Dart 語言（Dart 1）有一個不可靠的、可選的類型系統（類似於類型的 JavaScript 方言，例如微軟的 TypeScript 或 Facebook 的 Flow）。Dart 2 引入了一個更嚴格的、<a href="https://dart.dev/guides/language/type-system">可靠的類型系統</a>。在過去的兩年中，我們一直在努力透過 <a href="https://dart.dev/null-safety">可靠的空安全</a> 進一步擴展類型系統。</p>
+<p>雖然可靠的類型系統為開發人員提供了更大的信心，但它也使我們的編譯器能夠安全地使用類型來優化生成的代碼。有了可靠性，我們的工具透過結合靜態和（必要時）運行時檢查來保證類型的正確性。沒有可靠性，類型檢查只能進行到一定程度，並且靜態類型在運行時可能不正確。</p>
+<p>在實踐中，可靠性允許我們的編譯器生成更小、更快的代碼，尤其是在提前 (AOT) 設定中，我們將預編譯的原生代碼傳送給客戶端。</p>
+<h3 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h3><p>以下範例方法演示了可靠類型如何對相對簡單的代碼產生巨大影響：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> getAge(Animal a) &#123;</span><br><span class="line">  <span class="keyword">return</span> a.age;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在我們最後一個穩定的 Dart 1 版本 (1.24.3) 中，這個方法映射到 <strong>26 個原生 x64 指令</strong>——這還是在檢測和設定檔引導的優化之後，這會減慢初始運行時啟動速度。在 Dart 2.12 中使用可靠的空安全，此代碼僅映射到 <strong>3 個指令</strong>，而無需任何設定檔引導的優化。</p>
+<blockquote>
+<p>Dart 編譯為 ARM32&#x2F;64 和 x86&#x2F;x64 架構。在以下範例中，我們使用 x64，但在其他目標上的結果類似。</p>
+</blockquote>
+<p>範例方法的完整 Dart 代碼和上下文顯示在本文末尾，但以下是重點：</p>
+<ul>
+<li><code>Animal</code> 類包含一個類型為 <code>int</code> 的欄位 <code>age</code>。</li>
+<li><code>Animal</code> 有幾個子類別（<code>Cat</code>、<code>Dog</code>、<code>Snake</code>、<code>Hamster</code>）。</li>
+<li>上述方法在運行時在許多這些類型上被調用。</li>
+</ul>
+<h3 id="Dart-物件佈局"><a href="#Dart-物件佈局" class="headerlink" title="Dart 物件佈局"></a>Dart 物件佈局</h3><p>當編譯為原生 (x64) 代碼時，Dart 類 <code>Animal</code> 有一個簡單的佈局：</p>
+<figure>
+<img alt="8 bytes of object header, followed by 8 bytes of `age` field, followed by additional subclass fields." src="https://cdn-images-1.medium.com/max/195/1*GjL59kevCm5NQ5P9Unn_NA.png" />
+</figure>
+
+<p>前 8 個位元組是一個標題，提供具體化的類型資訊（即物件的運行時類型）。第二個 8 個位元組包含 <code>age</code> 欄位。所有子類別都保留（並可能添加到）此結構：任何額外的欄位都佈局在後面，保留基本類型的結構。給定 <code>Animal</code>（或任何子類別）的實例，<code>getAge</code> 方法應從 8 位元組偏移量載入欄位並返回它。</p>
+<h3 id="Dart-1：不可靠的類型"><a href="#Dart-1：不可靠的類型" class="headerlink" title="Dart 1：不可靠的類型"></a>Dart 1：不可靠的類型</h3><p>然而，在 Dart 1 中，靜態類型並不可靠，並且在編譯期間實際上被忽略。在運行時，我們不能假設靜態類型是正確的（因此，佈局也是預期的）。對 <code>age</code> 的存取可能是對不同偏移量處的欄位、對觸發更多可執行代碼的 getter 或對不存在的欄位（觸發可捕獲的運行時錯誤）的存取。</p>
+<p>Dart 1 被設計為依賴於客戶端設備上的即時編譯器和虛擬機器，該編譯器使用運行時類型資訊來優化代碼。在這種方案中，我們實際上編譯了每個方法兩次：第一次是為了收集資訊，第二次（對於熱點方法）是根據觀察到的運行時行為生成更優化的代碼。</p>
+<h4 id="Dart-1：第一次編譯"><a href="#Dart-1：第一次編譯" class="headerlink" title="Dart 1：第一次編譯"></a>Dart 1：第一次編譯</h4><p><code>getAge</code> 的第一次編譯在 x64 上產生了以下 47 個指令：</p>
+<figure>
+<img alt="2 columns full of assembly code." src="https://cdn-images-1.medium.com/max/1024/1*BmagjRb3ei3C-HjyYfLNyw.png" />
+</figure>
+
+<p>請注意，此代碼已檢測以確定運行時會發生什麼。它對傳遞的物件沒有任何假設，並且有效地執行等效於雜湊表查找以正確找到欄位、執行 getter 或拋出錯誤。</p>
+<h4 id="Dart-1：第二次編譯"><a href="#Dart-1：第二次編譯" class="headerlink" title="Dart 1：第二次編譯"></a>Dart 1：第二次編譯</h4><p>在這種情況下，代碼會被重複調用，並觸發第二次優化編譯，生成以下 26 個指令：</p>
+<figure>
+<img alt="2 columns of assembly code (but less than before). Most of the code is blue (prologue/epilogue) or red (various checks)." src="https://cdn-images-1.medium.com/max/1024/1*1bEjUe15A0s47XMsZPqdNQ.png" />
+</figure>
+
+<p>這個優化的代碼仍然很大。它基於設定檔資訊，發現該方法僅在 <code>Cat</code>、<code>Hamster</code> 和 <code>Dog</code> 的實例上被調用，並根據未來也將如此的假設進行了優化。</p>
+<p><strong>藍色</strong> 代碼是方法的序言和結尾（用於設置和恢復堆疊框架）。<strong>紅色</strong> 代碼檢查預期的情況——實例非空且屬於先前看到的類型之一——並為其他情況調用慢路徑。<strong>粗體</strong> 代碼是載入欄位的實際工作。</p>
+<p>如果未來的行為與過去不同，優化的代碼實際上可能會更慢：如果在新的實例（例如 <code>Snake</code>）上調用 <code>getAge</code>，代碼將執行額外的檢查，但仍然會進入慢路徑。</p>
+<h4 id="Dart-1-生成的代碼的問題"><a href="#Dart-1-生成的代碼的問題" class="headerlink" title="Dart 1 生成的代碼的問題"></a>Dart 1 生成的代碼的問題</h4><p>上面的生成的代碼在結構上與 Chrome 中的 JavaScript 引擎 V8 在給定或多或少等效的 JavaScript&#x2F;TypeScript&#x2F;Flow 程序時生成的代碼非常相似。雖然這種方法（和相應的生成的代碼）可以在許多情況下提供良好的效能，但當我們開始（尤其是使用 Flutter）面向更廣泛的客戶端平台（包括對大小和記憶體佔用更敏感的行動設備）時，它就不再適合了：</p>
+<ul>
+<li>首先，客戶端編譯的成本增加了 Dart 應用程式的整體佔用空間。</li>
+<li>其次，兩階段推測編譯的成本對應用程式啟動不利。</li>
+<li>第三，iOS 上不允許即時編譯：我們至少需要針對某些目標的替代策略。</li>
+</ul>
+<p>我們轉而採用提前編譯方法，但使用 Dart 1 會導致代碼質量差很多。即使使用複雜的、全程序分析，我們也無法始終在編譯時確定類型資訊，尤其是在應用程式變得更大時。此外，當整個應用程式都被預編譯時，推測的成本（上面的紅色代碼）變得過高。</p>
+<h3 id="Dart-2：可靠的類型"><a href="#Dart-2：可靠的類型" class="headerlink" title="Dart 2：可靠的類型"></a>Dart 2：可靠的類型</h3><p>在 Dart 2 中，我們引入了可靠性，這使我們能夠安全地根據類型資訊編譯代碼，並減少了對設定檔以獲得效能的依賴。使用 Dart 2，在單個提前編譯上，我們在 x64 上生成 10 個指令：</p>
+<figure>
+<img alt="Much less code, but still there’s some blue code (prologue/epilogue) and red code (null checks)." src="https://cdn-images-1.medium.com/max/1024/1*x0UcFY8XwG-3vHe5hYxyQw.png" />
+</figure>
+
+<p>此代碼仍然執行空檢查（紅色），如果發現空則調用輔助方法。</p>
+<h3 id="Dart-2-12：可靠的空安全"><a href="#Dart-2-12：可靠的空安全" class="headerlink" title="Dart 2.12：可靠的空安全"></a>Dart 2.12：可靠的空安全</h3><p>有了可靠的空安全，類型系統更加豐富，我們的編譯器可以利用這一點。編譯器可以安全地依賴於（現在的）非空類型，並消除上面的紅色代碼。在 Dart 2.12 beta 中，我們減少生成了 3 個指令：</p>
+<figure>
+<img alt="Some blue code (prologue/epilogue) but no red code! No null checks needed!" src="https://cdn-images-1.medium.com/max/1024/1*xVdpKVxtt_TtfoXZDlu1Qw.png" />
+</figure>
+
+<p>事實上，隨著代碼變得更簡單，我們也能够簡化序言和結尾。在我們即將發布的穩定版本中，我們將只為範例方法生成 3 個指令：</p>
+<figure>
+<img alt="Even less blue code (prologue/epilogue) than before." src="https://cdn-images-1.medium.com/max/1024/1*JPFuwgxqf2K-7tVD52M5uQ.png" />
+</figure>
+
+<p>有了可靠的空安全，我們可以將此方法的生成的代碼減少到其本質：欄位載入。在實踐中，對此方法的調用將始終被內聯，因為編譯器現在可以輕鬆地看到內聯是效能和代碼大小的雙贏。不再需要運行時檢查和補償代碼：更多的繁重工作在編譯時完成。我們不再需要客戶端編譯的啟動和記憶體開銷。因此，我們的用戶可以獲得更小、更快的代碼。</p>
+<h3 id="試試看！"><a href="#試試看！" class="headerlink" title="試試看！"></a>試試看！</h3><p>我們鼓勵您嘗試 <a href="https://dart.dev/null-safety">空安全</a>。它在 Dart 2.12 中可用，現在在我們的 beta 頻道中。一旦您的上游相依項被遷移，您就可以遷移您自己的套件和應用程式。正如這裡的範例所示，您可能不需要做太多更改。</p>
+<p>請記住，要獲得空安全的效能優勢，您需要一個完全遷移的應用程式。一旦您的應用程式完全遷移，我們的編譯器將自動利用空安全來生成更好、更小的代碼。</p>
+<h3 id="附註：代碼"><a href="#附註：代碼" class="headerlink" title="附註：代碼"></a>附註：代碼</h3><p>這是完整的 Dart 代碼，我編譯它生成了本文中的所有代碼。雖然這裡的範例是人為設計的，但模式（類別層次結構中的欄位）相當常見。</p>
+<iframe src="" width="0" height="0" frameborder="0" scrolling="no"><a href="https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href">https://medium.com/media/0024d1ba3a35bbdf5fedca64d7f309e2/href</a></iframe>
+<img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=6ceedd5b6cdc" width="1" height="1" alt=""><hr><p><a href="https://medium.com/dartlang/dart-and-the-performance-benefits-of-sound-types-6ceedd5b6cdc">Dart 與可靠類型帶來的效能優勢</a> 最初發佈在 <a href="https://medium.com/dartlang">Dart</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p>
+
+
+<p><a href="http://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
     <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/a4daf13.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -460,7 +837,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 22:44:09" itemprop="dateModified" datetime="2024-12-18T22:44:09+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -732,7 +1109,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-12-18 15:57:45" itemprop="dateModified" datetime="2024-12-18T15:57:45+08:00">2024-12-18</time>
+                <time title="Modified: 2024-12-26 19:28:05" itemprop="dateModified" datetime="2024-12-26T19:28:05+08:00">2024-12-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1046,535 +1423,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/2f2adf1b.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/2f2adf1b.html" class="post-title-link" itemprop="url">【文章翻譯】Accessible expression with Material Icons and Flutter</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-11-04 16:03:20" itemprop="dateCreated datePublished" datetime="2020-11-04T16:03:20+08:00">2020-11-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-09-30 16:55:14" itemprop="dateModified" datetime="2024-09-30T16:55:14+08:00">2024-09-30</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>【文章內容使用 Gemini 1.5 Pro 自動產生】</p>
-<h2 id="使用-Material-Icons-和-Flutter-打造可存取的表達力"><a href="#使用-Material-Icons-和-Flutter-打造可存取的表達力" class="headerlink" title="使用 Material Icons 和 Flutter 打造可存取的表達力"></a>使用 Material Icons 和 Flutter 打造可存取的表達力</h2><p>Material Design 和 Flutter 都能幫助開發人員打造出靈活、可存取且富於表現力的體驗，同時提供出色的效能和效率。現在，我們很高興為您提供更多方法來使用改進的 Material Icons 支援在 Flutter 中建立獨特的 UI。</p>
-<p><a href="https://material.io/resources/icons">Material Icons</a> 是為常見動作和項目精心設計的圖示，包括從用於導航的簡單箭頭和指示器，到代表可存取性、錯誤回報，甚至洗手等概念的圖示。</p>
-<p>Flutter 現在支援所有四種圖示樣式——<em>填滿、描邊、銳利和圓形</em>——幫助您讓您的應用程式或網站對使用者來說熟悉且易於存取，同時讓您以獨特的方式傳達您的品牌。而且，透過對樹狀搖動的支援，Flutter 會優化您的應用程式建構，只包含您正在使用的圖示，從而使載入時間和記憶體使用更加有效率。</p>
-<p>以下是一些展示您在 Material 目錄中找到的選項範圍的圖示。您可以在 <a href="https://material.io/resources/icons/">Material.io</a> 上瀏覽完整的圖示集並下載位圖或向量版本以供在您喜愛的設計工具中使用，或在 <a href="https://api.flutter.dev/flutter/material/Icons-class.html">Icons</a> API 頁面上查看 Flutter 版本。</p>
-<figure>
-<img alt="Sample of 4 icons: shopping_cart, chat, masks, wash shown in the 4 supported styles: filled, outlined, rounded, sharp." src="https://cdn-images-1.medium.com/max/716/1*kcT41A5GvXp8XrjHjiuc4A.png" />
-<figcaption>Sample of 4 icons: shopping_cart, chat, masks, wash. Displayed in the 4 supported styles: filled, outlined, rounded, sharp.</figcaption>
-</figure>
-
-<p><strong>入門</strong></p>
-<p>若要開始使用 <a href="https://master-api.flutter.dev/flutter/widgets/Icon-class.html">Icon 類別</a>，請確保在您專案的 <code>pubspec.yaml</code> 檔案中設定 <code>uses-material-design: true</code>。這會告訴 Flutter 將圖示資產包含在您的應用程式中。</p>
-<p>Flutter 中的圖示透過圖示字體以向量形式提供，因此您可以無限調整大小和顏色，而無需擔心影像品質下降。在 <a href="https://github.com/material-components/material-components-flutter/tree/develop/medium/material_icons">GitHub</a> 上查看用於生成上述圖示集的程式碼。</p>
-<p><strong>不要跳過語義標籤！</strong></p>
-<p>為了讓使用螢幕閱讀器等輔助科技的使用者能夠有效地導航您的應用程式或網站，提供有意義且上下文適當的語義標籤非常重要。</p>
-<p>預設情況下，螢幕閱讀器會朗讀螢幕上顯示的任何文字。為了將圖示等視覺元素準確地轉換為基於文字的 UI，您需要仔細標記這些元素。</p>
-<p>例如，當圖示與動作元素（如按鈕）結合使用時，您應該始終將語義標籤設定為描述使用者點擊該圖示時會發生什麼的字串。</p>
-<p><a href="https://material.io/design/usability/accessibility.html#writing">Material.io 提供指南</a> 來指示透過動作來表示 UI 元素。常見的錯誤是將語義標籤預設為圖示的名稱，而不是選擇該圖示時執行的動作。</p>
-<figure>
-<img alt="an example of what to do: a Pencil icon with the label “edit” and what not to do: a Pencil icon with the label “Pencil”" src="https://cdn-images-1.medium.com/max/1024/1*sZKrpmVM5f5bRSgy453T1Q.png" />
-</figure>
-
-<p>若要進一步了解建立可存取的數位體驗的重要性，請參閱 flutter.dev 上的 <a href="https://flutter.dev/docs/development/accessibility-and-localization/accessibility">可存取性</a>。</p>
-<p><strong>只發佈您使用的內容！</strong></p>
-<p>當您為發佈建構應用程式時，Flutter 編譯器會執行「樹狀搖動」，移除未使用的程式碼和資產（包括圖示），以優化應用程式的佔用空間，並幫助最大限度地減少下載和載入時間。可以使用您想要的任何圖示！在編譯期間，會生成一個自訂圖示字體，其中只包含專案中使用的圖示子集。這可以大幅減少二進制檔案的大小——所有人都能受益！</p>
-<p>除了樹狀搖動之外，這裡還有一篇關於 <a href="https://medium.com/@suryadevsingh24032000/size-matters-reducing-flutter-app-size-best-practices-ca992207782">縮減 Flutter 應用程式大小的最佳實務</a> 的很棒社群文章。</p>
-<p><strong>向我們展示您的傑作！</strong></p>
-<p>全世界的開發人員都在使用 Material Icons 來確保在大型和小尺寸條件下都能保持可讀性和清晰度；這些圖示已針對在所有 Flutter 支援的平台和顯示解析度上美麗顯示而進行優化。</p>
-<p>在 @<a href="https://twitter.com/materialdesign">MaterialDesign</a> 和 @<a href="https://twitter.com/FlutterDev">@FlutterDev</a> 上關注我們，並展示您如何使用 Material Design 和 Flutter 打造出美麗、可存取的數位體驗！</p>
-<p><img src="https://medium.com/_/stat?event=post.clientViewed&referrerSource=full_rss&postId=e3f3f622200b" width="1" height="1" alt=""><hr><p><a href="https://medium.com/flutter/accessible-expression-with-material-icons-and-flutter-e3f3f622200b">使用 Material Icons 和 Flutter 打造可存取的表達力</a> 最初發佈在 <a href="https://medium.com/flutter">Flutter</a> 上的 Medium，人們在那裡透過突出顯示和回應這個故事來繼續討論。</p></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/4254a2e9.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/4254a2e9.html" class="post-title-link" itemprop="url">Android app 上架流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-10-25 19:51:40" itemprop="dateCreated datePublished" datetime="2020-10-25T19:51:40+08:00">2020-10-25</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-26 00:09:13" itemprop="dateModified" datetime="2020-10-26T00:09:13+08:00">2020-10-26</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本篇文章主要介紹在2020年 Goolge 改版後的 Play Store Console 如何上架 Android App</p>
-<p>首先到 <a href="https://play.google.com/console/u/0/developers/" target="_blank" rel="noopener">Play Store Console</a> 右邊點擊新增應用程式</p>
-<p><img src="../images/android-app-deploy/img1.png" alt=""></p>
-<p>填寫以下應用程式詳細資訊</p>
-<ul>
-<li>應用程式名稱：會顯示在商店的App名稱</li>
-<li>預設語言：預設App使用的語言，作為商店一開始提供的預設語言</li>
-<li>應用程式類型：分類只有遊戲與應用程式，目的是要把遊戲區分出來，日後可更改</li>
-<li>是否收費：設定App是否下載時需要費用，勾選收費後，需要至 <code>付費應用程式</code> 修改設定</li>
-</ul>
-<p>最後同意 <code>開發人員計畫政策</code> 及 <code>美國出口法律</code> 後，即可完成初始設定</p>
-<p><img src="../images/android-app-deploy/img2.png" alt=""></p>
-<p><img src="../images/android-app-deploy/img3.png" alt=""></p>
-<p>接著進入到 <code>資訊主頁</code></p>
-<p><img src="../images/android-app-deploy/img4.png" alt=""></p>
-<p>第一次設定時會出現 <code>初始設定</code> 提示，可依序點擊設定，該步驟都是必須完成的步驟，否則無法完成審查上架</p>
-<p><img src="../images/android-app-deploy/img5.png" alt=""></p>
-<h1 id="應用程式存取權"><a href="#應用程式存取權" class="headerlink" title="應用程式存取權"></a>應用程式存取權</h1><p>設定 App 是否開放給全部使用者</p>
-<p><img src="../images/android-app-deploy/img6.png" alt=""></p>
-<p>或是部分功能有使用限制，需設定：</p>
-<ul>
-<li>名稱</li>
-<li>使用者名稱/電話號碼</li>
-<li>密碼</li>
-<li>任何操作說明</li>
-</ul>
-<p>透過此可限制使用者下載應用程式</p>
-<p><img src="../images/android-app-deploy/img7.png" alt=""></p>
-<p><img src="../images/android-app-deploy/img8.png" alt=""></p>
-<h1 id="廣告"><a href="#廣告" class="headerlink" title="廣告"></a>廣告</h1><p>設定App中是否有廣告，若有勾選廣告則會在Play商店上顯示 <code>含廣告內容</code> 的標籤</p>
-<p><img src="../images/android-app-deploy/img10.png" alt=""></p>
-<h1 id="內容分級"><a href="#內容分級" class="headerlink" title="內容分級"></a>內容分級</h1><p>根據國際年齡分級聯盟（英語：International Age Rating Coalition，縮寫IARC）設計的簡化各國分級的內容分級問卷，降低產品評比的過程，<a href="https://zh.wikipedia.org/wiki/%E5%9C%8B%E9%9A%9B%E5%B9%B4%E9%BD%A1%E5%88%86%E7%B4%9A%E8%81%AF%E7%9B%9F" target="_blank" rel="noopener">參考資料</a></p>
-<p>填寫內容分級問卷，讓使用者了解App的分類，及是否會有不宜兒童的內容</p>
-<p><img src="../images/android-app-deploy/img11.png" alt=""></p>
-<p>首先填寫電子郵件，問卷完成會寄送一份結果至該信箱</p>
-<p><img src="../images/android-app-deploy/img13.png" alt=""></p>
-<p>選擇 App 的類別，以 <a href="https://play.google.com/store/apps/details?id=com.wtuc.ap" target="_blank" rel="noopener">文藻校務通</a> 為例，選擇 <code>參考資訊、新聞或教育內容</code></p>
-<p><img src="../images/android-app-deploy/img12.png" alt=""></p>
-<p>根據選擇的類型，需填寫相關內容是否有未成年暴力色情訊息</p>
-<p><img src="../images/android-app-deploy/img14.png" alt=""></p>
-<p>完成後會顯示基本的報表，點擊右下角提交完成問卷</p>
-<p><img src="../images/android-app-deploy/img15.png" alt=""></p>
-<p>完成後，若日後想在修改問卷內容，需至右上角 點擊 <code>Start new questionaire</code> 重新提交問卷</p>
-<p><img src="../images/android-app-deploy/img16.png" alt=""></p>
-<h1 id="目標對象"><a href="#目標對象" class="headerlink" title="目標對象"></a>目標對象</h1><p>填寫詳細的App發布目標對象</p>
-<p>首先點選 <code>目標年齡層</code>，主要是確認目標對象是不是兒童，若對象未滿13歲則需要新增隱私權政策</p>
-<p><img src="../images/android-app-deploy/img18.png" alt=""></p>
-<p>勾選 <code>是否會引起兒童興趣</code>，若上者點擊13歲以下，可勾選 <code>是</code> 宣稱適合兒童</p>
-<p><img src="../images/android-app-deploy/img19.png" alt=""></p>
-<p>最後點擊 <code>儲存</code> 完成目標對象和內容</p>
-<p><img src="../images/android-app-deploy/img20.png" alt=""></p>
-<p>接著就完成一半了～～</p>
-<p><img src="../images/android-app-deploy/img21.png" alt=""></p>
-<h1 id="應用程式類別及詳細資料"><a href="#應用程式類別及詳細資料" class="headerlink" title="應用程式類別及詳細資料"></a>應用程式類別及詳細資料</h1><p>應用程式分類，區分應用程式或遊戲的類別，在Play 商店中，也會有類別排名</p>
-<p><img src="../images/android-app-deploy/img22.png" alt=""></p>
-<p>接著設定商店的聯絡詳細資訊，分別為</p>
-<ul>
-<li>電子郵件地址 (必填)</li>
-<li>電話號碼</li>
-<li>網站</li>
-</ul>
-<p><strong>以上訊息皆會在Play商店上顯示</strong></p>
-<p><img src="../images/android-app-deploy/img23.png" alt=""></p>
-<p>並勾選是否要在Play商店外行銷，讓外部網站可搜尋到你的App</p>
-<p><img src="../images/android-app-deploy/img24.png" alt=""></p>
-<p>完成後就只剩下最後一個步驟</p>
-<p><img src="../images/android-app-deploy/img25.png" alt=""></p>
-<h1 id="商店資訊"><a href="#商店資訊" class="headerlink" title="商店資訊"></a>商店資訊</h1><p>首先會根據一開始設定的<code>主要語言</code>，設定 App 在 Play 商店的資訊，可根據不同語言，設定不同的商店資訊，可點擊 <code>管理其他語言版本的翻譯內容</code> 管理其他語言的內容</p>
-<h2 id="應用程式詳細資料"><a href="#應用程式詳細資料" class="headerlink" title="應用程式詳細資料"></a>應用程式詳細資料</h2><p>首先可設定</p>
-<ul>
-<li>應用程式名稱：App名稱，作為可供搜尋的關鍵字，上限50字</li>
-<li>簡短說明：可在App頁面首要看到簡短說明，上限80字</li>
-<li>完整說明：在點擊<code>關於這個應用程式</code>後顯示的完整說明</li>
-</ul>
-<p><img src="../images/android-app-deploy/img26.png" alt=""></p>
-<p>可參照 Play 商店對應位置</p>
-<p><img src="../images/android-app-deploy/img26-1.jpg" alt=""></p>
-<p><img src="../images/android-app-deploy/img26-2.jpg" alt=""></p>
-<p>接著設定 <code>應用程式圖示</code> 會顯示在 Play 商店的圖示，<strong>限定尺寸為 <code>512*512</code> 的解析度</strong>，上傳後都會以橢圓裁剪顯示</p>
-<p><img src="../images/android-app-deploy/img27.png" alt=""></p>
-<p>主要圖片顯示於商店資訊的最頂端，可用於宣傳應用程式，<strong>大小限制 <code>1024*500</code> 解析度的圖片</strong></p>
-<p><img src="../images/android-app-deploy/img29.png" alt=""></p>
-<p>螢幕截圖主要分為</p>
-<ul>
-<li>手機</li>
-<li>七吋平板電腦</li>
-<li>十吋平板電腦</li>
-</ul>
-<p>基本上，對應類型的裝置截圖都適用，也可自行製作符合規定的尺寸的圖片，<strong>皆為使用 JPEG 或 24 位元 PNG 圖片，長寬比建議16:9</strong></p>
-<p><img src="../images/android-app-deploy/img30.png" alt=""></p>
-<p><img src="../images/android-app-deploy/img31.png" alt=""></p>
-<p>加入影片也會顯示於商店上</p>
-<p><img src="../images/android-app-deploy/img32.png" alt=""></p>
-<p>商店資訊設定完成後，若未來要修改都可直接修改，但修改後都需要等商店部署時間，通常都會為半天左右時間</p>
-<h1 id="上傳App至商店"><a href="#上傳App至商店" class="headerlink" title="上傳App至商店"></a>上傳App至商店</h1><p>到 <code>發佈</code> 的目錄下，選擇App目前要發布的方式，有分成</p>
-<ul>
-<li>正式版：會發布給商店中所有設置的地區</li>
-<li>公開測試：任何使用者可至 Play 商店點擊測試計畫，即可使用此版本</li>
-<li>封閉測試：由開發人員建立電子郵件清單，或是可透過連結加入測試計畫 <a href="https://play.google.com/apps/testing/{app" target="_blank" rel="noopener">https://play.google.com/apps/testing/{app</a> id}</li>
-<li>內部測試：由開發人員建立電子郵件清單，或是可透過內部邀請測試連結：<a href="https://play.google.com/apps/internaltest/{test" target="_blank" rel="noopener">https://play.google.com/apps/internaltest/{test</a> group id} 加入</li>
-<li>搶先註冊：若還沒發佈正式版時，可利用此功能，在Play商店中顯示搶先體驗的字樣，並提供測試人員特殊獎勵</li>
-</ul>
-<p>不管利用哪種測試方式，接下來上傳App的方式都會相同，例如選擇 <code>正式版</code> 發布，並點擊右上方的 <code>建立新版本</code></p>
-<p><img src="../images/android-app-deploy/img33.png" alt=""></p>
-<p>接著第一次上架時需點擊 同意使用 <code>Google Play 應用程式簽署</code>，Google 會管理你簽署所使用的金鑰，並且該金鑰只能提供給該 App 使用</p>
-<p>若今天金鑰遺失，可請帳戶擁有者聯絡<a href="https://support.google.com/googleplay/android-developer/contact/otherbugs" target="_blank" rel="noopener">支援小組</a>重新上傳金鑰</p>
-<p>將利用 <code>Android Studio</code> 等等的 Android 編譯工具，將原生Android 的 <code>Apk</code> 或是 <code>App Bundle</code> 上傳至此頁面</p>
-<p><strong>每次新上傳的 <code>版本號碼(version code)</code> 皆需大於先前上傳的</strong></p>
-<p>關於金鑰使用詳細 <a href="https://support.google.com/googleplay/android-developer/answer/7384423" target="_blank" rel="noopener">可參考</a></p>
-<p><img src="../images/android-app-deploy/img35.png" alt=""></p>
-<h2 id="版本詳細資訊"><a href="#版本詳細資訊" class="headerlink" title="版本詳細資訊"></a>版本詳細資訊</h2><p>版本名稱會根據上傳的 <code>Apk</code> 或 <code>App Bundle</code> 命名</p>
-<p>版本資訊會根據商店可提供的語言，以 <code>XML</code> 格式撰寫，將這次更新內容寫至 <code>語言碼(language code)</code> 中</p>
-<p><img src="../images/android-app-deploy/img36.png" alt=""></p>
-<p>完成後點擊儲存，並點擊檢查版本</p>
-<p><img src="../images/android-app-deploy/img37.png" alt=""></p>
-<p>接著會發現沒有設定提供地區</p>
-<p><img src="../images/android-app-deploy/img38.png" alt=""></p>
-<p>返回至上一頁的最上方，選擇 <code>國家與地區</code> 編輯針對正式版的發布國家/地區</p>
-<p><img src="../images/android-app-deploy/img39.png" alt=""></p>
-<p>若沒勾選，Play商店就不會發佈至此國家/地區</p>
-<p><img src="../images/android-app-deploy/img40.png" alt=""></p>
-<p>接著回到剛剛編輯的版本資訊，點擊 <code>開始發布(正式版)</code></p>
-<p><img src="../images/android-app-deploy/img41.png" alt=""></p>
-<p>最後會跳回正式版的頁面，並顯示審查中</p>
-<p><img src="../images/android-app-deploy/img42.png" alt=""></p>
-<p>自 2019 年開始，Play 商店在第一次審查時，最久大約會至七天，爾後提交大約都是一下子就完成審查，並都是半天會完全部署至商店(所有使用者都可以看到更新)</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw,default">
-    <link itemprop="mainEntityOfPage" href="https://blog.rainvisitor.me/archives/dc2c1f00.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rainvisitor">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="RainVisitor Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/archives/dc2c1f00.html" class="post-title-link" itemprop="url">iOS app 上架流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-10-24 20:27:58" itemprop="dateCreated datePublished" datetime="2020-10-24T20:27:58+08:00">2020-10-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-25 20:07:40" itemprop="dateModified" datetime="2020-10-25T20:07:40+08:00">2020-10-25</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本篇文章主要介紹在2020年 Apple 改版後的 App Store Connect 如何上架 iOS App</p>
-<h1 id="新增-App"><a href="#新增-App" class="headerlink" title="新增 App"></a>新增 App</h1><p>到 <a href="https://appstoreconnect.apple.com/" target="_blank" rel="noopener">App Store Connect</a> 點擊 <code>我的App</code></p>
-<p><img src="../images/ios-app-deploy/img1.png" alt=""></p>
-<p>點擊 App 旁邊邊的 + 選擇 <code>新的 App</code></p>
-<p><img src="../images/ios-app-deploy/img2.png" alt=""></p>
-<h1 id="註冊Identifier"><a href="#註冊Identifier" class="headerlink" title="註冊Identifier"></a>註冊Identifier</h1><p>到 <a href="https://developer.apple.com/account/resources/identifiers/list" target="_blank" rel="noopener">憑證、識別碼及描述檔</a> 註冊App的 <code>Identifier</code></p>
-<p><img src="../images/ios-app-deploy/img4-0.png" alt=""></p>
-<p>選擇 <code>App IDs</code></p>
-<p><img src="../images/ios-app-deploy/img4-1.png" alt=""></p>
-<p>選擇 <code>App</code></p>
-<p><img src="../images/ios-app-deploy/img4-2.png" alt=""></p>
-<p><strong>Discription</strong> 填寫可以識別的名稱</p>
-<p><strong>App ID Prefix</strong> 選擇 <code>Explicit</code> 並填上與 Xcode 中的 <code>Bundle Indentifier</code> 相同的 ID</p>
-<p><strong>App ID Prefix 的 Bundle ID 上架後就不可修改</strong></p>
-<p>最後點擊 <code>Continue</code> 然後 <code>Register</code> 完成註冊</p>
-<p><img src="../images/ios-app-deploy/img4-3.png" alt=""></p>
-<p>或是</p>
-<p>懶人方法</p>
-<p>使用 <code>Xcode</code> 在 <code>Target</code> 中的 <code>Runner</code> 選擇 <code>Signing &amp; Capabilities</code></p>
-<p>選擇想要上架的Apple開發者帳號</p>
-<p><img src="../images/ios-app-deploy/img3.png" alt=""></p>
-<p>並點擊 <code>+ Capability</code> 隨意新增一個 Capability</p>
-<p>此動作 <code>Xcode</code> 會自動註冊 <code>Indentifier</code> 至 App Store Connect</p>
-<p>完成後再將其取消 </p>
-<p>沒取消的話審查時會納入審查範圍 要特別注意</p>
-<p><img src="../images/ios-app-deploy/img4-4.png" alt=""></p>
-<p>接著填寫App基本資訊</p>
-<ul>
-<li>平台：選擇你的App會在哪些平台提供，若沒勾選可事後新增</li>
-<li>名稱：在Apple Store的名稱，無法跟已上架App相同，命名上需要先搶先贏，除非對方把App刪除或修改名稱，也是使用者搜尋時能找到你的App的首要途徑</li>
-<li>主要語言：首先可在商店提供的語言，若有發佈不同國家語系，可事後新增</li>
-<li>套件識別碼：選擇剛才新增的 <code>Indentifier</code>，選擇後就不能修改，對應到原生的 <code>Bundle Indentifier</code></li>
-<li>SKU：App ID 為獨一無二，可任意命名，填寫後不能修改，但不會公開顯示</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img4-5.png" alt=""></p>
-<h1 id="App-資訊"><a href="#App-資訊" class="headerlink" title="App 資訊"></a>App 資訊</h1><p>新增 App 後，可先來 一般資訊 -&gt; App 資訊，填寫 App 基本資訊，這邊會分兩個區塊，一個是可本地化資訊及一般資訊</p>
-<h3 id="可本地化資訊"><a href="#可本地化資訊" class="headerlink" title="可本地化資訊"></a>可本地化資訊</h3><ul>
-<li>名稱：必填，為一開始輸入的 App 名稱</li>
-<li>副標題：必填，商店中會位於 App 名稱下方，建議使用簡短語句說明 App</li>
-<li>隱私權政策：必填，聲明你的 App 隱私權政策的網址，不限制格式</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img16.png" alt=""></p>
-<h3 id="一般資訊"><a href="#一般資訊" class="headerlink" title="一般資訊"></a>一般資訊</h3><ul>
-<li>Apple ID：由 Apple 產生，作為網頁上的編號，可至 <a href="https://apps.apple.com/tw/app/id`${你的" target="_blank" rel="noopener">https://apps.apple.com/tw/app/id`${你的</a> Apple ID}`，找到你的App</li>
-<li>內容版權：聲明你的 App 是否有第三方內容，像是以校務通來說，資料來源於學校，就可以視為第三方內容 </li>
-<li>年齡分級：必填，根據填寫 <a href="#/年齡分級問卷">年齡分級問卷</a> 的結果</li>
-<li>許可協議：必填，預設使用 <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">《Apple 標準終端使用者許可協議》(EULA)</a>，可點擊自訂許可協議</li>
-<li>類別：必填，在商店的分類，可選擇兩個，也作為與同類型App排名的分類</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img17.png" alt=""></p>
-<h1 id="定價與供應狀況"><a href="#定價與供應狀況" class="headerlink" title="定價與供應狀況"></a>定價與供應狀況</h1><ul>
-<li>價格排程：選擇你的App定價方式，最低免費到最高 32900元，使用者付費購買後90天內都可以反悔</li>
-<li>預定：第一次上架前會顯示，自訂日期在App成功發布後，會通知預定的使用者</li>
-<li>供應狀況：需先填寫<code>供應國家與地區</code>，若選擇停止供應，會從商店下架，直到重新供應為止</li>
-<li>Mac 上的 iOS App：如果你的iOS App有使用到 <a href="https://developer.apple.com/mac-catalyst/" target="_blank" rel="noopener">Mac Catalyst
-</a>(Flutter 目前不支援)，會將你的iOS App發佈至 Mac App Store，若有發佈macOS App，則優先發布 macOS App</li>
-<li>App發布方式：根據你的開發者帳號，若個人開發者帳號只能選擇公開在Apple Store，若是企業開發者帳號，則可以發布到私人的商店發布</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img18.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img18-1.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img26.png" alt=""></p>
-<h1 id="App版本資訊"><a href="#App版本資訊" class="headerlink" title="App版本資訊"></a>App版本資訊</h1><p>進入 App <code>版本資訊</code> 後</p>
-<p>首先設定 <code>App預覽與截圖</code> 可參考以下規格 <strong><code>每個至少三張</code></strong></p>
-<p>12.9 吋 iPad Pro 第三代 及 第二代 尺寸是可以相容的 故截圖第三代 可直接上傳到第二代</p>
-<p>建議使用模擬器截圖 上傳完可用滑鼠拖曳改變顯示順序</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">螢幕尺寸說明</th>
-<th style="text-align:center">平台</th>
-<th style="text-align:center">截圖尺寸</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">iPhone 6.5 吋</td>
-<td style="text-align:center">iPhone 11 Pro Max、iPhone 11、iPhone X S Max、iPhone XR</td>
-<td style="text-align:center">1242 x 2688 像素（直向） 2688 x 1242 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">iPhone 5.5 吋</td>
-<td style="text-align:center">iPhone 8 Plus、iPhone 7 Plus、iPhone 6s Plus</td>
-<td style="text-align:center">1242 x 2208 像素（直向） 2208 x 1242 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">12.9 吋 iPad Pro（第三代）</td>
-<td style="text-align:center">iPad Pro 2018、iPad Pro 2020</td>
-<td style="text-align:center">2048 x 2732 像素（直向） 2732 x 2048 像素（橫向）</td>
-</tr>
-<tr>
-<td style="text-align:center">12.9 吋 iPad Pro（第二代）</td>
-<td style="text-align:center">iPad Pro 2017</td>
-<td style="text-align:center">2048 x 2732 像素（直向） 2732 x 2048 像素（橫向）</td>
-</tr>
-</tbody>
-</table>
-<p>更多詳細資訊 <a href="https://help.apple.com/app-store-connect/#/devd274dd925" target="_blank" rel="noopener">可參考</a></p>
-<p><img src="../images/ios-app-deploy/img5.png" alt=""></p>
-<p>接著填寫</p>
-<ul>
-<li>行銷宣傳文字：作為 App 行銷宣傳標語，建議簡短的文字，也要符合App的性質</li>
-<li>關鍵字：在商店搜尋時，透過關鍵字加強找到App，並使用逗點隔開</li>
-<li>描述：詳細介紹App的功能與特色</li>
-<li>支援URL：對應商店開發者網頁</li>
-<li>行銷URL：待補充</li>
-<li>版本：可參考 <a href="https://semver.org/lang/zh-TW/" target="_blank" rel="noopener">語意化版本</a>，不限定兩碼或三碼，不能與先前定義的相同</li>
-<li>版權：宣告App版權的註解</li>
-<li>年齡分級：根據填寫 <a href="#/年齡分級問卷">年齡分級問卷</a> 的結果（需點擊編輯填寫）</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img6.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img7.png" alt=""></p>
-<p>對應在商店的位置可參考</p>
-<p><img src="../images/ios-app-deploy/img6-1.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img6-2.png" alt=""></p>
-<h2 id="年齡分級問卷"><a href="#年齡分級問卷" class="headerlink" title="年齡分級問卷"></a>年齡分級問卷</h2><p>針對App的內容填寫是否有兒童不宜的</p>
-<p><img src="../images/ios-app-deploy/img9.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img10.png" alt=""></p>
-<h2 id="App審查資訊"><a href="#App審查資訊" class="headerlink" title="App審查資訊"></a>App審查資訊</h2><p>蘋果在審查時都是採用 <code>人工審查</code>，審查過程都須填寫完整的資料</p>
-<ul>
-<li>登入資訊：若你的App有設計登入功能，需提供測試帳號給審查人員</li>
-<li>聯絡人資訊：當審查有問題時的聯絡人資訊，電話號碼需要加入國際冠碼</li>
-<li>備註：資訊則提供其他資訊供審查人員了解你的App，像是之前就被問過這幾個問題，爾後我都在新的App加入這些回答<ul>
-<li>Who is the target audience?</li>
-<li>How do users obtain an account?</li>
-<li>Is this app meant for internal distribution in your own company, in the company of one target client, or in multiple target clients’ companies?</li>
-<li>In which countries will this app primarily be distributed?</li>
-<li>If this app is meant for internal distribution, will the app be accessible by both internal and external partners? Or will it be exclusive to in-house employees?<ul>
-<li>附件：可附上App操作影片，若你的App無法提供帳號測試，或是有些功能需要提供範例影片操作(ex.何時會使用到讀取wifi連線資訊的功能)，都需要附上影片</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="../images/ios-app-deploy/img8.png" alt=""></p>
-<h3 id="建制版本"><a href="#建制版本" class="headerlink" title="建制版本"></a>建制版本</h3><p>接著選擇要送至審查的App版本，需先透過Xcode <code>Archive</code> 後上傳至App Store Connect，點擊藍色按鈕</p>
-<p><img src="../images/ios-app-deploy/img11.png" alt=""></p>
-<p>選擇對應想提交的版本，通常上傳完會需要一段時間處理，當完成處理都會email通知</p>
-<p><img src="../images/ios-app-deploy/img11-1.png" alt=""></p>
-<p>屆時才會出現在這邊</p>
-<p><img src="../images/ios-app-deploy/img12.png" alt=""></p>
-<p>接著選擇這次提交的出口合規資訊，點擊是否有使用加密功能，若點擊是的話，需要另外填寫出口法律資訊</p>
-<p><img src="../images/ios-app-deploy/img13.png" alt=""></p>
-<h3 id="廣告識別碼"><a href="#廣告識別碼" class="headerlink" title="廣告識別碼"></a>廣告識別碼</h3><p>最後是填寫是否有使用到 <code>廣告識別碼</code>，像是 Firebase Analytics 或是 Ad Mod 等第三方的廣告或分析工具，就需要聲明有使用到，若審查後發現錯誤，則需要重新上傳新的App版本</p>
-<p><img src="../images/ios-app-deploy/img14.png" alt=""></p>
-<p><strong>最後回到最上方點擊完成，並點擊審查，結著就會進入正在等待審查</strong></p>
-<p><img src="../images/ios-app-deploy/img20.png" alt=""></p>
-<p>通常審查時間已台灣都是晚上開始到半夜，對應到美國的白天時間，第一次審查都會比較久，大約2~3天，要耐心等待</p>
-<p>但有時候會審查失敗，也會寄送 email 通知，可至連結查詢問題，並回覆審查人員</p>
-<p>iOS Resolve Center : <a href="">https://appstoreconnect.apple.com/apps/<code>{apple id}</code>/appstore/platform/ios/resolutioncenter?m=</a></p>
-<p>macOS Resolve Center : <a href="">https://appstoreconnect.apple.com/apps/<code>{apple id}</code>/appstore/platform/osx/resolutioncenter?m=</a></p>
-<p><img src="../images/ios-app-deploy/img21.png" alt=""></p>
-<p><img src="../images/ios-app-deploy/img21-1.png" alt=""></p>
-<p>若審查成功，則會通知 <code>Ready for Sale</code>，完成這次版本審查</p>
-<p><img src="../images/ios-app-deploy/img22.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1644,7 +1492,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">242</span>
+          <span class="site-state-item-count">245</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1680,7 +1528,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
